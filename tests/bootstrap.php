@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Nette\Utils\FileSystem;
+
 use Tracy\Debugger;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -16,4 +18,4 @@ usleep(200);
 
 require __DIR__ . '/../preload.php';
 
-unlink(__DIR__ . '/../preload.php');
+FileSystem::delete(__DIR__ . '/../preload.php');
