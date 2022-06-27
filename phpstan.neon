@@ -1,0 +1,24 @@
+includes:
+    - vendor/symplify/phpstan-rules/config/symplify-rules.neon
+
+parameters:
+    level: 8
+
+    # requires exact closure types
+    checkMissingCallableSignature: true
+
+    parallel:
+        # to prevent full thread lagging pc
+        maximumNumberOfProcesses: 15
+
+    paths:
+        - src
+        - tests
+
+    reportUnmatchedIgnoredErrors: false
+    checkGenericClassInNonGenericObjectType: false
+
+    ignoreErrors:
+        -
+            message: '#Do not use static property#'
+            path: tests/bootstrap.php
