@@ -72,5 +72,6 @@ return static function (RectorConfig $rectorConfig): void {
         '*/tests/**/Expected*/*',
     ]);
 
+    $rectorConfig->import(__DIR__ . '/config/config.php');
     $rectorConfig->phpstanConfig(__DIR__ . '/phpstan-for-rector.neon');
 };
