@@ -1,4 +1,4 @@
-# 110 Rules Overview
+# 111 Rules Overview
 
 ## ArrowFunctionToAnonymousFunctionRector
 
@@ -969,6 +969,25 @@ Remove the "mixed" param and return type, add a `@param` and `@return` tag inste
 +    public function someFunction($anything)
      {
      }
+ }
+```
+
+<br>
+
+## DowngradeMixedTypeTypedPropertyRector
+
+Removes mixed type property type definition, adding `@var` annotations instead.
+
+- class: [`Rector\DowngradePhp80\Rector\Property\DowngradeMixedTypeTypedPropertyRector`](../src/DowngradePhp80/Rector/Property/DowngradeMixedTypeTypedPropertyRector.php)
+
+```diff
+ class SomeClass
+ {
+-    private mixed $property;
++    /**
++     * @var mixed
++     */
++    private $property;
  }
 ```
 

@@ -23,7 +23,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Rector\\": "src"
+            "Rector\\": "src",
+            "Rector\\Set\\": "packages/Set"
         }
     },
     "autoload-dev": {
