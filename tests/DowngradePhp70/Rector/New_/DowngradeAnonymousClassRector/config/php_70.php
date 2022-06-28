@@ -8,5 +8,6 @@ use Rector\DowngradePhp70\Rector\New_\DowngradeAnonymousClassRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->phpVersion(PhpVersionFeature::SCALAR_TYPES - 1);
+    $rectorConfig->import(__DIR__ . '/../../../../../../config/config.php');
     $rectorConfig->rule(DowngradeAnonymousClassRector::class);
 };

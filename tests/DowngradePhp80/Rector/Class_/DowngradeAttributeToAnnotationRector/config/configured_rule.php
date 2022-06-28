@@ -7,6 +7,7 @@ use Rector\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector;
 use Rector\DowngradePhp80\ValueObject\DowngradeAttributeToAnnotation;
 
 return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->import(__DIR__ . '/../../../../../../config/config.php');
     $rectorConfig
         ->ruleWithConfiguration(DowngradeAttributeToAnnotationRector::class, [
             new DowngradeAttributeToAnnotation(

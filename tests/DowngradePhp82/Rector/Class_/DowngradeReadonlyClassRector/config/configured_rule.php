@@ -6,5 +6,6 @@ use Rector\Config\RectorConfig;
 use Rector\DowngradePhp82\Rector\Class_\DowngradeReadonlyClassRector;
 
 return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->import(__DIR__ . '/../../../../../../config/config.php');
     $rectorConfig->rule(DowngradeReadonlyClassRector::class);
 };
