@@ -12,6 +12,8 @@ All you need to do is install the main package, and you're good to go:
 composer require rector/rector --dev
 ```
 
+<br>
+
 ## Use Sets
 
 To add a set to your config, use `Rector\Set\ValueObject\DowngradeLevelSetList` class and pick target set:
@@ -32,6 +34,8 @@ Then run Rector to downgrade your code to PHP 7.2!
 ```bash
 vendor/bin/rector
 ```
+
+<br>
 
 ## How the Downgrade Workflow looks?
 
