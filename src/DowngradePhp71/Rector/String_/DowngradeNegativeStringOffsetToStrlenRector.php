@@ -104,13 +104,14 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! $args[2]->value instanceof UnaryMinus) {
+        $thirdArg = $args[2];
+
+        if (! $thirdArg->value instanceof UnaryMinus) {
             return null;
         }
 
         $strlenFuncCall = $this->nodeFactory->createFuncCall('strlen', [$args[0]]);
 
-        $thirdArg = $args[2];
         $thirdArg->value = new Minus($strlenFuncCall, $thirdArg->value->expr);
 
         return $funcCall;

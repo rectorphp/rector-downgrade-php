@@ -55,3 +55,24 @@ parameters:
         - '#Class Rector\\Tests\\DowngradePhp72\\Rector\\ClassMethod\\DowngradeParameterTypeWideningRector\\Fixture\\SomeContainerInterface not found#'
 
         - '#Calling PHPStan\\Reflection\\Native\\NativeFunctionReflection\:\:getName\(\) is not covered by backward compatibility promise\. The method might change in a minor PHPStan version#'
+
+        # allowed in PHPUnit
+        - '#Dynamic call to static method PHPUnit\\Framework\\Assert\:\:markTestSkipped\(\)#'
+
+        # no idea how to improve
+        -
+            message: '#Add explicit array type to assigned "\$unnamedArgs" expression#'
+            paths:
+                - src/DowngradePhp80/NodeAnalyzer/UnnamedArgumentResolver.php
+                - src/DowngradePhp80/NodeAnalyzer/NamedToUnnamedArgs.php
+
+        # bool as status return
+        - '#Method "refactorParamType\(\)" returns bool type, so the name should start with is/has/was#'
+
+        # null arg is allowed list()
+        - '#Parameter \#2 \$args of class PhpParser\\Node\\Expr\\FuncCall constructor expects array<PhpParser\\Node\\Arg\|PhpParser\\Node\\VariadicPlaceholder>, array<int, PhpParser\\Node\\Arg\|null> given#'
+
+        # main expr joining
+        -
+            message: '#New objects with "\$expr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+            path: src/DowngradePhp55/Rector/Isset_/DowngradeArbitraryExpressionArgsToEmptyAndIssetRector.php

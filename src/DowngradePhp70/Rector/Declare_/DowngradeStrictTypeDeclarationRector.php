@@ -57,10 +57,8 @@ CODE_SAMPLE
 
     private function shouldSkip(Declare_ $declare): bool
     {
-        $declares = $declare->declares;
-
-        foreach ($declares as $declare) {
-            if ($this->isName($declare->key, 'strict_types')) {
+        foreach ($declare->declares as $singleDeclare) {
+            if ($this->isName($singleDeclare->key, 'strict_types')) {
                 return false;
             }
         }

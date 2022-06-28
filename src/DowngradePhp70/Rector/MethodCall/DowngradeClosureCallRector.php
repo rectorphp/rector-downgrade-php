@@ -82,7 +82,7 @@ CODE_SAMPLE
 
     private function createBindToCall(MethodCall $methodCall): MethodCall
     {
-        $newObj = $methodCall->args[0];
+        $newObj = $methodCall->getArgs()[0];
         if ($newObj->value instanceof Variable) {
             $args = [$newObj, $newObj];
         } else {

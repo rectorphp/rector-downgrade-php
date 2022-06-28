@@ -139,7 +139,7 @@ CODE_SAMPLE
         try {
             $parametersAcceptor = ParametersAcceptorSelector::selectFromArgs(
                 $funcCall->getAttribute(AttributeKey::SCOPE),
-                $funcCall->args,
+                $funcCall->getArgs(),
                 $functionReflection->getVariants()
             );
         } catch (ShouldNotHappenException) {

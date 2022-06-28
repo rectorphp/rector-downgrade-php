@@ -11,7 +11,7 @@ use PhpParser\Node\Expr\ArrayItem;
 final class UnpackedArgList
 {
     /**
-     * @var Arg[]
+     * @var array<int, Arg>
      */
     private array $args = [];
 
