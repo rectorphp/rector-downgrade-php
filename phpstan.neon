@@ -18,7 +18,16 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     checkGenericClassInNonGenericObjectType: false
 
+    excludePaths:
+        # tests files
+        - "*tests/*/Expected/*"
+        - '*tests/*/Fixture/*'
+        - '*tests/*/Source/*'
+        - '*tests/Source/*'
+
     ignoreErrors:
         -
             message: '#Do not use static property#'
             path: tests/bootstrap.php
+
+        - '#Parameter (.*?)refactor\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method Rector\\Core\\Contract\\Rector\\PhpRectorInterface\:\:refactor\(\)#'
