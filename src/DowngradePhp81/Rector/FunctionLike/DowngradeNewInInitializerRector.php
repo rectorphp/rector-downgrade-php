@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp81\Rector\FunctionLike;
 
+use PhpParser\Error;
 use PhpParser\Node;
 use PhpParser\Node\ComplexType;
 use PhpParser\Node\Expr;
@@ -127,6 +128,10 @@ CODE_SAMPLE
 
     private function isParamSkipped(Param $param): bool
     {
+        if ($param->var instanceof Error) {
+            return true;
+        }
+
         if ($param->default === null) {
             return true;
         }
@@ -152,9 +157,12 @@ CODE_SAMPLE
             /** @var Expr $default */
             $default = $param->default;
 
+            /** @var Variable $paramVar */
+            $paramVar = $param->var;
+
             // check for property promotion
             if ($isConstructor && $param->flags > 0) {
-                $propertyFetch = new PropertyFetch(new Variable('this'), $param->var->name);
+                $propertyFetch = new PropertyFetch(new Variable('this'), $paramVar->name);
                 $coalesce = new Coalesce($param->var, $default);
                 $assign = new Assign($propertyFetch, $coalesce);
 

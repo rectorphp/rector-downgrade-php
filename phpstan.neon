@@ -44,7 +44,14 @@ parameters:
 
         # more specific type override
         -
-            message: '#New objects with "\$(parentReturnTypeNode|functionLikeReflection)" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+            message: '#New objects with "\$(.*?)" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             paths:
                 - src/DowngradePhp72/PhpDoc/NativeParamToPhpDocDecorator.php
                 - src/DowngradePhp80/NodeAnalyzer/UnnamedArgumentResolver.php
+                - src/DowngradePhp72/NodeManipulator/BitwiseFlagCleaner.php
+                - src/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php
+
+        # part of tests
+        - '#Class Rector\\Tests\\DowngradePhp72\\Rector\\ClassMethod\\DowngradeParameterTypeWideningRector\\Fixture\\SomeContainerInterface not found#'
+
+        - '#Calling PHPStan\\Reflection\\Native\\NativeFunctionReflection\:\:getName\(\) is not covered by backward compatibility promise\. The method might change in a minor PHPStan version#'
