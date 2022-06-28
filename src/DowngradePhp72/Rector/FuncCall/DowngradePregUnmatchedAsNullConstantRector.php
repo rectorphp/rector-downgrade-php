@@ -68,7 +68,7 @@ final class DowngradePregUnmatchedAsNullConstantRector extends AbstractRector
             return null;
         }
 
-        $args = $node->args;
+        $args = $node->getArgs();
         if (! isset($args[3])) {
             return null;
         }

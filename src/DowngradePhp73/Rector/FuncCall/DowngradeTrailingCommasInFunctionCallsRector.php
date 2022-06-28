@@ -74,7 +74,7 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node->args) {
+        if ($node->getArgs() !== []) {
             $lastArgumentPosition = array_key_last($node->args);
 
             $last = $node->args[$lastArgumentPosition];

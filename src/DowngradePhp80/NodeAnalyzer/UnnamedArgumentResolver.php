@@ -36,9 +36,10 @@ final class UnnamedArgumentResolver
             $functionLikeReflection = new ReflectionFunction($functionLikeReflection->getName());
         }
 
-        /** @var Arg[] $unnamedArgs */
+        /** @var array<int, Arg> $unnamedArgs */
         $unnamedArgs = [];
         $toFillArgs = [];
+
         foreach ($currentArgs as $key => $arg) {
             if ($arg->name === null) {
                 $unnamedArgs[$key] = new Arg($arg->value, $arg->byRef, $arg->unpack, $arg->getAttributes(), null);
@@ -57,11 +58,13 @@ final class UnnamedArgumentResolver
             $toFillArgs,
             $unnamedArgs
         );
+
         $unnamedArgs = $this->namedToUnnamedArgs->fillFromJumpedNamedArgs(
             $functionLikeReflection,
             $unnamedArgs,
             $parameters
         );
+
         ksort($unnamedArgs);
         return $unnamedArgs;
     }

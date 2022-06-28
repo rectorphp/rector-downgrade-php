@@ -31,3 +31,20 @@ parameters:
             path: tests/bootstrap.php
 
         - '#Parameter (.*?)refactor\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method Rector\\Core\\Contract\\Rector\\PhpRectorInterface\:\:refactor\(\)#'
+        - '#Parameter \#1 \$node (.*?) of method (.*?)\:\:refactorWithScope\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method Rector\\Core\\Contract\\Rector\\ScopeAwarePhpRectorInterface\:\:refactorWithScope\(\)#'
+
+        # php enum value minus
+        - '#Parameter \#1 \$phpVersion of method Rector\\Config\\RectorConfig\:\:phpVersion\(\) expects (.*?), (.*?) given#'
+
+        # depens on enum preference
+        - '#Register "Rector\\DowngradePhp80\\Rector\\Enum_\\DowngradeEnumToConstantListClassRector" service to "downgrade\-php80\.php" config set#'
+
+        # part of implicit contract
+        - '#Call to an undefined method PHPStan\\Type\\ConstantType\:\:getValue\(\)#'
+
+        # more specific type override
+        -
+            message: '#New objects with "\$(parentReturnTypeNode|functionLikeReflection)" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+            paths:
+                - src/DowngradePhp72/PhpDoc/NativeParamToPhpDocDecorator.php
+                - src/DowngradePhp80/NodeAnalyzer/UnnamedArgumentResolver.php

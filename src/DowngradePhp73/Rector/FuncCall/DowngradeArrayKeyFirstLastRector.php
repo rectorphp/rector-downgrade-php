@@ -106,7 +106,8 @@ CODE_SAMPLE
 
         $funcCall->name = new Name('key');
         if ($originalArray !== $array) {
-            $funcCall->args[0]->value = $array;
+            $firstArg = $funcCall->getArgs()[0];
+            $firstArg->value = $array;
         }
 
         return $funcCall;
@@ -134,7 +135,8 @@ CODE_SAMPLE
 
         $funcCall->name = new Name('key');
         if ($originalArray !== $array) {
-            $funcCall->args[0]->value = $array;
+            $firstArg = $funcCall->getArgs()[0];
+            $firstArg->value = $array;
         }
 
         return $funcCall;
