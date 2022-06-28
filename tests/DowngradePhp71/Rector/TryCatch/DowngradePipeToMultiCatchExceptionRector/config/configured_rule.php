@@ -8,5 +8,6 @@ use Rector\DowngradePhp71\Rector\TryCatch\DowngradePipeToMultiCatchExceptionRect
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->phpVersion(PhpVersionFeature::MULTI_EXCEPTION_CATCH - 1);
+    $rectorConfig->import(__DIR__ . '/../../../../../../config/config.php');
     $rectorConfig->rule(DowngradePipeToMultiCatchExceptionRector::class);
 };
