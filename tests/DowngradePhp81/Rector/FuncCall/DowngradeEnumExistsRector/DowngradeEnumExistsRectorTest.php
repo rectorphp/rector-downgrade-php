@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector;
+namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeEnumExistsRector;
 
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
