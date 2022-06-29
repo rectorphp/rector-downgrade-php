@@ -21,12 +21,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://php.watch/versions/8.1/enums#enum-exists
-<<<<<<< HEAD
-=======
  *
  * @see \Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeEnumExistsRector\DowngradeEnumExistsRectorTest
  * @see https://github.com/symfony/polyfill/blob/d45b58e9f527e408fb28c4b6431b7284f8c168ff/src/Php81/bootstrap.php#L27
->>>>>>> d94c02f (add @see for lookup)
  */
 final class DowngradeEnumExistsRector extends AbstractScopeAwareRector
 {
