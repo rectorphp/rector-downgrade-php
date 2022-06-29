@@ -21,8 +21,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://php.watch/versions/8.1/enums#enum-exists
- *
- * @see \Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeEnumExistsRector\DowngradeEnumExistsRectorTest
  */
 final class DowngradeEnumExistsRector extends AbstractScopeAwareRector
 {
