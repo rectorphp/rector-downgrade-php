@@ -30,7 +30,8 @@ final class DowngradeThisInClosureRector extends AbstractRector
 {
     public function __construct(
         private readonly NamedVariableFactory $namedVariableFactory,
-        private readonly ReflectionResolver $reflectionResolver
+        private readonly ReflectionResolver $reflectionResolver,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 
