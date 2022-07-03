@@ -35,7 +35,8 @@ final class DowngradeArrayFilterUseConstantRector extends AbstractRector
 {
     public function __construct(
         private readonly VariableNaming $variableNaming,
-        private readonly SimpleCallableNodeTraverser $simpleCallableNodeTraverser
+        private readonly SimpleCallableNodeTraverser $simpleCallableNodeTraverser,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 
