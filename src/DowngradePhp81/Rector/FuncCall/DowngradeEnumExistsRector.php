@@ -16,6 +16,7 @@ use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp72\NodeAnalyzer\FunctionExistsFunCallAnalyzer;
 use Rector\Naming\Naming\VariableNaming;
+use Rector\PostRector\Collector\NodesToAddCollector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -32,7 +33,8 @@ final class DowngradeEnumExistsRector extends AbstractScopeAwareRector
     public function __construct(
         private readonly InlineCodeParser $inlineCodeParser,
         private readonly FunctionExistsFunCallAnalyzer $functionExistsFunCallAnalyzer,
-        private readonly VariableNaming $variableNaming
+        private readonly VariableNaming $variableNaming,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 
