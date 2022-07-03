@@ -39,6 +39,7 @@ final class DowngradeDirnameLevelsRector extends AbstractRector
 
     public function __construct(
         private readonly NamedVariableFactory $namedVariableFactory,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 

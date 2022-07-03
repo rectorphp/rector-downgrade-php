@@ -31,7 +31,8 @@ final class DowngradeArrayIsListRector extends AbstractScopeAwareRector
     public function __construct(
         private readonly InlineCodeParser $inlineCodeParser,
         private readonly FunctionExistsFunCallAnalyzer $functionExistsFunCallAnalyzer,
-        private readonly VariableNaming $variableNaming
+        private readonly VariableNaming $variableNaming,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 

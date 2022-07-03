@@ -21,6 +21,11 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeSessionStartArrayOptionsRector extends AbstractRector
 {
+    public function __construct(
+        private readonly NodesToAddCollector $nodesToAddCollector,
+    ) {
+    }
+
     /**
      * @return array<class-string<Node>>
      */

@@ -31,7 +31,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeStripTagsCallWithArrayRector extends AbstractRector
 {
     public function __construct(
-        private readonly VariableNaming $variableNaming
+        private readonly VariableNaming $variableNaming,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 

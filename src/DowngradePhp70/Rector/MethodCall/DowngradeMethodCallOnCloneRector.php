@@ -24,7 +24,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeMethodCallOnCloneRector extends AbstractRector
 {
     public function __construct(
-        private readonly VariableNaming $variableNaming
+        private readonly VariableNaming $variableNaming,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 

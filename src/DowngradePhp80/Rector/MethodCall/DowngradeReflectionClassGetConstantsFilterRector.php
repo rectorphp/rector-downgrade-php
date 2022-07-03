@@ -44,7 +44,8 @@ final class DowngradeReflectionClassGetConstantsFilterRector extends AbstractRec
     public function __construct(
         private readonly VariableNaming $variableNaming,
         private readonly IfManipulator $ifManipulator,
-        private readonly BinaryOpConditionsCollector $binaryOpConditionsCollector
+        private readonly BinaryOpConditionsCollector $binaryOpConditionsCollector,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 

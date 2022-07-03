@@ -28,7 +28,8 @@ final class DowngradeKeysInListRector extends AbstractRector
 {
     public function __construct(
         private readonly InflectorSingularResolver $inflectorSingularResolver,
-        private readonly VariableNaming $variableNaming
+        private readonly VariableNaming $variableNaming,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 

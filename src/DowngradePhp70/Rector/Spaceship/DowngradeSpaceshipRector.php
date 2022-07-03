@@ -32,6 +32,7 @@ final class DowngradeSpaceshipRector extends AbstractRector
     public function __construct(
         private readonly IfManipulator $ifManipulator,
         private readonly NamedVariableFactory $namedVariableFactory,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 
