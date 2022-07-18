@@ -69,12 +69,13 @@ final class OverrideFromAnonymousClassMethodAnalyzer
         }
 
         $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
-        $method = $classReflection->getMethod($methodName, $scope);
-        if (! $method instanceof PhpMethodReflection) {
+
+        $extendedMethodReflection = $classReflection->getMethod($methodName, $scope);
+        if (! $extendedMethodReflection instanceof PhpMethodReflection) {
             return null;
         }
 
-        if ($method->isPrivate()) {
+        if ($extendedMethodReflection->isPrivate()) {
             return null;
         }
 

@@ -12,6 +12,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Property;
+use PhpParser\Node\Stmt\PropertyProperty;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
@@ -207,10 +208,7 @@ CODE_SAMPLE
             /** @var string $name */
             $name = $this->getName($param->var);
 
-            $property = $this->nodeFactory->createProperty($name);
-            $property->flags = $param->flags;
-            $property->type = $param->type;
-
+            $property = new Property($param->flags, [new PropertyProperty($name)], [], $param->type);
             $this->decoratePropertyWithParamDocInfo($param, $property);
 
             $hasNew = $param->default === null
