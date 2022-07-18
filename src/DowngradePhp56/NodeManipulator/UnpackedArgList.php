@@ -35,7 +35,7 @@ final class UnpackedArgList
         return $this->args;
     }
 
-    public function addArg(Arg $arg): void
+    private function addArg(Arg $arg): void
     {
         $this->args[$this->pointer] ??= new Arg(new Array_());
 

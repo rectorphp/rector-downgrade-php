@@ -129,9 +129,9 @@ CODE_SAMPLE
             return null;
         }
 
-        $inversedTernaryCond = $this->binaryOpManipulator->inverseNode($ternary->cond);
+        $inversedTernaryExpr = $this->binaryOpManipulator->inverseNode($ternary->cond);
 
-        $if = $this->ifManipulator->createIfStmt($inversedTernaryCond, new Expression($ternary->else));
+        $if = $this->ifManipulator->createIfStmt($inversedTernaryExpr, new Expression($ternary->else));
         if (! $assign instanceof Assign) {
             return $if;
         }

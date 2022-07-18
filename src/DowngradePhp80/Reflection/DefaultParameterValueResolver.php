@@ -20,16 +20,16 @@ final class DefaultParameterValueResolver
 {
     public function resolveFromParameterReflection(ParameterReflection $parameterReflection): Expr | null
     {
-        $defaultValue = $parameterReflection->getDefaultValue();
-        if (! $defaultValue instanceof Type) {
+        $defaultValueType = $parameterReflection->getDefaultValue();
+        if (! $defaultValueType instanceof Type) {
             return null;
         }
 
-        if (! $defaultValue instanceof ConstantType) {
+        if (! $defaultValueType instanceof ConstantType) {
             throw new ShouldNotHappenException();
         }
 
-        return $this->resolveValueFromType($defaultValue);
+        return $this->resolveValueFromType($defaultValueType);
     }
 
     private function resolveValueFromType(ConstantType $constantType): ConstFetch | Expr

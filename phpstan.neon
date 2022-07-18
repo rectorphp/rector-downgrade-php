@@ -76,3 +76,5 @@ parameters:
         -
             message: '#New objects with "\$expr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             path: src/DowngradePhp55/Rector/Isset_/DowngradeArbitraryExpressionArgsToEmptyAndIssetRector.php
+
+        - '#Parameter \#2 \$mutatingScope of method Rector\\Naming\\Naming\\VariableNaming\:\:resolveFromNodeWithScopeCountAndFallbackName\(\) expects PHPStan\\Analyser\\MutatingScope, PHPStan\\Analyser\\Scope given#'

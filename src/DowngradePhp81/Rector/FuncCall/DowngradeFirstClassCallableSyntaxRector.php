@@ -61,9 +61,9 @@ CODE_SAMPLE
             return null;
         }
 
-        $callback = $this->createCallback($node);
+        $callbackExpr = $this->createCallback($node);
 
-        return $this->createClosureFromCallableCall($callback);
+        return $this->createClosureFromCallableCall($callbackExpr);
     }
 
     private function shouldSkip(FuncCall|MethodCall|StaticCall $node): bool
@@ -75,7 +75,7 @@ CODE_SAMPLE
         return ! $node->args[0] instanceof VariadicPlaceholder;
     }
 
-    private function createCallback(FuncCall|MethodCall|StaticCall $node): Expr
+    private function createCallback(FuncCall|MethodCall|StaticCall $node): String_|Array_|Expr
     {
         if ($node instanceof FuncCall) {
             return $node->name instanceof Name ? new String_($node->name->toString()) : $node->name;
@@ -95,7 +95,7 @@ CODE_SAMPLE
         return $this->nodeFactory->createArray([$class, $method]);
     }
 
-    private function createClosureFromCallableCall(Expr $expr): StaticCall
+    private function createClosureFromCallableCall(String_|Array_|Expr $expr): StaticCall
     {
         return new StaticCall(new FullyQualified('Closure'), 'fromCallable', [new Arg($expr)]);
     }
