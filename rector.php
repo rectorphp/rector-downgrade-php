@@ -8,8 +8,6 @@ use Rector\CodingStyle\Rector\MethodCall\PreferThisOrSelfMethodCallRector;
 use Rector\CodingStyle\ValueObject\ReturnArrayClassMethodToYield;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
-use Rector\Php81\Rector\Class_\MyCLabsClassToEnumRector;
-use Rector\Php81\Rector\Class_\SpatieEnumClassToEnumRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -42,6 +40,7 @@ return static function (RectorConfig $rectorConfig): void {
     // $rectorConfig->rule(RemoveJustPropertyFetchRector::class);
 
     $rectorConfig->paths([
+        __DIR__ . '/src',
         __DIR__ . '/rules',
         __DIR__ . '/tests',
         __DIR__ . '/config',
@@ -53,19 +52,10 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         StringClassNameToClassConstantRector::class,
 
-        MyCLabsClassToEnumRector::class,
-        SpatieEnumClassToEnumRector::class,
-
         // test paths
-        '*/tests/**/Fixture/*',
-        '*/tests/**/Fixture*/*',
-        '*/rules-tests/**/Fixture*/*',
-
-        // source
-        '*/tests/**/Source/*',
-        '*/tests/**/Source*/*',
-        '*/tests/**/Expected/*',
-        '*/tests/**/Expected*/*',
+        '**/Fixture/*',
+        '**/Source/*',
+        '**/Expected/*',
     ]);
 
     $rectorConfig->import(__DIR__ . '/config/config.php');
