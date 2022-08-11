@@ -118,6 +118,11 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
+        if ($this->isNullableSupportedAndPossible($type)) {
+            $param->type = $this->staticTypeMapper->mapPHPStanTypeToPhpParserNode($type, TypeKind::PARAM);
+            return;
+        }
+
         $this->moveParamTypeToParamDoc($functionLike, $param, $type);
     }
 
