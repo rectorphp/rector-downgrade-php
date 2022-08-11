@@ -46,7 +46,7 @@ return static function (RectorConfig $rectorConfig): void {
     // $rectorConfig->rule(RemoveJustPropertyFetchRector::class);
 
     $rectorConfig->paths([
-        __DIR__ . '/src',
+        __DIR__ . '/rules',
         __DIR__ . '/tests',
         __DIR__ . '/config',
     ]);
