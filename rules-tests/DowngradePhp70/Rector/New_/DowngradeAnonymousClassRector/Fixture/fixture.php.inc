@@ -24,10 +24,10 @@ class Fixture
 {
     public function run()
     {
-        return new Anonymous__%s();
+        return new Anonymous__%s__0();
     }
 }
-class Anonymous__%s
+class Anonymous__%s__0
 {
     public function execute()
     {
