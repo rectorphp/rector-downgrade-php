@@ -248,6 +248,10 @@ final class PhpDocFromTypeDeclarationDecorator
             return false;
         }
 
+        if (count($type->getTypes()) !== 2) {
+            return false;
+        }
+
         return TypeCombinator::containsNull($type);
     }
 }
