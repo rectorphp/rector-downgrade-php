@@ -133,7 +133,7 @@ CODE_SAMPLE
 
         $paramType = $this->getType($param);
 
-        $variableCast = $this->recastVariabletIfScalarType($variable, $paramType);
+        $variableCast = $this->recastVariableIfScalarType($variable, $paramType);
         if (! $variableCast instanceof Cast) {
             return null;
         }
@@ -142,7 +142,7 @@ CODE_SAMPLE
         return new Expression($assign);
     }
 
-    private function recastVariabletIfScalarType(Variable $variable, Type $type): ?Cast
+    private function recastVariableIfScalarType(Variable $variable, Type $type): ?Cast
     {
         if ($type instanceof StringType) {
             return new String_($variable);

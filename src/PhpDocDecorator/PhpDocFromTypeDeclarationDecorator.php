@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rector\PhpDocDecorator;
@@ -15,7 +16,6 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Interface_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
-use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
@@ -23,15 +23,12 @@ use PHPStan\Type\UnionType;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
+use Rector\Core\Reflection\ReflectionResolver;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\Php80\NodeAnalyzer\PhpAttributeAnalyzer;
-//use Rector\Php81\Enum\AttributeName;
-//use Rector\Php81\ValueObject\ClassMethodReturnType;
-//use Rector\Php81\ValueObject\KnownReturnTypeWillChangeTypes;
 use Rector\PhpAttribute\NodeFactory\PhpAttributeGroupFactory;
 use Rector\StaticTypeMapper\StaticTypeMapper;
 use Rector\ValueObject\ClassMethodWillChangeReturnType;
-use ReturnTypeWillChange;
 
 /**
  * @see https://wiki.php.net/rfc/internal_method_return_types#proposal
@@ -41,7 +38,7 @@ final class PhpDocFromTypeDeclarationDecorator
     /**
      * @var ClassMethodWillChangeReturnType[]
      */
-    private array $classMethodWillChangeReturnTypes;
+    private array $classMethodWillChangeReturnTypes = [];
 
     public function __construct(
         private readonly StaticTypeMapper $staticTypeMapper,
@@ -50,11 +47,13 @@ final class PhpDocFromTypeDeclarationDecorator
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
         private readonly BetterNodeFinder $betterNodeFinder,
         private readonly PhpAttributeGroupFactory $phpAttributeGroupFactory,
+        private readonly ReflectionResolver $reflectionResolver,
         private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer
     ) {
-
         $this->classMethodWillChangeReturnTypes = [
-            new ClassMethodWillChangeReturnType('ArrayAccess', 'offsetGet', new MixedType()),
+            // @todo how to make list complete? is the method list needed or can we use just class names?
+            new ClassMethodWillChangeReturnType('ArrayAccess', 'offsetGet'),
+            new ClassMethodWillChangeReturnType('ArrayAccess', 'getIterator'),
         ];
     }
 
@@ -84,12 +83,11 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
-        if (! $this->isRequireReturnTypeWillChange($type, $classLike, $functionLike)) {
+        if (! $this->isRequireReturnTypeWillChange($classLike, $functionLike)) {
             return;
         }
 
-        $attributeGroup = $this->phpAttributeGroupFactory->createFromClass('ReturnTypeWillChange');
-        $functionLike->attrGroups[] = $attributeGroup;
+        $functionLike->attrGroups[] = $this->phpAttributeGroupFactory->createFromClass('ReturnTypeWillChange');
     }
 
     /**
@@ -148,30 +146,29 @@ final class PhpDocFromTypeDeclarationDecorator
         return true;
     }
 
-    private function isRequireReturnTypeWillChange(\PHPStan\Type\Type $returnType, ClassLike $classLike, ClassMethod $classMethod): bool
+    private function isRequireReturnTypeWillChange(ClassLike $classLike, ClassMethod $classMethod): bool
     {
         $className = $this->nodeNameResolver->getName($classLike);
         if (! is_string($className)) {
             return false;
         }
 
+        $methodName = $classMethod->name->toString();
+        $classReflection = $this->reflectionResolver->resolveClassAndAnonymousClass($classLike);
+        if ($classReflection->isAnonymous()) {
+            return false;
+        }
+
+        // support for will return change type in case of removed return doc type
+        // @see https://php.watch/versions/8.1/ReturnTypeWillChange
         foreach ($this->classMethodWillChangeReturnTypes as $classMethodWillChangeReturnType) {
-            if ($classMethodWillChangeReturnType->getReturnType() !== $returnType) {
+            if ($classMethodWillChangeReturnType->getMethodName() !== $methodName) {
                 continue;
             }
 
-            $className = (string) $this->nodeNameResolver->getName($classLike);
-            $objectClass = new ObjectType($className);
-            $methodName = $this->nodeNameResolver->getName($classMethod);
-
-//            $objectClassConfig = new ObjectType($returnType);
-//            if (! $objectClassConfig->isSuperTypeOf($objectClass)->yes()) {
-//                continue;
-//            }
-
-//            if (! in_array($methodName, $methods, true)) {
-//                continue;
-//            }
+            if (! $classReflection->isSubclassOf($classMethodWillChangeReturnType->getClassName())) {
+                continue;
+            }
 
             if ($this->phpAttributeAnalyzer->hasPhpAttribute($classMethod, 'ReturnTypeWillChange')) {
                 continue;
