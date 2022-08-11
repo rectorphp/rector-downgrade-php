@@ -47,8 +47,20 @@ final class ArrayMergeFromArraySpreadFactory
     ) {
     }
 
-    public function createFromArray(Array_ $array, Scope $scope, File $file, ?bool $shouldIncrement = null): ?Node
+    public function createFromArray(
+        Array_ $array,
+        MutatingScope $scope,
+        File $file,
+        ?bool $shouldIncrement = null
+<<<<<<< HEAD
+<<<<<<< HEAD
+    ): ?Node
+>>>>>>> 31f1317... fixup! static fixes
     {
+=======
+=======
+>>>>>>> 55b5db6... fixup! static fixes
+    ): ?Node {
         if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($array)) {
             return null;
         }

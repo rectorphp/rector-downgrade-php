@@ -8,6 +8,7 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Type\NullType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
@@ -36,14 +37,11 @@ final class NativeParamToPhpDocDecorator
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
 
         $paramName = $this->nodeNameResolver->getName($param);
+
         $mappedCurrentParamType = $this->staticTypeMapper->mapPhpParserNodePHPStanType($param->type);
+        $correctedNullableParamType = $this->correctNullableType($param, $mappedCurrentParamType);
 
-        // add default null type
-        if ($this->isParamNullable($param) && ! TypeCombinator::containsNull($mappedCurrentParamType)) {
-            $mappedCurrentParamType = new UnionType([$mappedCurrentParamType, new NullType()]);
-        }
-
-        $this->phpDocTypeChanger->changeParamType($phpDocInfo, $mappedCurrentParamType, $param, $paramName);
+        $this->phpDocTypeChanger->changeParamType($phpDocInfo, $correctedNullableParamType, $param, $paramName);
     }
 
     private function isParamNullable(Param $param): bool
@@ -53,5 +51,19 @@ final class NativeParamToPhpDocDecorator
         }
 
         return $this->valueResolver->isNull($param->default);
+    }
+
+    private function correctNullableType(Param $param, Type $paramType): UnionType|Type
+    {
+        if (! $this->isParamNullable($param)) {
+            return $paramType;
+        }
+
+        if (TypeCombinator::containsNull($paramType)) {
+            return $paramType;
+        }
+
+        // add default null type
+        return new UnionType([$paramType, new NullType()]);
     }
 }

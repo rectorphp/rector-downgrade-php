@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 /**
  * @changelog https://wiki.php.net/rfc/empty_isset_exprs
  *
- * @see Rector\Tests\DowngradePhp55\Rector\Isset_\DowngradeArbitraryExpressionArgsToEmptyAndIssetRector\DowngradeArbitraryExpressionArgsToEmptyAndIssetRectorTest
+ * @see \Rector\Tests\DowngradePhp55\Rector\Isset_\DowngradeArbitraryExpressionArgsToEmptyAndIssetRector\DowngradeArbitraryExpressionArgsToEmptyAndIssetRectorTest
  */
 final class DowngradeArbitraryExpressionArgsToEmptyAndIssetRector extends AbstractRector
 {

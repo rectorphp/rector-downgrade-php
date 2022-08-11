@@ -87,8 +87,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $this->removeNamedArguments($node, $args);
-        return $node;
+        return $this->removeNamedArguments($node, $args);
     }
 
     /**

@@ -12,8 +12,9 @@ parameters:
         maximumNumberOfProcesses: 15
 
     paths:
-        - src
+        - rules
         - tests
+        - rules-tests
 
     reportUnmatchedIgnoredErrors: false
     checkGenericClassInNonGenericObjectType: false
@@ -78,3 +79,40 @@ parameters:
             path: src/DowngradePhp55/Rector/Isset_/DowngradeArbitraryExpressionArgsToEmptyAndIssetRector.php
 
         - '#Parameter \#2 \$mutatingScope of method Rector\\Naming\\Naming\\VariableNaming\:\:resolveFromNodeWithScopeCountAndFallbackName\(\) expects PHPStan\\Analyser\\MutatingScope, PHPStan\\Analyser\\Scope given#'
+
+        # rules-tests
+        -
+            message: '#"Tests" namespace cannot be used outside of "tests" directory#'
+            path: rules-tests
+
+
+        # known types
+        -
+            message: '#Add explicit array type to assigned "\$unnamedArgs" expression#'
+            paths:
+                - rules/DowngradePhp80/NodeAnalyzer/NamedToUnnamedArgs.php
+                - rules/DowngradePhp80/NodeAnalyzer/UnnamedArgumentResolver.php
+
+        -
+            message: '#New objects with "\$functionLikeReflection" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+            path: rules/DowngradePhp80/NodeAnalyzer/UnnamedArgumentResolver.php
+
+        # nullable correction type
+        -
+            message: '#New objects with "\$parentReturnTypeNode" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+            path: rules/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php
+
+        # chain joined epxr
+        -
+            message: '#New objects with "\$expr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+            path: rules/DowngradePhp55/Rector/Isset_/DowngradeArbitraryExpressionArgsToEmptyAndIssetRector.php
+
+        # cleaning expr
+        -
+            message: '#New objects with "\$bitwiseOr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+            path: rules/DowngradePhp72/NodeManipulator/BitwiseFlagCleaner.php
+
+        # not used on purpose, as child nodes continue to deal with params
+        -
+            message: '#Method call return value that should be used, but is not#'
+            path: rules/DowngradePhp80/Rector/ClassMethod/DowngradeTrailingCommasInParamUseRector.php
