@@ -20,10 +20,10 @@ final class FunctionExistsFunCallAnalyzer
     ) {
     }
 
-    public function detect(Expr $expr, string $functionName): bool
+    public function detect(FuncCall $funcCall, string $functionName): bool
     {
         /** @var If_|null $firstParentIf */
-        $firstParentIf = $this->betterNodeFinder->findParentType($expr, If_::class);
+        $firstParentIf = $this->betterNodeFinder->findParentType($funcCall, If_::class);
         if (! $firstParentIf instanceof  If_) {
             return false;
         }

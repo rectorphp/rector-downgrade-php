@@ -79,8 +79,8 @@ CODE_SAMPLE
         /** @var mixed $arg */
         $arg = $node->args[0]->value;
         $funcCall = $this->nodeFactory->createFuncCall('is_array', [$arg]);
-        $instanceOf = new Instanceof_($arg, new FullyQualified('Traversable'));
+        $instanceof = new Instanceof_($arg, new FullyQualified('Traversable'));
 
-        return new BooleanOr($funcCall, $instanceOf);
+        return new BooleanOr($funcCall, $instanceof);
     }
 }

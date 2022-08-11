@@ -179,50 +179,32 @@ CODE_SAMPLE
         return $this->processReplace($funcCall, $replaceEmptyStringToNull);
     }
 
-    private function processReplace(FuncCall $funcCall, FuncCall $replaceEmptystringToNull): FuncCall
+    private function processReplace(FuncCall $funcCall, FuncCall $replaceEmptyStringToNull): FuncCall
     {
-        $parent = $funcCall->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parent instanceof Expression) {
-            $this->nodesToAddCollector->addNodeAfterNode($replaceEmptystringToNull, $funcCall);
+        $parentNode = $funcCall->getAttribute(AttributeKey::PARENT_NODE);
+        if ($parentNode instanceof Expression) {
+            $this->nodesToAddCollector->addNodeAfterNode($replaceEmptyStringToNull, $funcCall);
             return $funcCall;
         }
 
-        if ($parent instanceof If_ && $parent->cond === $funcCall) {
-            return $this->processInIf($parent, $funcCall, $replaceEmptystringToNull);
+        if ($parentNode instanceof If_ && $parentNode->cond === $funcCall) {
+            return $this->processInIf($parentNode, $funcCall, $replaceEmptyStringToNull);
         }
 
-        if (! $parent instanceof Node) {
+        if (! $parentNode instanceof Node) {
             throw new NotImplementedException();
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        $if = $parent->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parent instanceof BooleanNot) {
-            return $this->processInIf($if, $funcCall, $replaceEmptystringToNull);
-=======
-        $parentParentNode = $parentNode->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parentNode instanceof BooleanNot) {
-            return $this->processInIf($parentParentNode, $funcCall, $replaceEmptystringToNull);
->>>>>>> ddae196... fixup! static fixes
-=======
         $parentParentNode = $parentNode->getAttribute(AttributeKey::PARENT_NODE);
         if ($parentNode instanceof BooleanNot && $parentParentNode instanceof If_) {
             return $this->processInIf($parentParentNode, $funcCall, $replaceEmptyStringToNull);
->>>>>>> a8688a7... fixup! static fixes
-=======
-        $parentParentNode = $parentNode->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parentNode instanceof BooleanNot && $parentParentNode instanceof If_) {
-            return $this->processInIf($parentParentNode, $funcCall, $replaceEmptyStringToNull);
->>>>>>> 55b5db6... fixup! static fixes
         }
 
-        if ($parent instanceof Assign && $parent->expr === $funcCall) {
-            return $this->processInAssign($parent, $funcCall, $replaceEmptystringToNull);
+        if ($parentNode instanceof Assign && $parentNode->expr === $funcCall) {
+            return $this->processInAssign($parentNode, $funcCall, $replaceEmptyStringToNull);
         }
 
-        if (! $parent instanceof Identical) {
+        if (! $parentNode instanceof Identical) {
             throw new NotImplementedYetException();
         }
 
@@ -230,7 +212,7 @@ CODE_SAMPLE
             throw new NotImplementedYetException();
         }
 
-        return $this->processInIf($parentParentNode, $funcCall, $replaceEmptystringToNull);
+        return $this->processInIf($parentParentNode, $funcCall, $replaceEmptyStringToNull);
     }
 
     private function processInAssign(Assign $assign, FuncCall $funcCall, FuncCall $replaceEmptyStringToNull): FuncCall

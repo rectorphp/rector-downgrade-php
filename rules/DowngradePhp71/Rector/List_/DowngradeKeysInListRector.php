@@ -86,22 +86,22 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        $parent = $node->getAttribute(AttributeKey::PARENT_NODE);
-        if (! $parent instanceof Node) {
+        $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
+        if (! $parentNode instanceof Node) {
             return null;
         }
 
-        $parentExpression = $parent->getAttribute(AttributeKey::PARENT_NODE);
+        $parentExpression = $parentNode->getAttribute(AttributeKey::PARENT_NODE);
         if (! $parentExpression instanceof Node) {
             return null;
         }
 
-        $assignExpressions = $this->processExtractToItsOwnVariable($node, $parent, $parentExpression);
+        $assignExpressions = $this->processExtractToItsOwnVariable($node, $parentNode, $parentExpression);
         if ($assignExpressions === []) {
             return null;
         }
 
-        if ($parent instanceof Assign) {
+        if ($parentNode instanceof Assign) {
             $this->mirrorComments($assignExpressions[0], $parentExpression);
             $this->nodesToAddCollector->addNodesBeforeNode($assignExpressions, $node);
             $this->removeNode($parentExpression);
@@ -109,20 +109,20 @@ CODE_SAMPLE
             return $node;
         }
 
-        if ($parent instanceof Foreach_) {
-            $defaultValueVar = $this->inflectorSingularResolver->resolve((string) $this->getName($parent->expr));
-            $scope = $parent->getAttribute(AttributeKey::SCOPE);
+        if ($parentNode instanceof Foreach_) {
+            $defaultValueVar = $this->inflectorSingularResolver->resolve((string) $this->getName($parentNode->expr));
+            $scope = $parentNode->getAttribute(AttributeKey::SCOPE);
             $newValueVar = $this->variableNaming->createCountedValueName($defaultValueVar, $scope);
-            $parent->valueVar = new Variable($newValueVar);
-            $stmts = $parent->stmts;
+            $parentNode->valueVar = new Variable($newValueVar);
+            $stmts = $parentNode->stmts;
 
             if ($stmts === []) {
-                $parent->stmts = $assignExpressions;
+                $parentNode->stmts = $assignExpressions;
             } else {
-                $this->nodesToAddCollector->addNodesBeforeNode($assignExpressions, $parent->stmts[0]);
+                $this->nodesToAddCollector->addNodesBeforeNode($assignExpressions, $parentNode->stmts[0]);
             }
 
-            return $parent->valueVar;
+            return $parentNode->valueVar;
         }
 
         return null;

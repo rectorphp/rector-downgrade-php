@@ -6,6 +6,7 @@ namespace Rector\DowngradePhp74\Rector\Array_;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
+use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
@@ -94,6 +95,7 @@ CODE_SAMPLE
             return $this->arraySpreadAnalyzer->isArrayWithUnpack($subNode);
         });
 
+        /** @var MutatingScope $scope */
         return $this->arrayMergeFromArraySpreadFactory->createFromArray($node, $scope, $this->file, $shouldIncrement);
     }
 }

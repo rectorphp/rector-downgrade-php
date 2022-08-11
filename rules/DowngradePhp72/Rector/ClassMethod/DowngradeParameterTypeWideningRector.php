@@ -78,7 +78,7 @@ final class SomeClass implements SomeInterface
     }
 }
 CODE_SAMPLE
-            ,
+                ,
                 [
                     'ContainerInterface' => ['set', 'get', 'has', 'initialized'],
                     'SomeContainerInterface' => ['set', 'has'],

@@ -39,7 +39,7 @@ class SomeClass
     }
 }
 CODE_SAMPLE
-            ,
+                ,
                 <<<'CODE_SAMPLE'
 class SomeClass
 {

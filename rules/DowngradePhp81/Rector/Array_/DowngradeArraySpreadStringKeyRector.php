@@ -7,6 +7,7 @@ namespace Rector\DowngradePhp81\Rector\Array_;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
+use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
@@ -70,6 +71,7 @@ CODE_SAMPLE
             return null;
         }
 
+        /** @var MutatingScope $scope */
         return $this->arrayMergeFromArraySpreadFactory->createFromArray($node, $scope, $this->file);
     }
 

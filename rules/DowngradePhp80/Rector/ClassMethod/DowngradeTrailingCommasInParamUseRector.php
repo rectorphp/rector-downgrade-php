@@ -124,13 +124,13 @@ CODE_SAMPLE
         return $this->cleanTrailingComma($node, $args);
     }
 
-    private function processUses(Closure $node): void
+    private function processUses(Closure $node): ?Node
     {
         if ($node->uses === []) {
-            return;
+            return null;
         }
 
-        $this->cleanTrailingComma($node, $node->uses);
+        return $this->cleanTrailingComma($node, $node->uses);
     }
 
     private function processParams(ClassMethod|Function_|Closure $node): ?Node

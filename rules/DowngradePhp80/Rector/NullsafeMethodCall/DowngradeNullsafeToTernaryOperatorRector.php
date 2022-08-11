@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\NullsafePropertyFetch;
 use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
+use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\Naming\Naming\VariableNaming;
@@ -36,7 +37,7 @@ final class DowngradeNullsafeToTernaryOperatorRector extends AbstractScopeAwareR
 $dateAsString = $booking->getStartDate()?->asDateTimeString();
 $dateAsString = $booking->startDate?->dateTimeString;
 CODE_SAMPLE
-,
+                ,
                 <<<'CODE_SAMPLE'
 $dateAsString = ($bookingGetStartDate = $booking->getStartDate()) ? $bookingGetStartDate->asDateTimeString() : null;
 $dateAsString = ($bookingGetStartDate = $booking->startDate) ? $bookingGetStartDate->dateTimeString : null;
@@ -58,9 +59,11 @@ CODE_SAMPLE
      */
     public function refactorWithScope(Node $node, Scope $scope): Ternary
     {
+        /** @var MutatingScope $scope */
         $tempVarName = $this->variableNaming->resolveFromNodeWithScopeCountAndFallbackName($node->var, $scope, '_');
 
         $variable = new Variable($tempVarName);
+
         $called = $node instanceof NullsafeMethodCall
             ? new MethodCall($variable, $node->name, $node->args)
             : new PropertyFetch($variable, $node->name);

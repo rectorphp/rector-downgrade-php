@@ -12,6 +12,7 @@ parameters:
         maximumNumberOfProcesses: 15
 
     paths:
+        - src
         - rules
         - tests
         - rules-tests
@@ -27,10 +28,6 @@ parameters:
         - '*tests/Source/*'
 
     ignoreErrors:
-        -
-            message: '#Do not use static property#'
-            path: tests/bootstrap.php
-
         - '#Parameter (.*?)refactor\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method Rector\\Core\\Contract\\Rector\\PhpRectorInterface\:\:refactor\(\)#'
         - '#Parameter \#1 \$node (.*?) of method (.*?)\:\:refactorWithScope\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method Rector\\Core\\Contract\\Rector\\ScopeAwarePhpRectorInterface\:\:refactorWithScope\(\)#'
 
@@ -43,15 +40,6 @@ parameters:
         # part of implicit contract
         - '#Call to an undefined method PHPStan\\Type\\ConstantType\:\:getValue\(\)#'
 
-        # more specific type override
-        -
-            message: '#New objects with "\$(.*?)" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
-            paths:
-                - src/DowngradePhp72/PhpDoc/NativeParamToPhpDocDecorator.php
-                - src/DowngradePhp80/NodeAnalyzer/UnnamedArgumentResolver.php
-                - src/DowngradePhp72/NodeManipulator/BitwiseFlagCleaner.php
-                - src/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php
-
         # part of tests
         - '#Class Rector\\Tests\\DowngradePhp72\\Rector\\ClassMethod\\DowngradeParameterTypeWideningRector\\Fixture\\SomeContainerInterface not found#'
 
@@ -59,13 +47,6 @@ parameters:
 
         # allowed in PHPUnit
         - '#Dynamic call to static method PHPUnit\\Framework\\Assert\:\:markTestSkipped\(\)#'
-
-        # no idea how to improve
-        -
-            message: '#Add explicit array type to assigned "\$unnamedArgs" expression#'
-            paths:
-                - src/DowngradePhp80/NodeAnalyzer/UnnamedArgumentResolver.php
-                - src/DowngradePhp80/NodeAnalyzer/NamedToUnnamedArgs.php
 
         # bool as status return
         - '#Method "refactorParamType\(\)" returns bool type, so the name should start with is/has/was#'
@@ -77,8 +58,6 @@ parameters:
         -
             message: '#New objects with "\$expr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             path: src/DowngradePhp55/Rector/Isset_/DowngradeArbitraryExpressionArgsToEmptyAndIssetRector.php
-
-        - '#Parameter \#2 \$mutatingScope of method Rector\\Naming\\Naming\\VariableNaming\:\:resolveFromNodeWithScopeCountAndFallbackName\(\) expects PHPStan\\Analyser\\MutatingScope, PHPStan\\Analyser\\Scope given#'
 
         # rules-tests
         -
@@ -116,3 +95,8 @@ parameters:
         -
             message: '#Method call return value that should be used, but is not#'
             path: rules/DowngradePhp80/Rector/ClassMethod/DowngradeTrailingCommasInParamUseRector.php
+
+        # value is always used
+        -
+            message: '#Method call return value that should be used, but is not#'
+            path: rules/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php

@@ -134,9 +134,9 @@ CODE_SAMPLE
             $closureParentFunctionLike
         ): bool {
             // multiple deep Closure may access $this, unless its parent is not Closure
-            $parent = $this->betterNodeFinder->findParentByTypes($subNode, [ClassMethod::class, Function_::class]);
+            $parentNode = $this->betterNodeFinder->findParentByTypes($subNode, [ClassMethod::class, Function_::class]);
 
-            if ($parent instanceof FunctionLike && $parent !== $closureParentFunctionLike) {
+            if ($parentNode instanceof FunctionLike && $parentNode !== $closureParentFunctionLike) {
                 return false;
             }
 

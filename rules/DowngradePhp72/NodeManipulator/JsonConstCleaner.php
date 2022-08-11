@@ -74,8 +74,8 @@ final class JsonConstCleaner
             return null;
         }
 
-        $parent = $constFetch->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parent instanceof BitwiseOr) {
+        $parentNode = $constFetch->getAttribute(AttributeKey::PARENT_NODE);
+        if ($parentNode instanceof BitwiseOr) {
             return null;
         }
 

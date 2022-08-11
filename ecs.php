@@ -13,6 +13,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->sets([SetList::PSR_12, SetList::SYMPLIFY, SetList::COMMON, SetList::CLEAN_CODE]);
 
     $ecsConfig->paths([
+        __DIR__ . '/src',
         __DIR__ . '/rules',
         __DIR__ . '/tests',
         __DIR__ . '/rules-tests',

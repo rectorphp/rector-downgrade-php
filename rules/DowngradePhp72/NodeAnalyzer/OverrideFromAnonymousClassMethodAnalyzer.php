@@ -8,6 +8,7 @@ use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
+use PHPStan\Reflection\ClassMemberAccessAnswerer;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
@@ -68,6 +69,7 @@ final class OverrideFromAnonymousClassMethodAnalyzer
             return null;
         }
 
+        /** @var ClassMemberAccessAnswerer $scope */
         $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
 
         $extendedMethodReflection = $classReflection->getMethod($methodName, $scope);

@@ -82,12 +82,12 @@ CODE_SAMPLE
 
         $ternary = new Ternary($this->nodeFactory->createFuncCall('method_exists', $args), $node, new Array_([]));
 
-        $parent = $node->getAttribute(AttributeKey::PARENT_NODE);
-        if (! $parent instanceof Ternary) {
+        $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
+        if (! $parentNode instanceof Ternary) {
             return $ternary;
         }
 
-        if (! $this->nodeComparator->areNodesEqual($parent, $ternary)) {
+        if (! $this->nodeComparator->areNodesEqual($parentNode, $ternary)) {
             return $ternary;
         }
 

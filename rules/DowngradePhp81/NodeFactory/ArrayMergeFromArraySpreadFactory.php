@@ -13,6 +13,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
+use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IterableType;
@@ -52,14 +53,6 @@ final class ArrayMergeFromArraySpreadFactory
         MutatingScope $scope,
         File $file,
         ?bool $shouldIncrement = null
-<<<<<<< HEAD
-<<<<<<< HEAD
-    ): ?Node
->>>>>>> 31f1317... fixup! static fixes
-    {
-=======
-=======
->>>>>>> 55b5db6... fixup! static fixes
     ): ?Node {
         if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($array)) {
             return null;
@@ -93,7 +86,7 @@ final class ArrayMergeFromArraySpreadFactory
      *    to be added once the next spread is found, or at the end
      * @return ArrayItem[]
      */
-    private function disolveArrayItems(Array_ $array, Scope $scope, File $file): array
+    private function disolveArrayItems(Array_ $array, MutatingScope $scope, File $file): array
     {
         $newItems = [];
 
@@ -133,7 +126,7 @@ final class ArrayMergeFromArraySpreadFactory
     /**
      * @param ArrayItem[] $arrayItems
      */
-    private function createArrayMergeFuncCall(array $arrayItems, Scope $scope): FuncCall
+    private function createArrayMergeFuncCall(array $arrayItems, MutatingScope $scope): FuncCall
     {
         $args = array_map(function (ArrayItem $arrayItem) use ($scope): Arg {
             if ($arrayItem->unpack) {
@@ -159,7 +152,7 @@ final class ArrayMergeFromArraySpreadFactory
         Array_ $array,
         ArrayItem $arrayItem,
         int $position,
-        Scope $scope,
+        MutatingScope $scope,
         File $file
     ): Variable {
         // The variable name will be item0Unpacked, item1Unpacked, etc,
@@ -198,7 +191,7 @@ final class ArrayMergeFromArraySpreadFactory
         return new ArrayItem($array);
     }
 
-    private function createArgFromSpreadArrayItem(Scope $nodeScope, ArrayItem $arrayItem): Arg
+    private function createArgFromSpreadArrayItem(MutatingScope $nodeScope, ArrayItem $arrayItem): Arg
     {
         // By now every item is a variable
         /** @var Variable $variable */

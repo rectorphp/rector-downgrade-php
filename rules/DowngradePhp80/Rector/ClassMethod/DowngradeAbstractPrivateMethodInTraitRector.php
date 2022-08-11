@@ -81,7 +81,7 @@ CODE_SAMPLE
             return true;
         }
 
-        $parent = $classMethod->getAttribute(AttributeKey::PARENT_NODE);
-        return ! $parent instanceof Trait_;
+        $parentNode = $classMethod->getAttribute(AttributeKey::PARENT_NODE);
+        return ! $parentNode instanceof Trait_;
     }
 }

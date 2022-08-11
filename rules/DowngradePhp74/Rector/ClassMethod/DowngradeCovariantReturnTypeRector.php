@@ -11,6 +11,7 @@ use PhpParser\Node\Name;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\UnionType;
+use PHPStan\Reflection\ClassMemberAccessAnswerer;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Type\MixedType;
@@ -202,6 +203,8 @@ CODE_SAMPLE
             }
 
             $classMethodScope = $classMethod->getAttribute(AttributeKey::SCOPE);
+
+            /** @var ClassMemberAccessAnswerer $classMethodScope */
             $parameterMethodReflection = $parentClassAndInterface->getMethod($methodName, $classMethodScope);
 
             if (! $parameterMethodReflection instanceof PhpMethodReflection) {

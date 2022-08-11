@@ -41,7 +41,7 @@ class SomeClass
     private string $property;
 }
 CODE_SAMPLE
-,
+                ,
                 <<<'CODE_SAMPLE'
 class SomeClass
 {

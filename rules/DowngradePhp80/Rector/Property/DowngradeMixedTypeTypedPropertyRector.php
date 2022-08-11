@@ -40,7 +40,7 @@ class SomeClass
     private mixed $property;
 }
 CODE_SAMPLE
-,
+                ,
                 <<<'CODE_SAMPLE'
 class SomeClass
 {

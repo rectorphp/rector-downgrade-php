@@ -13,6 +13,7 @@ use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Param;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Return_;
+use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
@@ -137,8 +138,11 @@ CODE_SAMPLE
     private function getParameterType(FunctionReflection $functionReflection, FuncCall $funcCall, int $position): ?Type
     {
         try {
+            /** @var Scope $funcCallScope */
+            $funcCallScope = $funcCall->getAttribute(AttributeKey::SCOPE);
+
             $parametersAcceptor = ParametersAcceptorSelector::selectFromArgs(
-                $funcCall->getAttribute(AttributeKey::SCOPE),
+                $funcCallScope,
                 $funcCall->getArgs(),
                 $functionReflection->getVariants()
             );
