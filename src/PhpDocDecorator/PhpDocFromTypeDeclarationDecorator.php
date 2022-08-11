@@ -57,7 +57,7 @@ final class PhpDocFromTypeDeclarationDecorator
         ];
     }
 
-    public function decorate(ClassMethod | Function_ | Closure | ArrowFunction $functionLike): void
+    public function decorateReturn(ClassMethod | Function_ | Closure | ArrowFunction $functionLike): void
     {
         if ($functionLike->returnType === null) {
             return;
@@ -142,7 +142,7 @@ final class PhpDocFromTypeDeclarationDecorator
             return false;
         }
 
-        $this->decorate($functionLike);
+        $this->decorateReturn($functionLike);
         return true;
     }
 
