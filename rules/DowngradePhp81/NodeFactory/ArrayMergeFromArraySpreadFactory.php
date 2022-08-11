@@ -50,7 +50,7 @@ final class ArrayMergeFromArraySpreadFactory
 
     public function createFromArray(
         Array_ $array,
-        MutatingScope $scope,
+        MutatingScope $mutatingScope,
         File $file,
         ?bool $shouldIncrement = null
     ): ?Node {
@@ -73,9 +73,9 @@ final class ArrayMergeFromArraySpreadFactory
             );
         }
 
-        $newArrayItems = $this->disolveArrayItems($array, $scope, $file);
+        $newArrayItems = $this->disolveArrayItems($array, $mutatingScope, $file);
 
-        return $this->createArrayMergeFuncCall($newArrayItems, $scope);
+        return $this->createArrayMergeFuncCall($newArrayItems, $mutatingScope);
     }
 
     /**
@@ -86,7 +86,7 @@ final class ArrayMergeFromArraySpreadFactory
      *    to be added once the next spread is found, or at the end
      * @return ArrayItem[]
      */
-    private function disolveArrayItems(Array_ $array, MutatingScope $scope, File $file): array
+    private function disolveArrayItems(Array_ $array, MutatingScope $mutatingScope, File $file): array
     {
         $newItems = [];
 
@@ -96,7 +96,13 @@ final class ArrayMergeFromArraySpreadFactory
                 // Spread operator found
                 if (! $item->value instanceof Variable) {
                     // If it is a not variable, transform it to a variable
-                    $item->value = $this->createVariableFromNonVariable($array, $item, $position, $scope, $file);
+                    $item->value = $this->createVariableFromNonVariable(
+                        $array,
+                        $item,
+                        $position,
+                        $mutatingScope,
+                        $file
+                    );
                 }
 
                 if ($accumulatedItems !== []) {
@@ -126,13 +132,13 @@ final class ArrayMergeFromArraySpreadFactory
     /**
      * @param ArrayItem[] $arrayItems
      */
-    private function createArrayMergeFuncCall(array $arrayItems, MutatingScope $scope): FuncCall
+    private function createArrayMergeFuncCall(array $arrayItems, MutatingScope $mutatingScope): FuncCall
     {
-        $args = array_map(function (ArrayItem $arrayItem) use ($scope): Arg {
+        $args = array_map(function (ArrayItem $arrayItem) use ($mutatingScope): Arg {
             if ($arrayItem->unpack) {
                 // Do not unpack anymore
                 $arrayItem->unpack = false;
-                return $this->createArgFromSpreadArrayItem($scope, $arrayItem);
+                return $this->createArgFromSpreadArrayItem($mutatingScope, $arrayItem);
             }
 
             return new Arg($arrayItem);
@@ -152,7 +158,7 @@ final class ArrayMergeFromArraySpreadFactory
         Array_ $array,
         ArrayItem $arrayItem,
         int $position,
-        MutatingScope $scope,
+        MutatingScope $mutatingScope,
         File $file
     ): Variable {
         // The variable name will be item0Unpacked, item1Unpacked, etc,
@@ -165,7 +171,7 @@ final class ArrayMergeFromArraySpreadFactory
 
         $variableName = $this->variableNaming->resolveFromNodeWithScopeCountAndFallbackName(
             $array,
-            $scope,
+            $mutatingScope,
             'item' . $position . 'Unpacked'
         );
 
@@ -191,7 +197,7 @@ final class ArrayMergeFromArraySpreadFactory
         return new ArrayItem($array);
     }
 
-    private function createArgFromSpreadArrayItem(MutatingScope $nodeScope, ArrayItem $arrayItem): Arg
+    private function createArgFromSpreadArrayItem(MutatingScope $mutatingScope, ArrayItem $arrayItem): Arg
     {
         // By now every item is a variable
         /** @var Variable $variable */
@@ -201,12 +207,12 @@ final class ArrayMergeFromArraySpreadFactory
 
         // If the variable is not in scope, it's one we just added.
         // Then get the type from the attribute
-        if ($nodeScope->hasVariableType($variableName)->yes()) {
-            $type = $nodeScope->getVariableType($variableName);
+        if ($mutatingScope->hasVariableType($variableName)->yes()) {
+            $type = $mutatingScope->getVariableType($variableName);
         } else {
             $originalNode = $arrayItem->getAttribute(AttributeKey::ORIGINAL_NODE);
             if ($originalNode instanceof ArrayItem) {
-                $type = $nodeScope->getType($originalNode->value);
+                $type = $mutatingScope->getType($originalNode->value);
             } else {
                 throw new ShouldNotHappenException();
             }
