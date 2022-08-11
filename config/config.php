@@ -12,10 +12,10 @@ return static function (RectorConfig $rectorConfig): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->load('Rector\\', __DIR__ . '/../src')
+    $services->load('Rector\\', __DIR__ . '/../rules')
         ->exclude([
-            __DIR__ . '/../src/Downgrade*/Rector',
-            __DIR__ . '/../src/*/ValueObject',
-            __DIR__ . '/../src/DowngradePhp80/Reflection/SimplePhpParameterReflection.php',
+            __DIR__ . '/../rules/Downgrade*/Rector',
+            __DIR__ . '/../rules/*/ValueObject',
+            __DIR__ . '/../rules/DowngradePhp80/Reflection/SimplePhpParameterReflection.php',
         ]);
 };

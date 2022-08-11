@@ -7,13 +7,10 @@ use Rector\CodingStyle\Rector\ClassMethod\ReturnArrayClassMethodToYieldRector;
 use Rector\CodingStyle\Rector\MethodCall\PreferThisOrSelfMethodCallRector;
 use Rector\CodingStyle\ValueObject\ReturnArrayClassMethodToYield;
 use Rector\Config\RectorConfig;
-use Rector\DeadCode\Rector\StmtsAwareInterface\RemoveJustPropertyFetchRector;
-use Rector\Nette\Set\NetteSetList;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php81\Rector\Class_\MyCLabsClassToEnumRector;
 use Rector\Php81\Rector\Class_\SpatieEnumClassToEnumRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
-use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 
@@ -27,7 +24,6 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::TYPE_DECLARATION,
         SetList::EARLY_RETURN,
         SetList::TYPE_DECLARATION_STRICT,
-        NetteSetList::NETTE_UTILS_CODE_QUALITY,
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
         SetList::CODING_STYLE,
     ]);
@@ -46,7 +42,7 @@ return static function (RectorConfig $rectorConfig): void {
     // $rectorConfig->rule(RemoveJustPropertyFetchRector::class);
 
     $rectorConfig->paths([
-        __DIR__ . '/src',
+        __DIR__ . '/rules',
         __DIR__ . '/tests',
         __DIR__ . '/config',
     ]);
