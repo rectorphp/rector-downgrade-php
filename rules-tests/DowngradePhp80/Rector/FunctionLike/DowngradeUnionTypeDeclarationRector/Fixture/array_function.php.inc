@@ -10,6 +10,6 @@ $fn = fn (stdClass|null $obj): stdClass|null => $obj;
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Fixture;
 
-$fn = fn ($obj) => $obj;
+$fn = fn ($obj): ?\Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Fixture\stdClass => $obj;
 
 ?>

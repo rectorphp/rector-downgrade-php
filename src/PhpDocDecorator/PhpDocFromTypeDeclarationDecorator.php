@@ -22,11 +22,14 @@ use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
+use Rector\Core\Php\PhpVersionProvider;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Reflection\ReflectionResolver;
+use Rector\Core\ValueObject\PhpVersionFeature;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\Php80\NodeAnalyzer\PhpAttributeAnalyzer;
 use Rector\PhpAttribute\NodeFactory\PhpAttributeGroupFactory;
+use Rector\PHPStanStaticTypeMapper\Enum\TypeKind;
 use Rector\StaticTypeMapper\StaticTypeMapper;
 use Rector\ValueObject\ClassMethodWillChangeReturnType;
 
@@ -48,7 +51,8 @@ final class PhpDocFromTypeDeclarationDecorator
         private readonly BetterNodeFinder $betterNodeFinder,
         private readonly PhpAttributeGroupFactory $phpAttributeGroupFactory,
         private readonly ReflectionResolver $reflectionResolver,
-        private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer
+        private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer,
+        private readonly PhpVersionProvider $phpVersionProvider
     ) {
         $this->classMethodWillChangeReturnTypes = [
             // @todo how to make list complete? is the method list needed or can we use just class names?
@@ -57,7 +61,7 @@ final class PhpDocFromTypeDeclarationDecorator
         ];
     }
 
-    public function decorate(ClassMethod | Function_ | Closure | ArrowFunction $functionLike): void
+    public function decorateReturn(ClassMethod|Function_|Closure|ArrowFunction $functionLike): void
     {
         if ($functionLike->returnType === null) {
             return;
@@ -66,14 +70,21 @@ final class PhpDocFromTypeDeclarationDecorator
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($functionLike);
 
         $returnTagValueNode = $phpDocInfo->getReturnTagValue();
-        $type = $returnTagValueNode instanceof ReturnTagValueNode
+        $returnType = $returnTagValueNode instanceof ReturnTagValueNode
             ? $this->staticTypeMapper->mapPHPStanPhpDocTypeToPHPStanType($returnTagValueNode, $functionLike->returnType)
             : $this->staticTypeMapper->mapPhpParserNodePHPStanType($functionLike->returnType);
 
-        $this->phpDocTypeChanger->changeReturnType($phpDocInfo, $type);
+        // if nullable is supported, downgrade to that one
+        if ($this->isNullableSupportedAndPossible($returnType)) {
+            $returnTypeNode = $this->staticTypeMapper->mapPHPStanTypeToPhpParserNode($returnType, TypeKind::RETURN);
+            $functionLike->returnType = $returnTypeNode;
+
+            return;
+        }
+
+        $this->phpDocTypeChanger->changeReturnType($phpDocInfo, $returnType);
 
         $functionLike->returnType = null;
-
         if (! $functionLike instanceof ClassMethod) {
             return;
         }
@@ -95,7 +106,7 @@ final class PhpDocFromTypeDeclarationDecorator
      */
     public function decorateParam(
         Param $param,
-        ClassMethod | Function_ | Closure | ArrowFunction $functionLike,
+        ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         array $requiredTypes
     ): void {
         if ($param->type === null) {
@@ -112,7 +123,7 @@ final class PhpDocFromTypeDeclarationDecorator
 
     public function decorateParamWithSpecificType(
         Param $param,
-        ClassMethod | Function_ | Closure | ArrowFunction $functionLike,
+        ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         Type $requireType
     ): void {
         if ($param->type === null) {
@@ -131,7 +142,7 @@ final class PhpDocFromTypeDeclarationDecorator
      * @return bool True if node was changed
      */
     public function decorateReturnWithSpecificType(
-        ClassMethod | Function_ | Closure | ArrowFunction $functionLike,
+        ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         Type $requireType
     ): bool {
         if ($functionLike->returnType === null) {
@@ -142,7 +153,7 @@ final class PhpDocFromTypeDeclarationDecorator
             return false;
         }
 
-        $this->decorate($functionLike);
+        $this->decorateReturn($functionLike);
         return true;
     }
 
@@ -197,7 +208,7 @@ final class PhpDocFromTypeDeclarationDecorator
     }
 
     private function moveParamTypeToParamDoc(
-        ClassMethod | Function_ | Closure | ArrowFunction $functionLike,
+        ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         Param $param,
         Type $type
     ): void {
@@ -214,5 +225,18 @@ final class PhpDocFromTypeDeclarationDecorator
     private function isMatchingType(Type $type, array $requiredTypes): bool
     {
         return in_array($type::class, $requiredTypes, true);
+    }
+
+    private function isNullableSupportedAndPossible(Type $type): bool
+    {
+        if (! $this->phpVersionProvider->isAtLeastPhpVersion(PhpVersionFeature::NULLABLE_TYPE)) {
+            return false;
+        }
+
+        if (! $type instanceof UnionType) {
+            return false;
+        }
+
+        return TypeCombinator::containsNull($type);
     }
 }
