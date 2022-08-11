@@ -2,7 +2,7 @@
     "name": "rector/rector-downgrade-php",
     "type": "rector-extension",
     "license": "MIT",
-    "description": "Rector downgrade PHP rules",
+    "description": "Rector downgrade PHP src",
     "require": {
         "php": ">=8.1"
     },
@@ -23,7 +23,12 @@
     },
     "autoload": {
         "psr-4": {
+<<<<<<< HEAD
             "Rector\\": ["src", "rules"]
+=======
+            "Rector\\": ["rules", "src"],
+            "Rector\\Set\\": "packages/Set"
+>>>>>>> move PhpDocFromTypeDeclarationDecorator from core here, as only used in downgrades; move rules to rules
         }
     },
     "autoload-dev": {

@@ -59,6 +59,7 @@ parameters:
             message: '#New objects with "\$expr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             path: src/DowngradePhp55/Rector/Isset_/DowngradeArbitraryExpressionArgsToEmptyAndIssetRector.php
 
+<<<<<<< HEAD
         # rules-tests
         -
             message: '#"Tests" namespace cannot be used outside of "tests" directory#'
@@ -100,3 +101,8 @@ parameters:
         -
             message: '#Method call return value that should be used, but is not#'
             path: rules/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php
+=======
+        - '#Parameter \#2 \$mutatingScope of method Rector\\Naming\\Naming\\VariableNaming\:\:resolveFromNodeWithScopeCountAndFallbackName\(\) expects PHPStan\\Analyser\\MutatingScope, PHPStan\\Analyser\\Scope given#'
+
+        - '#Method "decorateReturnWithSpecificType\(\)" returns bool type, so the name should start with is/has/was#'
+>>>>>>> move PhpDocFromTypeDeclarationDecorator from core here, as only used in downgrades; move rules to rules

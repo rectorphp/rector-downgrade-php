@@ -76,7 +76,7 @@ CODE_SAMPLE
     public function getNodeTypes(): array
     {
         return [
-            // TODO: Make PHPStan rules allow Expr namespace for its subclasses.
+            // TODO: Make PHPStan src allow Expr namespace for its subclasses.
             Expr::class,
         ];
     }
@@ -101,7 +101,7 @@ CODE_SAMPLE
 
         // Parenthesization is not part of the AST and Rector only re-generates code for AST nodes that changed.
         // Let’s remove the original node reference forcing the re-generation of the corresponding code.
-        // The code generator will only put parentheses where strictly necessary, which other rules should handle.
+        // The code generator will only put parentheses where strictly necessary, which other src should handle.
         $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
 
         return $node;

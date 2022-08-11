@@ -95,7 +95,7 @@ CODE_SAMPLE
              *  - non-typed property
              *  - static property
              *
-             * but here to ensure no flip-flop when using direct rule for multiple rules applied
+             * but here to ensure no flip-flop when using direct rule for multiple src applied
              */
             if ($property->type === null) {
                 continue;

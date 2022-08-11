@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeReadonlyClassRector\Fixture;
+namespace Rector\Tests\Set\Fixture;
 
 final readonly class StaticProperty
 {
@@ -11,7 +11,7 @@ final readonly class StaticProperty
 -----
 <?php
 
-namespace Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeReadonlyClassRector\Fixture;
+namespace Rector\Tests\Set\Fixture;
 
 final class StaticProperty
 {

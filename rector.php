@@ -59,7 +59,7 @@ return static function (RectorConfig $rectorConfig): void {
         // test paths
         '*/tests/**/Fixture/*',
         '*/tests/**/Fixture*/*',
-        '*/rules-tests/**/Fixture*/*',
+        '*/src-tests/**/Fixture*/*',
 
         // source
         '*/tests/**/Source/*',
