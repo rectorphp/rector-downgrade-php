@@ -19,9 +19,8 @@ class Fixture
 {
     /**
      * @param \Throwable|null $anything
-     * @return \Throwable|null
      */
-    public function someFunction($anything)
+    public function someFunction($anything): ?\Throwable
     {
     }
 }

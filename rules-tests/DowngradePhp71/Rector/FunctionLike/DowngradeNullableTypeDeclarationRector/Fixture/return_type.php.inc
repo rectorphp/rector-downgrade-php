@@ -15,24 +15,3 @@ final class ReturnType
 }
 
 ?>
------
-<?php
-
-namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeNullableTypeDeclarationRector\Fixture;
-
-final class ReturnType
-{
-    /**
-     * @return string|null
-     */
-    public function run()
-    {
-        if (mt_rand()) {
-            return null;
-        }
-
-        return 'value';
-    }
-}
-
-?>

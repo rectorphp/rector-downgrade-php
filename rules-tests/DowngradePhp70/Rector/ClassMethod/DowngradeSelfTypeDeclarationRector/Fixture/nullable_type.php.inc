@@ -18,10 +18,7 @@ namespace Rector\Tests\DowngradePhp70\Rector\ClassMethod\DowngradeSelfTypeDeclar
 
 class NullableType
 {
-    /**
-     * @return $this|null
-     */
-    public function getSelfOrNull()
+    public function getSelfOrNull(): ?static
     {
         return $this;
     }
