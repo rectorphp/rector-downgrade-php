@@ -80,5 +80,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         \Rector\CodeQuality\NodeTypeGroup::class,
         // deprecated, keep it for now
         TemplateResolverInterface::class,
+
+        // @todo make check active classes run on more directories - this one is used in rules
+        \Rector\PhpDocDecorator\PhpDocFromTypeDeclarationDecorator::class,
     ]);
 };
