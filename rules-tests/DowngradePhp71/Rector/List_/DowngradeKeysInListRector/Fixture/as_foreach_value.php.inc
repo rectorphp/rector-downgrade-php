@@ -29,9 +29,9 @@ class AsForeachValue
             ["id" => 1, "name" => 'Tom'],
             ["id" => 2, "name" => 'Fred'],
         ];
-        foreach ($data as $singleData) {
-            $id1 = $singleData["id"];
-            $name1 = $singleData["name"];
+        foreach ($data as $data2) {
+            $id1 = $data2["id"];
+            $name1 = $data2["name"];
         }
     }
 }
