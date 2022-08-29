@@ -23,6 +23,7 @@ use Rector\NodeTypeResolver\DependencyInjection\PHPStanServicesFactory;
 use Rector\NodeTypeResolver\Reflection\BetterReflection\RectorBetterReflectionSourceLocatorFactory;
 use Rector\Php80\Contract\StrStartWithMatchAndRefactorInterface;
 use Rector\PhpAttribute\Contract\AnnotationToAttributeMapperInterface;
+use Rector\PhpDocParser\PhpDocParser\PhpDocNodeVisitor\AbstractPhpDocNodeVisitor;
 use Rector\PHPStanStaticTypeMapper\Contract\TypeMapperInterface;
 use Rector\ReadWrite\Contract\ParentNodeReadAnalyzerInterface;
 use Rector\ReadWrite\Contract\ReadNodeAnalyzerInterface;
@@ -36,7 +37,6 @@ use Rector\TypeDeclaration\Contract\TypeInferer\ReturnTypeInfererInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Rector\PhpDocParser\PhpDocParser\PhpDocNodeVisitor\AbstractPhpDocNodeVisitor;
 use Symplify\EasyCI\ValueObject\Option;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
