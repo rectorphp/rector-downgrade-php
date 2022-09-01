@@ -24,7 +24,7 @@ final class FunctionExistsFunCallAnalyzer
     {
         /** @var If_|null $firstParentIf */
         $firstParentIf = $this->betterNodeFinder->findParentType($funcCall, If_::class);
-        if (! $firstParentIf instanceof  If_) {
+        if (! $firstParentIf instanceof If_) {
             return false;
         }
 
