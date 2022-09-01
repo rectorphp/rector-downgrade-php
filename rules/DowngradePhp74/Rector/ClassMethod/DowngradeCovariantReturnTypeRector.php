@@ -21,11 +21,11 @@ use PHPStan\Type\Type;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\Reflection\ReflectionResolver;
+use Rector\Core\Util\Reflection\PrivatesAccessor;
 use Rector\DeadCode\PhpDoc\TagRemover\ReturnTagRemover;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PHPStanStaticTypeMapper\Enum\TypeKind;
 use Rector\StaticTypeMapper\ValueObject\Type\ParentStaticType;
-use Symplify\PackageBuilder\Reflection\PrivatesCaller;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -38,9 +38,9 @@ final class DowngradeCovariantReturnTypeRector extends AbstractRector
 {
     public function __construct(
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
-        private readonly PrivatesCaller $privatesCaller,
         private readonly ReturnTagRemover $returnTagRemover,
-        private readonly ReflectionResolver $reflectionResolver
+        private readonly ReflectionResolver $reflectionResolver,
+        private readonly PrivatesAccessor $privatesAccessor
     ) {
     }
 
@@ -212,7 +212,7 @@ CODE_SAMPLE
             }
 
             /** @var Type $parentReturnType */
-            $parentReturnType = $this->privatesCaller->callPrivateMethod(
+            $parentReturnType = $this->privatesAccessor->callPrivateMethod(
                 $parameterMethodReflection,
                 'getReturnType',
                 []
