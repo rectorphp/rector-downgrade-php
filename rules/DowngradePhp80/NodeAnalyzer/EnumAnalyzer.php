@@ -16,6 +16,7 @@ use PHPStan\Type\Type;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\AstResolver;
 use Rector\NodeTypeResolver\NodeTypeResolver;
+
 final class EnumAnalyzer
 {
     public function __construct(

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Rector\ValueObject;
+
 final class ClassMethodWillChangeReturnType
 {
     public function __construct(

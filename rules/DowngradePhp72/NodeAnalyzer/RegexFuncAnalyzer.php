@@ -14,6 +14,7 @@ use Rector\Core\PhpParser\Comparing\NodeComparator;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\PhpParser\Node\Value\ValueResolver;
 use Rector\NodeNameResolver\NodeNameResolver;
+
 final class RegexFuncAnalyzer
 {
     /**

@@ -17,7 +17,6 @@ final class DowngradeClassOnObjectToGetClassRectorTest extends AbstractRectorTes
         $this->doTestFile($filePath);
     }
 
-
     public function provideData(): Iterator
     {
         return $this->yieldFilePathsFromDirectory(__DIR__ . '/Fixture');

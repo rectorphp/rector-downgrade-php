@@ -6,6 +6,7 @@ namespace Rector\DowngradePhp56\NodeManipulator;
 
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
+
 final class ArgManipulator
 {
     /**

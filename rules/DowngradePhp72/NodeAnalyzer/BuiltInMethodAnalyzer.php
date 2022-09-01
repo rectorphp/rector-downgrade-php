@@ -8,6 +8,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Reflection\ClassReflection;
 use Rector\FamilyTree\NodeAnalyzer\ClassChildAnalyzer;
 use Rector\NodeNameResolver\NodeNameResolver;
+
 final class BuiltInMethodAnalyzer
 {
     public function __construct(

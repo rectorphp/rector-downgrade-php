@@ -11,6 +11,7 @@ use PHPStan\Reflection\Native\NativeFunctionReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use Rector\NodeNameResolver\NodeNameResolver;
 use ReflectionFunction;
+
 final class UnnamedArgumentResolver
 {
     public function __construct(

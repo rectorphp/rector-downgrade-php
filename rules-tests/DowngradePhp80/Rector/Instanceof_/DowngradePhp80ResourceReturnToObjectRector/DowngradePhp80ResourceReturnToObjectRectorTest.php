@@ -17,7 +17,6 @@ final class DowngradePhp80ResourceReturnToObjectRectorTest extends AbstractRecto
         $this->doTestFile($filePath);
     }
 
-
     public function provideData(): Iterator
     {
         return $this->yieldFilePathsFromDirectory(__DIR__ . '/Fixture');

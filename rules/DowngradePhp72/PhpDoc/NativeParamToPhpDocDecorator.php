@@ -16,6 +16,7 @@ use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Core\PhpParser\Node\Value\ValueResolver;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\StaticTypeMapper\StaticTypeMapper;
+
 final class NativeParamToPhpDocDecorator
 {
     public function __construct(

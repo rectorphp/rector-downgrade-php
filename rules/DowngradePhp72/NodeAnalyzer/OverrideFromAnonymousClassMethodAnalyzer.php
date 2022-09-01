@@ -15,6 +15,7 @@ use PHPStan\Reflection\ReflectionProvider;
 use Rector\Core\NodeAnalyzer\ClassAnalyzer;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
+
 final class OverrideFromAnonymousClassMethodAnalyzer
 {
     public function __construct(

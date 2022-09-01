@@ -10,6 +10,7 @@ use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use Rector\NodeNameResolver\NodeNameResolver;
+
 final class BitwiseFlagCleaner
 {
     public function __construct(

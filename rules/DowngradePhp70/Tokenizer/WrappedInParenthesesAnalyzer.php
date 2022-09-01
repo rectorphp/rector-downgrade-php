@@ -6,6 +6,7 @@ namespace Rector\DowngradePhp70\Tokenizer;
 
 use PhpParser\Node;
 use Rector\Core\ValueObject\Application\File;
+
 final class WrappedInParenthesesAnalyzer
 {
     public function isParenthesized(File $file, Node $node): bool

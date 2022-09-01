@@ -7,6 +7,7 @@ namespace Rector\DowngradePhp56\NodeManipulator;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
+
 final class UnpackedArgList
 {
     /**

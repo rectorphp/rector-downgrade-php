@@ -27,6 +27,7 @@ use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PostRector\Collector\NodesToAddCollector;
+
 final class ArrayMergeFromArraySpreadFactory
 {
     private bool $shouldIncrement = false;
@@ -164,8 +165,8 @@ final class ArrayMergeFromArraySpreadFactory
         // depending on their position.
         // The number can't be at the end of the var name, or it would
         // conflict with the counter (for if that name is already taken)
-        $realPath = $file->getFilePath();
-        $position = $this->lastPositionCurrentFile[$realPath] ?? $position;
+        $filePath = $file->getFilePath();
+        $position = $this->lastPositionCurrentFile[$filePath] ?? $position;
 
         $variableName = $this->variableNaming->resolveFromNodeWithScopeCountAndFallbackName(
             $array,
@@ -174,7 +175,7 @@ final class ArrayMergeFromArraySpreadFactory
         );
 
         if ($this->shouldIncrement) {
-            $this->lastPositionCurrentFile[$realPath] = ++$position;
+            $this->lastPositionCurrentFile[$filePath] = ++$position;
         }
 
         // Assign the value to the variable, and replace the element with the variable

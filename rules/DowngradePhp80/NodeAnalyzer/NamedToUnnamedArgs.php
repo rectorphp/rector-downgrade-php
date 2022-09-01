@@ -15,6 +15,7 @@ use Rector\DowngradePhp80\Reflection\DefaultParameterValueResolver;
 use Rector\DowngradePhp80\Reflection\SimplePhpParameterReflection;
 use Rector\NodeNameResolver\NodeNameResolver;
 use ReflectionFunction;
+
 final class NamedToUnnamedArgs
 {
     public function __construct(

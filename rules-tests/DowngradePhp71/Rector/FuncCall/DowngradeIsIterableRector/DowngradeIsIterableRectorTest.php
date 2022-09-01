@@ -17,7 +17,6 @@ final class DowngradeIsIterableRectorTest extends AbstractRectorTestCase
         $this->doTestFile($filePath);
     }
 
-
     public function provideData(): Iterator
     {
         return $this->yieldFilePathsFromDirectory(__DIR__ . '/Fixture');
