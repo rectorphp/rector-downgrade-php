@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\ClassConstFetch\DowngradeClassOnObjectToGetClassRector\Fixture;
 
 use Rector\Core\Contract\Rector\RectorInterface;
-
 final class SomeStaticPropertyFetch
 {
     private $rector;
@@ -29,7 +28,6 @@ final class SomeStaticPropertyFetch
 namespace Rector\Tests\DowngradePhp80\Rector\ClassConstFetch\DowngradeClassOnObjectToGetClassRector\Fixture;
 
 use Rector\Core\Contract\Rector\RectorInterface;
-
 final class SomeStaticPropertyFetch
 {
     private $rector;

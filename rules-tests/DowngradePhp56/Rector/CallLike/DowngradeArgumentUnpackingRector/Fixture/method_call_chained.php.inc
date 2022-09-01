@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class MethodCallChained
 {
     public function run()
@@ -25,7 +24,6 @@ final class MethodCallChained
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class MethodCallChained
 {
     public function run()

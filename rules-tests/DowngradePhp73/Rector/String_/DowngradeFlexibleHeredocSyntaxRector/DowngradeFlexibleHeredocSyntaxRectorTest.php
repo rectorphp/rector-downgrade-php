@@ -6,28 +6,24 @@ namespace Rector\Tests\DowngradePhp73\Rector\String_\DowngradeFlexibleHeredocSyn
 
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class DowngradeFlexibleHeredocSyntaxRectorTest extends AbstractRectorTestCase
 {
     /**
      * @dataProvider provideData()
      */
-    public function test(SmartFileInfo $fileInfo): void
+    public function test(string $filePath): void
     {
         if ($this->isWindows()) {
             $this->markTestSkipped('minor differences on windows, see https://github.com/rectorphp/rector/issues/6571');
         }
 
-        $this->doTestFileInfo($fileInfo);
+        $this->doTestFile($filePath);
     }
 
-    /**
-     * @return Iterator<SmartFileInfo>
-     */
     public function provideData(): Iterator
     {
-        return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
+        return $this->yieldFilePathsFromDirectory(__DIR__ . '/Fixture');
     }
 
     public function provideConfigFilePath(): string

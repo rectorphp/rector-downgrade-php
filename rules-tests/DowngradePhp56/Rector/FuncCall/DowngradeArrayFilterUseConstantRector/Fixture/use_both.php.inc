@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\FuncCall\DowngradeArrayFilterUseConstantRector\Fixture;
-
 final class UseBoth
 {
     public function run()
@@ -19,7 +18,6 @@ final class UseBoth
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\FuncCall\DowngradeArrayFilterUseConstantRector\Fixture;
-
 final class UseBoth
 {
     public function run()

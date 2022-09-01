@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector\Fixture;
 
 use Symfony\Component\Routing\Annotation\Route;
-
 final class SymfonyRoute
 {
     #[Route(path: '/path', name: 'action')]
@@ -19,7 +18,6 @@ final class SymfonyRoute
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector\Fixture;
 
 use Symfony\Component\Routing\Annotation\Route;
-
 final class SymfonyRoute
 {
     /**

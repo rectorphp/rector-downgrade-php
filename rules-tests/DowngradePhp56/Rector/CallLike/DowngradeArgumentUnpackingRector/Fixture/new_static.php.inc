@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class NewStatic extends stdClass
 {
     public function run(array $items)
@@ -15,7 +14,6 @@ final class NewStatic extends stdClass
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class NewStatic extends stdClass
 {
     public function run(array $items)

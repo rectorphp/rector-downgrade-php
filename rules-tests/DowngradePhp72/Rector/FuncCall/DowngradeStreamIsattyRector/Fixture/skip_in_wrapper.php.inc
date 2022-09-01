@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradeStreamIsattyRector\Fixture;
-
 final class SkipInWrapper
 {
     public function run($stream)

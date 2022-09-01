@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\Array_\DowngradeArraySpreadRector\Fixture;
-
 final class SkipPropertyDefault
 {
     /**

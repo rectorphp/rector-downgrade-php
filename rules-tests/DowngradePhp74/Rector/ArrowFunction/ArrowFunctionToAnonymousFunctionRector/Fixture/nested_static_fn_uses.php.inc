@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\ArrowFunction\ArrowFunctionToAnonymousFunctionRector\Fixture;
-
 final class NestedStaticFnUses
 {
     public function __invoke()
@@ -37,7 +36,6 @@ final class NestedStaticFnUses
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\ArrowFunction\ArrowFunctionToAnonymousFunctionRector\Fixture;
-
 final class NestedStaticFnUses
 {
     public function __invoke()

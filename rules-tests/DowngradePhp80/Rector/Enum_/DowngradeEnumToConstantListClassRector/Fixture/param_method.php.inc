@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\Enum_\DowngradeEnumToConstantListClassRector\Fixture;
 
 use Rector\Tests\DowngradePhp80\Rector\Enum_\DowngradeEnumToConstantListClassRector\Source\GearValue;
-
 final class ParamMethod
 {
     public function changeGear(GearValue $gearValue)
@@ -18,7 +17,6 @@ final class ParamMethod
 namespace Rector\Tests\DowngradePhp80\Rector\Enum_\DowngradeEnumToConstantListClassRector\Fixture;
 
 use Rector\Tests\DowngradePhp80\Rector\Enum_\DowngradeEnumToConstantListClassRector\Source\GearValue;
-
 final class ParamMethod
 {
     /**

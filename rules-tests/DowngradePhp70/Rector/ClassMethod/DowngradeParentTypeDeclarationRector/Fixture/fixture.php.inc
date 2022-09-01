@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp70\Rector\ClassMethod\DowngradeParentTypeDeclarationRector\Fixture;
 
 use Rector\Tests\DowngradePhp70\Rector\ClassMethod\DowngradeParentTypeDeclarationRector\Source\SomeParentClass;
-
 final class Fixture extends SomeParentClass
 {
     public function getParent(): parent
@@ -19,7 +18,6 @@ final class Fixture extends SomeParentClass
 namespace Rector\Tests\DowngradePhp70\Rector\ClassMethod\DowngradeParentTypeDeclarationRector\Fixture;
 
 use Rector\Tests\DowngradePhp70\Rector\ClassMethod\DowngradeParentTypeDeclarationRector\Source\SomeParentClass;
-
 final class Fixture extends SomeParentClass
 {
     /**

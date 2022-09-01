@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeMixedTypeDeclarationRector\Fixture;
-
 final class ReturnFixture
 {
     public function getAnything(): mixed
@@ -19,7 +18,6 @@ final class ReturnFixture
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeMixedTypeDeclarationRector\Fixture;
-
 final class ReturnFixture
 {
     /**

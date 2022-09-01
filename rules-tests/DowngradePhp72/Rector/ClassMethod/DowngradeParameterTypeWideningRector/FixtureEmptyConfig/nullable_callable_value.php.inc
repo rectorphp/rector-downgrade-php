@@ -6,7 +6,6 @@ interface SomeAskingInterfaceWithNullable
 {
     public function ask(?callable $callable = null);
 }
-
 final class AskForMore implements SomeAskingInterfaceWithNullable
 {
     public function ask($callable = null)
@@ -27,7 +26,6 @@ interface SomeAskingInterfaceWithNullable
      */
     public function ask($callable = null);
 }
-
 final class AskForMore implements SomeAskingInterfaceWithNullable
 {
     public function ask($callable = null)

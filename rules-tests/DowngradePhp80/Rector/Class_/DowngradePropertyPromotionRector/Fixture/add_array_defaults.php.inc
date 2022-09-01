@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradePropertyPromotionRector\Fixture;
-
 final class AddArrayDefaults
 {
     public function __construct(
@@ -15,7 +14,6 @@ final class AddArrayDefaults
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradePropertyPromotionRector\Fixture;
-
 final class AddArrayDefaults
 {
     protected array $values = [];

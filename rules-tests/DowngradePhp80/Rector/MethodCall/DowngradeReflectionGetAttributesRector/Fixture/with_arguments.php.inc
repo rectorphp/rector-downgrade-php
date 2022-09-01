@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\MethodCall\DowngradeReflectionGetAttributesRector\Fixture;
-
 final class WithArguments
 {
     public function run(\ReflectionClass $reflectionClass)
@@ -19,7 +18,6 @@ final class WithArguments
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\MethodCall\DowngradeReflectionGetAttributesRector\Fixture;
-
 final class WithArguments
 {
     public function run(\ReflectionClass $reflectionClass)

@@ -4,7 +4,6 @@ namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDecl
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
-
 final class DoNotChangeCorrectUnionArrayDocblockOnParam
 {
     /**
@@ -30,7 +29,6 @@ namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDecl
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
-
 final class DoNotChangeCorrectUnionArrayDocblockOnParam
 {
     /**

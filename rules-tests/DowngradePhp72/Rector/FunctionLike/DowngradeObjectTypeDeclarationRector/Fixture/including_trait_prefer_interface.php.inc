@@ -6,7 +6,6 @@ interface AdapterInterface
 {
     public function getItems(array $items);
 }
-
 final class SomeAdapter implements AdapterInterface
 {
     use BaseAdapterTrait;

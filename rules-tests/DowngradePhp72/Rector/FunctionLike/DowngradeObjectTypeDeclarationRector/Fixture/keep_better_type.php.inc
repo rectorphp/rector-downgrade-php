@@ -4,7 +4,6 @@ namespace Rector\Tests\DowngradePhp72\Rector\FunctionLike\DowngradeObjectTypeDec
 
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
-
 final class KeepBetterType
 {
     /**
@@ -23,7 +22,6 @@ namespace Rector\Tests\DowngradePhp72\Rector\FunctionLike\DowngradeObjectTypeDec
 
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
-
 final class KeepBetterType
 {
     /**

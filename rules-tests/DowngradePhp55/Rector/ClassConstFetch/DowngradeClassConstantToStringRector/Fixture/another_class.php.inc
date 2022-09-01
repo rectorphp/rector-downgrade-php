@@ -9,7 +9,6 @@ abstract class AnotherClass
         return self::class . '/' . static::class;
     }
 }
-
 final class ChildClass extends AnotherClass
 {
     public function run()
@@ -31,7 +30,6 @@ abstract class AnotherClass
         return get_class() . '/' . get_called_class();
     }
 }
-
 final class ChildClass extends AnotherClass
 {
     public function run()

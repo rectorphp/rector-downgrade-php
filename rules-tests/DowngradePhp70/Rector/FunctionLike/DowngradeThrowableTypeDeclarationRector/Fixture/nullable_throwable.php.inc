@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\FunctionLike\DowngradeThrowableTypeDeclarationRector\Fixture;
-
 final class Fixture
 {
     public function someFunction(?\Throwable $anything): ?\Throwable
@@ -14,7 +13,6 @@ final class Fixture
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\FunctionLike\DowngradeThrowableTypeDeclarationRector\Fixture;
-
 final class Fixture
 {
     /**

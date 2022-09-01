@@ -4,7 +4,6 @@ namespace Rector\Tests\DowngradePhp74\Rector\ClassMethod\DowngradeCovariantRetur
 
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
-
 final class SkipBeforeTraverse extends NodeVisitorAbstract
 {
     /**

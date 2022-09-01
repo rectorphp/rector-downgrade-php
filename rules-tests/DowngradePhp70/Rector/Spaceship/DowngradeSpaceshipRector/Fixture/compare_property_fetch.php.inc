@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\Coalesce\DowngradeStrictTypeDeclarationRector\Fixture;
-
 final class ComparePropertyFetch
 {
     private $a;
@@ -18,7 +17,6 @@ final class ComparePropertyFetch
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\Coalesce\DowngradeStrictTypeDeclarationRector\Fixture;
-
 final class ComparePropertyFetch
 {
     private $a;

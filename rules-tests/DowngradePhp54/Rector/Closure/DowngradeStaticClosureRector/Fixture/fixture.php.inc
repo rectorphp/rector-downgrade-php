@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp54\Rector\Closure\DowngradeStaticClosureRector\Fixture;
-
 final class Fixture
 {
     public function run()
@@ -17,7 +16,6 @@ final class Fixture
 <?php
 
 namespace Rector\Tests\DowngradePhp54\Rector\Closure\DowngradeStaticClosureRector\Fixture;
-
 final class Fixture
 {
     public function run()

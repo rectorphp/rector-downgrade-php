@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp55\Rector\Foreach_\DowngradeForeachListRector\Fixture;
-
 final class SomeClass
 {
     public function run(array $array)
@@ -17,7 +16,6 @@ final class SomeClass
 <?php
 
 namespace Rector\Tests\DowngradePhp55\Rector\Foreach_\DowngradeForeachListRector\Fixture;
-
 final class SomeClass
 {
     public function run(array $array)

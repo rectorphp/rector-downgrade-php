@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeIterablePseudoTypeDeclarationRector\Fixture;
-
 final class ParamIterable
 {
     public function run(iterable $iterator)
@@ -15,7 +14,6 @@ final class ParamIterable
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeIterablePseudoTypeDeclarationRector\Fixture;
-
 final class ParamIterable
 {
     /**

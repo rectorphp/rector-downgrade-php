@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp54\Rector\Array_\ShortArrayToLongArrayRector\Fixture;
-
 final class SomeClass
 {
     public function run()
@@ -17,7 +16,6 @@ final class SomeClass
 <?php
 
 namespace Rector\Tests\DowngradePhp54\Rector\Array_\ShortArrayToLongArrayRector\Fixture;
-
 final class SomeClass
 {
     public function run()

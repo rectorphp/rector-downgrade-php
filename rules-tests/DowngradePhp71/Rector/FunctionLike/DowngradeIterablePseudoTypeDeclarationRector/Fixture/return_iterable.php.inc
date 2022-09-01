@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeIterablePseudoTypeDeclarationRector\Fixture;
-
 final class ReturnIterable
 {
     public function run(): iterable
@@ -15,7 +14,6 @@ final class ReturnIterable
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeIterablePseudoTypeDeclarationRector\Fixture;
-
 final class ReturnIterable
 {
     /**

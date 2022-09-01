@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradePropertyPromotionRector\Fixture;
-
 final class UseParamType
 {
     /**
@@ -22,7 +21,6 @@ final class UseParamType
 declare(strict_types=1);
 
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradePropertyPromotionRector\Fixture;
-
 final class UseParamType
 {
     /**

@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
 final class InArrowFunction
 {
     public function run()
@@ -27,7 +26,6 @@ final class InArrowFunction
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
 final class InArrowFunction
 {
     public function run()

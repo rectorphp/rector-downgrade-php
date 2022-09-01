@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeNullableTypeDeclarationRector\Fixture;
-
 final class ReturnType
 {
     public function run(): ?string
@@ -19,7 +18,6 @@ final class ReturnType
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeNullableTypeDeclarationRector\Fixture;
-
 final class ReturnType
 {
     /**

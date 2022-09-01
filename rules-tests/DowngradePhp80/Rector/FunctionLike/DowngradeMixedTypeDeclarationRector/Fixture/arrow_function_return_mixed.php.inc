@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeMixedTypeDeclarationRector\Fixture;
-
 final class ArrowFunctionReturnMixed
 {
     public function run()
@@ -15,7 +14,6 @@ final class ArrowFunctionReturnMixed
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeMixedTypeDeclarationRector\Fixture;
-
 final class ArrowFunctionReturnMixed
 {
     public function run()

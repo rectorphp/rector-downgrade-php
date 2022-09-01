@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class NewExpr extends stdClass
 {
     public function run(array $items)
@@ -16,7 +15,6 @@ final class NewExpr extends stdClass
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class NewExpr extends stdClass
 {
     public function run(array $items)

@@ -5,7 +5,6 @@ namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeW
 use PhpParser\Node;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
-
 final class SkipRectorRule extends AbstractRector
 {
     public function getRuleDefinition(): RuleDefinition

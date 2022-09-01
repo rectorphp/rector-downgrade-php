@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector\Fixture;
-
 final class StreamSelectLoop
 {
     private function streamSelect(array &$read, array &$write, $timeout)
