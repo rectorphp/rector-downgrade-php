@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class FuncCallMultiUnpackArgs
 {
     public function run(array $items, array $otherItems)
@@ -15,7 +14,6 @@ final class FuncCallMultiUnpackArgs
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class FuncCallMultiUnpackArgs
 {
     public function run(array $items, array $otherItems)

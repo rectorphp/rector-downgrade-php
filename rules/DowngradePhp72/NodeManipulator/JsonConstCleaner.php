@@ -14,7 +14,6 @@ use PhpParser\Node\Scalar\String_;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
-
 final class JsonConstCleaner
 {
     public function __construct(

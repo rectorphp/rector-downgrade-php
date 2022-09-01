@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Fixture;
-
 final class NullableTrioDocblock
 {
     public function run($value): int|null|string
@@ -14,7 +13,6 @@ final class NullableTrioDocblock
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Fixture;
-
 final class NullableTrioDocblock
 {
     /**

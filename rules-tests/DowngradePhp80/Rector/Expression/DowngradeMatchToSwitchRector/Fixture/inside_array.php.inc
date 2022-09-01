@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
 final class InsideArray
 {
     public function run($statusCode)
@@ -21,7 +20,6 @@ final class InsideArray
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
 final class InsideArray
 {
     public function run($statusCode)

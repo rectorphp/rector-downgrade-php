@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Fixture;
-
 final class ReturnUnion
 {
     public function run(): int|string
@@ -19,7 +18,6 @@ final class ReturnUnion
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Fixture;
-
 final class ReturnUnion
 {
     /**

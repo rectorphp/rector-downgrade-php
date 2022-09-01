@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\FunctionLike\DowngradeScalarTypeDeclarationRector\Fixture;
-
 final class MultipleObjectStringableParam
 {
     public function hasDefinition(string $id, string $name)
@@ -15,7 +14,6 @@ final class MultipleObjectStringableParam
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\FunctionLike\DowngradeScalarTypeDeclarationRector\Fixture;
-
 final class MultipleObjectStringableParam
 {
     /**

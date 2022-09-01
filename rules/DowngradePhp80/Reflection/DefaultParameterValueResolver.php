@@ -15,7 +15,6 @@ use PHPStan\Type\ConstantType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
 use Rector\Core\Exception\ShouldNotHappenException;
-
 final class DefaultParameterValueResolver
 {
     public function resolveFromParameterReflection(ParameterReflection $parameterReflection): Expr | null

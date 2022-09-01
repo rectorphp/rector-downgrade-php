@@ -10,7 +10,6 @@ use PhpParser\Node\Stmt\If_;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\PhpParser\Node\Value\ValueResolver;
 use Rector\NodeNameResolver\NodeNameResolver;
-
 final class FunctionExistsFunCallAnalyzer
 {
     public function __construct(

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\ValueObject;
-
 final class DowngradeAttributeToAnnotation
 {
     /**

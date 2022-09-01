@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Fixture;
 
 use Baz\Bar;
-
 final class SomeClass
 {
     public function run(): Bar&\Qux
@@ -18,7 +17,6 @@ final class SomeClass
 namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Fixture;
 
 use Baz\Bar;
-
 final class SomeClass
 {
     /**

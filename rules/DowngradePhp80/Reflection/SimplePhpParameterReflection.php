@@ -12,7 +12,6 @@ use Rector\Core\Exception\NotImplementedYetException;
 use ReflectionFunction;
 use ReflectionParameter;
 use Throwable;
-
 final class SimplePhpParameterReflection implements ParameterReflection
 {
     private readonly ReflectionParameter $parameter;

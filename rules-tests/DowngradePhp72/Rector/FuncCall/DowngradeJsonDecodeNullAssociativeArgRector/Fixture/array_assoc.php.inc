@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradeJsonDecodeNullAssociativeArgRector\Fixture;
-
 final class ArrayAssoc
 {
     public function run($data, array $items)
@@ -15,7 +14,6 @@ final class ArrayAssoc
 <?php
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradeJsonDecodeNullAssociativeArgRector\Fixture;
-
 final class ArrayAssoc
 {
     public function run($data, array $items)

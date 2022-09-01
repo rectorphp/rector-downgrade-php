@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\Pow\DowngradeExponentialOperatorRector\Fixture;
-
 final class SomeClass
 {
     public function run()
@@ -15,7 +14,6 @@ final class SomeClass
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\Pow\DowngradeExponentialOperatorRector\Fixture;
-
 final class SomeClass
 {
     public function run()

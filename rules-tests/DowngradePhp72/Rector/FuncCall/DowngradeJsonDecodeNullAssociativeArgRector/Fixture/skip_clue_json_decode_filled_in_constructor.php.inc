@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradeJsonDecodeNullAssociativeArgRector\Fixture;
-
 final class SkipClueJsonDecodeFilledInConstructor
 {
     private $assoc;

@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp56\Rector\Use_\DowngradeUseFunctionRector\Fixture;
 
 use function Foo\Bar\baz, Qux\quux;
-
 final class SomeClass
 {
     public function run()
@@ -17,7 +16,6 @@ final class SomeClass
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\Use_\DowngradeUseFunctionRector\Fixture;
-
 final class SomeClass
 {
     public function run()

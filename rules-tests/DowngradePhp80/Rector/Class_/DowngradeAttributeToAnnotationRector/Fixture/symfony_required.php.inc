@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector\Fixture;
 
 use Symfony\Contracts\Service\Attribute\Required;
-
 final class SymfonyRequired
 {
     #[Required]
@@ -19,7 +18,6 @@ final class SymfonyRequired
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector\Fixture;
 
 use Symfony\Contracts\Service\Attribute\Required;
-
 final class SymfonyRequired
 {
     /**

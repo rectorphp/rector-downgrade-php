@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\FunctionLike\DowngradeScalarTypeDeclarationRector\Fixture;
-
 final class ReturnString
 {
     public function run(): string
@@ -15,7 +14,6 @@ final class ReturnString
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\FunctionLike\DowngradeScalarTypeDeclarationRector\Fixture;
-
 final class ReturnString
 {
     /**

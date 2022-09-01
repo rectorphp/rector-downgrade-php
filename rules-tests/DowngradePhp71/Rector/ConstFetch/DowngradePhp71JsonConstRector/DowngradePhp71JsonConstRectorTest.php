@@ -6,24 +6,21 @@ namespace Rector\Tests\DowngradePhp71\Rector\ConstFetch\DowngradePhp71JsonConstR
 
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class DowngradePhp71JsonConstRectorTest extends AbstractRectorTestCase
 {
     /**
      * @dataProvider provideData()
      */
-    public function test(SmartFileInfo $fileInfo): void
+    public function test(string $filePath): void
     {
-        $this->doTestFileInfo($fileInfo);
+        $this->doTestFile($filePath);
     }
 
-    /**
-     * @return Iterator<SmartFileInfo>
-     */
+
     public function provideData(): Iterator
     {
-        return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
+        return $this->yieldFilePathsFromDirectory(__DIR__ . '/Fixture');
     }
 
     public function provideConfigFilePath(): string

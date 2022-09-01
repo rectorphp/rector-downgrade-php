@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\Property\DowngradeTypedPropertyRector\Fixture;
-
 final class NullableTypeWithDefault
 {
     private ?string $property = null;
@@ -12,7 +11,6 @@ final class NullableTypeWithDefault
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\Property\DowngradeTypedPropertyRector\Fixture;
-
 final class NullableTypeWithDefault
 {
     /**

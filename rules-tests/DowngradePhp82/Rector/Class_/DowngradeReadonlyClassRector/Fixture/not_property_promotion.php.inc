@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeReadonlyClassRector\Fixture;
-
 final readonly class NotPropertyPromotion
 {
     public function __construct(string $bar)
@@ -14,7 +13,6 @@ final readonly class NotPropertyPromotion
 <?php
 
 namespace Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeReadonlyClassRector\Fixture;
-
 final class NotPropertyPromotion
 {
     public function __construct(string $bar)

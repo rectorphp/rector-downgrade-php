@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp74\Rector\ClassMethod\DowngradeCovariantReturnTypeRector\Fixture;
 
 use Rector\Tests\DowngradePhp74\Rector\ClassMethod\DowngradeCovariantReturnTypeRector\Source\ParentSymfonyString;
-
 final class SkipParent extends ParentSymfonyString
 {
     protected $string = '';

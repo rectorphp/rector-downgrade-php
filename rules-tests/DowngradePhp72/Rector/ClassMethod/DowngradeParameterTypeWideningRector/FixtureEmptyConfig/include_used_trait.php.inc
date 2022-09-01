@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\FixtureEmptyConfig;
 
 use Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\Source\AnotherContainerInterface;
-
 final class YetAnotherContainer implements AnotherContainerInterface
 {
     use AnotherServiceLocatorTrait;
@@ -23,7 +22,6 @@ trait AnotherServiceLocatorTrait
 namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\FixtureEmptyConfig;
 
 use Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\Source\AnotherContainerInterface;
-
 final class YetAnotherContainer implements AnotherContainerInterface
 {
     use AnotherServiceLocatorTrait;

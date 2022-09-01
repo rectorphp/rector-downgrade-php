@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class MethodCallOneArg
 {
     public function run()
@@ -20,7 +19,6 @@ final class MethodCallOneArg
 <?php
 
 namespace Rector\Tests\DowngradePhp56\Rector\CallLike\DowngradeArgumentUnpackingRector\Fixture;
-
 final class MethodCallOneArg
 {
     public function run()

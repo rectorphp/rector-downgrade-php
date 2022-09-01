@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\MethodCall\DowngradeReflectionGetAttributesRector\Fixture;
-
 final class SkipAlreadyHasMethodExists
 {
     public function run(\ReflectionClass $reflectionClass)

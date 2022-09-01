@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\NullsafeMethodCall\DowngradeNullsafeToTernaryOperatorRector\Fixture;
 
 use PhpParser\Node\Expr\ArrayItem;
-
 final class GetNullable
 {
     public function run($value)
@@ -24,7 +23,6 @@ final class GetNullable
 namespace Rector\Tests\DowngradePhp80\Rector\NullsafeMethodCall\DowngradeNullsafeToTernaryOperatorRector\Fixture;
 
 use PhpParser\Node\Expr\ArrayItem;
-
 final class GetNullable
 {
     public function run($value)

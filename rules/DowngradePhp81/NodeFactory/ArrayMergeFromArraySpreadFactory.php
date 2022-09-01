@@ -27,7 +27,6 @@ use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PostRector\Collector\NodesToAddCollector;
-
 final class ArrayMergeFromArraySpreadFactory
 {
     private bool $shouldIncrement = false;

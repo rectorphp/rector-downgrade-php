@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeNullableTypeDeclarationRector\Fixture;
-
 final class ParamType
 {
     public function run(?string $value)
@@ -14,7 +13,6 @@ final class ParamType
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeNullableTypeDeclarationRector\Fixture;
-
 final class ParamType
 {
     /**

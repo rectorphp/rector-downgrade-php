@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\MethodCall\DowngradeNamedArgumentRector\Fixture;
 
 use Rector\Core\ValueObject\Configuration;
-
 final class RectorConfiguration
 {
     public function run(array $fileExtensions)
@@ -19,7 +18,6 @@ final class RectorConfiguration
 namespace Rector\Tests\DowngradePhp80\Rector\MethodCall\DowngradeNamedArgumentRector\Fixture;
 
 use Rector\Core\ValueObject\Configuration;
-
 final class RectorConfiguration
 {
     public function run(array $fileExtensions)

@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeThrowExprRector\Fixture;
 
 use Symfony\Component\Console\Helper\ProgressBar;
-
 final class ThrowPropertyFetch
 {
     public function __construct(
@@ -24,7 +23,6 @@ final class ThrowPropertyFetch
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeThrowExprRector\Fixture;
 
 use Symfony\Component\Console\Helper\ProgressBar;
-
 final class ThrowPropertyFetch
 {
     public function __construct(

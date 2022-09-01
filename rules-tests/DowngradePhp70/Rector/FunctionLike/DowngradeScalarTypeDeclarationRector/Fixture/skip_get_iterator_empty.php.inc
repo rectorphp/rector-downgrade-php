@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\FunctionLike\DowngradeScalarTypeDeclarationRector\Fixture;
-
 final class SkipGetIteratorEmpty
 {
     public function getIterator(): \Iterator
@@ -14,7 +13,6 @@ final class SkipGetIteratorEmpty
 <?php
 
 namespace Rector\Tests\DowngradePhp70\Rector\FunctionLike\DowngradeScalarTypeDeclarationRector\Fixture;
-
 final class SkipGetIteratorEmpty
 {
     /**

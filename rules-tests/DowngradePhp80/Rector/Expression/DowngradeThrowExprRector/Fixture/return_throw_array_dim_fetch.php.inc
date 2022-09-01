@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeThrowExprRector\Fixture;
-
 final class ReturnThrowArrayDimFetch
 {
     public function run($name)
@@ -15,7 +14,6 @@ final class ReturnThrowArrayDimFetch
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeThrowExprRector\Fixture;
-
 final class ReturnThrowArrayDimFetch
 {
     public function run($name)

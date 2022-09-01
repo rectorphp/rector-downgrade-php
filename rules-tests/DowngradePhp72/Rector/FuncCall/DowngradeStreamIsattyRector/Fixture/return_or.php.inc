@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradeStreamIsattyRector\Fixture;
-
 final class UnionOr
 {
     public static function detectColors(): bool
@@ -26,7 +25,6 @@ final class UnionOr
 <?php
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradeStreamIsattyRector\Fixture;
-
 final class UnionOr
 {
     public static function detectColors(): bool

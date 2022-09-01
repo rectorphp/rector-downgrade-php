@@ -13,7 +13,6 @@ class B implements A
     {
     }
 }
-
 final class MostChild implements A
 {
     public function test(array $input)
@@ -41,7 +40,6 @@ class B implements A
     {
     }
 }
-
 final class MostChild implements A
 {
     /**

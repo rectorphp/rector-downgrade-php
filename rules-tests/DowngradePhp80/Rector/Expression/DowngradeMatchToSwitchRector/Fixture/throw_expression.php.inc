@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
 final class DemoFile
 {
     public function run($param)
@@ -19,7 +18,6 @@ final class DemoFile
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
 final class DemoFile
 {
     public function run($param)

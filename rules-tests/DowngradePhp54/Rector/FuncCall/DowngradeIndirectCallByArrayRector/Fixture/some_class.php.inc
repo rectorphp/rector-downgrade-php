@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp54\Rector\FuncCall\DowngradeIndirectCallByArrayRector\Fixture;
-
 final class SomeClass
 {
     public static function run($msg) {
@@ -17,7 +16,6 @@ $func('hello');
 <?php
 
 namespace Rector\Tests\DowngradePhp54\Rector\FuncCall\DowngradeIndirectCallByArrayRector\Fixture;
-
 final class SomeClass
 {
     public static function run($msg) {

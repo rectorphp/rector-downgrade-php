@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\LNumber\DowngradeNumericLiteralSeparatorRector\Fixture;
-
 final class DowngradeIntegers
 {
     public function run()
@@ -16,7 +15,6 @@ final class DowngradeIntegers
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\LNumber\DowngradeNumericLiteralSeparatorRector\Fixture;
-
 final class DowngradeIntegers
 {
     public function run()

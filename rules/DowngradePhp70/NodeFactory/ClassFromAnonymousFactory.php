@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp70\NodeFactory;
 
 use PhpParser\Node\Stmt\Class_;
-
 final class ClassFromAnonymousFactory
 {
     public function create(string $className, Class_ $newClass): Class_

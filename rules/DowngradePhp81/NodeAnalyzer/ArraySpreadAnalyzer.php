@@ -6,7 +6,6 @@ namespace Rector\DowngradePhp81\NodeAnalyzer;
 
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
-
 final class ArraySpreadAnalyzer
 {
     public function isArrayWithUnpack(Array_ $array): bool

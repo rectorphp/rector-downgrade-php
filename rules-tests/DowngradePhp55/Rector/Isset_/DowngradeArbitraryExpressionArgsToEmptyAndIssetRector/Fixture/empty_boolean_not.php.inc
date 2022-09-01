@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp55\Rector\Isset_\DowngradeArbitraryExpressionArgsToEmptyAndIssetRector\Fixture;
-
 final class SomeClass
 {
     /**
@@ -18,7 +17,6 @@ final class SomeClass
 <?php
 
 namespace Rector\Tests\DowngradePhp55\Rector\Isset_\DowngradeArbitraryExpressionArgsToEmptyAndIssetRector\Fixture;
-
 final class SomeClass
 {
     /**

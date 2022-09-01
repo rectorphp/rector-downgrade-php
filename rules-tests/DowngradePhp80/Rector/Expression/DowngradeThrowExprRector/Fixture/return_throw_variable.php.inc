@@ -3,7 +3,6 @@
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeThrowExprRector\Fixture;
 
 use Symfony\Component\Console\Helper\ProgressBar;
-
 final class ReturnThrowVariable
 {
     public function run()
@@ -19,7 +18,6 @@ final class ReturnThrowVariable
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeThrowExprRector\Fixture;
 
 use Symfony\Component\Console\Helper\ProgressBar;
-
 final class ReturnThrowVariable
 {
     public function run()

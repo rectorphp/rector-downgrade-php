@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\Set\Fixture;
-
 final readonly class StaticProperty
 {
     public static string $foo;
@@ -12,7 +11,6 @@ final readonly class StaticProperty
 <?php
 
 namespace Rector\Tests\Set\Fixture;
-
 final class StaticProperty
 {
     /**

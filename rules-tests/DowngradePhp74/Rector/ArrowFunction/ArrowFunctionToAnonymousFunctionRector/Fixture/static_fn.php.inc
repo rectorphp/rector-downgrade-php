@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\ArrowFunction\ArrowFunctionToAnonymousFunctionRector\Fixture;
-
 final class StaticFn
 {
     public function run()
@@ -14,7 +13,6 @@ final class StaticFn
 <?php
 
 namespace Rector\Tests\DowngradePhp74\Rector\ArrowFunction\ArrowFunctionToAnonymousFunctionRector\Fixture;
-
 final class StaticFn
 {
     public function run()
