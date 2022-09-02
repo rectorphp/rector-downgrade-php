@@ -19,7 +19,7 @@ final class EmptyConfigTest extends AbstractRectorTestCase
 
     public function provideData(): Iterator
     {
-        return $this->yieldFilePathsFromDirectory(__DIR__ . '/FixtureEmptyConfig');
+        return $this->yieldFilesFromDirectory(__DIR__ . '/FixtureEmptyConfig');
     }
 
     public function provideConfigFilePath(): string
