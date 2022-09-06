@@ -73,7 +73,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $rawValueWithoutUnderscores = str_replace('_', '', $rawValue);
+        $rawValueWithoutUnderscores = str_replace('_', '', (string) $rawValue);
         $node->setAttribute(AttributeKey::RAW_VALUE, $rawValueWithoutUnderscores);
 
         $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
