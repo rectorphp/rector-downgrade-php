@@ -20,8 +20,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeReadonlyClassRector extends AbstractRector
 {
-    public function __construct(private readonly VisibilityManipulator $visibilityManipulator)
-    {
+    public function __construct(
+        private readonly VisibilityManipulator $visibilityManipulator
+    ) {
     }
 
     /**
