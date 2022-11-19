@@ -208,6 +208,10 @@ CODE_SAMPLE
     private function hasNull(UnionType $unionType): bool
     {
         foreach ($unionType->types as $type) {
+            if (! $type instanceof Identifier) {
+                continue;
+            }
+
             if ($type->toLowerString() === 'null') {
                 return true;
             }
