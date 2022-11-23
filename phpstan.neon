@@ -102,3 +102,7 @@ parameters:
         -
             message: '#Unreachable statement \- code above always terminates#'
             path: rules-tests/DowngradePhp54/Rector/LNumber/DowngradeBinaryNotationRector/DowngradeBinaryNotationRectorTest.php
+
+        -
+            message: '#New objects with "\$returnType" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+            path: src/PhpDocDecorator/PhpDocFromTypeDeclarationDecorator.php
