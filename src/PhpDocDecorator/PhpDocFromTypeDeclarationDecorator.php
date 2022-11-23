@@ -31,6 +31,7 @@ use Rector\Php80\NodeAnalyzer\PhpAttributeAnalyzer;
 use Rector\PhpAttribute\NodeFactory\PhpAttributeGroupFactory;
 use Rector\PHPStanStaticTypeMapper\Enum\TypeKind;
 use Rector\StaticTypeMapper\StaticTypeMapper;
+use Rector\StaticTypeMapper\ValueObject\Type\SelfStaticType;
 use Rector\ValueObject\ClassMethodWillChangeReturnType;
 
 /**
@@ -205,6 +206,10 @@ final class PhpDocFromTypeDeclarationDecorator
     private function isTypeMatch(ComplexType|Identifier|Name $typeNode, Type $requireType): bool
     {
         $returnType = $this->staticTypeMapper->mapPhpParserNodePHPStanType($typeNode);
+
+        if ($returnType instanceof SelfStaticType) {
+            $returnType = new \PHPStan\Type\ThisType($returnType->getClassReflection());
+        }
 
         // cover nullable union types
         if ($returnType instanceof UnionType) {
