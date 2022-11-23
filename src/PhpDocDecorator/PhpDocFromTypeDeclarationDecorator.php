@@ -17,6 +17,7 @@ use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Interface_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
@@ -208,7 +209,7 @@ final class PhpDocFromTypeDeclarationDecorator
         $returnType = $this->staticTypeMapper->mapPhpParserNodePHPStanType($typeNode);
 
         if ($returnType instanceof SelfStaticType) {
-            $returnType = new \PHPStan\Type\ThisType($returnType->getClassReflection());
+            $returnType = new ThisType($returnType->getClassReflection());
         }
 
         // cover nullable union types
