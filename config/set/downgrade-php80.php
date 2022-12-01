@@ -81,4 +81,5 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(DowngradeNumberFormatNoFourthArgRector::class);
     $rectorConfig->rule(DowngradeStringReturnTypeOnToStringRector::class);
     $rectorConfig->rule(DowngradeMixedTypeTypedPropertyRector::class);
+    $rectorConfig->rule(\Rector\DowngradePhp80\Rector\ClassMethod\RemoveReturnTypeDeclarationFromCloneRector::class);
 };
