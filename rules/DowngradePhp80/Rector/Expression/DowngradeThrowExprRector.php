@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\Expression;
 
+use PhpParser\Node\Expr;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\Assign;
@@ -235,7 +236,7 @@ CODE_SAMPLE
         return new Identical($coalesce->left, $this->nodeFactory->createNull());
     }
 
-    private function refactorDirectCoalesce(Coalesce $coalesce): ?Node\Expr
+    private function refactorDirectCoalesce(Coalesce $coalesce): ?Expr
     {
         if (! $coalesce->right instanceof Throw_) {
             return null;
@@ -243,10 +244,10 @@ CODE_SAMPLE
 
         // add condition if above
         $throwExpr = $coalesce->right;
-        $throwStmt = new Stmt\Throw_($throwExpr->expr);
+        $throw = new Stmt\Throw_($throwExpr->expr);
 
         $if = new If_(new Identical($coalesce->left, new ConstFetch(new Name('null'))), [
-            'stmts' => [$throwStmt],
+            'stmts' => [$throw],
         ]);
         $this->nodesToAddCollector->addNodeBeforeNode($if, $coalesce);
 
