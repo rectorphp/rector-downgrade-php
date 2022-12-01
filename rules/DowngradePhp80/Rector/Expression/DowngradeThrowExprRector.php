@@ -9,9 +9,11 @@ use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\Coalesce;
 use PhpParser\Node\Expr\BinaryOp\Identical;
+use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\Isset_;
+use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Expr\Variable;
@@ -211,7 +213,13 @@ CODE_SAMPLE
 
     private function createIf(Coalesce $coalesce, Throw_ $throw): If_
     {
-        $booleanNot = new BooleanNot(new Isset_([$coalesce->left]));
+        $conditionalExpr = $coalesce->left;
+
+        if ($conditionalExpr instanceof Variable || $conditionalExpr instanceof ArrayDimFetch || $conditionalExpr instanceof PropertyFetch) {
+            $booleanNot = new BooleanNot(new Isset_([$conditionalExpr]));
+        } else {
+            $booleanNot = new NotIdentical($conditionalExpr, new ConstFetch(new Name('null')));
+        }
 
         return new If_($booleanNot, [
             'stmts' => [new Expression($throw)],
