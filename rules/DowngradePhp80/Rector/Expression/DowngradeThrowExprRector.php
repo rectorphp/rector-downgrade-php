@@ -22,6 +22,7 @@ use Rector\Core\NodeAnalyzer\CoalesceAnalyzer;
 use Rector\Core\NodeManipulator\BinaryOpManipulator;
 use Rector\Core\NodeManipulator\IfManipulator;
 use Rector\Core\Rector\AbstractRector;
+use Rector\PostRector\Collector\NodesToAddCollector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -35,7 +36,8 @@ final class DowngradeThrowExprRector extends AbstractRector
     public function __construct(
         private readonly IfManipulator $ifManipulator,
         private readonly CoalesceAnalyzer $coalesceAnalyzer,
-        private readonly BinaryOpManipulator $binaryOpManipulator
+        private readonly BinaryOpManipulator $binaryOpManipulator,
+        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 
@@ -64,15 +66,31 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Expression::class, Return_::class];
+        return [Expression::class, Return_::class, Coalesce::class];
     }
 
     /**
-     * @param Expression|Return_ $node
+     * @param Expression|Return_|Coalesce $node
      * @return Node|Node[]|null
      */
     public function refactor(Node $node)
     {
+        if ($node instanceof Coalesce) {
+            if ($node->right instanceof Throw_) {
+                // add condition if above
+
+                $throwExpr = $node->right;
+                $throwStmt = new Stmt\Throw_($throwExpr->expr);
+
+                $if = new If_(new Identical($node->left, new Node\Expr\ConstFetch(new Node\Name('null'))), [
+                    'stmts' => [$throwStmt],
+                ]);
+                $this->nodesToAddCollector->addNodeBeforeNode($if, $node);
+
+                return $node->left;
+            }
+        }
+
         if ($node instanceof Return_) {
             return $this->refactorReturn($node);
         }
