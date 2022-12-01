@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use Rector\DowngradePhp80\Rector\ClassMethod\RemoveReturnTypeDeclarationFromCloneRector;
 
 use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
@@ -81,5 +82,5 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(DowngradeNumberFormatNoFourthArgRector::class);
     $rectorConfig->rule(DowngradeStringReturnTypeOnToStringRector::class);
     $rectorConfig->rule(DowngradeMixedTypeTypedPropertyRector::class);
-    $rectorConfig->rule(\Rector\DowngradePhp80\Rector\ClassMethod\RemoveReturnTypeDeclarationFromCloneRector::class);
+    $rectorConfig->rule(RemoveReturnTypeDeclarationFromCloneRector::class);
 };

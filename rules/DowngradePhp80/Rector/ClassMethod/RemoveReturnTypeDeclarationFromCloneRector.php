@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\ClassMethod;
 
+use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -47,11 +48,11 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [\PhpParser\Node\Stmt\ClassMethod::class];
+        return [ClassMethod::class];
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\ClassMethod $node
+     * @param ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -59,7 +60,7 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! $node->returnType instanceof \PhpParser\Node) {
+        if (! $node->returnType instanceof Node) {
             return null;
         }
 
