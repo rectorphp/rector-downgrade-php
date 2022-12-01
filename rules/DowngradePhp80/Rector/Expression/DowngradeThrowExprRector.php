@@ -194,6 +194,10 @@ CODE_SAMPLE
             return [$if, new Return_($coalesce->left)];
         }
 
+        if ($return->expr instanceof Throw_) {
+            return [new Expression($return->expr)];
+        }
+
         return null;
     }
 
