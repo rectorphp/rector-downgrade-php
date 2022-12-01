@@ -10,10 +10,12 @@ use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\Coalesce;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
+use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\Isset_;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
@@ -76,19 +78,7 @@ CODE_SAMPLE
     public function refactor(Node $node)
     {
         if ($node instanceof Coalesce) {
-            if ($node->right instanceof Throw_) {
-                // add condition if above
-
-                $throwExpr = $node->right;
-                $throwStmt = new Stmt\Throw_($throwExpr->expr);
-
-                $if = new If_(new Identical($node->left, new Node\Expr\ConstFetch(new Node\Name('null'))), [
-                    'stmts' => [$throwStmt],
-                ]);
-                $this->nodesToAddCollector->addNodeBeforeNode($if, $node);
-
-                return $node->left;
-            }
+            return $this->refactorDirectCoalesce($node);
         }
 
         if ($node instanceof Return_) {
@@ -235,5 +225,23 @@ CODE_SAMPLE
         }
 
         return new Identical($coalesce->left, $this->nodeFactory->createNull());
+    }
+
+    private function refactorDirectCoalesce(Coalesce $coalesce): ?Node\Expr
+    {
+        if (! $coalesce->right instanceof Throw_) {
+            return null;
+        }
+
+        // add condition if above
+        $throwExpr = $coalesce->right;
+        $throwStmt = new Stmt\Throw_($throwExpr->expr);
+
+        $if = new If_(new Identical($coalesce->left, new ConstFetch(new Name('null'))), [
+            'stmts' => [$throwStmt],
+        ]);
+        $this->nodesToAddCollector->addNodeBeforeNode($if, $coalesce);
+
+        return $coalesce->left;
     }
 }
