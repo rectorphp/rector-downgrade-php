@@ -33,9 +33,6 @@ parameters:
         # php enum value minus
         - '#Parameter \#1 \$phpVersion of method Rector\\Config\\RectorConfig\:\:phpVersion\(\) expects (.*?), (.*?) given#'
 
-        # depens on enum preference
-        - '#Register "Rector\\DowngradePhp80\\Rector\\Enum_\\DowngradeEnumToConstantListClassRector" service to "downgrade\-php80\.php" config set#'
-
         # part of implicit contract
         - '#Call to an undefined method PHPStan\\Type\\ConstantType\:\:getValue\(\)#'
 
