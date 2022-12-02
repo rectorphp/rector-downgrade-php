@@ -110,7 +110,7 @@ CODE_SAMPLE
 
         $this->nodesToAddCollector->addNodeBeforeNode(
             new If_(
-                $this->nodeFactory->createFuncCall('is_array', [$args[0]->value]),
+                $this->nodeFactory->createFuncCall('is_array', [$variable]),
                 [
                     'stmts' => [new Expression(new Assign($variable, $implode))],
                 ]
