@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp74\Rector\FuncCall;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
 use PHPStan\Analyser\Scope;
-use Rector\Core\Rector\AbstractRector;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\PostRector\Collector\NodesToAddCollector;
@@ -24,8 +25,10 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeProcOpenArrayCommandArgRector extends AbstractScopeAwareRector
 {
-    public function __construct(private readonly NodesToAddCollector $nodesToAddCollector, private readonly VariableNaming $variableNaming)
-    {
+    public function __construct(
+        private readonly NodesToAddCollector $nodesToAddCollector,
+        private readonly VariableNaming $variableNaming
+    ) {
     }
 
     public function getRuleDefinition(): RuleDefinition
@@ -88,36 +91,28 @@ CODE_SAMPLE
         }
 
         $currentStmt = $this->betterNodeFinder->resolveCurrentStatement($node);
-
-        $variable = $args[0]->value;
-        if (! $variable instanceof Variable) {
-            $variable = new Variable($this->variableNaming->createCountedValueName('command', $scope));
-            $assign = new Assign($variable, $args[0]->value);
-
-            $this->nodesToAddCollector->addNodeBeforeNode(
-                new Expression($assign),
-                $currentStmt
-            );
-            $node->args[0]->value = $variable;
+        if (! $currentStmt instanceof Stmt) {
+            return null;
         }
 
-        $implode = $this->nodeFactory->createFuncCall(
-            'implode',
-            [
-                new String_(' '),
-                $variable
-            ]
-        );
+        $variable = $args[0]->value instanceof Variable
+            ? $args[0]->value
+            : new Variable($this->variableNaming->createCountedValueName('command', $scope));
+
+        if ($args[0]->value !== $variable) {
+            $assign = new Assign($variable, $args[0]->value);
+
+            $this->nodesToAddCollector->addNodeBeforeNode(new Expression($assign), $currentStmt);
+            $node->args[0] = new Arg($variable);
+        }
+
+        $implode = $this->nodeFactory->createFuncCall('implode', [new String_(' '), $variable]);
 
         $this->nodesToAddCollector->addNodeBeforeNode(
             new If_(
                 $this->nodeFactory->createFuncCall('is_array', [$args[0]->value]),
                 [
-                    'stmts' => [
-                        new Expression(
-                            new Assign($variable, $implode)
-                        )
-                    ]
+                    'stmts' => [new Expression(new Assign($variable, $implode))],
                 ]
             ),
             $currentStmt
