@@ -130,25 +130,17 @@ CODE_SAMPLE
         $constTypeNode = new ConstTypeNode($constFetchNode);
         $paramName = '$' . $this->getName($param);
 
-        if ($isNullable) {
-            $paramTypeNode = new NullableTypeNode($constTypeNode);
-        } else {
-            $paramTypeNode = $constTypeNode;
-        }
+        $paramTypeNode = $isNullable ? new NullableTypeNode($constTypeNode) : $constTypeNode;
 
         $paramTagValueNode = new ParamTagValueNode($paramTypeNode, false, $paramName, '');
         $phpDocInfo->addTagValueNode($paramTagValueNode);
     }
 
-    private function refactorParamType(ClassReflection $classLikeReflection, bool $isNullable, Param $param): void
+    private function refactorParamType(ClassReflection $classReflection, bool $isNullable, Param $param): void
     {
-        $classReflectionType = $this->enumAnalyzer->resolveType($classLikeReflection);
-        if ($classReflectionType instanceof Identifier) {
-            if ($isNullable) {
-                $param->type = new NullableType($classReflectionType);
-            } else {
-                $param->type = new Name($classReflectionType->name);
-            }
+        $identifier = $this->enumAnalyzer->resolveType($classReflection);
+        if ($identifier instanceof Identifier) {
+            $param->type = $isNullable ? new NullableType($identifier) : new Name($identifier->name);
         } else {
             // remove type as ambiguous
             $param->type = null;
