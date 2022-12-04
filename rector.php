@@ -53,11 +53,19 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         StringClassNameToClassConstantRector::class,
 
+        \Rector\CodingStyle\Rector\String_\UseClassKeywordForClassNameResolutionRector::class => [
+            // not useful short class cases, possibly skip in the rule
+            __DIR__ . '/rules/DowngradePhp70/Rector/MethodCall/DowngradeClosureCallRector.php',
+            __DIR__ . '/rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionClassGetConstantsFilterRector.php',
+            __DIR__ . '/rules/DowngradePhp81/Rector/FuncCall/DowngradeFirstClassCallableSyntaxRector.php',
+        ],
+
         // test paths
         '**/Fixture/*',
         '**/Source/*',
         '**/Expected/*',
     ]);
+
 
     $rectorConfig->import(__DIR__ . '/config/config.php');
     $rectorConfig->phpstanConfig(__DIR__ . '/phpstan-for-rector.neon');
