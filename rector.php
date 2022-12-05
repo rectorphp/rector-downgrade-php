@@ -56,6 +56,7 @@ return static function (RectorConfig $rectorConfig): void {
         \Rector\CodingStyle\Rector\String_\UseClassKeywordForClassNameResolutionRector::class => [
             // not useful short class cases, possibly skip in the rule
             __DIR__ . '/rules/DowngradePhp70/Rector/MethodCall/DowngradeClosureCallRector.php',
+            __DIR__ . '/rules/DowngradePhp71/Rector/StaticCall/DowngradeClosureFromCallableRector.php',
             __DIR__ . '/rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionClassGetConstantsFilterRector.php',
             __DIR__ . '/rules/DowngradePhp81/Rector/FuncCall/DowngradeFirstClassCallableSyntaxRector.php',
         ],
