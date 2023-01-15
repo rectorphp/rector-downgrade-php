@@ -14,7 +14,7 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Param;
 use PhpParser\Node\Scalar\LNumber;
 use Rector\Core\Rector\AbstractRector;
-use Rector\NodeTypeResolver\TypeAnalyzer\MethodTypeAnalyzer;
+use Rector\NodeAnalyzer\MethodCallTypeAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -26,7 +26,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeClosureCallRector extends AbstractRector
 {
     public function __construct(
-        private readonly MethodTypeAnalyzer $methodTypeAnalyzer
+        private readonly MethodCallTypeAnalyzer $methodCallTypeAnalyzer,
     ) {
     }
 
@@ -77,7 +77,7 @@ CODE_SAMPLE
             return true;
         }
 
-        return ! $this->methodTypeAnalyzer->isCallTo($methodCall, Closure::class, 'call');
+        return ! $this->methodCallTypeAnalyzer->isMethodCallTo($methodCall, Closure::class, 'call');
     }
 
     private function createBindToCall(MethodCall $methodCall): MethodCall

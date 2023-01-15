@@ -26,6 +26,20 @@ parameters:
         - '*tests/*/Source/*'
         - '*tests/Source/*'
 
+    unused_public:
+        methods: true
+        properties: true
+        constants: true
+
+    type_coverage:
+        return_type: 99
+        param_type: 99
+        property_type: 99
+
+    cognitive_complexity:
+        class: 30
+        function: 10
+
     ignoreErrors:
         - '#Parameter (.*?)refactor\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method Rector\\Core\\Contract\\Rector\\PhpRectorInterface\:\:refactor\(\)#'
         - '#Parameter \#1 \$node (.*?) of method (.*?)\:\:refactorWithScope\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method Rector\\Core\\Contract\\Rector\\ScopeAwarePhpRectorInterface\:\:refactorWithScope\(\)#'
@@ -46,15 +60,6 @@ parameters:
 
         # bool as status return
         - '#Method "refactorParamType\(\)" returns bool type, so the name should start with is/has/was#'
-
-        # null arg is allowed list()
-        - '#Parameter \#2 \$args of class PhpParser\\Node\\Expr\\FuncCall constructor expects array<PhpParser\\Node\\Arg\|PhpParser\\Node\\VariadicPlaceholder>, array<int, PhpParser\\Node\\Arg\|null> given#'
-
-        # rules-tests
-        -
-            message: '#"Tests" namespace cannot be used outside of "tests" directory#'
-            path: rules-tests
-
 
         # known types
         -
@@ -97,9 +102,8 @@ parameters:
         - '#Method "decorateReturnWithSpecificType\(\)" returns bool type, so the name should start with is/has/was#'
 
         -
-            message: '#Unreachable statement \- code above always terminates#'
-            path: rules-tests/DowngradePhp54/Rector/LNumber/DowngradeBinaryNotationRector/DowngradeBinaryNotationRectorTest.php
-
-        -
             message: '#New objects with "\$returnType" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             path: src/PhpDocDecorator/PhpDocFromTypeDeclarationDecorator.php
+
+        # class-string
+        - '#Parameter \#2 \$expectedClass of method Rector\\NodeAnalyzer\\MethodCallTypeAnalyzer\:\:isInstanceOf\(\) expects class\-string, string given#'
