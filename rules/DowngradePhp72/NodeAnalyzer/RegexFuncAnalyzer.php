@@ -65,10 +65,16 @@ final class RegexFuncAnalyzer
             return false;
         }
 
-        if (! $this->valueResolver->isValues($expr->if, self::REGEX_FUNCTION_NAMES)) {
-            return false;
+        foreach (self::REGEX_FUNCTION_NAMES as $regexFunctionName) {
+            if ($this->valueResolver->isValue($expr->if, $regexFunctionName)) {
+                return true;
+            }
+
+            if ($this->valueResolver->isValue($expr->else, $regexFunctionName)) {
+                return true;
+            }
         }
 
-        return $this->valueResolver->isValues($expr->else, self::REGEX_FUNCTION_NAMES);
+        return false;
     }
 }
