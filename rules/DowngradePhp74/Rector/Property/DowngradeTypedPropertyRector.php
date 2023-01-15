@@ -9,7 +9,7 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Stmt\Property;
 use Rector\Core\Rector\AbstractRector;
-use Rector\NodeManipulator\PropertyTypeDecorator;
+use Rector\NodeManipulator\PropertyDecorator;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -19,7 +19,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeTypedPropertyRector extends AbstractRector
 {
     public function __construct(
-        private readonly PropertyTypeDecorator $propertyTypeDecorator
+        private readonly PropertyDecorator $PropertyDecorator
     ) {
     }
 
@@ -69,7 +69,7 @@ CODE_SAMPLE
             $node->props[0]->default = null;
         }
 
-        $this->propertyTypeDecorator->decoratePropertyWithDocBlock($node, $node->type);
+        $this->PropertyDecorator->decorateWithDocBlock($node, $node->type);
         $node->type = null;
 
         return $node;

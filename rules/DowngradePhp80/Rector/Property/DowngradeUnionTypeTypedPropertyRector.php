@@ -8,7 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\UnionType;
 use Rector\Core\Rector\AbstractRector;
-use Rector\NodeManipulator\PropertyTypeDecorator;
+use Rector\NodeManipulator\PropertyDecorator;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -18,7 +18,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeUnionTypeTypedPropertyRector extends AbstractRector
 {
     public function __construct(
-        private readonly PropertyTypeDecorator $propertyTypeDecorator
+        private readonly PropertyDecorator $PropertyDecorator
     ) {
     }
 
@@ -67,7 +67,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $this->propertyTypeDecorator->decoratePropertyWithDocBlock($node, $node->type);
+        $this->PropertyDecorator->decorateWithDocBlock($node, $node->type);
         $node->type = null;
 
         return $node;
