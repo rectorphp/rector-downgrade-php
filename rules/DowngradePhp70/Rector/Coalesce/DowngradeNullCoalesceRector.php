@@ -9,8 +9,8 @@ use PhpParser\Node\Expr\BinaryOp\Coalesce;
 use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\Isset_;
 use PhpParser\Node\Expr\Ternary;
-use Rector\Core\NodeAnalyzer\CoalesceAnalyzer;
 use Rector\Core\Rector\AbstractRector;
+use Rector\NodeAnalyzer\CoalesceAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
