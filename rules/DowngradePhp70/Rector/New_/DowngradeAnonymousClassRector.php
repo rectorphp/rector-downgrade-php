@@ -9,9 +9,9 @@ use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
 use Rector\Core\NodeAnalyzer\ClassAnalyzer;
-use Rector\Core\NodeDecorator\NamespacedNameDecorator;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp70\NodeFactory\ClassFromAnonymousFactory;
+use Rector\NodeManipulator\NamespacedNameDecorator;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
