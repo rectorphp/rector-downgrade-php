@@ -13,6 +13,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://php.watch/articles/php-attributes#syntax
+ *
+ * @see \Rector\Tests\DowngradePhp80\Rector\Param\DowngradeInlinedAttributeRector\DowngradeInlinedAttributeRectorTest
  */
 final class DowngradeInlinedAttributeRector extends AbstractRector
 {
