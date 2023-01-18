@@ -57,11 +57,15 @@ CODE_SAMPLE
         $currentAttrGroups = current($attributeGroups);
         $currentAttr = current($currentAttrGroups->attrs);
 
+        dump($currentAttr->getLine());
+        dump($node->getLine());
+
         if ($currentAttr->getLine() === $node->getLine()) {
             $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
             return $node;
         }
 
-        return $node;
+        print_node($node);
+        return null;
     }
 }
