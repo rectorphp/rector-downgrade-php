@@ -30,6 +30,11 @@ use Webmozart\Assert\Assert;
 final class DowngradeAttributeToAnnotationRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /**
+     * @var string[]
+     */
+    private const SKIPPED_ATTRIBUTES = ['Attribute', 'ReturnTypeWillChange'];
+
+    /**
      * @var DowngradeAttributeToAnnotation[]
      */
     private array $attributesToAnnotations = [];
@@ -94,9 +99,14 @@ CODE_SAMPLE
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
+                if ($this->shouldSkipAttribute($attribute)) {
+                    continue;
+                }
+
                 $attributeToAnnotation = $this->matchAttributeToAnnotation($attribute, $this->attributesToAnnotations);
                 if (! $attributeToAnnotation instanceof DowngradeAttributeToAnnotation) {
                     // clear the attribute to avoid inlining to a comment that will ignore the rest of the line
+
                     unset($attrGroup->attrs[$key]);
 
                     continue;
@@ -169,5 +179,11 @@ CODE_SAMPLE
         }
 
         return null;
+    }
+
+    private function shouldSkipAttribute(Attribute $attribute): bool
+    {
+        $attributeName = $attribute->name->toString();
+        return in_array($attributeName, self::SKIPPED_ATTRIBUTES, true);
     }
 }
