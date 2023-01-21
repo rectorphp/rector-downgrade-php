@@ -90,11 +90,15 @@ CODE_SAMPLE
     public function refactor(Node $node): ?Node
     {
         $this->isDowngraded = false;
+
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
                 $attributeToAnnotation = $this->matchAttributeToAnnotation($attribute, $this->attributesToAnnotations);
                 if (! $attributeToAnnotation instanceof DowngradeAttributeToAnnotation) {
+                    // clear the attribute to avoid inlining to a comment that will ignore the rest of the line
+                    unset($attrGroup->attrs[$key]);
+
                     continue;
                 }
 
