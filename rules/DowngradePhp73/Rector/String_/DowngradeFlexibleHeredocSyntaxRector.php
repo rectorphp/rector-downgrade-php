@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Scalar\Encapsed;
 use PhpParser\Node\Scalar\String_;
 use Rector\Core\Rector\AbstractRector;
+use Rector\DowngradePhp73\Tokenizer\FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -21,6 +22,11 @@ final class DowngradeFlexibleHeredocSyntaxRector extends AbstractRector
      * @var int[]
      */
     private const HERENOW_DOC_KINDS = [String_::KIND_HEREDOC, String_::KIND_NOWDOC];
+
+    public function __construct(
+        private readonly FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer $followedByNewlineOnlyMaybeWithSemicolonAnalyzer
+    ) {
+    }
 
     public function getRuleDefinition(): RuleDefinition
     {
@@ -68,7 +74,9 @@ CODE_SAMPLE
 
         // skip correctly indented
         $docIndentation = (string) $node->getAttribute(AttributeKey::DOC_INDENTATION);
-        if ($docIndentation === '') {
+        if ($docIndentation === '' &&
+            $this->followedByNewlineOnlyMaybeWithSemicolonAnalyzer->isFollowed($this->file, $node)
+        ) {
             return null;
         }
 
