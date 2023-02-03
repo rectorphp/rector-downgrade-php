@@ -19,7 +19,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeTypedPropertyRector extends AbstractRector
 {
     public function __construct(
-        private readonly PropertyDecorator $PropertyDecorator
+        private readonly PropertyDecorator $propertyDecorator
     ) {
     }
 
@@ -69,7 +69,7 @@ CODE_SAMPLE
             $node->props[0]->default = null;
         }
 
-        $this->PropertyDecorator->decorateWithDocBlock($node, $node->type);
+        $this->propertyDecorator->decorateWithDocBlock($node, $node->type);
         $node->type = null;
 
         return $node;

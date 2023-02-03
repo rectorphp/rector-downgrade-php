@@ -17,6 +17,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->sets([
         LevelSetList::UP_TO_PHP_81,
+        PHPUnitSetList::PHPUNIT_100,
         SetList::CODE_QUALITY,
         SetList::DEAD_CODE,
         SetList::PRIVATIZATION,
@@ -44,11 +45,9 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/src',
         __DIR__ . '/rules',
         __DIR__ . '/tests',
+        __DIR__ . '/rules-tests',
         __DIR__ . '/config',
     ]);
-
-    $rectorConfig->importNames();
-    $rectorConfig->parallel();
 
     $rectorConfig->skip([
         StringClassNameToClassConstantRector::class,
