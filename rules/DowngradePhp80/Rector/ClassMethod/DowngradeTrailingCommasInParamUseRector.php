@@ -86,10 +86,6 @@ CODE_SAMPLE
             ClassMethod::class,
             Function_::class,
             Closure::class,
-            StaticCall::class,
-            FuncCall::class,
-            MethodCall::class,
-            New_::class,
         ];
     }
 
@@ -98,15 +94,6 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node instanceof MethodCall ||
-            $node instanceof FuncCall ||
-            $node instanceof StaticCall ||
-            $node instanceof New_
-        ) {
-            /** @var MethodCall|FuncCall|StaticCall|New_ $node */
-            return $this->processArgs($node);
-        }
-
         if ($node instanceof Closure) {
             $this->processUses($node);
         }
