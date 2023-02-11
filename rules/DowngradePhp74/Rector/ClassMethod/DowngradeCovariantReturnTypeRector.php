@@ -25,6 +25,7 @@ use Rector\Core\Util\Reflection\PrivatesAccessor;
 use Rector\DeadCode\PhpDoc\TagRemover\ReturnTagRemover;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PHPStanStaticTypeMapper\Enum\TypeKind;
+use Rector\PHPStanStaticTypeMapper\TypeAnalyzer\UnionTypeAnalyzer;
 use Rector\StaticTypeMapper\ValueObject\Type\ParentStaticType;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -40,7 +41,8 @@ final class DowngradeCovariantReturnTypeRector extends AbstractRector
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
         private readonly ReturnTagRemover $returnTagRemover,
         private readonly ReflectionResolver $reflectionResolver,
-        private readonly PrivatesAccessor $privatesAccessor
+        private readonly PrivatesAccessor $privatesAccessor,
+        private readonly UnionTypeAnalyzer $unionTypeAnalyzer
     ) {
     }
 
@@ -231,10 +233,33 @@ CODE_SAMPLE
                 continue;
             }
 
+            if ($this->isNullable($parentReturnType, $returnType)) {
+                continue;
+            }
+
             // This is an ancestor class with a different return type
             return $parentReturnType;
         }
 
         return new MixedType();
+    }
+
+    private function isNullable(Type $parentReturnType, Type $returnType): bool
+    {
+        if (! $parentReturnType instanceof \PHPStan\Type\UnionType) {
+            return false;
+        }
+
+        if (! $this->unionTypeAnalyzer->isNullable($parentReturnType)) {
+            return false;
+        }
+
+        foreach ($parentReturnType->getTypes() as $type) {
+            if ($type->equals($returnType)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
