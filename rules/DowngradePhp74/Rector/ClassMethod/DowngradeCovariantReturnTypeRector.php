@@ -214,7 +214,7 @@ CODE_SAMPLE
             /** @var Type $parentReturnType */
             $parentReturnType = $this->privatesAccessor->callPrivateMethod(
                 $parameterMethodReflection,
-                'getReturnType',
+                'getNativeReturnType',
                 []
             );
 
