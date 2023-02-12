@@ -86,11 +86,7 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [
-            Enum_::class,
-            ClassMethod::class,
-            PropertyFetch::class,
-        ];
+        return [Enum_::class, ClassMethod::class, PropertyFetch::class];
     }
 
     /**
@@ -130,10 +126,8 @@ CODE_SAMPLE
         return null;
     }
 
-    private function decorateParamDocType(
-        Param $param,
-        PhpDocInfo $phpDocInfo,
-    ): void {
+    private function decorateParamDocType(Param $param, PhpDocInfo $phpDocInfo): void
+    {
         $nullable = false;
         $paramType = $param->type;
         if ($paramType instanceof UnionType) {
@@ -204,7 +198,7 @@ CODE_SAMPLE
         return null;
     }
 
-    private function getClassReflectionByType(null|ComplexType|Identifier|Name $type,): ?ClassReflection
+    private function getClassReflectionByType(null|ComplexType|Identifier|Name $type): ?ClassReflection
     {
         if ($type instanceof UnionType) {
             foreach ($type->types as $type) {
