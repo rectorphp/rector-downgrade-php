@@ -77,11 +77,7 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [
-            ClassMethod::class,
-            Function_::class,
-            Closure::class,
-        ];
+        return [ClassMethod::class, Function_::class, Closure::class];
     }
 
     /**
@@ -117,10 +113,8 @@ CODE_SAMPLE
     /**
      * @param ClosureUse[]|Param[] $array
      */
-    private function cleanTrailingComma(
-        Closure|ClassMethod|Function_ $node,
-        array $array
-    ): ?Node {
+    private function cleanTrailingComma(Closure|ClassMethod|Function_ $node, array $array): ?Node
+    {
         $lastPosition = array_key_last($array);
 
         $last = $array[$lastPosition];
