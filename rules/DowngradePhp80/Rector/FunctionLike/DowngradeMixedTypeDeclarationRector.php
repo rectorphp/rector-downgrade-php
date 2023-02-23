@@ -20,6 +20,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeMixedTypeDeclarationRector extends AbstractRector
 {
+    private bool $hasChanged = false;
+
     public function __construct(
         private readonly PhpDocFromTypeDeclarationDecorator $phpDocFromTypeDeclarationDecorator
     ) {
@@ -73,10 +75,17 @@ CODE_SAMPLE
         $mixedType = new MixedType();
 
         foreach ($node->getParams() as $param) {
-            $this->phpDocFromTypeDeclarationDecorator->decorateParamWithSpecificType($param, $node, $mixedType);
+            $hasChanged = $this->phpDocFromTypeDeclarationDecorator->decorateParamWithSpecificType($param, $node, $mixedType);
+            if ($hasChanged) {
+                $this->hasChanged = true;
+            }
         }
 
         if (! $this->phpDocFromTypeDeclarationDecorator->decorateReturnWithSpecificType($node, $mixedType)) {
+            if ($this->hasChanged) {
+                return $node;
+            }
+
             return null;
         }
 
