@@ -132,23 +132,24 @@ final class PhpDocFromTypeDeclarationDecorator
         Param $param,
         ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         Type $requireType
-    ): void {
+    ): bool {
         if ($param->type === null) {
-            return;
+            return false;
         }
 
         if (! $this->isTypeMatch($param->type, $requireType)) {
-            return;
+            return false;
         }
 
         $type = $this->staticTypeMapper->mapPhpParserNodePHPStanType($param->type);
 
         if ($this->isNullableSupportedAndPossible($type)) {
             $param->type = $this->staticTypeMapper->mapPHPStanTypeToPhpParserNode($type, TypeKind::PARAM);
-            return;
+            return true;
         }
 
         $this->moveParamTypeToParamDoc($functionLike, $param, $type);
+        return true;
     }
 
     /**

@@ -72,10 +72,24 @@ CODE_SAMPLE
     {
         $callableType = new CallableType();
 
+        $hasChanged = false;
+        $hasParamChanged = false;
+
         foreach ($node->getParams() as $param) {
-            $this->phpDocFromTypeDeclarationDecorator->decorateParamWithSpecificType($param, $node, $callableType);
+            $hasParamChanged = $this->phpDocFromTypeDeclarationDecorator->decorateParamWithSpecificType(
+                $param,
+                $node,
+                $callableType
+            );
+            if ($hasParamChanged) {
+                $hasChanged = true;
+            }
         }
 
-        return $node;
+        if ($hasChanged) {
+            return $node;
+        }
+
+        return null;
     }
 }
