@@ -86,6 +86,7 @@ parameters:
             path: rules/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php
 
         - '#Method "decorateReturnWithSpecificType\(\)" returns bool type, so the name should start with is/has/was#'
+        - '#Method "decorateParamWithSpecificType\(\)" returns bool type, so the name should start with is/has/was#'
 
         -
             message: '#New objects with "\$returnType" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
