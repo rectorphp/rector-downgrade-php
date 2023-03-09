@@ -113,7 +113,10 @@ CODE_SAMPLE
         }
 
         $switchCases = $this->createSwitchCasesFromMatchArms($node, $match);
-        $switch = new Switch_($match->cond, $switchCases);
+        $switch = new Switch_($match->cond, $switchCases, [
+            'startLine' => $node->getStartLine(),
+            'endLine' => $node->getEndLine(),
+        ]);
 
         $parentMatch = $match->getAttribute(AttributeKey::PARENT_NODE);
         if ($parentMatch instanceof ArrowFunction) {
