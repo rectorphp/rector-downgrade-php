@@ -6,6 +6,7 @@ namespace Rector\DowngradePhp80\Rector\Expression;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
@@ -193,7 +194,10 @@ CODE_SAMPLE
                 $lastCase->stmts = $this->createSwitchStmts($node, $matchArm, $parentNode);
             } else {
                 $stmts = $this->createSwitchStmts($node, $matchArm, $parentNode);
-                $switchCases[] = new Case_($matchArm->conds[0] ?? null, $stmts);
+                $switchCases[] = new Case_($matchArm->conds[0] ?? null, $stmts, [
+                    'startLine' => $node->getStartLine(),
+                    'endLine' => $node->getEndLine(),
+                ]);
             }
         }
 
