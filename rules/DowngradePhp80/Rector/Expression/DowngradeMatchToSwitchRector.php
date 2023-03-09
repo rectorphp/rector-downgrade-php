@@ -182,7 +182,10 @@ CODE_SAMPLE
                 $lastCase = null;
 
                 foreach ((array) $matchArm->conds as $matchArmCond) {
-                    $lastCase = new Case_($matchArmCond);
+                    $lastCase = new Case_($matchArmCond, [], [
+                        'startLine' => $matchArmCond->getStartLine(),
+                        'endLine' => $matchArmCond->getEndLine(),
+                    ]);
                     $switchCases[] = $lastCase;
                 }
 
