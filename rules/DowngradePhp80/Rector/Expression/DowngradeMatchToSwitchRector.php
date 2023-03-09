@@ -113,10 +113,7 @@ CODE_SAMPLE
         }
 
         $switchCases = $this->createSwitchCasesFromMatchArms($node, $match);
-        $switch = new Switch_($match->cond, $switchCases, [
-            'startLine' => $node->getStartLine(),
-            'endLine' => $node->getEndLine(),
-        ]);
+        $switch = new Switch_($match->cond, $switchCases);
 
         $parentMatch = $match->getAttribute(AttributeKey::PARENT_NODE);
         if ($parentMatch instanceof ArrowFunction) {
@@ -185,10 +182,7 @@ CODE_SAMPLE
                 $lastCase = null;
 
                 foreach ((array) $matchArm->conds as $matchArmCond) {
-                    $lastCase = new Case_($matchArmCond, [], [
-                        'startLine' => $matchArmCond->getStartLine(),
-                        'endLine' => $matchArmCond->getEndLine(),
-                    ]);
+                    $lastCase = new Case_($matchArmCond);
                     $switchCases[] = $lastCase;
                 }
 
@@ -196,10 +190,7 @@ CODE_SAMPLE
                 $lastCase->stmts = $this->createSwitchStmts($node, $matchArm, $parentNode);
             } else {
                 $stmts = $this->createSwitchStmts($node, $matchArm, $parentNode);
-                $switchCases[] = new Case_($matchArm->conds[0] ?? null, $stmts, [
-                    'startLine' => $node->getStartLine(),
-                    'endLine' => $node->getEndLine(),
-                ]);
+                $switchCases[] = new Case_($matchArm->conds[0] ?? null, $stmts);
             }
         }
 
