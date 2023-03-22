@@ -126,7 +126,7 @@ CODE_SAMPLE
             return null;
         }
 
-       foreach ($array->items as $key => $item) {
+        foreach ($array->items as $key => $item) {
             if ($item instanceof ArrayItem && $item->unpack && $item->value instanceof ClassConstFetch && $item->value->class instanceof Name) {
                 $type = $this->nodeTypeResolver->getType($item->value->class);
                 $name = $item->value->name;
@@ -134,8 +134,8 @@ CODE_SAMPLE
                     $classLike = $this->astResolver->resolveClassFromName($type->getClassName());
                     if (! $classLike instanceof ClassLike) {
                         continue;
-
                     }
+
                     $constants = $classLike->getConstants();
 
                     foreach ($constants as $constant) {
