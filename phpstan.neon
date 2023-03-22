@@ -100,3 +100,7 @@ parameters:
             paths:
                 - tests
                 - rules-tests
+
+        -
+            message: '#Cognitive complexity for "Rector\\DowngradePhp74\\Rector\\Array_\\DowngradeArraySpreadRector\:\:refactorUnderClassConst\(\)" is 24, keep it under 10#'
+            path: rules/DowngradePhp74/Rector/Array_/DowngradeArraySpreadRector.php

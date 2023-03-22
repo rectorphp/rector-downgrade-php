@@ -97,7 +97,10 @@ CODE_SAMPLE
 
         $classConst = $this->betterNodeFinder->findParentType($node, ClassConst::class);
         if ($classConst instanceof ClassConst) {
-            return $this->refactorUnderClassConst($node, $classConst);
+            $refactorUnderClassConst = $this->refactorUnderClassConst($node, $classConst);
+            if ($refactorUnderClassConst instanceof Array_) {
+                return $refactorUnderClassConst;
+            }
         }
 
         $shouldIncrement = (bool) $this->betterNodeFinder->findFirstNext($node, function (Node $subNode): bool {
