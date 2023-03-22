@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp74\Rector\Array_;
 
 use PhpParser\Node;
-use PhpParser\Node\Const_;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\ClassConstFetch;
@@ -114,7 +113,10 @@ CODE_SAMPLE
                             $constants = $parentClassConst->getConstants();
                             foreach ($constants as $constant) {
                                 if ($constant->consts[0]->name instanceof Identifier && $constant->consts[0]->name->toString() === $name->toString()) {
-                                    $newItem = trim($this->betterStandardPrinter->print($constant->consts[0]->value), '([)]') ;
+                                    $newItem = trim(
+                                        $this->betterStandardPrinter->print($constant->consts[0]->value),
+                                        '([)]'
+                                    );
                                     $node->items[$key] = new ArrayItem(new String_($newItem));
                                     continue 2;
                                 }
