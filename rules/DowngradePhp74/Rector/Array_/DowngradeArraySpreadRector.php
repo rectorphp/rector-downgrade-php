@@ -5,12 +5,24 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp74\Rector\Array_;
 
 use PhpParser\Node;
+use PhpParser\Node\Const_;
 use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\ArrayItem;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\ClassConst;
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
+use Rector\Core\PhpParser\Printer\BetterStandardPrinter;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
+use Rector\NodeTypeResolver\Node\AttributeKey;
+use Rector\StaticTypeMapper\ValueObject\Type\FullyQualifiedObjectType;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -24,6 +36,7 @@ final class DowngradeArraySpreadRector extends AbstractScopeAwareRector
     public function __construct(
         private readonly ArrayMergeFromArraySpreadFactory $arrayMergeFromArraySpreadFactory,
         private readonly ArraySpreadAnalyzer $arraySpreadAnalyzer,
+        private readonly BetterStandardPrinter $betterStandardPrinter
     ) {
     }
 
@@ -80,11 +93,38 @@ CODE_SAMPLE
 
     /**
      * @param Array_ $node
+     * @return null|FuncCall|ArrayItem
      */
-    public function refactorWithScope(Node $node, Scope $scope): ?Node
+    public function refactorWithScope(Node $node, Scope $scope)
     {
         if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($node)) {
             return null;
+        }
+
+        $classConst = $this->betterNodeFinder->findParentType($node, ClassConst::class);
+        if ($classConst instanceof ClassConst) {
+            $parentClassConst = $classConst->getAttribute(AttributeKey::PARENT_NODE);
+            if ($parentClassConst instanceof ClassLike) {
+                $className = (string) $this->getName($parentClassConst);
+                foreach ($node->items as $key => $item) {
+                    if ($item instanceof ArrayItem && $item->unpack && $item->value instanceof ClassConstFetch && $item->value->class instanceof Name) {
+                        $type = $this->nodeTypeResolver->getType($item->value->class);
+                        $name = $item->value->name;
+                        if ($type instanceof FullyQualifiedObjectType && $name instanceof Identifier && $type->getClassName() === $className) {
+                            $constants = $parentClassConst->getConstants();
+                            foreach ($constants as $constant) {
+                                if ($constant->consts[0]->name instanceof Identifier && $constant->consts[0]->name->toString() === $name->toString()) {
+                                    $newItem = trim($this->betterStandardPrinter->print($constant->consts[0]->value), '([)]') ;
+                                    $node->items[$key] = new ArrayItem(new String_($newItem));
+                                    continue 2;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $node;
         }
 
         $shouldIncrement = (bool) $this->betterNodeFinder->findFirstNext($node, function (Node $subNode): bool {
