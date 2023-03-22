@@ -14,6 +14,7 @@ use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
+use Rector\Core\PhpParser\AstResolver;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
@@ -31,7 +32,8 @@ final class DowngradeArraySpreadRector extends AbstractScopeAwareRector
 {
     public function __construct(
         private readonly ArrayMergeFromArraySpreadFactory $arrayMergeFromArraySpreadFactory,
-        private readonly ArraySpreadAnalyzer $arraySpreadAnalyzer
+        private readonly ArraySpreadAnalyzer $arraySpreadAnalyzer,
+        private readonly AstResolver $astResolver
     ) {
     }
 
@@ -124,13 +126,17 @@ CODE_SAMPLE
             return null;
         }
 
-        $className = (string) $this->getName($node);
-        foreach ($array->items as $key => $item) {
+       foreach ($array->items as $key => $item) {
             if ($item instanceof ArrayItem && $item->unpack && $item->value instanceof ClassConstFetch && $item->value->class instanceof Name) {
                 $type = $this->nodeTypeResolver->getType($item->value->class);
                 $name = $item->value->name;
-                if ($type instanceof FullyQualifiedObjectType && $name instanceof Identifier && $type->getClassName() === $className) {
-                    $constants = $node->getConstants();
+                if ($type instanceof FullyQualifiedObjectType && $name instanceof Identifier) {
+                    $classLike = $this->astResolver->resolveClassFromName($type->getClassName());
+                    if (! $classLike instanceof ClassLike) {
+                        continue;
+
+                    }
+                    $constants = $classLike->getConstants();
 
                     foreach ($constants as $constant) {
                         $const = $constant->consts[0];
