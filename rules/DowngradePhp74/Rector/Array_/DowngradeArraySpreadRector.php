@@ -111,14 +111,13 @@ CODE_SAMPLE
                         $name = $item->value->name;
                         if ($type instanceof FullyQualifiedObjectType && $name instanceof Identifier && $type->getClassName() === $className) {
                             $constants = $parentClassConst->getConstants();
+
                             foreach ($constants as $constant) {
-                                if ($constant->consts[0]->name instanceof Identifier && $constant->consts[0]->name->toString() === $name->toString()) {
-                                    $newItem = trim(
-                                        $this->betterStandardPrinter->print($constant->consts[0]->value),
-                                        '([)]'
-                                    );
-                                    $node->items[$key] = new ArrayItem(new String_($newItem));
-                                    continue 2;
+                                foreach ($constant->consts as $const) {
+                                    if ($const->name instanceof Identifier && $const->name->toString() === $name->toString() && $const->value instanceof Array_) {
+                                        unset($node->items[$key]);
+                                        array_splice($node->items, $key, 0, $const->value->items);
+                                    }
                                 }
                             }
                         }
