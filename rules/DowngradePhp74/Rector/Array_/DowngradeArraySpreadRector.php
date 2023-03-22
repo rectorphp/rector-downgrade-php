@@ -89,9 +89,8 @@ CODE_SAMPLE
 
     /**
      * @param Array_ $node
-     * @return null|FuncCall|ArrayItem
      */
-    public function refactorWithScope(Node $node, Scope $scope)
+    public function refactorWithScope(Node $node, Scope $scope): ?Node
     {
         if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($node)) {
             return null;
@@ -99,30 +98,7 @@ CODE_SAMPLE
 
         $classConst = $this->betterNodeFinder->findParentType($node, ClassConst::class);
         if ($classConst instanceof ClassConst) {
-            $parentClassConst = $classConst->getAttribute(AttributeKey::PARENT_NODE);
-            if ($parentClassConst instanceof ClassLike) {
-                $className = (string) $this->getName($parentClassConst);
-                foreach ($node->items as $key => $item) {
-                    if ($item instanceof ArrayItem && $item->unpack && $item->value instanceof ClassConstFetch && $item->value->class instanceof Name) {
-                        $type = $this->nodeTypeResolver->getType($item->value->class);
-                        $name = $item->value->name;
-                        if ($type instanceof FullyQualifiedObjectType && $name instanceof Identifier && $type->getClassName() === $className) {
-                            $constants = $parentClassConst->getConstants();
-
-                            foreach ($constants as $constant) {
-                                foreach ($constant->consts as $const) {
-                                    if ($const->name instanceof Identifier && $const->name->toString() === $name->toString() && $const->value instanceof Array_) {
-                                        unset($node->items[$key]);
-                                        array_splice($node->items, $key, 0, $const->value->items);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return $node;
+            return $this->refactorUnderClassConst($node, $classConst);
         }
 
         $shouldIncrement = (bool) $this->betterNodeFinder->findFirstNext($node, function (Node $subNode): bool {
@@ -135,5 +111,43 @@ CODE_SAMPLE
 
         /** @var MutatingScope $scope */
         return $this->arrayMergeFromArraySpreadFactory->createFromArray($node, $scope, $this->file, $shouldIncrement);
+    }
+
+    private function refactorUnderClassConst(Array_ $array, ClassConst $classConst): ?Array_
+    {
+        $node = $classConst->getAttribute(AttributeKey::PARENT_NODE);
+        $hasChanged = false;
+
+        if (! $node instanceof ClassLike) {
+            return null;
+        }
+
+        $className = (string) $this->getName($node);
+        foreach ($array->items as $key => $item) {
+            if ($item instanceof ArrayItem && $item->unpack && $item->value instanceof ClassConstFetch && $item->value->class instanceof Name) {
+                $type = $this->nodeTypeResolver->getType($item->value->class);
+                $name = $item->value->name;
+                if ($type instanceof FullyQualifiedObjectType && $name instanceof Identifier && $type->getClassName() === $className) {
+                    $constants = $node->getConstants();
+
+                    foreach ($constants as $constant) {
+                        $const = $constant->consts[0];
+
+                        if ($const->name instanceof Identifier && $const->name->toString() === $name->toString() && $const->value instanceof Array_) {
+                            unset($array->items[$key]);
+                            array_splice($array->items, $key, 0, $const->value->items);
+
+                            $hasChanged = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($hasChanged) {
+            return $array;
+        }
+
+        return null;
     }
 }
