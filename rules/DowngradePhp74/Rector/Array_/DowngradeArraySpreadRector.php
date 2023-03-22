@@ -11,12 +11,10 @@ use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
-use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
-use Rector\Core\PhpParser\Printer\BetterStandardPrinter;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
@@ -34,8 +32,7 @@ final class DowngradeArraySpreadRector extends AbstractScopeAwareRector
 {
     public function __construct(
         private readonly ArrayMergeFromArraySpreadFactory $arrayMergeFromArraySpreadFactory,
-        private readonly ArraySpreadAnalyzer $arraySpreadAnalyzer,
-        private readonly BetterStandardPrinter $betterStandardPrinter
+        private readonly ArraySpreadAnalyzer $arraySpreadAnalyzer
     ) {
     }
 
