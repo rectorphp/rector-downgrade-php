@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp80\NodeAnalyzer;
 
 use PhpParser\Node\Arg;
+use PhpParser\Node\Identifier;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\Native\NativeFunctionReflection;
@@ -41,7 +42,7 @@ final class UnnamedArgumentResolver
         $toFillArgs = [];
 
         foreach ($currentArgs as $key => $arg) {
-            if ($arg->name === null) {
+            if (! $arg->name instanceof Identifier) {
                 $unnamedArgs[$key] = new Arg($arg->value, $arg->byRef, $arg->unpack, $arg->getAttributes(), null);
 
                 continue;

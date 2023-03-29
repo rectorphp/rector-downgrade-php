@@ -14,11 +14,11 @@ use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
+use PHPStan\Type\Type;
 use Rector\Core\PhpParser\AstResolver;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\StaticTypeMapper\ValueObject\Type\FullyQualifiedObjectType;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -85,24 +85,20 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Array_::class];
+        return [Array_::class, ClassConst::class];
     }
 
     /**
-     * @param Array_ $node
+     * @param Array_|ClassConst $node
      */
     public function refactorWithScope(Node $node, Scope $scope): ?Node
     {
-        if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($node)) {
-            return null;
+        if ($node instanceof ClassConst) {
+            return $this->refactorUnderClassConst($node);
         }
 
-        $classConst = $this->betterNodeFinder->findParentType($node, ClassConst::class);
-        if ($classConst instanceof ClassConst) {
-            $refactorUnderClassConst = $this->refactorUnderClassConst($node, $classConst);
-            if ($refactorUnderClassConst instanceof Array_) {
-                return $refactorUnderClassConst;
-            }
+        if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($node)) {
+            return null;
         }
 
         $shouldIncrement = (bool) $this->betterNodeFinder->findFirstNext($node, function (Node $subNode): bool {
@@ -117,37 +113,88 @@ CODE_SAMPLE
         return $this->arrayMergeFromArraySpreadFactory->createFromArray($node, $scope, $this->file, $shouldIncrement);
     }
 
-    private function refactorUnderClassConst(Array_ $array, ClassConst $classConst): ?Array_
+    private function refactorUnderClassConst(ClassConst $classConst): ?ClassConst
     {
-        $node = $classConst->getAttribute(AttributeKey::PARENT_NODE);
-        $hasChanged = false;
-
-        if (! $node instanceof ClassLike) {
+        $arrays = $this->betterNodeFinder->findInstanceOf($classConst->consts, Array_::class);
+        if ($arrays === []) {
             return null;
         }
 
+        $hasChanged = false;
+
+        foreach ($arrays as $array) {
+            $refactorArrayConstValue = $this->refactorArrayConstValue($array);
+            if ($refactorArrayConstValue instanceof Array_) {
+                $hasChanged = true;
+            }
+        }
+
+        if ($hasChanged) {
+            return $classConst;
+        }
+
+        return null;
+    }
+
+    private function resolveItemType(?ArrayItem $arrayItem): ?Type
+    {
+        if (! $arrayItem instanceof ArrayItem) {
+            return null;
+        }
+
+        if (! $arrayItem->unpack) {
+            return null;
+        }
+
+        if (! $arrayItem->value instanceof ClassConstFetch) {
+            return null;
+        }
+
+        if (! $arrayItem->value->class instanceof Name) {
+            return null;
+        }
+
+        if (! $arrayItem->value->name instanceof Identifier) {
+            return null;
+        }
+
+        return $this->nodeTypeResolver->getType($arrayItem->value->class);
+    }
+
+    private function refactorArrayConstValue(Array_ $array): ?Array_
+    {
+        $hasChanged = false;
+
         foreach ($array->items as $key => $item) {
-            if ($item instanceof ArrayItem && $item->unpack && $item->value instanceof ClassConstFetch && $item->value->class instanceof Name) {
-                $type = $this->nodeTypeResolver->getType($item->value->class);
-                $name = $item->value->name;
-                if ($type instanceof FullyQualifiedObjectType && $name instanceof Identifier) {
-                    $classLike = $this->astResolver->resolveClassFromName($type->getClassName());
-                    if (! $classLike instanceof ClassLike) {
-                        continue;
-                    }
+            $type = $this->resolveItemType($item);
+            if (! $type instanceof FullyQualifiedObjectType) {
+                continue;
+            }
 
-                    $constants = $classLike->getConstants();
+            /**
+             * @var ArrayItem $item
+             * @var ClassConstFetch $value
+             * @var Identifier $name
+             */
+            $value = $item->value;
+            /** @var Identifier $name */
+            $name = $value->name;
 
-                    foreach ($constants as $constant) {
-                        $const = $constant->consts[0];
+            $classLike = $this->astResolver->resolveClassFromName($type->getClassName());
+            if (! $classLike instanceof ClassLike) {
+                continue;
+            }
 
-                        if ($const->name instanceof Identifier && $const->name->toString() === $name->toString() && $const->value instanceof Array_) {
-                            unset($array->items[$key]);
-                            array_splice($array->items, $key, 0, $const->value->items);
+            $constants = $classLike->getConstants();
 
-                            $hasChanged = true;
-                        }
-                    }
+            foreach ($constants as $constant) {
+                $const = $constant->consts[0];
+
+                if ($const->name->toString() === $name->toString() && $const->value instanceof Array_) {
+                    unset($array->items[$key]);
+                    array_splice($array->items, $key, 0, $const->value->items);
+
+                    $hasChanged = true;
                 }
             }
         }
