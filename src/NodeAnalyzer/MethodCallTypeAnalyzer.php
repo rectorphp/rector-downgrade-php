@@ -60,6 +60,6 @@ final class MethodCallTypeAnalyzer
             return true;
         }
 
-        return $type->getAncestorWithClassName($expectedClass) !== null;
+        return $type->getAncestorWithClassName($expectedClass) instanceof TypeWithClassName;
     }
 }

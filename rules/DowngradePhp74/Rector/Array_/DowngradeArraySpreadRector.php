@@ -14,6 +14,7 @@ use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
+use PHPStan\Type\Type;
 use Rector\Core\PhpParser\AstResolver;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
@@ -135,7 +136,7 @@ CODE_SAMPLE
         return null;
     }
 
-    private function resolveItemType(?ArrayItem $arrayItem): ?\PHPStan\Type\Type
+    private function resolveItemType(?ArrayItem $arrayItem): ?Type
     {
         if (! $arrayItem instanceof ArrayItem) {
             return null;

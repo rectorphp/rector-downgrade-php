@@ -132,7 +132,7 @@ CODE_SAMPLE
             return true;
         }
 
-        if ($param->default === null) {
+        if (! $param->default instanceof Expr) {
             return true;
         }
 

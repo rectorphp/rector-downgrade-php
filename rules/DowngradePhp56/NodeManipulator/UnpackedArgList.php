@@ -53,7 +53,7 @@ final class UnpackedArgList
     {
         if ($arg->value instanceof Array_) {
             foreach ($arg->value->items as $arrayItem) {
-                if ($arrayItem === null) {
+                if (! $arrayItem instanceof ArrayItem) {
                     continue;
                 }
 

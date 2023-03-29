@@ -6,6 +6,7 @@ namespace Rector\NodeFactory;
 
 use PhpParser\Node\Arg;
 use PhpParser\Node\Attribute;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use Rector\BetterPhpDocParser\PhpDoc\DoctrineAnnotationTagValueNode;
@@ -44,7 +45,7 @@ final class DoctrineAnnotationFactory
             }
 
             $itemValue = $this->nodePrinter->print($arg->value);
-            if ($arg->name !== null) {
+            if ($arg->name instanceof Identifier) {
                 $name = $this->nodePrinter->print($arg->name);
                 $items[$name] = $itemValue;
             } else {
