@@ -105,8 +105,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $unnamedArgs = $this->unnamedArgumentResolver->resolveFromReflection($functionLikeReflection, $args);
-        $node->args = $unnamedArgs;
+        $node->args = $this->unnamedArgumentResolver->resolveFromReflection($functionLikeReflection, $args);
 
         return $node;
     }
