@@ -94,9 +94,3 @@ parameters:
 
         # class-string
         - '#Parameter \#2 \$expectedClass of method Rector\\NodeAnalyzer\\MethodCallTypeAnalyzer\:\:isInstanceOf\(\) expects class\-string, string given#'
-
-        -
-            message: '#Attribute must have all names explicitly defined#'
-            paths:
-                - tests
-                - rules-tests
