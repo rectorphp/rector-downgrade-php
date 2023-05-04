@@ -78,8 +78,10 @@ final class PhpDocFromTypeDeclarationDecorator
 
         // if nullable is supported, downgrade to that one
         if ($this->isNullableSupportedAndPossible($returnType)) {
-            $returnTypeNode = $this->staticTypeMapper->mapPHPStanTypeToPhpParserNode($returnType, TypeKind::RETURN);
-            $functionLike->returnType = $returnTypeNode;
+            $functionLike->returnType = $this->staticTypeMapper->mapPHPStanTypeToPhpParserNode(
+                $returnType,
+                TypeKind::RETURN
+            );
 
             return;
         }
