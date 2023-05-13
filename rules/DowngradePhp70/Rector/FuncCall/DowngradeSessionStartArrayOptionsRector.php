@@ -103,14 +103,11 @@ CODE_SAMPLE
             return true;
         }
 
-        if (! isset($funcCall->args[0])) {
+        if (! isset($funcCall->getArgs()[0])) {
             return true;
         }
 
-        if (! $funcCall->args[0] instanceof Arg) {
-            return true;
-        }
-
-        return ! $funcCall->args[0]->value instanceof Array_;
+        return ! $funcCall->getArgs()[0]
+->value instanceof Array_;
     }
 }

@@ -145,16 +145,13 @@ CODE_SAMPLE
             return true;
         }
 
-        if (! isset($funcCall->args[1])) {
-            return true;
-        }
-
-        if (! $funcCall->args[1] instanceof Arg) {
+        if (! isset($funcCall->getArgs()[1])) {
             return true;
         }
 
         // Process anything other than String and null (eg: variables, function calls)
-        $allowableTagsParam = $funcCall->args[1]->value;
+        $allowableTagsParam = $funcCall->getArgs()[1]
+->value;
 
         // Skip for string
         if ($allowableTagsParam instanceof String_) {

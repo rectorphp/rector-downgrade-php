@@ -93,16 +93,12 @@ CODE_SAMPLE
             return true;
         }
 
-        $argsCount = count($funcCall->args);
-        if ($argsCount <= 2) {
+        if (count($funcCall->getArgs()) < 3) {
             return true;
         }
 
-        if (! isset($funcCall->args[2])) {
-            return true;
-        }
-
-        return ! ($funcCall->args[2] instanceof Arg && $funcCall->args[2]->value instanceof Array_);
+        $thirdArg = $funcCall->getArgs()[2];
+        return ! $thirdArg->value instanceof Array_;
     }
 
     /**

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp81\NodeManipulator;
 
 use PhpParser\Node;
-use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp;
 use PhpParser\Node\Expr\BinaryOp\BooleanOr;
@@ -75,15 +74,11 @@ final class ObjectToResourceReturn
                         return false;
                     }
 
-                    if (! isset($subNode->args[0])) {
+                    if (! isset($subNode->getArgs()[0])) {
                         return false;
                     }
 
-                    if (! $subNode->args[0] instanceof Arg) {
-                        return false;
-                    }
-
-                    return $this->nodeComparator->areNodesEqual($subNode->args[0], $expr);
+                    return $this->nodeComparator->areNodesEqual($subNode->getArgs()[0], $expr);
                 }
             );
         }

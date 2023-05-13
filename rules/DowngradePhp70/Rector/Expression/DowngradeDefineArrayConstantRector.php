@@ -83,6 +83,10 @@ CODE_SAMPLE
 
     private function shouldSkip(FuncCall $funcCall): bool
     {
+        if ($funcCall->isFirstClassCallable()) {
+            return true;
+        }
+
         if (! $this->isName($funcCall, 'define')) {
             return true;
         }
