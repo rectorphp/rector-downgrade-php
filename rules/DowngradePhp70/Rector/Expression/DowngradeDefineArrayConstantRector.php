@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp70\Rector\Expression;
 
 use PhpParser\Node;
-use PhpParser\Node\Arg;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
@@ -13,7 +12,6 @@ use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Function_;
-use Rector\Core\NodeAnalyzer\ArgsAnalyzer;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -23,11 +21,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeDefineArrayConstantRector extends AbstractRector
 {
-    public function __construct(
-        private readonly ArgsAnalyzer $argsAnalyzer
-    ) {
-    }
-
     /**
      * @return array<class-string<Node>>
      */
@@ -72,13 +65,11 @@ CODE_SAMPLE
         }
 
         $funcCall = $node->expr;
-
         if ($this->shouldSkip($funcCall)) {
             return null;
         }
 
-        /** @var Arg[] $args */
-        $args = $funcCall->args;
+        $args = $funcCall->getArgs();
 
         /** @var String_ $arg0 */
         $arg0 = $args[0]->value;
@@ -96,13 +87,7 @@ CODE_SAMPLE
             return true;
         }
 
-        $args = $funcCall->args;
-
-        if (! $this->argsAnalyzer->isArgsInstanceInArgsPositions($args, [0, 1])) {
-            return true;
-        }
-
-        /** @var Arg[] $args */
+        $args = $funcCall->getArgs();
         if (! $args[0]->value instanceof String_) {
             return true;
         }

@@ -100,7 +100,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $args = array_merge([new Arg($node->name)], $node->args);
+        $args = array_merge([new Arg($node->name)], $node->getArgs());
 
         return new FuncCall(new Name('call_user_func'), $args);
     }

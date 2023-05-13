@@ -65,16 +65,13 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! isset($node->args[0])) {
-            return null;
-        }
-
-        if (! $node->args[0] instanceof Arg) {
+        if (! isset($node->getArgs()[0])) {
             return null;
         }
 
         /** @var Array_ $options */
-        $options = $node->args[0]->value;
+        $options = $node->getArgs()[0]
+->value;
 
         foreach ($options->items as $option) {
             if (! $option instanceof ArrayItem) {

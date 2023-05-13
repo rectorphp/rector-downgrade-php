@@ -92,7 +92,7 @@ CODE_SAMPLE
 
         $this->nodesToAddCollector->addNodeBeforeNode($expression, $node);
 
-        return new FuncCall($variable, $node->args);
+        return new FuncCall($variable, $node->getArgs());
     }
 
     private function createClosure(): Closure

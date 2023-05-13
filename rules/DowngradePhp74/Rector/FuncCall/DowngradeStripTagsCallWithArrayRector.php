@@ -102,8 +102,7 @@ CODE_SAMPLE
             return null;
         }
 
-        /** @var Arg $secondArg */
-        $secondArg = $node->args[1];
+        $secondArg = $node->getArgs()[1];
         $allowableTagsParam = $secondArg->value;
 
         if ($allowableTagsParam instanceof Array_) {
