@@ -82,15 +82,11 @@ CODE_SAMPLE
 
     private function refactorBoolval(FuncCall $funcCall): ?Bool_
     {
-        if (! isset($funcCall->args[0])) {
+        if (! isset($funcCall->getArgs()[0])) {
             return null;
         }
 
-        if (! $funcCall->args[0] instanceof Arg) {
-            return null;
-        }
-
-        return new Bool_($funcCall->args[0]->value);
+        return new Bool_($funcCall->getArgs()[0]->value);
     }
 
     private function refactorAsCallback(FuncCall $funcCall): ?FuncCall
@@ -98,11 +94,7 @@ CODE_SAMPLE
         $functionLikeReflection = null;
         $refactored = false;
 
-        foreach ($funcCall->args as $position => $arg) {
-            if (! $arg instanceof Arg) {
-                continue;
-            }
-
+        foreach ($funcCall->getArgs() as $position => $arg) {
             if (! $this->isBoolvalReference($arg)) {
                 continue;
             }

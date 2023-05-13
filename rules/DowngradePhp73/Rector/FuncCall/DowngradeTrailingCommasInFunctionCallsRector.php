@@ -75,9 +75,9 @@ CODE_SAMPLE
     public function refactor(Node $node): ?Node
     {
         if ($node->getArgs() !== []) {
-            $lastArgumentPosition = array_key_last($node->args);
+            $lastArgumentPosition = array_key_last($node->getArgs());
 
-            $last = $node->args[$lastArgumentPosition];
+            $last = $node->getArgs()[$lastArgumentPosition];
             if (! $this->followedByCommaAnalyzer->isFollowed($this->file, $last)) {
                 return null;
             }

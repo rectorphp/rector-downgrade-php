@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp71\Rector\FuncCall;
 
 use PhpParser\Node;
-use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\BinaryOp\BooleanOr;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Instanceof_;
@@ -68,18 +67,15 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! isset($node->args[0])) {
+        if (! isset($node->getArgs()[0])) {
             return null;
         }
 
-        if (! $node->args[0] instanceof Arg) {
-            return null;
-        }
+        $expr = $node->getArgs()[0]
+->value;
 
-        /** @var mixed $arg */
-        $arg = $node->args[0]->value;
-        $funcCall = $this->nodeFactory->createFuncCall('is_array', [$arg]);
-        $instanceof = new Instanceof_($arg, new FullyQualified('Traversable'));
+        $funcCall = $this->nodeFactory->createFuncCall('is_array', [$expr]);
+        $instanceof = new Instanceof_($expr, new FullyQualified('Traversable'));
 
         return new BooleanOr($funcCall, $instanceof);
     }

@@ -70,16 +70,12 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! isset($node->args[0])) {
-            return null;
-        }
-
-        if (! $node->args[0] instanceof Arg) {
+        if (! isset($node->getArgs()[0])) {
             return null;
         }
 
         $tempVariable = $this->namedVariableFactory->createVariable($node, 'callable');
-        $expression = new Expression(new Assign($tempVariable, $node->args[0]->value));
+        $expression = new Expression(new Assign($tempVariable, $node->getArgs()[0]->value));
 
         $this->nodesToAddCollector->addNodeBeforeNode($expression, $node);
 

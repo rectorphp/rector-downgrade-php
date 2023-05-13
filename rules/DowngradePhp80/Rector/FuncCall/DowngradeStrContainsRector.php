@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp80\Rector\FuncCall;
 
 use PhpParser\Node;
-use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\FuncCall;
-use Rector\Core\NodeAnalyzer\ArgsAnalyzer;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -18,15 +16,10 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 /**
  * @changelog https://wiki.php.net/rfc/str_contains
  *
- * @see Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector\DowngradeStrContainsRectorTest
+ * @see \Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector\DowngradeStrContainsRectorTest
  */
 final class DowngradeStrContainsRector extends AbstractRector
 {
-    public function __construct(
-        private readonly ArgsAnalyzer $argsAnalyzer
-    ) {
-    }
-
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
@@ -77,17 +70,14 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! $this->argsAnalyzer->isArgsInstanceInArgsPositions($funcCall->args, [0, 1])) {
+        if (count($funcCall->getArgs()) < 2) {
             return null;
         }
 
-        /** @var Arg $firstArg */
-        $firstArg = $funcCall->args[0];
-        $haystack = $firstArg->value;
-
-        /** @var Arg $secondArg */
-        $secondArg = $funcCall->args[1];
-        $needle = $secondArg->value;
+        $haystack = $funcCall->getArgs()[0]
+->value;
+        $needle = $funcCall->getArgs()[1]
+->value;
 
         $funcCall = $this->nodeFactory->createFuncCall('strpos', [$haystack, $needle]);
 

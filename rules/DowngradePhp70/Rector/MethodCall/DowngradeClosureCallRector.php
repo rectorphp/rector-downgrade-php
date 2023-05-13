@@ -66,7 +66,7 @@ CODE_SAMPLE
         }
 
         $methodCall = $this->createBindToCall($node);
-        $args = [new Arg($methodCall), ...array_slice($node->args, 1)];
+        $args = [new Arg($methodCall), ...array_slice($node->getArgs(), 1)];
 
         return new FuncCall(new Name('call_user_func'), $args);
     }

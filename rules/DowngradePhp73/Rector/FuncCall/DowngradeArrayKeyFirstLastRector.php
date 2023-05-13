@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp73\Rector\FuncCall;
 
 use PhpParser\Node;
-use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Cast\Array_;
@@ -88,15 +87,12 @@ CODE_SAMPLE
 
     private function refactorArrayKeyFirst(FuncCall $funcCall): ?FuncCall
     {
-        if (! isset($funcCall->args[0])) {
+        if (! isset($funcCall->getArgs()[0])) {
             return null;
         }
 
-        if (! $funcCall->args[0] instanceof Arg) {
-            return null;
-        }
-
-        $originalArray = $funcCall->args[0]->value;
+        $originalArray = $funcCall->getArgs()[0]
+->value;
         $array = $this->resolveCastedArray($originalArray);
 
         if ($originalArray !== $array) {
@@ -117,15 +113,12 @@ CODE_SAMPLE
 
     private function refactorArrayKeyLast(FuncCall $funcCall): ?FuncCall
     {
-        if (! isset($funcCall->args[0])) {
+        if (! isset($funcCall->getArgs()[0])) {
             return null;
         }
 
-        if (! $funcCall->args[0] instanceof Arg) {
-            return null;
-        }
-
-        $originalArray = $funcCall->args[0]->value;
+        $originalArray = $funcCall->getArgs()[0]
+->value;
         $array = $this->resolveCastedArray($originalArray);
 
         if ($originalArray !== $array) {

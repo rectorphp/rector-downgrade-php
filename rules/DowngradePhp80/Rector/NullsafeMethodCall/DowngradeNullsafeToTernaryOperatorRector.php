@@ -65,7 +65,7 @@ CODE_SAMPLE
         $variable = new Variable($tempVarName);
 
         $called = $node instanceof NullsafeMethodCall
-            ? new MethodCall($variable, $node->name, $node->args)
+            ? new MethodCall($variable, $node->name, $node->getArgs())
             : new PropertyFetch($variable, $node->name);
 
         $assign = new Assign($variable, $node->var);
