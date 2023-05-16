@@ -73,18 +73,6 @@ parameters:
             message: '#New objects with "\$bitwiseOr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             path: rules/DowngradePhp72/NodeManipulator/BitwiseFlagCleaner.php
 
-        # not used on purpose, as child nodes continue to deal with params
-        -
-            message: '#Method call return value that should be used, but is not#'
-            paths:
-                - rules/DowngradePhp80/Rector/ClassMethod/DowngradeTrailingCommasInParamUseRector.php
-                - src/PhpDocDecorator/PhpDocFromTypeDeclarationDecorator.php
-
-        # value is always used
-        -
-            message: '#Method call return value that should be used, but is not#'
-            path: rules/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php
-
         - '#Method "decorateReturnWithSpecificType\(\)" returns bool type, so the name should start with is/has/was#'
         - '#Method "decorateParamWithSpecificType\(\)" returns bool type, so the name should start with is/has/was#'
 
