@@ -69,7 +69,7 @@ CODE_SAMPLE
     private function processForStringOrVariableOrProperty(
         String_ | Variable | PropertyFetch | StaticPropertyFetch $expr
     ): ?Expr {
-        $nextNode = $expr->getAttribute(AttributeKey::NEXT_NODE);
+        $nextNode = $this->betterNodeFinder->resolveNextNode($expr);
         if (! $nextNode instanceof UnaryMinus) {
             return null;
         }
