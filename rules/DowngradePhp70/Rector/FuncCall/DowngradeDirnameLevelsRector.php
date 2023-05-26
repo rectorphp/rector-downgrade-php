@@ -123,9 +123,9 @@ CODE_SAMPLE
         $funcVariable = $this->namedVariableFactory->createVariable($funcCall, 'dirnameFunc');
 
         $closure = $this->createClosure();
-        $exprAssignClosure = $this->createExprAssign($funcVariable, $closure);
+        $expression = $this->createExprAssign($funcVariable, $closure);
 
-        $this->nodesToAddCollector->addNodeBeforeNode($exprAssignClosure, $funcCall);
+        $this->nodesToAddCollector->addNodeBeforeNode($expression, $funcCall);
 
         $funcCall->name = $funcVariable;
 
