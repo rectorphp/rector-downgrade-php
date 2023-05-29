@@ -116,7 +116,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @return Stmt[]
+     * @return Stmt[]|null
      */
     private function refactorForeachToOwnVariables(List_ | Array_ $listOrArray, Foreach_ $foreach): ?array
     {
