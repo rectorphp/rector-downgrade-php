@@ -54,11 +54,11 @@ final class DowngradePregUnmatchedAsNullConstantRector extends AbstractRector
      */
     public function getNodeTypes(): array
     {
-        return [FuncCall::class, ClassConst::class];
+        return [Expression::class, ClassConst::class];
     }
 
     /**
-     * @param FuncCall|ClassConst $node
+     * @param Expression|ClassConst $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -66,11 +66,16 @@ final class DowngradePregUnmatchedAsNullConstantRector extends AbstractRector
             return $this->refactorClassConst($node);
         }
 
-        if (! $this->regexFuncAnalyzer->isRegexFunctionNames($node)) {
+        if (! $node->expr instanceof FuncCall) {
             return null;
         }
 
-        $args = $node->getArgs();
+        $funcCall = $node->expr;
+        if (! $this->regexFuncAnalyzer->isRegexFunctionNames($funcCall)) {
+            return null;
+        }
+
+        $args = $funcCall->getArgs();
         if (! isset($args[3])) {
             return null;
         }
@@ -81,9 +86,9 @@ final class DowngradePregUnmatchedAsNullConstantRector extends AbstractRector
         $variable = $args[2]->value;
 
         if ($flags instanceof BitwiseOr) {
-            $this->bitwiseFlagCleaner->cleanFuncCall($node, $flags, self::UNMATCHED_NULL_FLAG, null);
+            $this->bitwiseFlagCleaner->cleanFuncCall($funcCall, $flags, self::UNMATCHED_NULL_FLAG, null);
             if (! $this->nodeComparator->areNodesEqual($flags, $args[3]->value)) {
-                return $this->handleEmptyStringToNullMatch($node, $variable);
+                return $this->handleEmptyStringToNullMatch($funcCall, $variable);
             }
 
             return null;
@@ -97,8 +102,8 @@ final class DowngradePregUnmatchedAsNullConstantRector extends AbstractRector
             return null;
         }
 
-        $node = $this->handleEmptyStringToNullMatch($node, $variable);
-        unset($node->args[3]);
+        $funcCall = $this->handleEmptyStringToNullMatch($funcCall, $variable);
+        unset($funcCall->args[3]);
 
         return $node;
     }
