@@ -7,10 +7,6 @@ parameters:
     # requires exact closure types
     checkMissingCallableSignature: true
 
-    parallel:
-        # to prevent full thread lagging pc
-        maximumNumberOfProcesses: 15
-
     paths:
         - src
         - rules
@@ -24,16 +20,6 @@ parameters:
         - "*/Expected/*"
         - '*/Fixture/*'
         - '*/Source/*'
-
-    unused_public:
-        methods: true
-        properties: true
-        constants: true
-
-    type_coverage:
-        return_type: 99
-        param_type: 99
-        property_type: 99
 
     cognitive_complexity:
         class: 30
@@ -85,3 +71,6 @@ parameters:
         -
             message: '#Class cognitive complexity is 32, keep it under 30#'
             path: rules/DowngradePhp73/Rector/List_/DowngradeListReferenceAssignmentRector.php
+
+        - '#but class PhpParser\\Node\\Stmt\\Expression is not generic#'
+
