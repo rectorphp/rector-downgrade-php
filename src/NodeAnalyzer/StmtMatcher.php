@@ -6,7 +6,6 @@ namespace Rector\NodeAnalyzer;
 
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Name;
-use PhpParser\Node\Stmt;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 
 final class StmtMatcher
@@ -17,9 +16,9 @@ final class StmtMatcher
     }
 
     /**
-     * @param Stmt|Stmt[] $stmt
+     * @param \PhpParser\Node|\PhpParser\Node[] $stmt
      */
-    public function matchFuncCallNamed(Stmt | array $stmt, string $functionName): ?FuncCall
+    public function matchFuncCallNamed(\PhpParser\Node | array $stmt, string $functionName): ?FuncCall
     {
         /** @var FuncCall[] $funcCalls */
         $funcCalls = $this->betterNodeFinder->findInstancesOf($stmt, [FuncCall::class]);
