@@ -3,7 +3,9 @@
 namespace Rector\Tests\DowngradePhp71\Rector\StaticCall\DowngradeClosureFromCallableRector\Fixture;
 
 $callable = 'used_callable_variable';
+
 $lower = \Closure::fromCallable('strtolower');
+
 $upper = \Closure::fromCallable('strtoupper');
 
 ?>
