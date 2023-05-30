@@ -16,7 +16,10 @@ final class StmtMatcher
     ) {
     }
 
-    public function matchFuncCallNamed(Stmt $stmt, string $functionName): ?FuncCall
+    /**
+     * @param Stmt|Stmt[] $stmt
+     */
+    public function matchFuncCallNamed(Stmt | array $stmt, string $functionName): ?FuncCall
     {
         /** @var FuncCall[] $funcCalls */
         $funcCalls = $this->betterNodeFinder->findInstancesOf($stmt, [FuncCall::class]);

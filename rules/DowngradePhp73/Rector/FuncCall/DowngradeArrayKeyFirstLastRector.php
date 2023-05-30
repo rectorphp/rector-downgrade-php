@@ -13,8 +13,11 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
+use PhpParser\Node\Stmt\Else_;
+use PhpParser\Node\Stmt\ElseIf_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
+use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeAnalyzer\StmtMatcher;
@@ -69,21 +72,23 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Expression::class, If_::class];
+        return [Expression::class, If_::class, ElseIf_::class, Else_::class];
     }
 
     /**
-     * @param Expression|Stmt\If_ $node
-     * @return Stmt[]|Stmt|null
+     * @param Expression|If_|Stmt\Else_|Stmt\ElseIf_ $node
+     * @return Stmt[]|StmtsAwareInterface|null
      */
-    public function refactor(Node $node): array|Stmt|null
+    public function refactor(Node $node): array|StmtsAwareInterface|null
     {
-        $funcCall = $this->stmtMatcher->matchFuncCallNamed($node, 'array_key_first');
+        $scopeStmt = ($node instanceof If_ || $node instanceof ElseIf_ || $node instanceof Else_) ? $node->stmts : $node;
+
+        $funcCall = $this->stmtMatcher->matchFuncCallNamed($scopeStmt, 'array_key_first');
         if ($funcCall instanceof FuncCall) {
             return $this->refactorArrayKeyFirst($funcCall, $node);
         }
 
-        $funcCall = $this->stmtMatcher->matchFuncCallNamed($node, 'array_key_last');
+        $funcCall = $this->stmtMatcher->matchFuncCallNamed($scopeStmt, 'array_key_last');
         if ($funcCall instanceof FuncCall) {
             return $this->refactorArrayKeyLast($funcCall, $node);
         }
@@ -94,8 +99,10 @@ CODE_SAMPLE
     /**
      * @return Stmt[]|null
      */
-    private function refactorArrayKeyFirst(FuncCall $funcCall, Expression|If_ $stmt): null|array|If_
-    {
+    private function refactorArrayKeyFirst(
+        FuncCall $funcCall,
+        Expression|StmtsAwareInterface $stmt
+    ): null|array|StmtsAwareInterface {
         if (! isset($funcCall->getArgs()[0])) {
             return null;
         }
@@ -119,8 +126,8 @@ CODE_SAMPLE
             $firstArg->value = $array;
         }
 
-        if ($stmt instanceof If_) {
-            $stmt->stmts = array_merge([$resetFuncCallExpression], $stmt->stmts);
+        if ($stmt instanceof StmtsAwareInterface) {
+            $stmt->stmts = array_merge([$resetFuncCallExpression], (array) $stmt->stmts);
             return $stmt;
         }
 
@@ -131,10 +138,12 @@ CODE_SAMPLE
     }
 
     /**
-     * @return Stmt[]|null
+     * @return Stmt[]|StmtsAwareInterface|null
      */
-    private function refactorArrayKeyLast(FuncCall $funcCall, Expression|If_ $stmt): null|array|If_
-    {
+    private function refactorArrayKeyLast(
+        FuncCall $funcCall,
+        Expression|StmtsAwareInterface $stmt
+    ): null|array|StmtsAwareInterface {
         $firstArg = $funcCall->getArgs()[0] ?? null;
         if (! $firstArg instanceof Arg) {
             return null;
@@ -158,8 +167,8 @@ CODE_SAMPLE
             $firstArg->value = $array;
         }
 
-        if ($stmt instanceof If_) {
-            $stmt->stmts = array_merge([$endFuncCallExpression], $stmt->stmts);
+        if ($stmt instanceof StmtsAwareInterface) {
+            $stmt->stmts = array_merge([$endFuncCallExpression], (array) $stmt->stmts);
             return $stmt;
         }
 
