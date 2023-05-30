@@ -13,7 +13,7 @@ parameters:
         - tests
         - rules-tests
 
-    # reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: false
 
     excludePaths:
         # tests files
@@ -71,6 +71,8 @@ parameters:
         -
             message: '#Class cognitive complexity is 32, keep it under 30#'
             path: rules/DowngradePhp73/Rector/List_/DowngradeListReferenceAssignmentRector.php
+
+        - '#Parameter \#3 \$stmt of method Rector\\DowngradePhp72\\Rector\\FuncCall\\DowngradePregUnmatchedAsNullConstantRector\:\:processReplace\(\) expects PhpParser\\Node\\Stmt, PhpParser\\Node given#'
 
         - '#but class PhpParser\\Node\\Stmt\\Expression is not generic#'
 

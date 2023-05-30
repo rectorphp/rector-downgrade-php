@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradePregUnmatchedAsNullConstantRector\Fixture;
 
-class ComplexInIf
+final class DynamicName
 {
     public function run()
     {
@@ -22,7 +22,7 @@ class ComplexInIf
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradePregUnmatchedAsNullConstantRector\Fixture;
 
-class ComplexInIf
+final class DynamicName
 {
     public function run()
     {

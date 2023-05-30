@@ -2,9 +2,9 @@
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradePregUnmatchedAsNullConstantRector\Fixture;
 
-class ComplexInIfDirectCall
+final class ComplexInIfDirectCall
 {
-    public function run()
+    public function run($regexp)
     {
         try {
             if (preg_match_all($regexp, $this->string, $matches, $flags | \PREG_UNMATCHED_AS_NULL, $offset)) {
@@ -21,9 +21,9 @@ class ComplexInIfDirectCall
 
 namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradePregUnmatchedAsNullConstantRector\Fixture;
 
-class ComplexInIfDirectCall
+final class ComplexInIfDirectCall
 {
-    public function run()
+    public function run($regexp)
     {
         try {
             if (preg_match_all($regexp, $this->string, $matches, $flags, $offset)) {
