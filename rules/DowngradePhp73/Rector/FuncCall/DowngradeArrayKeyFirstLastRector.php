@@ -81,27 +81,41 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): array|StmtsAwareInterface|null
     {
-        $scopeStmt = ($node instanceof If_ || $node instanceof ElseIf_ || $node instanceof Else_) ? $node->stmts : $node;
+        if ($node instanceof If_ || $node instanceof ElseIf_) {
+            $scopeStmt = [$node->cond, ...$node->stmts];
+        } elseif ($node instanceof Else_) {
+            $scopeStmt = $node->stmts;
+        } else {
+            $scopeStmt = $node;
+        }
+
+        $isPartOfCond = false;
+
+        if ($node instanceof If_ || $node instanceof ElseIf_) {
+            $isPartOfCond = $this->stmtMatcher->matchFuncCallNamed([$node->cond], 'array_key_first') ||
+                $this->stmtMatcher->matchFuncCallNamed([$node->cond], 'array_key_last');
+        }
 
         $funcCall = $this->stmtMatcher->matchFuncCallNamed($scopeStmt, 'array_key_first');
         if ($funcCall instanceof FuncCall) {
-            return $this->refactorArrayKeyFirst($funcCall, $node);
+            return $this->refactorArrayKeyFirst($funcCall, $node, $isPartOfCond);
         }
 
         $funcCall = $this->stmtMatcher->matchFuncCallNamed($scopeStmt, 'array_key_last');
         if ($funcCall instanceof FuncCall) {
-            return $this->refactorArrayKeyLast($funcCall, $node);
+            return $this->refactorArrayKeyLast($funcCall, $node, $isPartOfCond);
         }
 
         return null;
     }
 
     /**
-     * @return Stmt[]|null
+     * @return Stmt[]|StmtsAwareInterface|null
      */
     private function refactorArrayKeyFirst(
         FuncCall $funcCall,
-        Expression|StmtsAwareInterface $stmt
+        Expression|StmtsAwareInterface $stmt,
+        bool $isPartOfCond
     ): null|array|StmtsAwareInterface {
         if (! isset($funcCall->getArgs()[0])) {
             return null;
@@ -126,7 +140,7 @@ CODE_SAMPLE
             $firstArg->value = $array;
         }
 
-        if ($stmt instanceof StmtsAwareInterface) {
+        if ($stmt instanceof StmtsAwareInterface && $isPartOfCond === false) {
             $stmt->stmts = array_merge([$resetFuncCallExpression], (array) $stmt->stmts);
             return $stmt;
         }
@@ -142,7 +156,8 @@ CODE_SAMPLE
      */
     private function refactorArrayKeyLast(
         FuncCall $funcCall,
-        Expression|StmtsAwareInterface $stmt
+        Expression|StmtsAwareInterface $stmt,
+        bool $isPartOfCond
     ): null|array|StmtsAwareInterface {
         $firstArg = $funcCall->getArgs()[0] ?? null;
         if (! $firstArg instanceof Arg) {
@@ -167,7 +182,7 @@ CODE_SAMPLE
             $firstArg->value = $array;
         }
 
-        if ($stmt instanceof StmtsAwareInterface) {
+        if ($stmt instanceof StmtsAwareInterface && $isPartOfCond === false) {
             $stmt->stmts = array_merge([$endFuncCallExpression], (array) $stmt->stmts);
             return $stmt;
         }

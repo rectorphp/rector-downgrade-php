@@ -78,3 +78,5 @@ parameters:
 
         # generics
         - '#Access to an undefined property Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface\:\:\$stmts#'
+        - '#(.*?) should return array<PhpParser\\Node\\Stmt>\|Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface\|null but returns array<int, PhpParser\\Node\\Stmt\\Expression\|Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface>#'
+
