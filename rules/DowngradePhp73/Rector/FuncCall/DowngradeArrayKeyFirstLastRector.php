@@ -74,9 +74,9 @@ CODE_SAMPLE
 
     /**
      * @param Expression|Stmt\If_ $node
-     * @return Stmt[]|null
+     * @return Stmt[]|Stmt|null
      */
-    public function refactor(Node $node): ?array
+    public function refactor(Node $node): array|Stmt|null
     {
         $funcCall = $this->stmtMatcher->matchFuncCallNamed($node, 'array_key_first');
         if ($funcCall instanceof FuncCall) {
@@ -94,7 +94,7 @@ CODE_SAMPLE
     /**
      * @return Stmt[]|null
      */
-    private function refactorArrayKeyFirst(FuncCall $funcCall, Stmt $stmt): ?array
+    private function refactorArrayKeyFirst(FuncCall $funcCall, Expression|If_ $stmt): null|array|If_
     {
         if (! isset($funcCall->getArgs()[0])) {
             return null;
@@ -111,6 +111,7 @@ CODE_SAMPLE
         }
 
         $resetFuncCall = $this->nodeFactory->createFuncCall('reset', [$array]);
+        $resetFuncCallExpression = new Expression($resetFuncCall);
 
         $funcCall->name = new Name('key');
         if ($originalArray !== $array) {
@@ -118,7 +119,12 @@ CODE_SAMPLE
             $firstArg->value = $array;
         }
 
-        $newStmts[] = new Expression($resetFuncCall);
+        if ($stmt instanceof If_) {
+            $stmt->stmts = array_merge([$resetFuncCallExpression], $stmt->stmts);
+            return $stmt;
+        }
+
+        $newStmts[] = $resetFuncCallExpression;
         $newStmts[] = $stmt;
 
         return $newStmts;
@@ -127,7 +133,7 @@ CODE_SAMPLE
     /**
      * @return Stmt[]|null
      */
-    private function refactorArrayKeyLast(FuncCall $funcCall, Stmt $stmt): ?array
+    private function refactorArrayKeyLast(FuncCall $funcCall, Expression|If_ $stmt): null|array|If_
     {
         $firstArg = $funcCall->getArgs()[0] ?? null;
         if (! $firstArg instanceof Arg) {
@@ -144,11 +150,17 @@ CODE_SAMPLE
         }
 
         $endFuncCall = $this->nodeFactory->createFuncCall('end', [$array]);
-        $newStmts[] = new Expression($endFuncCall);
+        $endFuncCallExpression = new Expression($endFuncCall);
+        $newStmts[] = $endFuncCallExpression;
 
         $funcCall->name = new Name('key');
         if ($originalArray !== $array) {
             $firstArg->value = $array;
+        }
+
+        if ($stmt instanceof If_) {
+            $stmt->stmts = array_merge([$endFuncCallExpression], $stmt->stmts);
+            return $stmt;
         }
 
         $newStmts[] = $stmt;
