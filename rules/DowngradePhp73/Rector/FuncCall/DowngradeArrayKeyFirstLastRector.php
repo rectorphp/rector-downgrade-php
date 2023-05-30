@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp73\Rector\FuncCall;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Cast\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
+use PhpParser\Node\Stmt\If_;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Naming\Naming\VariableNaming;
+use Rector\NodeAnalyzer\StmtMatcher;
 use Rector\NodeTypeResolver\Node\AttributeKey;
-use Rector\PostRector\Collector\NodesToAddCollector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -28,7 +31,7 @@ final class DowngradeArrayKeyFirstLastRector extends AbstractRector
 {
     public function __construct(
         private readonly VariableNaming $variableNaming,
-        private readonly NodesToAddCollector $nodesToAddCollector,
+        private readonly StmtMatcher $stmtMatcher,
     ) {
     }
 
@@ -66,26 +69,32 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [FuncCall::class];
+        return [Expression::class, If_::class];
     }
 
     /**
-     * @param FuncCall $node
+     * @param Expression|Stmt\If_ $node
+     * @return Stmt[]|null
      */
-    public function refactor(Node $node): ?Node
+    public function refactor(Node $node): ?array
     {
-        if ($this->isName($node, 'array_key_first')) {
-            return $this->refactorArrayKeyFirst($node);
+        $funcCall = $this->stmtMatcher->matchFuncCallNamed($node, 'array_key_first');
+        if ($funcCall instanceof FuncCall) {
+            return $this->refactorArrayKeyFirst($funcCall, $node);
         }
 
-        if ($this->isName($node, 'array_key_last')) {
-            return $this->refactorArrayKeyLast($node);
+        $funcCall = $this->stmtMatcher->matchFuncCallNamed($node, 'array_key_last');
+        if ($funcCall instanceof FuncCall) {
+            return $this->refactorArrayKeyLast($funcCall, $node);
         }
 
         return null;
     }
 
-    private function refactorArrayKeyFirst(FuncCall $funcCall): ?FuncCall
+    /**
+     * @return Stmt[]|null
+     */
+    private function refactorArrayKeyFirst(FuncCall $funcCall, Stmt $stmt): ?array
     {
         if (! isset($funcCall->getArgs()[0])) {
             return null;
@@ -95,12 +104,13 @@ CODE_SAMPLE
 ->value;
         $array = $this->resolveCastedArray($originalArray);
 
+        $newStmts = [];
+
         if ($originalArray !== $array) {
-            $this->addAssignNewVariable($funcCall, $originalArray, $array);
+            $newStmts[] = new Expression(new Assign($array, $originalArray));
         }
 
         $resetFuncCall = $this->nodeFactory->createFuncCall('reset', [$array]);
-        $this->nodesToAddCollector->addNodeBeforeNode($resetFuncCall, $funcCall);
 
         $funcCall->name = new Name('key');
         if ($originalArray !== $array) {
@@ -108,38 +118,42 @@ CODE_SAMPLE
             $firstArg->value = $array;
         }
 
-        return $funcCall;
+        $newStmts[] = new Expression($resetFuncCall);
+        $newStmts[] = $stmt;
+
+        return $newStmts;
     }
 
-    private function refactorArrayKeyLast(FuncCall $funcCall): ?FuncCall
+    /**
+     * @return Stmt[]|null
+     */
+    private function refactorArrayKeyLast(FuncCall $funcCall, Stmt $stmt): ?array
     {
-        if (! isset($funcCall->getArgs()[0])) {
+        $firstArg = $funcCall->getArgs()[0] ?? null;
+        if (! $firstArg instanceof Arg) {
             return null;
         }
 
-        $originalArray = $funcCall->getArgs()[0]
-->value;
+        $originalArray = $firstArg->value;
         $array = $this->resolveCastedArray($originalArray);
 
+        $newStmts = [];
+
         if ($originalArray !== $array) {
-            $this->addAssignNewVariable($funcCall, $originalArray, $array);
+            $newStmts[] = new Expression(new Assign($array, $originalArray));
         }
 
-        $resetFuncCall = $this->nodeFactory->createFuncCall('end', [$array]);
-        $this->nodesToAddCollector->addNodeBeforeNode($resetFuncCall, $funcCall);
+        $endFuncCall = $this->nodeFactory->createFuncCall('end', [$array]);
+        $newStmts[] = new Expression($endFuncCall);
 
         $funcCall->name = new Name('key');
         if ($originalArray !== $array) {
-            $firstArg = $funcCall->getArgs()[0];
             $firstArg->value = $array;
         }
 
-        return $funcCall;
-    }
+        $newStmts[] = $stmt;
 
-    private function addAssignNewVariable(FuncCall $funcCall, Expr $expr, Expr|Variable $variable): void
-    {
-        $this->nodesToAddCollector->addNodeBeforeNode(new Expression(new Assign($variable, $expr)), $funcCall);
+        return $newStmts;
     }
 
     private function resolveCastedArray(Expr $expr): Expr|Variable
@@ -153,6 +167,7 @@ CODE_SAMPLE
         }
 
         $scope = $expr->getAttribute(AttributeKey::SCOPE);
+
         $variableName = $this->variableNaming->createCountedValueName(
             (string) $this->nodeNameResolver->getName($expr->expr),
             $scope
