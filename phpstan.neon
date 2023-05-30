@@ -4,6 +4,8 @@ includes:
 parameters:
     level: 8
 
+    reportUnmatchedIgnoredErrors: false
+
     # requires exact closure types
     checkMissingCallableSignature: true
 
@@ -13,7 +15,6 @@ parameters:
         - tests
         - rules-tests
 
-    reportUnmatchedIgnoredErrors: false
 
     excludePaths:
         # tests files
