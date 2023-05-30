@@ -2,8 +2,8 @@
 
 namespace Rector\Tests\DowngradePhp80\Rector\New_\DowngradeArbitraryExpressionsSupportRector\Fixture;
 
-$object = new \stdClass();
-var_dump($object instanceof (\stdClass::class));
+$justInstanceof = new \stdClass();
+var_dump($justInstanceof instanceof (\stdClass::class));
 
 ?>
 -----
@@ -11,8 +11,8 @@ var_dump($object instanceof (\stdClass::class));
 
 namespace Rector\Tests\DowngradePhp80\Rector\New_\DowngradeArbitraryExpressionsSupportRector\Fixture;
 
-$object = new \stdClass();
+$justInstanceof = new \stdClass();
 $className = \stdClass::class;
-var_dump($object instanceof $className);
+var_dump($justInstanceof instanceof $className);
 
 ?>

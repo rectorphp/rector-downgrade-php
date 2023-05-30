@@ -4,8 +4,6 @@ namespace Rector\Tests\DowngradePhp80\Rector\New_\DowngradeArbitraryExpressionsS
 
 $object = new \stdClass();
 
-$class = \stdClass::class;
+$someClass = \stdClass::class;
 
-var_dump($object instanceof $class);
-
-?>
+var_dump($object instanceof $someClass);

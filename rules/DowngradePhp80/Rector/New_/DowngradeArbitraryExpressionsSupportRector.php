@@ -15,10 +15,10 @@ use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\StaticPropertyFetch;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Stmt\Expression;
 use Rector\Core\Rector\AbstractRector;
 use Rector\NodeFactory\NamedVariableFactory;
 use Rector\NodeTypeResolver\Node\AttributeKey;
-use Rector\PostRector\Collector\NodesToAddCollector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -31,13 +31,12 @@ final class DowngradeArbitraryExpressionsSupportRector extends AbstractRector
 {
     public function __construct(
         private readonly NamedVariableFactory $namedVariableFactory,
-        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 
     public function getRuleDefinition(): RuleDefinition
     {
-        return new RuleDefinition('Replace arbitrary expressions used with new or instanceof.', [
+        return new RuleDefinition('Replace arbitrary expressions used with new or instanceof', [
             new CodeSample(
                 <<<'CODE_SAMPLE'
 function getObjectClassName() {
@@ -64,43 +63,29 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Instanceof_::class, New_::class];
+        return [Expression::class];
     }
 
     /**
-     * @param Instanceof_|New_ $node
+     * @param Expression $node
+     * @return Node\Stmt[]|null|Expression
      */
-    public function refactor(Node $node): ?Node
+    public function refactor(Node $node): array|null|Expression
     {
-        if (! $node->class instanceof Expr) {
-            return null;
+        /** @var Assign[] $assigns */
+        $assigns = $this->betterNodeFinder->findInstancesOf($node, [Assign::class]);
+
+        if ($assigns !== []) {
+            return $this->refactorAssign($assigns, $node);
         }
 
-        $isAllowed = $this->isAllowed($node->class);
-        $toSkip = $isAllowed && $this->isBetweenParentheses($node);
-        if ($toSkip) {
-            return null;
+        /** @var Instanceof_[] $instancesOf */
+        $instancesOf = $this->betterNodeFinder->findInstancesOf($node, [Instanceof_::class]);
+        if ($instancesOf !== []) {
+            return $this->refactorInstanceof($instancesOf[0], $node);
         }
 
-        // mandatory to remove parentheses
-        $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
-
-        if ($isAllowed) {
-            return $node;
-        }
-
-        if ($this->isAssign($node->class)) {
-            /** @var Assign|AssignRef|AssignOp $assign */
-            $assign = $node->class;
-            $variable = $assign->var;
-        } else {
-            $variable = $this->namedVariableFactory->createVariable($node, 'className');
-            $assign = new Assign($variable, $node->class);
-        }
-
-        $this->nodesToAddCollector->addNodeBeforeNode($assign, $node);
-        $node->class = $variable;
-        return $node;
+        return null;
     }
 
     private function isAllowed(Expr $expr): bool
@@ -132,5 +117,77 @@ CODE_SAMPLE
         }
 
         return false;
+    }
+
+    /**
+     * @param Assign[] $assigns
+     * @return Node\Stmt[]|null
+     */
+    private function refactorAssign($assigns, Expression $expression): array|null
+    {
+        foreach ($assigns as $assign) {
+            if (! $assign->expr instanceof New_ && ! $assign->expr instanceof Instanceof_) {
+                continue;
+            }
+
+            $newOrInstanceof = $assign->expr;
+            if (! $newOrInstanceof->class instanceof Expr) {
+                continue;
+            }
+
+            $isAllowed = $this->isAllowed($newOrInstanceof->class);
+            if ($isAllowed && $this->isBetweenParentheses($newOrInstanceof)) {
+                continue;
+            }
+
+            // mandatory to remove parentheses
+            $newOrInstanceof->setAttribute(AttributeKey::ORIGINAL_NODE, null);
+
+            if ($isAllowed) {
+                continue;
+            }
+
+            print_node($newOrInstanceof->class);
+
+            if ($this->isAssign($newOrInstanceof->class)) {
+                /** @var Assign|AssignRef|AssignOp $exprAssign */
+                $exprAssign = $newOrInstanceof->class;
+                $variable = $exprAssign->var;
+            } else {
+                $variable = $this->namedVariableFactory->createVariable($newOrInstanceof, 'className');
+                $exprAssign = new Assign($variable, $newOrInstanceof->class);
+            }
+
+            $newOrInstanceof->class = $variable;
+
+            return [new Expression($exprAssign), $expression];
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Node\Stmt[]|null
+     */
+    private function refactorInstanceof(Instanceof_ $instanceof, Expression $expression): ?array
+    {
+        if (! $instanceof->class instanceof Expr) {
+            return null;
+        }
+
+        $isAllowed = $this->isAllowed($instanceof->class);
+        if ($isAllowed && $this->isBetweenParentheses($instanceof)) {
+            return null;
+        }
+
+        // mandatory to remove parentheses
+        $instanceof->setAttribute(AttributeKey::ORIGINAL_NODE, null);
+
+        $variable = $this->namedVariableFactory->createVariable($instanceof, 'className');
+        $exprAssign = new Assign($variable, $instanceof->class);
+
+        $instanceof->class = $variable;
+
+        return [new Expression($exprAssign), $expression];
     }
 }
