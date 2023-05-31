@@ -50,11 +50,6 @@ parameters:
             message: '#New objects with "\$parentReturnTypeNode" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             path: rules/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php
 
-        # chain joined epxr
-        -
-            message: '#New objects with "\$expr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
-            path: rules/DowngradePhp55/Rector/Isset_/DowngradeArbitraryExpressionArgsToEmptyAndIssetRector.php
-
         # cleaning expr
         -
             message: '#New objects with "\$bitwiseOr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
