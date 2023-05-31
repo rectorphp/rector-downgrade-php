@@ -83,3 +83,7 @@ parameters:
 
 
         - '#(.*?)\:\:refactor\(\) should return array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\\ClassConst\|null but returns array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\|null#'
+
+        -
+            message: '#Use value object over return of values#'
+            path: rules/DowngradePhp71/Rector/StaticCall/DowngradeClosureFromCallableRector.php
