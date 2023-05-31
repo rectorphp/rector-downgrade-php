@@ -41,18 +41,18 @@ vendor/bin/rector
 
 It's simple in the nature. Read these *how-to* posts to get the idea:
 
-* [How all Frameworks can Bump to PHP 8.1 and You can Keep Using Older PHP](https://getrector.comgs/blog/how-all-frameworks-can-bump-to-php-81-and-you-can-use-older-php)
+* [How all Frameworks can Bump to PHP 8.1 and You can Keep Using Older PHP](https://getrector.com/blog/how-all-frameworks-can-bump-to-php-81-and-you-can-use-older-php)
 * [Introducing ECS Prefixed and Downgraded to PHP 7.1](https://tomasvotruba.com/blog/introducing-ecs-prefixed-and-downgraded-to-php-71/)
-* [How to bump Minimal PHP Version without Leaving Anyone Behind?](https://getrector.comgs/blog/how-to-bump-minimal-version-without-leaving-anyone-behind)
+* [How to bump Minimal PHP Version without Leaving Anyone Behind?](https://getrector.com/blog/how-to-bump-minimal-version-without-leaving-anyone-behind)
 * [Rector 0.10 Released - with PHP 7.1 Support](https://getrector.com/blog/rector-010-released-with-php71-support)
 
 <br>
 
 ## Learn Rector Faster
 
-Rector is a tool that [we develop](https://getrector.comgs/) and share for free, so anyone can save hundreds of hours on refactoring. But not everyone has time to understand Rector and AST complexity. You have 2 ways to speed this process up:
+Rector is a tool that [we develop](https://getrector.com/) and share for free, so anyone can save hundreds of hours on refactoring. But not everyone has time to understand Rector and AST complexity. You have 2 ways to speed this process up:
 
 * read a book - <a href="https://leanpub.com/rector-the-power-of-automated-refactoring">The Power of Automated Refactoring</a>
-* hire our experienced team to <a href="https://getrector.comgs/contact">improve your code base</a>
+* hire our experienced team to <a href="https://getrector.com/contact">improve your code base</a>
 
 Both ways support us to and improve Rector in sustainable way by learning from practical projects.
