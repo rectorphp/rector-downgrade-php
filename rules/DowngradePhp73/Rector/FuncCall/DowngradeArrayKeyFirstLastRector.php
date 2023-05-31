@@ -145,7 +145,8 @@ CODE_SAMPLE
         }
 
         $originalArray = $funcCall
-            ->getArgs()[0]->value;
+            ->getArgs()[0]
+->value;
         $array = $this->resolveCastedArray($originalArray);
 
         $newStmts = [];
