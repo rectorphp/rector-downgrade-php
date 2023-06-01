@@ -10,6 +10,6 @@ return $e instanceof \Throwable;
 
 namespace Rector\Tests\DowngradePhp70\Rector\Instanceof_\DowngradeInstanceofThrowableRector\Fixture;
 
-return ($throwable = $e) instanceof \Throwable || $throwable instanceof \Exception;
+return $e instanceof \Throwable || $e instanceof \Exception;
 
 ?>
