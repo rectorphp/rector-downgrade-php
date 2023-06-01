@@ -14,6 +14,6 @@ namespace Rector\Tests\DowngradePhp70\Rector\Instanceof_\DowngradeInstanceofThro
 
 use Throwable;
 
-return something() && (($throwable = $e) instanceof Throwable || $throwable instanceof \Exception);
+return something() && ($e instanceof \Throwable || $e instanceof \Exception);
 
 ?>
