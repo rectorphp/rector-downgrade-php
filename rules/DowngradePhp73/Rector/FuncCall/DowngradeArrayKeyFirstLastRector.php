@@ -152,8 +152,7 @@ CODE_SAMPLE
 
         if ($originalArray instanceof CallLike) {
             $scope = $originalArray->getAttribute(AttributeKey::SCOPE);
-            $variable = new Variable($this->variableNaming->createCountedValueName('args', $scope));
-            $array = $variable;
+            $array = new Variable($this->variableNaming->createCountedValueName('args', $scope));
         }
 
         if ($originalArray !== $array) {
@@ -200,8 +199,7 @@ CODE_SAMPLE
 
         if ($originalArray instanceof CallLike) {
             $scope = $originalArray->getAttribute(AttributeKey::SCOPE);
-            $variable = new Variable($this->variableNaming->createCountedValueName('args', $scope));
-            $array = $variable;
+            $array = new Variable($this->variableNaming->createCountedValueName('args', $scope));
         }
 
         if ($originalArray !== $array) {
