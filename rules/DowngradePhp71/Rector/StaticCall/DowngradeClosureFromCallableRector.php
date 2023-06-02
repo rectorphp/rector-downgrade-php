@@ -84,13 +84,13 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! isset($staticCall->getArgs()[0])) {
+        $args = $staticCall->getArgs();
+        if (! isset($args[0])) {
             return null;
         }
 
         $tempVariable = $this->namedVariableFactory->createVariable($staticCall, 'callable');
-
-        $assignExpression = new Expression(new Assign($tempVariable, $staticCall->getArgs()[0]->value));
+        $assignExpression = new Expression(new Assign($tempVariable, $args[0]->value));
 
         $innerFuncCall = new FuncCall(
             $tempVariable,
@@ -120,13 +120,13 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! isset($staticCall->getArgs()[0])) {
+        $args = $staticCall->getArgs();
+        if (! isset($args[0])) {
             return null;
         }
 
         $tempVariable = $this->namedVariableFactory->createVariable($staticCall, 'callable');
-
-        $assignExpression = new Expression(new Assign($tempVariable, $staticCall->getArgs()[0]->value));
+        $assignExpression = new Expression(new Assign($tempVariable, $args[0]->value));
 
         $innerFuncCall = new FuncCall(
             $tempVariable,

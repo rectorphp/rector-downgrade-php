@@ -112,7 +112,8 @@ CODE_SAMPLE
 
         $this->nodesToAddCollector->addNodeBeforeNode($assign, $node);
 
-        return new FuncCall($variable, $node->getArgs());
+        $args = $node->getArgs();
+        return new FuncCall($variable, $args);
     }
 
     private function createClosure(): Closure

@@ -140,13 +140,12 @@ CODE_SAMPLE
         Expression|StmtsAwareInterface $stmt,
         bool $isPartOfCond
     ): null|array|StmtsAwareInterface {
-        if (! isset($funcCall->getArgs()[0])) {
+        $args = $funcCall->getArgs();
+        if (! isset($args[0])) {
             return null;
         }
 
-        $originalArray = $funcCall
-            ->getArgs()[0]
-->value;
+        $originalArray = $args[0]->value;
         $array = $this->resolveCastedArray($originalArray);
 
         $newStmts = [];
@@ -160,7 +159,7 @@ CODE_SAMPLE
 
         $funcCall->name = new Name('key');
         if ($originalArray !== $array) {
-            $firstArg = $funcCall->getArgs()[0];
+            $firstArg = $args[0];
             $firstArg->value = $array;
         }
 
@@ -182,7 +181,8 @@ CODE_SAMPLE
         Expression|StmtsAwareInterface $stmt,
         bool $isPartOfCond
     ): null|array|StmtsAwareInterface {
-        $firstArg = $funcCall->getArgs()[0] ?? null;
+        $args = $funcCall->getArgs();
+        $firstArg = $args[0] ?? null;
         if (! $firstArg instanceof Arg) {
             return null;
         }

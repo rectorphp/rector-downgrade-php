@@ -65,13 +65,13 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! isset($node->getArgs()[0])) {
+        $args = $node->getArgs();
+        if (! isset($args[0])) {
             return null;
         }
 
         /** @var Array_ $options */
-        $options = $node->getArgs()[0]
-->value;
+        $options = $args[0]->value;
 
         foreach ($options->items as $option) {
             if (! $option instanceof ArrayItem) {
@@ -103,11 +103,11 @@ CODE_SAMPLE
             return true;
         }
 
-        if (! isset($funcCall->getArgs()[0])) {
+        $args = $funcCall->getArgs();
+        if (! isset($args[0])) {
             return true;
         }
 
-        return ! $funcCall->getArgs()[0]
-->value instanceof Array_;
+        return ! $args[0]->value instanceof Array_;
     }
 }

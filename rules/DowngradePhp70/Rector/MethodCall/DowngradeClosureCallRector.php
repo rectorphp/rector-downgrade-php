@@ -66,7 +66,8 @@ CODE_SAMPLE
         }
 
         $methodCall = $this->createBindToCall($node);
-        $args = [new Arg($methodCall), ...array_slice($node->getArgs(), 1)];
+        $args = $node->getArgs();
+        $args = [new Arg($methodCall), ...array_slice($args, 1)];
 
         return new FuncCall(new Name('call_user_func'), $args);
     }
@@ -82,7 +83,8 @@ CODE_SAMPLE
 
     private function createBindToCall(MethodCall $methodCall): MethodCall
     {
-        $newObj = $methodCall->getArgs()[0];
+        $args = $methodCall->getArgs();
+        $newObj = $args[0];
         if ($newObj->value instanceof Variable) {
             $args = [$newObj, $newObj];
         } else {

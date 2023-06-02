@@ -55,12 +55,13 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! isset($node->getArgs()[0])) {
+        $args = $node->getArgs();
+        if (! isset($args[0])) {
             return null;
         }
 
-        $isArrayFuncCall = $this->nodeFactory->createFuncCall('is_array', $node->getArgs());
-        $instanceof = new Instanceof_($node->getArgs()[0]->value, new FullyQualified('Countable'));
+        $isArrayFuncCall = $this->nodeFactory->createFuncCall('is_array', $args);
+        $instanceof = new Instanceof_($args[0]->value, new FullyQualified('Countable'));
 
         return new BooleanOr($isArrayFuncCall, $instanceof);
     }

@@ -58,7 +58,8 @@ final class BitwiseFlagCleaner
             $bitwiseOr = $bitwiseOr->right;
         }
 
-        $fourthArg = $funcCall->getArgs()[3] ?? null;
+        $args = $funcCall->getArgs();
+        $fourthArg = $args[3] ?? null;
         if (! $fourthArg instanceof Arg) {
             return;
         }
