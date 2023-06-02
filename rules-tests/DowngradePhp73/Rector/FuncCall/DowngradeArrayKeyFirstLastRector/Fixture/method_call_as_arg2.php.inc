@@ -8,7 +8,7 @@ class MethodCallAsArg2
 {
     public function run(MethodCall $node)
     {
-        $lastItemKey = array_key_first($node->getArgs());
+        $firstItemKey = array_key_first($node->getArgs());
     }
 }
 
@@ -26,7 +26,7 @@ class MethodCallAsArg2
     {
         $args = $node->getArgs();
         reset($args);
-        $lastItemKey = key($args);
+        $firstItemKey = key($args);
     }
 }
 
