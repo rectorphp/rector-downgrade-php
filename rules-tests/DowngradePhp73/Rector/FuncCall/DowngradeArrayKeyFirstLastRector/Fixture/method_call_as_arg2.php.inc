@@ -4,11 +4,11 @@ namespace Rector\Tests\DowngradePhp73\Rector\FuncCall\DowngradeArrayKeyFirstLast
 
 use PhpParser\Node\Expr\MethodCall;
 
-class MethodCallAsArg
+class MethodCallAsArg2
 {
     public function run(MethodCall $node)
     {
-        $lastItemKey = array_key_last($node->getArgs());
+        $lastItemKey = array_key_first($node->getArgs());
     }
 }
 
@@ -20,12 +20,12 @@ namespace Rector\Tests\DowngradePhp73\Rector\FuncCall\DowngradeArrayKeyFirstLast
 
 use PhpParser\Node\Expr\MethodCall;
 
-class MethodCallAsArg
+class MethodCallAsArg2
 {
     public function run(MethodCall $node)
     {
         $args = $node->getArgs();
-        end($args);
+        reset($args);
         $lastItemKey = key($args);
     }
 }
