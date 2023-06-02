@@ -18,6 +18,7 @@ use PhpParser\Node\Stmt\Else_;
 use PhpParser\Node\Stmt\ElseIf_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
+use PHPStan\Analyser\Scope;
 use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Naming\Naming\VariableNaming;
@@ -133,6 +134,11 @@ CODE_SAMPLE
         return $stmtsAware;
     }
 
+    private function resolveVariableFromCallLikeScope(?Scope $scope): Variable
+    {
+        return new Variable($this->variableNaming->createCountedValueName('args', $scope));
+    }
+
     /**
      * @return Stmt[]|StmtsAwareInterface|null
      */
@@ -152,7 +158,7 @@ CODE_SAMPLE
 
         if ($originalArray instanceof CallLike) {
             $scope = $originalArray->getAttribute(AttributeKey::SCOPE);
-            $array = new Variable($this->variableNaming->createCountedValueName('args', $scope));
+            $array = $this->resolveVariableFromCallLikeScope($scope);
         }
 
         if ($originalArray !== $array) {
@@ -199,7 +205,7 @@ CODE_SAMPLE
 
         if ($originalArray instanceof CallLike) {
             $scope = $originalArray->getAttribute(AttributeKey::SCOPE);
-            $array = new Variable($this->variableNaming->createCountedValueName('args', $scope));
+            $array = $this->resolveVariableFromCallLikeScope($scope);
         }
 
         if ($originalArray !== $array) {
