@@ -102,7 +102,8 @@ CODE_SAMPLE
             return null;
         }
 
-        $secondArg = $node->getArgs()[1];
+        $args = $node->getArgs();
+        $secondArg = $args[1];
         $allowableTagsParam = $secondArg->value;
 
         if ($allowableTagsParam instanceof Array_) {
@@ -145,13 +146,13 @@ CODE_SAMPLE
             return true;
         }
 
-        if (! isset($funcCall->getArgs()[1])) {
+        $args = $funcCall->getArgs();
+        if (! isset($args[1])) {
             return true;
         }
 
         // Process anything other than String and null (eg: variables, function calls)
-        $allowableTagsParam = $funcCall->getArgs()[1]
-->value;
+        $allowableTagsParam = $args[1]->value;
 
         // Skip for string
         if ($allowableTagsParam instanceof String_) {

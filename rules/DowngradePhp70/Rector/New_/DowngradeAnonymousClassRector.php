@@ -128,7 +128,8 @@ CODE_SAMPLE
 
         $this->namespacedNameDecorator->decorate($class);
 
-        return new New_(new Name($className), $node->getArgs());
+        $args = $node->getArgs();
+        return new New_(new Name($className), $args);
     }
 
     private function createAnonymousClassName(): string
