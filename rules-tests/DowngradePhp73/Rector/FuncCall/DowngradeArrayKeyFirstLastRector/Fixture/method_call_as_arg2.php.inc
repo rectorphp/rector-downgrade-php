@@ -24,9 +24,9 @@ class MethodCallAsArg2
 {
     public function run(MethodCall $node)
     {
-        $args = $node->getArgs();
-        reset($args);
-        $firstItemKey = key($args);
+        $getArgs = $node->getArgs();
+        reset($getArgs);
+        $firstItemKey = key($getArgs);
     }
 }
 

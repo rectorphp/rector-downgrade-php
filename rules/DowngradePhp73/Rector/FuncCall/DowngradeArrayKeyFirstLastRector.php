@@ -11,6 +11,10 @@ use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Expr\Cast\Array_;
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\NullsafeMethodCall;
+use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
@@ -134,9 +138,20 @@ CODE_SAMPLE
         return $stmtsAware;
     }
 
-    private function resolveVariableFromCallLikeScope(?Scope $scope): Variable
+    private function resolveVariableFromCallLikeScope(CallLike $callLike, ?Scope $scope): Variable
     {
-        return new Variable($this->variableNaming->createCountedValueName('args', $scope));
+        /** @var MethodCall|FuncCall|StaticCall|New_|NullsafeMethodCall $callLike */
+        if ($callLike instanceof New_) {
+            $variableName = (string) $this->nodeNameResolver->getName($callLike->class);
+        } else {
+            $variableName = (string) $this->nodeNameResolver->getName($callLike->name);
+        }
+
+        if ($variableName === '') {
+            $variableName = 'array';
+        }
+
+        return new Variable($this->variableNaming->createCountedValueName($variableName, $scope));
     }
 
     /**
@@ -158,7 +173,7 @@ CODE_SAMPLE
 
         if ($originalArray instanceof CallLike) {
             $scope = $originalArray->getAttribute(AttributeKey::SCOPE);
-            $array = $this->resolveVariableFromCallLikeScope($scope);
+            $array = $this->resolveVariableFromCallLikeScope($originalArray, $scope);
         }
 
         if ($originalArray !== $array) {
@@ -205,7 +220,7 @@ CODE_SAMPLE
 
         if ($originalArray instanceof CallLike) {
             $scope = $originalArray->getAttribute(AttributeKey::SCOPE);
-            $array = $this->resolveVariableFromCallLikeScope($scope);
+            $array = $this->resolveVariableFromCallLikeScope($originalArray, $scope);
         }
 
         if ($originalArray !== $array) {

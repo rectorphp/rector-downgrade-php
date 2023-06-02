@@ -24,9 +24,9 @@ class MethodCallAsArg
 {
     public function run(MethodCall $node)
     {
-        $args = $node->getArgs();
-        end($args);
-        $lastItemKey = key($args);
+        $getArgs = $node->getArgs();
+        end($getArgs);
+        $lastItemKey = key($getArgs);
     }
 }
 
