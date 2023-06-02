@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Expr\Cast\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
@@ -34,7 +35,7 @@ final class DowngradeArrayKeyFirstLastRector extends AbstractRector
 {
     public function __construct(
         private readonly VariableNaming $variableNaming,
-        private readonly StmtMatcher $stmtMatcher,
+        private readonly StmtMatcher $stmtMatcher
     ) {
     }
 
@@ -147,8 +148,13 @@ CODE_SAMPLE
 
         $originalArray = $args[0]->value;
         $array = $this->resolveCastedArray($originalArray);
-
         $newStmts = [];
+
+        if ($originalArray instanceof CallLike) {
+            $scope = $originalArray->getAttribute(AttributeKey::SCOPE);
+            $variable = new Variable($this->variableNaming->createCountedValueName('args', $scope));
+            $array = $variable;
+        }
 
         if ($originalArray !== $array) {
             $newStmts[] = new Expression(new Assign($array, $originalArray));
@@ -191,6 +197,12 @@ CODE_SAMPLE
         $array = $this->resolveCastedArray($originalArray);
 
         $newStmts = [];
+
+        if ($originalArray instanceof CallLike) {
+            $scope = $originalArray->getAttribute(AttributeKey::SCOPE);
+            $variable = new Variable($this->variableNaming->createCountedValueName('args', $scope));
+            $array = $variable;
+        }
 
         if ($originalArray !== $array) {
             $newStmts[] = new Expression(new Assign($array, $originalArray));
