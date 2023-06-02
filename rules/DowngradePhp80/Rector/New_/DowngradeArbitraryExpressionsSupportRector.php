@@ -147,8 +147,6 @@ CODE_SAMPLE
                 continue;
             }
 
-            print_node($newOrInstanceof->class);
-
             if ($this->isAssign($newOrInstanceof->class)) {
                 /** @var Assign|AssignRef|AssignOp $exprAssign */
                 $exprAssign = $newOrInstanceof->class;
