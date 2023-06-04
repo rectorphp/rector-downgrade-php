@@ -10,7 +10,8 @@ use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\UnionType;
-use Rector\Core\Rector\AbstractRector;
+use PHPStan\Analyser\Scope;
+use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\PhpDocDecorator\PhpDocFromTypeDeclarationDecorator;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -18,7 +19,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 /**
  * @see \Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\DowngradeUnionTypeDeclarationRectorTest
  */
-final class DowngradeUnionTypeDeclarationRector extends AbstractRector
+final class DowngradeUnionTypeDeclarationRector extends AbstractScopeAwareRector
 {
     public function __construct(
         private readonly PhpDocFromTypeDeclarationDecorator $phpDocFromTypeDeclarationDecorator
@@ -70,7 +71,7 @@ CODE_SAMPLE
     /**
      * @param ClassMethod|Closure|Function_|ArrowFunction $node
      */
-    public function refactor(Node $node): ?Node
+    public function refactorWithScope(Node $node, Scope $scope): ?Node
     {
         $paramDecorated = false;
         foreach ($node->getParams() as $param) {
@@ -90,7 +91,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $this->phpDocFromTypeDeclarationDecorator->decorateReturn($node);
+        $this->phpDocFromTypeDeclarationDecorator->decorateReturn($node, $scope);
 
         return $node;
     }

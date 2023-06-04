@@ -16,6 +16,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Interface_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
+use PHPStan\Analyser\Scope;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
@@ -63,7 +64,7 @@ final class PhpDocFromTypeDeclarationDecorator
         ];
     }
 
-    public function decorateReturn(ClassMethod|Function_|Closure|ArrowFunction $functionLike): void
+    public function decorateReturn(ClassMethod|Function_|Closure|ArrowFunction $functionLike, Scope $scope): void
     {
         if ($functionLike->returnType === null) {
             return;
@@ -98,7 +99,7 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
-        if (! $this->isRequireReturnTypeWillChange($classLike, $functionLike)) {
+        if (! $this->isRequireReturnTypeWillChange($classLike, $functionLike, $scope)) {
             return;
         }
 
@@ -159,7 +160,8 @@ final class PhpDocFromTypeDeclarationDecorator
      */
     public function decorateReturnWithSpecificType(
         ClassMethod|Function_|Closure|ArrowFunction $functionLike,
-        Type $requireType
+        Type $requireType,
+        Scope $scope
     ): bool {
         if ($functionLike->returnType === null) {
             return false;
@@ -169,11 +171,11 @@ final class PhpDocFromTypeDeclarationDecorator
             return false;
         }
 
-        $this->decorateReturn($functionLike);
+        $this->decorateReturn($functionLike, $scope);
         return true;
     }
 
-    private function isRequireReturnTypeWillChange(ClassLike $classLike, ClassMethod $classMethod): bool
+    private function isRequireReturnTypeWillChange(ClassLike $classLike, ClassMethod $classMethod, Scope $scope): bool
     {
         $className = $this->nodeNameResolver->getName($classLike);
         if (! is_string($className)) {
@@ -181,7 +183,7 @@ final class PhpDocFromTypeDeclarationDecorator
         }
 
         $methodName = $classMethod->name->toString();
-        $classReflection = $this->reflectionResolver->resolveClassAndAnonymousClass($classLike);
+        $classReflection = $this->reflectionResolver->resolveClassAndAnonymousClass($classLike, $scope);
         if ($classReflection->isAnonymous()) {
             return false;
         }

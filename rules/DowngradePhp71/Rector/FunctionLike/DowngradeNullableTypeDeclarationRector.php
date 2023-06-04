@@ -13,15 +13,16 @@ use PhpParser\Node\Stmt\Function_;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\NodeAnalyzer\ParamAnalyzer;
-use Rector\Core\Rector\AbstractRector;
+use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\PhpDocDecorator\PhpDocFromTypeDeclarationDecorator;
+use PHPStan\Analyser\Scope;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @see \Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeNullableTypeDeclarationRector\DowngradeNullableTypeDeclarationRectorTest
  */
-final class DowngradeNullableTypeDeclarationRector extends AbstractRector
+final class DowngradeNullableTypeDeclarationRector extends AbstractScopeAwareRector
 {
     public function __construct(
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
@@ -70,7 +71,7 @@ CODE_SAMPLE
     /**
      * @param ClassMethod|Function_|Closure $node
      */
-    public function refactor(Node $node): ?Node
+    public function refactorWithScope(Node $node, Scope $scope): ?Node
     {
         $hasChanged = false;
         foreach ($node->params as $param) {
@@ -80,7 +81,7 @@ CODE_SAMPLE
         }
 
         if ($node->returnType instanceof NullableType) {
-            $this->phpDocFromTypeDeclarationDecorator->decorateReturn($node);
+            $this->phpDocFromTypeDeclarationDecorator->decorateReturn($node, $scope);
             $hasChanged = true;
         }
 
