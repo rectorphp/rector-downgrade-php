@@ -74,17 +74,16 @@ CODE_SAMPLE
         $objectType = new ObjectType('Throwable');
 
         $hasChanged = false;
-        $hasParamChanged = false;
-
         foreach ($node->getParams() as $param) {
-            $hasParamChanged = $this->phpDocFromTypeDeclarationDecorator->decorateParamWithSpecificType(
+            if (!$this->phpDocFromTypeDeclarationDecorator->decorateParamWithSpecificType(
                 $param,
                 $node,
                 $objectType
-            );
-            if ($hasParamChanged) {
-                $hasChanged = true;
+            )) {
+                continue;
             }
+            
+            $hasChanged = true;
         }
 
         if (! $this->phpDocFromTypeDeclarationDecorator->decorateReturnWithSpecificType($node, $objectType)) {
