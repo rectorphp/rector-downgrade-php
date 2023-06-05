@@ -17,7 +17,6 @@ use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Expression;
 use Rector\Core\Rector\AbstractRector;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -123,6 +122,11 @@ CODE_SAMPLE
         $newNodes = $this->createAssignRefArrayFromListReferences($arrayOrList->items, $exprVariable, []);
 
         // Remove the stale params right-most-side
+
+        if (count($arrayOrList->items) === $rightSideRemovableParamsCount) {
+            return $newNodes;
+        }
+
         $this->removeStaleParams($arrayOrList, $rightSideRemovableParamsCount);
 
         return [$node, ...$newNodes];
@@ -131,25 +135,13 @@ CODE_SAMPLE
     /**
      * Remove the right-side-most params by reference or empty from `list()`,
      * since they are not needed anymore.
-     * If all of them can be removed, then directly remove `list()`.
-     * @return List_|Array_|null
      */
-    private function removeStaleParams(List_ | Array_ $node, int $rightSideRemovableParamsCount): ?Node
+    private function removeStaleParams(List_ | Array_ $node, int $rightSideRemovableParamsCount): void
     {
         $nodeItemsCount = count($node->items);
-        if ($rightSideRemovableParamsCount === $nodeItemsCount) {
-            // Remove the parent Assign arrayOrList
-            /** @var Assign $parentNode */
-            $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
-            $this->removeNode($parentNode);
-            return null;
-        }
-
         if ($rightSideRemovableParamsCount > 0) {
             array_splice($node->items, $nodeItemsCount - $rightSideRemovableParamsCount);
         }
-
-        return $node;
     }
 
     private function shouldSkipAssign(Assign $assign, List_ | Array_ $arrayOrList): bool
