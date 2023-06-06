@@ -14,6 +14,7 @@ use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
+use PhpParser\Node\Stmt\Return_;
 use PHPStan\Analyser\Scope;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
@@ -78,7 +79,7 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Expression::class, If_::class];
+        return [Expression::class, If_::class, Return_::class];
     }
 
     /**
@@ -116,7 +117,7 @@ CODE_SAMPLE
         return null;
     }
 
-    private function applyUseClosure(Expression|If_ $expression, Variable $variable): void
+    private function applyUseClosure(Expression|If_|Return_ $expression, Variable $variable): void
     {
         $expr = $expression instanceof If_ ? $expression->cond : $expression->expr;
 
