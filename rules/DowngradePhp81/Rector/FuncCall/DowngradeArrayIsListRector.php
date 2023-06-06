@@ -6,7 +6,9 @@ namespace Rector\DowngradePhp81\Rector\FuncCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Expr\Closure;
+use PhpParser\Node\Expr\ClosureUse;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt;
@@ -102,10 +104,33 @@ CODE_SAMPLE
 
             $funcCall->name = $variable;
 
+            $this->applyUseClosure($node, $variable);
+
             return [$expression, $node];
         }
 
         return null;
+    }
+
+    private function applyUseClosure(Expression $expression, Variable $variable): void
+    {
+        if (! $expression->expr instanceof CallLike) {
+            return;
+        }
+
+        if (! $this->shouldSkip($expression->expr)) {
+            return;
+        }
+
+        if ($expression->expr->isFirstClassCallable()) {
+            return;
+        }
+
+        foreach ($expression->expr->getArgs() as $arg) {
+            if ($arg->value instanceof Closure) {
+                $arg->value->uses[] = new ClosureUse($variable);
+            }
+        }
     }
 
     private function createClosure(): Closure
@@ -129,17 +154,21 @@ CODE_SAMPLE
         return $expr;
     }
 
-    private function shouldSkip(FuncCall $funcCall): bool
+    private function shouldSkip(CallLike $callLike): bool
     {
-        if (! $this->nodeNameResolver->isName($funcCall, 'array_is_list')) {
+        if (! $callLike instanceof FuncCall) {
+            return false;
+        }
+
+        if (! $this->nodeNameResolver->isName($callLike, 'array_is_list')) {
             return true;
         }
 
-        if ($this->functionExistsFunCallAnalyzer->detect($funcCall, 'array_is_list')) {
+        if ($this->functionExistsFunCallAnalyzer->detect($callLike, 'array_is_list')) {
             return true;
         }
 
-        $args = $funcCall->getArgs();
+        $args = $callLike->getArgs();
         return count($args) !== 1;
     }
 }
