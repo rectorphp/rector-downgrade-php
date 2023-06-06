@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp80\Rector\Expression;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\Coalesce;
@@ -86,7 +87,7 @@ CODE_SAMPLE
         }
 
         if ($node->expr instanceof Assign) {
-            $resultNode = $this->refactorAssign($node, $node->expr);
+            $resultNode = $this->refactorAssign($node->expr);
             if ($resultNode !== null) {
                 return $resultNode;
             }
@@ -106,7 +107,7 @@ CODE_SAMPLE
     /**
      * @return If_|Expression|Stmt[]|null
      */
-    private function refactorAssign(Expression $expression, Assign $assign): If_ | Expression | null | array
+    private function refactorAssign(Assign $assign): If_ | Expression | null | array
     {
         if (! $this->hasThrowInAssignExpr($assign)) {
             return null;
@@ -232,6 +233,9 @@ CODE_SAMPLE
         return new Identical($coalesce->left, $this->nodeFactory->createNull());
     }
 
+    /**
+     * @return Stmt[]|null
+     */
     private function refactorDirectCoalesce(Expression $expression): ?array
     {
         /** @var Coalesce[] $coalesces */
@@ -251,10 +255,11 @@ CODE_SAMPLE
             ]);
 
             // replace coalsese with left :)
-            $this->traverseNodesWithCallable($expression, static function (\PhpParser\Node $node) {
+            $this->traverseNodesWithCallable($expression, static function (Node $node): ?Expr {
                 if (! $node instanceof Coalesce) {
                     return null;
                 }
+
                 return $node->left;
             });
 
