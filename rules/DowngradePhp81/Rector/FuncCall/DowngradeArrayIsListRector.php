@@ -13,6 +13,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
+use PhpParser\Node\Stmt\If_;
 use PHPStan\Analyser\Scope;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
@@ -77,7 +78,7 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Expression::class];
+        return [Expression::class, If_::class];
     }
 
     /**
@@ -87,7 +88,10 @@ CODE_SAMPLE
     public function refactorWithScope(Node $node, Scope $scope): ?array
     {
         /** @var FuncCall[] $funcCalls */
-        $funcCalls = $this->betterNodeFinder->findInstanceOf($node, FuncCall::class);
+        $funcCalls = $node instanceof If_
+            ? $this->betterNodeFinder->findInstanceOf($node->cond, FuncCall::class)
+            : $this->betterNodeFinder->findInstanceOf($node, FuncCall::class);
+
         if ($funcCalls === []) {
             return null;
         }
@@ -112,21 +116,23 @@ CODE_SAMPLE
         return null;
     }
 
-    private function applyUseClosure(Expression $expression, Variable $variable): void
+    private function applyUseClosure(Expression|If_ $expression, Variable $variable): void
     {
-        if (! $expression->expr instanceof CallLike) {
+        $expr = $expression instanceof If_ ? $expression->cond : $expression->expr;
+
+        if (! $expr instanceof CallLike) {
             return;
         }
 
-        if (! $this->shouldSkip($expression->expr)) {
+        if (! $this->shouldSkip($expr)) {
             return;
         }
 
-        if ($expression->expr->isFirstClassCallable()) {
+        if ($expr->isFirstClassCallable()) {
             return;
         }
 
-        foreach ($expression->expr->getArgs() as $arg) {
+        foreach ($expr->getArgs() as $arg) {
             if ($arg->value instanceof Closure) {
                 $arg->value->uses[] = new ClosureUse($variable);
             }
