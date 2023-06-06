@@ -16,7 +16,6 @@ use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp72\NodeAnalyzer\FunctionExistsFunCallAnalyzer;
 use Rector\Naming\Naming\VariableNaming;
-use Rector\PostRector\Collector\NodesToAddCollector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -34,26 +33,19 @@ final class DowngradeEnumExistsRector extends AbstractScopeAwareRector
         private readonly InlineCodeParser $inlineCodeParser,
         private readonly FunctionExistsFunCallAnalyzer $functionExistsFunCallAnalyzer,
         private readonly VariableNaming $variableNaming,
-        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 
     public function getRuleDefinition(): RuleDefinition
     {
-        return new RuleDefinition('Replace enum_exists() function', [
+        return new RuleDefinition('Replace enum_exists() with class_exists() function', [
             new CodeSample(
                 <<<'CODE_SAMPLE'
-enum_exists('SomeEnum', true);
+return enum_exists('SomeEnum');
 CODE_SAMPLE
                 ,
                 <<<'CODE_SAMPLE'
-$enumExists = function (string $enum, bool $autoload = true) : bool {
-    if (function_exists('enum_exists')) {
-        return enum_exists($enum, $autoload);
-    }
-    return $autoload && class_exists($enum) && false;
-};
-$enumExists('SomeEnum', true);
+return class_exists('enum_exists');
 CODE_SAMPLE
             ),
         ]);
