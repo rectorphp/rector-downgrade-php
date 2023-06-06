@@ -30,8 +30,7 @@ class WithArrayTypeFunctionItem
 
     public function run()
     {
-        $item2Unpacked = $this->getArray();
-        $fruits = array_merge(['banana', 'orange'], $item2Unpacked, ['watermelon']);
+        $fruits = array_merge(['banana', 'orange'], $this->getArray(), ['watermelon']);
     }
 }
 
