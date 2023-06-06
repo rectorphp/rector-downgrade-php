@@ -20,11 +20,7 @@ class NonVariable
 {
     function run()
     {
-        $command = ['ls', '-l'];
-        if (is_array($command)) {
-            $command = implode(' ', $command);
-        }
-        $process = proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
+        $process = proc_open(is_array(['ls', '-l']) ? implode(' ', ['ls', '-l']) : ['ls', '-l'], $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
     }
 }
 
