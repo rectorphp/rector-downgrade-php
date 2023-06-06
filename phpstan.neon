@@ -84,3 +84,7 @@ parameters:
             path: rules/DowngradePhp71/Rector/StaticCall/DowngradeClosureFromCallableRector.php
 
         - '#Cognitive complexity for "Rector\\DowngradePhp70\\Rector\\FuncCall\\DowngradeSessionStartArrayOptionsRector\:\:refactor\(\)" is 12, keep it under 10#'
+
+        -
+            message: '#Use value object over return of values#'
+            path: rules/DowngradePhp80/Rector/Expression/DowngradeThrowExprRector.php
