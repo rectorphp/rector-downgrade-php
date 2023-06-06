@@ -83,7 +83,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param Expression $node
+     * @param Expression|If_|Return_ $node
      * @return Stmt[]|null
      */
     public function refactorWithScope(Node $node, Scope $scope): ?array
