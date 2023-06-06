@@ -1,6 +1,7 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector\Fixture;
+
 final class Loop
 {
     /**
@@ -25,6 +26,7 @@ final class Loop
 <?php
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector\Fixture;
+
 final class Loop
 {
     /**
