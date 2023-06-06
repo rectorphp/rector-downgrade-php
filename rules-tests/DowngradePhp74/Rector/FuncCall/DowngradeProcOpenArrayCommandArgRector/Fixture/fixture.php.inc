@@ -20,10 +20,7 @@ class Fixture
 {
     function run(array|string $command)
     {
-        if (is_array($command)) {
-            $command = implode(' ', $command);
-        }
-        $process = proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
+        $process = proc_open(is_array($command) ? implode(' ', $command) : $command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
     }
 }
 
