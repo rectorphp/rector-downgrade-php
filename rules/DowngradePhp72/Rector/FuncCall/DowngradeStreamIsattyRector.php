@@ -118,11 +118,6 @@ CODE_SAMPLE
             $funcCall->name = $variable;
 
             return [new Expression($assign), $node];
-
-            //            $this->nodesToAddCollector->addNodeBeforeNode($assign, $node);
-            //
-            //            $args = $node->getArgs();
-            //            return new FuncCall($variable, $args);
         }
 
         return null;
