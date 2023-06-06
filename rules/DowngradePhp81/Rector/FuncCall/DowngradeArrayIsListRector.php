@@ -9,6 +9,7 @@ use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
 use PHPStan\Analyser\Scope;
 use Rector\Core\Exception\ShouldNotHappenException;
@@ -16,7 +17,6 @@ use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp72\NodeAnalyzer\FunctionExistsFunCallAnalyzer;
 use Rector\Naming\Naming\VariableNaming;
-use Rector\PostRector\Collector\NodesToAddCollector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -33,7 +33,6 @@ final class DowngradeArrayIsListRector extends AbstractScopeAwareRector
         private readonly InlineCodeParser $inlineCodeParser,
         private readonly FunctionExistsFunCallAnalyzer $functionExistsFunCallAnalyzer,
         private readonly VariableNaming $variableNaming,
-        private readonly NodesToAddCollector $nodesToAddCollector,
     ) {
     }
 
@@ -50,9 +49,11 @@ $arrayIsList = function (array $array) : bool {
     if (function_exists('array_is_list')) {
         return array_is_list($array);
     }
+
     if ($array === []) {
         return true;
     }
+
     $current_key = 0;
     foreach ($array as $key => $noop) {
         if ($key !== $current_key) {
@@ -60,6 +61,7 @@ $arrayIsList = function (array $array) : bool {
         }
         ++$current_key;
     }
+
     return true;
 };
 $arrayIsList([1 => 'apple', 'orange']);
@@ -73,27 +75,37 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [FuncCall::class];
+        return [Expression::class];
     }
 
     /**
-     * @param FuncCall $node
+     * @param Expression $node
+     * @return Stmt[]|null
      */
-    public function refactorWithScope(Node $node, Scope $scope): ?FuncCall
+    public function refactorWithScope(Node $node, Scope $scope): ?array
     {
-        if ($this->shouldSkip($node)) {
+        /** @var FuncCall[] $funcCalls */
+        $funcCalls = $this->betterNodeFinder->findInstanceOf($node, FuncCall::class);
+        if ($funcCalls === []) {
             return null;
         }
 
-        $variable = new Variable($this->variableNaming->createCountedValueName('arrayIsList', $scope));
+        foreach ($funcCalls as $funcCall) {
+            if ($this->shouldSkip($funcCall)) {
+                continue;
+            }
 
-        $function = $this->createClosure();
-        $expression = new Expression(new Assign($variable, $function));
+            $variable = new Variable($this->variableNaming->createCountedValueName('arrayIsList', $scope));
 
-        $this->nodesToAddCollector->addNodeBeforeNode($expression, $node);
+            $function = $this->createClosure();
+            $expression = new Expression(new Assign($variable, $function));
 
-        $args = $node->getArgs();
-        return new FuncCall($variable, $args);
+            $funcCall->name = $variable;
+
+            return [$expression, $node];
+        }
+
+        return null;
     }
 
     private function createClosure(): Closure
