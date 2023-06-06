@@ -56,7 +56,7 @@ final class Loop
             return true;
         };
 
-        register_shutdown_function(function () {
+        register_shutdown_function(function () use($arrayIsList) {
             $test = $arrayIsList([]);
         });
     }
