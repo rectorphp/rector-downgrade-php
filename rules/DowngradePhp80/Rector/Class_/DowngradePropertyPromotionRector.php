@@ -18,7 +18,6 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Core\Exception\ShouldNotHappenException;
-use Rector\Core\NodeManipulator\ClassInsertManipulator;
 use Rector\Core\PhpParser\Printer\BetterStandardPrinter;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\ValueObject\MethodName;
@@ -34,7 +33,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradePropertyPromotionRector extends AbstractRector
 {
     public function __construct(
-        private readonly ClassInsertManipulator $classInsertManipulator,
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
         private readonly BetterStandardPrinter $betterStandardPrinter,
     ) {
@@ -168,7 +166,7 @@ CODE_SAMPLE
     private function resolvePropertiesFromPromotedParams(array $promotedParams, Class_ $class): array
     {
         $properties = $this->createPropertiesFromParams($promotedParams);
-        $this->classInsertManipulator->addPropertiesToClass($class, $properties);
+        $class->stmts = array_merge($properties, $class->stmts);
 
         return $properties;
     }
@@ -189,6 +187,7 @@ CODE_SAMPLE
             $assign = $this->nodeFactory->createPropertyAssignment($propertyName);
             $expression = new Expression($assign);
             $expression->setAttribute(AttributeKey::COMMENTS, $oldComments[$propertyName]);
+
             $assigns[] = $expression;
         }
 
