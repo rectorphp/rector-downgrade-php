@@ -30,7 +30,6 @@ final class TopStmtAndExprMatcher
     }
 
     /**
-     * @param Node|Node[] $stmt
      * @param callable(Node $node): bool $filter
      * @return null|array<Stmt, Expr>
      */
