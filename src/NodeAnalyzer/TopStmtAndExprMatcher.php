@@ -36,11 +36,12 @@ final class TopStmtAndExprMatcher
     public function match(StmtsAwareInterface $stmtsAware, callable $filter): null|array
     {
         if ($stmtsAware instanceof Foreach_) {
+            // keyVar can be null, filter only Expr
             $nodes = array_filter([$stmtsAware->expr, $stmtsAware->keyVar, $stmtsAware->valueVar]);
         }
 
         if ($stmtsAware instanceof For_) {
-            $nodes = array_filter([$stmtsAware->init, $stmtsAware->cond, $stmtsAware->loop]);
+            $nodes = [$stmtsAware->init, $stmtsAware->cond, $stmtsAware->loop];
         }
 
         if ($this->multiInstanceofChecker->isInstanceOf($stmtsAware, [
