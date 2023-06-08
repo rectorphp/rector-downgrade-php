@@ -36,7 +36,7 @@ final class DowngradePropertyPromotionRector extends AbstractRector
     public function __construct(
         private readonly ClassInsertManipulator $classInsertManipulator,
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
-        private readonly BetterStandardPrinter $nodePrinter,
+        private readonly BetterStandardPrinter $betterStandardPrinter,
     ) {
     }
 
@@ -143,7 +143,7 @@ CODE_SAMPLE
 
     private function setParamAttrGroupAsComment(Param $param): void
     {
-        $attrGroupsPrint = $this->nodePrinter->print($param->attrGroups);
+        $attrGroupsPrint = $this->betterStandardPrinter->print($param->attrGroups);
 
         $comments = $param->getAttribute(AttributeKey::COMMENTS);
         if (is_array($comments)) {
