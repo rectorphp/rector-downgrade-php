@@ -97,7 +97,7 @@ CODE_SAMPLE
             }
         );
 
-        if ($exprArrayKeyFirst instanceof Expr) {
+        if ($exprArrayKeyFirst instanceof FuncCall) {
             return $this->refactorArrayKeyFirst($exprArrayKeyFirst, $node);
         }
 
@@ -112,7 +112,7 @@ CODE_SAMPLE
             }
         );
 
-        if ($exprArrayKeyLast instanceof Expr) {
+        if ($exprArrayKeyLast instanceof FuncCall) {
             return $this->refactorArrayKeyLast($exprArrayKeyLast, $node);
         }
 
