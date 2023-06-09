@@ -8,13 +8,10 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Expr\Closure;
-use PhpParser\Node\Expr\ClosureUse;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
-use PhpParser\Node\Stmt\If_;
-use PhpParser\Node\Stmt\Return_;
 use PHPStan\Analyser\Scope;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
@@ -99,21 +96,22 @@ CODE_SAMPLE
                 }
 
                 return ! $this->shouldSkip($subNode);
-            });
+            }
+        );
 
         if (! $stmtAndExpr instanceof StmtAndExpr) {
             return null;
         }
 
         $stmt = $stmtAndExpr->getStmt();
-        /** @var FuncCall $funcCall */
-        $funcCall = $stmtAndExpr->getExpr();
+        /** @var FuncCall $expr */
+        $expr = $stmtAndExpr->getExpr();
         $variable = new Variable($this->variableNaming->createCountedValueName('arrayIsList', $scope));
 
         $function = $this->createClosure();
         $expression = new Expression(new Assign($variable, $function));
 
-        $funcCall->name = $variable;
+        $expr->name = $variable;
 
         return [$expression, $stmt];
     }
