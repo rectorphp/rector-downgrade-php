@@ -22,13 +22,12 @@ use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Util\MultiInstanceofChecker;
 use Rector\NodeTypeResolver\Node\AttributeKey;
-use Rector\ValueObject\StmtAndExpr;
 
 /**
- * To resolve Stmt and Expr in top stmtInterface from early Expr attribute
+ * To resolve Expr in top Stmt from early Expr attribute
  * so the usage can append code before the Stmt
  */
-final class TopStmtAndExprMatcher
+final class ExprInTopStmtMatcher
 {
     public function __construct(
         private readonly BetterNodeFinder $betterNodeFinder,
@@ -39,10 +38,8 @@ final class TopStmtAndExprMatcher
     /**
      * @param callable(Node $node): bool $filter
      */
-    public function match(
-        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
-        callable $filter
-    ): null|StmtAndExpr {
+    public function match(StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt, callable $filter): null|Expr
+    {
         if ($stmt instanceof Closure) {
             return null;
         }
@@ -54,7 +51,7 @@ final class TopStmtAndExprMatcher
         }
 
         if ($stmt instanceof For_) {
-            $nodes = [...$stmt->init, ...$stmt->cond, ...$stmt->loop];
+            $nodes = [$stmt->init, $stmt->cond, $stmt->loop];
         }
 
         if ($this->multiInstanceofChecker->isInstanceOf($stmt, [
@@ -71,14 +68,16 @@ final class TopStmtAndExprMatcher
             $nodes = $stmt->exprs;
         }
 
-        $expr = $this->resolveExpr($stmt, $nodes, $filter);
-        if ($expr instanceof Expr) {
-            return new StmtAndExpr($stmt, $expr);
+        foreach ($nodes as $node) {
+            $expr = $this->resolveExpr($stmt, $node, $filter);
+            if ($expr instanceof Expr) {
+                return $expr;
+            }
         }
 
-        $stmtAndExpr = $this->resolveFromChildCond($stmt, $filter);
-        if ($stmtAndExpr instanceof StmtAndExpr) {
-            return $stmtAndExpr;
+        $expr = $this->resolveFromChildCond($stmt, $filter);
+        if ($expr instanceof Expr) {
+            return $expr;
         }
 
         return $this->resolveOnReturnOrExpression($stmt, $filter);
@@ -90,7 +89,7 @@ final class TopStmtAndExprMatcher
     private function resolveOnReturnOrExpression(
         StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
         callable $filter
-    ): ?StmtAndExpr {
+    ): ?Expr {
         if (! $stmt instanceof Return_ && ! $stmt instanceof Expression) {
             return null;
         }
@@ -99,12 +98,7 @@ final class TopStmtAndExprMatcher
             return null;
         }
 
-        $expr = $this->resolveExpr($stmt, $stmt->expr, $filter);
-        if ($expr instanceof Expr) {
-            return new StmtAndExpr($stmt, $expr);
-        }
-
-        return null;
+        return $this->resolveExpr($stmt, $stmt->expr, $filter);
     }
 
     /**
@@ -142,7 +136,7 @@ final class TopStmtAndExprMatcher
     private function resolveFromChildCond(
         StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
         callable $filter
-    ): null|StmtAndExpr {
+    ): null|Expr {
         if (! $stmt instanceof If_ && ! $stmt instanceof Switch_) {
             return null;
         }
@@ -158,7 +152,7 @@ final class TopStmtAndExprMatcher
 
             $expr = $this->resolveExpr($stmt, $stmt->cond, $filter);
             if ($expr instanceof Expr) {
-                return new StmtAndExpr($stmt, $expr);
+                return $expr;
             }
         }
 
