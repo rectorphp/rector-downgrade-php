@@ -90,8 +90,10 @@ final class TopStmtAndExprMatcher
     /**
      * @param callable(Node $node): bool $filter
      */
-    private function resolveFromChildCond(StmtsAwareInterface|Switch_|Return_|Expression $stmt, callable $filter): null|StmtAndExpr
-    {
+    private function resolveFromChildCond(
+        StmtsAwareInterface|Switch_|Return_|Expression $stmt,
+        callable $filter
+    ): null|StmtAndExpr {
         if (! $stmt instanceof If_ && ! $stmt instanceof Switch_) {
             return null;
         }
