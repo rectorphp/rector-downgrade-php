@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Stmt\Do_;
+use PhpParser\Node\Stmt\Echo_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\For_;
 use PhpParser\Node\Stmt\Foreach_;
@@ -35,7 +36,7 @@ final class TopStmtAndExprMatcher
     /**
      * @param callable(Node $node): bool $filter
      */
-    public function match(StmtsAwareInterface|Switch_|Return_|Expression $stmt, callable $filter): null|StmtAndExpr
+    public function match(StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt, callable $filter): null|StmtAndExpr
     {
         if ($stmt instanceof Closure) {
             return null;
@@ -91,7 +92,7 @@ final class TopStmtAndExprMatcher
      * @param callable(Node $node): bool $filter
      */
     private function resolveFromChildCond(
-        StmtsAwareInterface|Switch_|Return_|Expression $stmt,
+        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
         callable $filter
     ): null|StmtAndExpr {
         if (! $stmt instanceof If_ && ! $stmt instanceof Switch_) {
