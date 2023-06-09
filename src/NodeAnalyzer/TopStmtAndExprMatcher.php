@@ -49,11 +49,12 @@ final class TopStmtAndExprMatcher
 
         $nodes = [];
         if ($stmt instanceof Foreach_) {
-            $nodes = [$stmt->expr, $stmt->keyVar, $stmt->valueVar];
+            // keyVar can be null, so need to be filtered only Expr
+            $nodes = array_filter([$stmt->expr, $stmt->keyVar, $stmt->valueVar]);
         }
 
         if ($stmt instanceof For_) {
-            $nodes = [$stmt->init, $stmt->cond, $stmt->loop];
+            $nodes = [...$stmt->init, ...$stmt->cond, ...$stmt->loop];
         }
 
         if ($this->multiInstanceofChecker->isInstanceOf($stmt, [
@@ -66,16 +67,13 @@ final class TopStmtAndExprMatcher
             $nodes = [$stmt->cond];
         }
 
-        foreach ($nodes as $node) {
-            // For top level Expr can be array of Expr in each property
-            if (! $node instanceof Node && ! is_array($node)) {
-                continue;
-            }
+        if ($stmt instanceof Echo_) {
+            $nodes = $stmt->exprs;
+        }
 
-            $expr = $this->resolveExpr($stmt, $node, $filter);
-            if ($expr instanceof Expr) {
-                return new StmtAndExpr($stmt, $expr);
-            }
+        $expr = $this->resolveExpr($stmt, $nodes, $filter);
+        if ($expr instanceof Expr) {
+            return new StmtAndExpr($stmt, $expr);
         }
 
         $stmtAndExpr = $this->resolveFromChildCond($stmt, $filter);
