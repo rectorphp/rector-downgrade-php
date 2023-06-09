@@ -97,6 +97,7 @@ final class ExprInTopStmtMatcher
         if (! $stmt->expr instanceof Expr) {
             return null;
         }
+
         return $this->resolveExpr($stmt, $stmt->expr, $filter);
     }
 
