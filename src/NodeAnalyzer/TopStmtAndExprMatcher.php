@@ -34,6 +34,20 @@ final class TopStmtAndExprMatcher
     }
 
     /**
+     * @return array<class-string<StmtsAwareInterface|Switch_|Return_|Expression|Echo_>>
+     */
+    public function getStmts(): array
+    {
+        return [
+            StmtsAwareInterface::class,
+            Switch_::class,
+            Return_::class,
+            Expression::class,
+            Echo_::class,
+        ];
+    }
+
+    /**
      * @param callable(Node $node): bool $filter
      */
     public function match(StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt, callable $filter): null|StmtAndExpr
