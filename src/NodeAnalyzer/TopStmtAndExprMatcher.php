@@ -6,6 +6,7 @@ namespace Rector\NodeAnalyzer;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Do_;
 use PhpParser\Node\Stmt\For_;
@@ -16,6 +17,7 @@ use PhpParser\Node\Stmt\While_;
 use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Util\MultiInstanceofChecker;
+use Rector\ValueObject\StmtAndExpr;
 
 /**
  * To resolve Stmt and Expr in top StmtsAwareInterface from early Expr attribute
@@ -31,13 +33,16 @@ final class TopStmtAndExprMatcher
 
     /**
      * @param callable(Node $node): bool $filter
-     * @return null|array<Stmt, Expr>
      */
-    public function match(StmtsAwareInterface $stmtsAware, callable $filter): null|array
+    public function match(StmtsAwareInterface|Switch_ $stmtsAware, callable $filter): null|StmtAndExpr
     {
+        if ($stmtsAware instanceof Closure) {
+            return null;
+        }
+
+        $nodes = [];
         if ($stmtsAware instanceof Foreach_) {
-            // keyVar can be null, filter only Expr
-            $nodes = array_filter([$stmtsAware->expr, $stmtsAware->keyVar, $stmtsAware->valueVar]);
+            $nodes = [$stmtsAware->expr, $stmtsAware->keyVar, $stmtsAware->valueVar];
         }
 
         if ($stmtsAware instanceof For_) {
@@ -55,9 +60,46 @@ final class TopStmtAndExprMatcher
         }
 
         foreach ($nodes as $node) {
+            // For top level Expr can be array of Expr in each property
+            if (! $node instanceof Node && ! is_array($node)) {
+                continue;
+            }
+
             $expr = $this->betterNodeFinder->findFirst($node, $filter);
             if ($expr instanceof Expr) {
-                return [$stmtsAware, $expr];
+                return new StmtAndExpr($stmtsAware, $expr);
+            }
+        }
+
+        $stmtAndExprFromChildCond = $this->resolveFromChildCond($stmtsAware, $filter);
+        if ($stmtAndExprFromChildCond instanceof StmtAndExpr) {
+            return $stmtAndExprFromChildCond;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param callable(Node $node): bool $filter
+     */
+    private function resolveFromChildCond(StmtsAwareInterface|Switch_ $stmtsAware, callable $filter): null|StmtAndExpr
+    {
+        if (! $stmtsAware instanceof If_ && ! $stmtsAware instanceof Switch_) {
+            return null;
+        }
+
+        $stmts = $stmtsAware instanceof If_
+            ? $stmtsAware->elseifs
+            : $stmtsAware->cases;
+
+        foreach ($stmts as $stmt) {
+            if (! $stmt->cond instanceof Expr) {
+                continue;
+            }
+
+            $expr = $this->betterNodeFinder->findFirst($stmt->cond, $filter);
+            if ($expr instanceof Expr) {
+                return new StmtAndExpr($stmtsAware, $expr);
             }
         }
 
