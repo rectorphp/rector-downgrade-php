@@ -8,19 +8,21 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Expr\Closure;
-use PhpParser\Node\Expr\ClosureUse;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Stmt;
+use PhpParser\Node\Stmt\Echo_;
 use PhpParser\Node\Stmt\Expression;
-use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
+use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
+use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp72\NodeAnalyzer\FunctionExistsFunCallAnalyzer;
 use Rector\Naming\Naming\VariableNaming;
+use Rector\NodeAnalyzer\TopStmtAndExprMatcher;
+use Rector\ValueObject\StmtAndExpr;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -37,6 +39,7 @@ final class DowngradeArrayIsListRector extends AbstractScopeAwareRector
         private readonly InlineCodeParser $inlineCodeParser,
         private readonly FunctionExistsFunCallAnalyzer $functionExistsFunCallAnalyzer,
         private readonly VariableNaming $variableNaming,
+        private readonly TopStmtAndExprMatcher $topStmtAndExprMatcher
     ) {
     }
 
@@ -79,65 +82,41 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Expression::class, If_::class, Return_::class];
+        return [StmtsAwareInterface::class, Switch_::class, Return_::class, Expression::class, Echo_::class];
     }
 
     /**
-     * @param Expression|If_|Return_ $node
-     * @return Stmt[]|null
+     * @param StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $node
+     * @return Node[]|null
      */
     public function refactorWithScope(Node $node, Scope $scope): ?array
     {
-        /** @var FuncCall[] $funcCalls */
-        $funcCalls = $node instanceof If_
-            ? $this->betterNodeFinder->findInstanceOf($node->cond, FuncCall::class)
-            : $this->betterNodeFinder->findInstanceOf($node, FuncCall::class);
+        $stmtAndExpr = $this->topStmtAndExprMatcher->match(
+            $node,
+            function (Node $subNode): bool {
+                if (! $subNode instanceof FuncCall) {
+                    return false;
+                }
 
-        if ($funcCalls === []) {
+                return ! $this->shouldSkip($subNode);
+            }
+        );
+
+        if (! $stmtAndExpr instanceof StmtAndExpr) {
             return null;
         }
 
-        foreach ($funcCalls as $funcCall) {
-            if ($this->shouldSkip($funcCall)) {
-                continue;
-            }
+        $stmt = $stmtAndExpr->getStmt();
+        /** @var FuncCall $expr */
+        $expr = $stmtAndExpr->getExpr();
+        $variable = new Variable($this->variableNaming->createCountedValueName('arrayIsList', $scope));
 
-            $variable = new Variable($this->variableNaming->createCountedValueName('arrayIsList', $scope));
+        $function = $this->createClosure();
+        $expression = new Expression(new Assign($variable, $function));
 
-            $function = $this->createClosure();
-            $expression = new Expression(new Assign($variable, $function));
+        $expr->name = $variable;
 
-            $funcCall->name = $variable;
-
-            $this->applyUseClosure($node, $variable);
-
-            return [$expression, $node];
-        }
-
-        return null;
-    }
-
-    private function applyUseClosure(Expression|If_|Return_ $expression, Variable $variable): void
-    {
-        $expr = $expression instanceof If_ ? $expression->cond : $expression->expr;
-
-        if (! $expr instanceof CallLike) {
-            return;
-        }
-
-        if (! $this->shouldSkip($expr)) {
-            return;
-        }
-
-        if ($expr->isFirstClassCallable()) {
-            return;
-        }
-
-        foreach ($expr->getArgs() as $arg) {
-            if ($arg->value instanceof Closure) {
-                $arg->value->uses[] = new ClosureUse($variable);
-            }
-        }
+        return [$expression, $stmt];
     }
 
     private function createClosure(): Closure
