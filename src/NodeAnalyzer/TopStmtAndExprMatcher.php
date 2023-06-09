@@ -37,14 +37,6 @@ final class TopStmtAndExprMatcher
     }
 
     /**
-     * @return array<class-string<StmtsAwareInterface|Switch_|Return_|Expression|Echo_>>
-     */
-    public function getStmts(): array
-    {
-        return [StmtsAwareInterface::class, Switch_::class, Return_::class, Expression::class, Echo_::class];
-    }
-
-    /**
      * @param callable(Node $node): bool $filter
      */
     public function match(
@@ -91,11 +83,27 @@ final class TopStmtAndExprMatcher
             return $stmtAndExpr;
         }
 
-        if (($stmt instanceof Return_ || $stmt instanceof Expression) && $stmt->expr instanceof Expr) {
-            $expr = $this->resolveExpr($stmt, $stmt->expr, $filter);
-            if ($expr instanceof Expr) {
-                return new StmtAndExpr($stmt, $expr);
-            }
+        return $this->resolveOnReturnOrExpression($stmt, $filter);
+    }
+
+    /**
+     * @param callable(Node $node): bool $filter
+     */
+    private function resolveOnReturnOrExpression(
+        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
+        callable $filter
+    ): ?StmtAndExpr {
+        if (! $stmt instanceof Return_ && ! $stmt instanceof Expression) {
+            return null;
+        }
+
+        if (! $stmt->expr instanceof Expr) {
+            return null;
+        }
+
+        $expr = $this->resolveExpr($stmt, $stmt->expr, $filter);
+        if ($expr instanceof Expr) {
+            return new StmtAndExpr($stmt, $expr);
         }
 
         return null;
@@ -105,8 +113,11 @@ final class TopStmtAndExprMatcher
      * @param Expr[]|Expr $exprs
      * @param callable(Node $node): bool $filter
      */
-    private function resolveExpr(Stmt $stmt, array|Expr $exprs, callable $filter): ?Expr
-    {
+    private function resolveExpr(
+        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
+        array|Expr $exprs,
+        callable $filter
+    ): ?Expr {
         $node = $this->betterNodeFinder->findFirst($exprs, $filter);
 
         if (! $node instanceof Expr) {

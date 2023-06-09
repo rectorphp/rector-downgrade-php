@@ -10,9 +10,12 @@ use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Stmt;
+use PhpParser\Node\Stmt\Echo_;
 use PhpParser\Node\Stmt\Expression;
+use PhpParser\Node\Stmt\Return_;
+use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
+use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractScopeAwareRector;
@@ -79,12 +82,12 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return $this->topStmtAndExprMatcher->getStmts();
+        return [StmtsAwareInterface::class, Switch_::class, Return_::class, Expression::class, Echo_::class];
     }
 
     /**
-     * @param Stmt $node
-     * @return Stmt[]|null
+     * @param StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $node
+     * @return Node[]|null
      */
     public function refactorWithScope(Node $node, Scope $scope): ?array
     {
