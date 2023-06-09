@@ -131,7 +131,7 @@ final class TopStmtAndExprMatcher
             return null;
         }
 
-        if ($stmtScope->equals($exprScope)) {
+        if ($stmtScope->getParentScope() === $exprScope->getParentScope()) {
             return $node;
         }
 
