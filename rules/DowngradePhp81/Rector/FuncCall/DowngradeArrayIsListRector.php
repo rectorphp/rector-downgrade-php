@@ -21,8 +21,7 @@ use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp72\NodeAnalyzer\FunctionExistsFunCallAnalyzer;
 use Rector\Naming\Naming\VariableNaming;
-use Rector\NodeAnalyzer\TopStmtAndExprMatcher;
-use Rector\ValueObject\StmtAndExpr;
+use Rector\NodeAnalyzer\ExprInTopStmtMatcher;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -39,7 +38,7 @@ final class DowngradeArrayIsListRector extends AbstractScopeAwareRector
         private readonly InlineCodeParser $inlineCodeParser,
         private readonly FunctionExistsFunCallAnalyzer $functionExistsFunCallAnalyzer,
         private readonly VariableNaming $variableNaming,
-        private readonly TopStmtAndExprMatcher $topStmtAndExprMatcher
+        private readonly ExprInTopStmtMatcher $exprInTopStmtMatcher
     ) {
     }
 
@@ -91,7 +90,7 @@ CODE_SAMPLE
      */
     public function refactorWithScope(Node $node, Scope $scope): ?array
     {
-        $stmtAndExpr = $this->topStmtAndExprMatcher->match(
+        $expr = $this->exprInTopStmtMatcher->match(
             $node,
             function (Node $subNode): bool {
                 if (! $subNode instanceof FuncCall) {
@@ -102,13 +101,10 @@ CODE_SAMPLE
             }
         );
 
-        if (! $stmtAndExpr instanceof StmtAndExpr) {
+        if (! $expr instanceof FuncCall) {
             return null;
         }
 
-        $stmt = $stmtAndExpr->getStmt();
-        /** @var FuncCall $expr */
-        $expr = $stmtAndExpr->getExpr();
         $variable = new Variable($this->variableNaming->createCountedValueName('arrayIsList', $scope));
 
         $function = $this->createClosure();
@@ -116,7 +112,7 @@ CODE_SAMPLE
 
         $expr->name = $variable;
 
-        return [$expression, $stmt];
+        return [$expression, $node];
     }
 
     private function createClosure(): Closure
