@@ -51,7 +51,9 @@ final class ExprInTopStmtMatcher
         }
 
         if ($stmt instanceof For_) {
-            $nodes = [$stmt->init, $stmt->cond, $stmt->loop];
+            $nodes = $stmt->init;
+            $nodes = array_merge($nodes, $stmt->cond);
+            $nodes = array_merge($nodes, $stmt->loop);
         }
 
         if ($this->multiInstanceofChecker->isInstanceOf($stmt, [
