@@ -70,13 +70,7 @@ final class TopStmtAndExprMatcher
                 return new StmtAndExpr($stmtsAware, $expr);
             }
         }
-
-        $stmtAndExprFromChildCond = $this->resolveFromChildCond($stmtsAware, $filter);
-        if ($stmtAndExprFromChildCond instanceof StmtAndExpr) {
-            return $stmtAndExprFromChildCond;
-        }
-
-        return null;
+        return $this->resolveFromChildCond($stmtsAware, $filter);
     }
 
     /**
