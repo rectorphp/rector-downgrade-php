@@ -17,6 +17,7 @@ use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Switch_;
 use PhpParser\Node\Stmt\While_;
+use PHPStan\Analyser\Scope;
 use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Util\MultiInstanceofChecker;
@@ -41,32 +42,6 @@ final class TopStmtAndExprMatcher
     public function getStmts(): array
     {
         return [StmtsAwareInterface::class, Switch_::class, Return_::class, Expression::class, Echo_::class];
-    }
-
-    /**
-     * @param Expr[]|Expr $exprs
-     * @param callable(Node $node): bool $filter
-     */
-    private function resolveExpr(Stmt $stmt, array|Expr $exprs, callable $filter): ?Expr
-    {
-        $expr = $this->betterNodeFinder->findFirst($exprs, $filter);
-
-        if (! $expr instanceof Expr) {
-            return null;
-        }
-
-        $stmtScope = $stmt->getAttribute(AttributeKey::SCOPE);
-        $exprScope = $expr->getAttribute(AttributeKey::SCOPE);
-
-        if ($stmtScope === null || $exprScope === null) {
-            return null;
-        }
-
-        if ($stmtScope->getParentScope() === $exprScope->getParentScope()) {
-            return $expr;
-        }
-
-        return null;
     }
 
     /**
@@ -121,6 +96,32 @@ final class TopStmtAndExprMatcher
             if ($expr instanceof Expr) {
                 return new StmtAndExpr($stmt, $expr);
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Expr[]|Expr $exprs
+     * @param callable(Node $node): bool $filter
+     */
+    private function resolveExpr(Stmt $stmt, array|Expr $exprs, callable $filter): ?Expr
+    {
+        $node = $this->betterNodeFinder->findFirst($exprs, $filter);
+
+        if (! $node instanceof Expr) {
+            return null;
+        }
+
+        $stmtScope = $stmt->getAttribute(AttributeKey::SCOPE);
+        $exprScope = $node->getAttribute(AttributeKey::SCOPE);
+
+        if (! $stmtScope instanceof Scope || ! $exprScope instanceof Scope) {
+            return null;
+        }
+
+        if ($stmtScope->getParentScope() === $exprScope->getParentScope()) {
+            return $node;
         }
 
         return null;
