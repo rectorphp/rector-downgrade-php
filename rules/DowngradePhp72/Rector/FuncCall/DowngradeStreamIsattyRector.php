@@ -9,7 +9,6 @@ use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Echo_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
@@ -116,7 +115,8 @@ CODE_SAMPLE
                 }
 
                 return ! $this->functionExistsFunCallAnalyzer->detect($subNode, 'stream_isatty');
-            });
+            }
+        );
 
         if (! $stmtAndExpr instanceof StmtAndExpr) {
             return null;
