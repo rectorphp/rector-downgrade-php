@@ -7,6 +7,7 @@ namespace Rector\NodeAnalyzer;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Closure;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Do_;
 use PhpParser\Node\Stmt\Echo_;
 use PhpParser\Node\Stmt\Expression;
@@ -19,6 +20,7 @@ use PhpParser\Node\Stmt\While_;
 use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Util\MultiInstanceofChecker;
+use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\ValueObject\StmtAndExpr;
 
 /**
@@ -39,6 +41,32 @@ final class TopStmtAndExprMatcher
     public function getStmts(): array
     {
         return [StmtsAwareInterface::class, Switch_::class, Return_::class, Expression::class, Echo_::class];
+    }
+
+    /**
+     * @param Expr[]|Expr $exprs
+     * @param callable(Node $node): bool $filter
+     */
+    private function resolveExpr(Stmt $stmt, array|Expr $exprs, callable $filter): ?Expr
+    {
+        $expr = $this->betterNodeFinder->findFirst($exprs, $filter);
+
+        if (! $expr instanceof Expr) {
+            return null;
+        }
+
+        $stmtScope = $stmt->getAttribute(AttributeKey::SCOPE);
+        $exprScope = $expr->getAttribute(AttributeKey::SCOPE);
+
+        if ($stmtScope === null || $exprScope === null) {
+            return null;
+        }
+
+        if ($stmtScope->getParentScope() === $exprScope->getParentScope()) {
+            return $expr;
+        }
+
+        return null;
     }
 
     /**
@@ -77,7 +105,7 @@ final class TopStmtAndExprMatcher
                 continue;
             }
 
-            $expr = $this->betterNodeFinder->findFirst($node, $filter);
+            $expr = $this->resolveExpr($stmt, $node, $filter);
             if ($expr instanceof Expr) {
                 return new StmtAndExpr($stmt, $expr);
             }
@@ -89,7 +117,7 @@ final class TopStmtAndExprMatcher
         }
 
         if (($stmt instanceof Return_ || $stmt instanceof Expression) && $stmt->expr instanceof Expr) {
-            $expr = $this->betterNodeFinder->findFirst($stmt->expr, $filter);
+            $expr = $this->resolveExpr($stmt, $stmt->expr, $filter);
             if ($expr instanceof Expr) {
                 return new StmtAndExpr($stmt, $expr);
             }
@@ -118,7 +146,7 @@ final class TopStmtAndExprMatcher
                 continue;
             }
 
-            $expr = $this->betterNodeFinder->findFirst($stmt->cond, $filter);
+            $expr = $this->resolveExpr($stmt, $stmt->cond, $filter);
             if ($expr instanceof Expr) {
                 return new StmtAndExpr($stmt, $expr);
             }
