@@ -66,16 +66,13 @@ final class TopStmtAndExprMatcher
             $nodes = [$stmt->cond];
         }
 
-        foreach ($nodes as $node) {
-            // For top level Expr can be array of Expr in each property
-            if (! $node instanceof Node && ! is_array($node)) {
-                continue;
-            }
+        if ($stmt instanceof Echo_) {
+            $nodes = $stmt->exprs;
+        }
 
-            $expr = $this->resolveExpr($stmt, $node, $filter);
-            if ($expr instanceof Expr) {
-                return new StmtAndExpr($stmt, $expr);
-            }
+        $expr = $this->resolveExpr($stmt, $nodes, $filter);
+        if ($expr instanceof Expr) {
+            return new StmtAndExpr($stmt, $expr);
         }
 
         $stmtAndExpr = $this->resolveFromChildCond($stmt, $filter);
