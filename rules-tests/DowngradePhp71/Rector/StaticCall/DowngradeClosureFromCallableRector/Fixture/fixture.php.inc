@@ -16,10 +16,12 @@ namespace Rector\Tests\DowngradePhp71\Rector\StaticCall\DowngradeClosureFromCall
 
 $callable = 'used_callable_variable';
 $callable2 = 'strtolower';
+
 $lower = function () use ($callable2) {
     return $callable2(...func_get_args());
 };
 $callable2 = 'strtoupper';
+
 $upper = function () use ($callable2) {
     return $callable2(...func_get_args());
 };
