@@ -71,11 +71,9 @@ final class TopStmtAndExprMatcher
             $nodes = $stmt->exprs;
         }
 
-        foreach ($nodes as $node) {
-            $expr = $this->resolveExpr($stmt, $node, $filter);
-            if ($expr instanceof Expr) {
-                return new StmtAndExpr($stmt, $expr);
-            }
+        $expr = $this->resolveExpr($stmt, $nodes, $filter);
+        if ($expr instanceof Expr) {
+            return new StmtAndExpr($stmt, $expr);
         }
 
         $stmtAndExpr = $this->resolveFromChildCond($stmt, $filter);
