@@ -152,7 +152,7 @@ CODE_SAMPLE
                 $exprAssign = $newOrInstanceof->class;
                 $variable = $exprAssign->var;
             } else {
-                $variable = $this->namedVariableFactory->createVariable($newOrInstanceof, 'className');
+                $variable = $this->namedVariableFactory->createVariable('className', $expression);
                 $exprAssign = new Assign($variable, $newOrInstanceof->class);
             }
 
@@ -181,7 +181,7 @@ CODE_SAMPLE
         // mandatory to remove parentheses
         $instanceof->setAttribute(AttributeKey::ORIGINAL_NODE, null);
 
-        $variable = $this->namedVariableFactory->createVariable($instanceof, 'className');
+        $variable = $this->namedVariableFactory->createVariable('className', $expression);
         $exprAssign = new Assign($variable, $instanceof->class);
 
         $instanceof->class = $variable;
