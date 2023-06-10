@@ -90,7 +90,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $tempVariable = $this->namedVariableFactory->createVariable($expr, 'callable');
+        $tempVariable = $this->namedVariableFactory->createVariable('callable', $node);
         $assignExpression = new Expression(new Assign($tempVariable, $expr->getArgs()[0]->value));
 
         $innerFuncCall = new FuncCall(
