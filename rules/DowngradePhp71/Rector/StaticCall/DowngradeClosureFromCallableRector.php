@@ -11,6 +11,7 @@ use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ClosureUse;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Echo_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
@@ -90,6 +91,7 @@ CODE_SAMPLE
             return null;
         }
 
+        /** @var Stmt $node */
         $tempVariable = $this->namedVariableFactory->createVariable('callable', $node);
         $assignExpression = new Expression(new Assign($tempVariable, $expr->getArgs()[0]->value));
 
