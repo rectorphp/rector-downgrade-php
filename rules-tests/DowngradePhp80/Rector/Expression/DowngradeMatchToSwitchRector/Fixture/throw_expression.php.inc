@@ -22,14 +22,7 @@ final class DemoFile
 {
     public function run($param)
     {
-        switch ($param) {
-            case 'a':
-                return 'hi';
-            case 'b':
-                return 'bye';
-            default:
-                throw new Exception('no salutation');
-        }
+        return $param === 'a' ? 'hi' : ($param === 'b' ? 'bye' : throw new Exception('no salutation'));
     }
 }
 
