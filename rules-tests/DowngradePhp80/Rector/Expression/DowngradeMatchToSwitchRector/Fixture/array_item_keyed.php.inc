@@ -27,17 +27,7 @@ class ArrayItemKeyed
     public function run($statusCode)
     {
         return [
-            'result' => (function () use ($statusCode) {
-                switch ($statusCode) {
-                    case 200:
-                    case 300:
-                        return null;
-                    case 400:
-                        return 'not found';
-                    default:
-                        return 'unknown status code';
-                }
-            })(),
+            'result' => $statusCode === 200 || $statusCode === 300 ? null : ($statusCode === 400 ? 'not found' : 'unknown status code'),
         ];
     }
 }

@@ -32,18 +32,7 @@ class AnonymousFunctionCall
             echo $value;
         };
 
-        switch ($statusCode) {
-            case 200:
-            case 300:
-                $output(null);
-                break;
-            case 400:
-                $output('not found');
-                break;
-            default:
-                $output('unknown status code');
-                break;
-        }
+        $output($statusCode === 200 || $statusCode === 300 ? null : ($statusCode === 400 ? 'not found' : 'unknown status code'));
     }
 }
 

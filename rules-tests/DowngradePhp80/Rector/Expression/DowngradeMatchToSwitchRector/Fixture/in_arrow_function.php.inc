@@ -38,14 +38,7 @@ final class InArrowFunction
         ];
 
         $mapped = array_map(
-            static function (mixed $default) : mixed {
-                switch (true) {
-                    case is_string($default):
-                        return sprintf('"%s"', $default);
-                    default:
-                        return $default;
-                }
-            }, $defaults
+            static fn (mixed $default): mixed => true === is_string($default) ? sprintf('"%s"', $default) : $default, $defaults
         );
 
         return $mapped;

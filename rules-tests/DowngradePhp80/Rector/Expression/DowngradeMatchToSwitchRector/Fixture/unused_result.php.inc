@@ -24,18 +24,7 @@ class UnusedResult
 {
     public function run($statusCode)
     {
-        switch ($statusCode) {
-            case 200:
-            case 300:
-                null;
-                break;
-            case 400:
-                (function() { echo 'not found'; })();
-                break;
-            default:
-                'unknown status code';
-                break;
-        }
+        $statusCode === 200 || $statusCode === 300 ? null : ($statusCode === 400 ? (function() { echo 'not found'; })() : 'unknown status code');
     }
 }
 
