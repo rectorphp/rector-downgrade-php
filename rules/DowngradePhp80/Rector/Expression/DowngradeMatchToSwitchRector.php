@@ -120,14 +120,19 @@ CODE_SAMPLE
         $switchCases = $this->createSwitchCasesFromMatchArms($node, $match);
         $switch = new Switch_($match->cond, $switchCases);
 
-        $parentMatch = $match->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parentMatch instanceof ArrowFunction) {
-            return $this->refactorInArrowFunction($parentMatch, $match, $node);
-        }
+        //        $parentMatch = $match->getAttribute(AttributeKey::PARENT_NODE);
+        //        if ($parentMatch instanceof ArrowFunction) {
+        //            return $this->refactorInArrowFunction($parentMatch, $match, $node);
+        //        }
 
-        if ($parentMatch instanceof ArrayItem) {
-            $parentMatch->value = new FuncCall($this->anonymousFunctionFactory->create([], [$switch], null));
-            return $node;
+        //        if ($parentMatch instanceof ArrayItem) {
+        //            $parentMatch->value = new FuncCall($this->anonymousFunctionFactory->create([], [$switch], null));
+        //            return $node;
+        //        }
+
+        if ($node instanceof Expression && $node->expr instanceof ArrowFunction) {
+            print_node($node);
+            die;
         }
 
         return $switch;
@@ -138,11 +143,10 @@ CODE_SAMPLE
         Match_ $match,
         Echo_|Expression|Return_ $node
     ): Echo_|Expression|Return_|null {
-        $parentOfParentMatch = $arrowFunction->getAttribute(AttributeKey::PARENT_NODE);
-
-        if (! $parentOfParentMatch instanceof Node) {
-            return null;
-        }
+        //        $parentOfParentMatch = $arrowFunction->getAttribute(AttributeKey::PARENT_NODE);
+        //        if (! $parentOfParentMatch instanceof Node) {
+        //            return null;
+        //        }
 
         /**
          * Yes, Pass Match_ object itself to Return_
