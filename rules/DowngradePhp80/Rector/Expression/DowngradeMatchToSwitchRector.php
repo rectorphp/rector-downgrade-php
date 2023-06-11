@@ -11,9 +11,12 @@ use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\Match_;
 use PhpParser\Node\Expr\Ternary;
+use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Name;
 use Rector\Core\Exception\ShouldNotHappenException;
+use Rector\Core\Php\PhpVersionProvider;
 use Rector\Core\Rector\AbstractRector;
+use Rector\Core\ValueObject\PhpVersion;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -24,6 +27,11 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeMatchToSwitchRector extends AbstractRector
 {
+    public function __construct(
+        private readonly PhpVersionProvider $phpVersionProvider,
+    ) {
+    }
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Downgrade match() to switch()', [
@@ -73,6 +81,12 @@ CODE_SAMPLE
 
         $defaultExpr = $this->matchDefaultExpr($node);
         $defaultExpr = $defaultExpr ?: new ConstFetch(new Name('null'));
+
+        // @see https://wiki.php.net/rfc/throw_expression
+        // throws expr is not allowed → replace temporarily
+        if ($defaultExpr instanceof Throw_ && $this->phpVersionProvider->provide() < PhpVersion::PHP_80) {
+            $defaultExpr = new ConstFetch(new Name('null'));
+        }
 
         $firstTernary = null;
         $currentTernary = null;
