@@ -6,12 +6,12 @@ namespace Rector\DowngradePhp74\Rector\MethodCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Instanceof_;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Scalar\String_;
-use PhpParser\NodeTraverser;
 use PHPStan\Type\ObjectType;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -63,20 +63,35 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [MethodCall::class, Instanceof_::class, FuncCall::class];
+        return [MethodCall::class, Ternary::class, Instanceof_::class];
     }
 
     /**
-     * @param MethodCall|Instanceof_|FuncCall $node
+     * @param MethodCall|Ternary|Instanceof_ $node
      */
     public function refactor(Node $node): Node|null|int
     {
         if ($node instanceof Instanceof_) {
-            return $this->checkInstanceof($node);
+            if ($this->isName($node->class, 'ReflectionNamedType') && $node->expr instanceof MethodCall) {
+                // checked typed → safe
+                $node->expr->setAttribute('skip_node', true);
+            }
+
+            return null;
         }
 
-        if ($node instanceof FuncCall) {
-            return $this->checkFuncCall($node);
+        if ($node instanceof Ternary) {
+            if ($node->if instanceof Expr
+                && $node->cond instanceof FuncCall
+                && $this->isName($node->cond, 'method_exists')) {
+                $node->if->setAttribute('skip_node', true);
+            }
+
+            return null;
+        }
+
+        if ($node->getAttribute('skip_node') === true) {
+            return null;
         }
 
         if (! $this->isName($node->name, 'getType')) {
@@ -94,24 +109,5 @@ CODE_SAMPLE
             $node,
             $this->nodeFactory->createNull()
         );
-    }
-
-    private function checkInstanceof(Instanceof_ $instanceof): ?int
-    {
-        // skip instance of on call
-        if ($instanceof->expr instanceof MethodCall) {
-            return NodeTraverser::STOP_TRAVERSAL;
-        }
-
-        return null;
-    }
-
-    private function checkFuncCall(FuncCall $funcCall): ?int
-    {
-        if ($this->isName($funcCall, 'method_exists')) {
-            return NodeTraverser::STOP_TRAVERSAL;
-        }
-
-        return null;
     }
 }
