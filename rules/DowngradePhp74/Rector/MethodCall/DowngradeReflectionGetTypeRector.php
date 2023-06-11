@@ -51,7 +51,7 @@ class SomeClass
 {
     public function run(ReflectionProperty $reflectionProperty)
     {
-        if (null) {
+        if (method_exists($reflectionProperty, 'getType') ? $reflectionProperty->getType() ? null) {
             return true;
         }
 
@@ -77,22 +77,11 @@ CODE_SAMPLE
     public function refactor(Node $node): Node|null|int
     {
         if ($node instanceof Instanceof_) {
-            if ($this->isName($node->class, 'ReflectionNamedType') && $node->expr instanceof MethodCall) {
-                // checked typed → safe
-                $node->expr->setAttribute(self::SKIP_NODE, true);
-            }
-
-            return null;
+            return $this->refactorInstanceof($node);
         }
 
         if ($node instanceof Ternary) {
-            if ($node->if instanceof Expr
-                && $node->cond instanceof FuncCall
-                && $this->isName($node->cond, 'method_exists')) {
-                $node->if->setAttribute(self::SKIP_NODE, true);
-            }
-
-            return null;
+            return $this->refactorTernary($node);
         }
 
         if ($node->getAttribute(self::SKIP_NODE) === true) {
@@ -114,5 +103,38 @@ CODE_SAMPLE
             $node,
             $this->nodeFactory->createNull()
         );
+    }
+
+    private function refactorInstanceof(Instanceof_ $instanceof): ?Instanceof_
+    {
+        if (! $this->isName($instanceof->class, 'ReflectionNamedType')) {
+            return null;
+        }
+
+        if (! $instanceof->expr instanceof MethodCall) {
+            return null;
+        }
+
+        // checked typed → safe
+        $instanceof->expr->setAttribute(self::SKIP_NODE, true);
+        return $instanceof;
+    }
+
+    private function refactorTernary(Ternary $ternary): ?Ternary
+    {
+        if (! $ternary->if instanceof Expr) {
+            return null;
+        }
+
+        if (! $ternary->cond instanceof FuncCall) {
+            return null;
+        }
+
+        if (! $this->isName($ternary->cond, 'method_exists')) {
+            return null;
+        }
+
+        $ternary->if->setAttribute(self::SKIP_NODE, true);
+        return $ternary;
     }
 }
