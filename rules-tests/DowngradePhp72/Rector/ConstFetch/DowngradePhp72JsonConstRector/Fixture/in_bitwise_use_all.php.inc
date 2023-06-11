@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradePhp72JsonConstRector\Fixture;
+namespace Rector\Tests\DowngradePhp72\Rector\ConstFetch\DowngradePhp72JsonConstRector\Fixture;
 
 class InBitwiseUseAll
 {
@@ -18,7 +18,7 @@ class InBitwiseUseAll
 
 declare(strict_types=1);
 
-namespace Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradePhp72JsonConstRector\Fixture;
+namespace Rector\Tests\DowngradePhp72\Rector\ConstFetch\DowngradePhp72JsonConstRector\Fixture;
 
 class InBitwiseUseAll
 {
