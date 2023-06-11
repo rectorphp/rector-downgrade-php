@@ -10,9 +10,9 @@ use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Scalar\String_;
+use PhpParser\NodeTraverser;
 use PHPStan\Type\ObjectType;
 use Rector\Core\Rector\AbstractRector;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -62,14 +62,22 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [MethodCall::class];
+        return [MethodCall::class, Node\Expr\FuncCall::class];
     }
 
     /**
-     * @param MethodCall $node
+     * @param MethodCall|Node\Expr\FuncCall $node
      */
-    public function refactor(Node $node): ?Node
+    public function refactor(Node $node): Ternary|null|int
     {
+        if ($node instanceof Node\Expr\FuncCall) {
+            if ($this->isName($node, 'method_exists')) {
+                return NodeTraverser::STOP_TRAVERSAL;
+            }
+
+            return null;
+        }
+
         if (! $this->isName($node->name, 'getAttributes')) {
             return null;
         }
@@ -80,17 +88,6 @@ CODE_SAMPLE
 
         $args = [new Arg($node->var), new Arg(new String_('getAttributes'))];
 
-        $ternary = new Ternary($this->nodeFactory->createFuncCall('method_exists', $args), $node, new Array_([]));
-
-        $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
-        if (! $parentNode instanceof Ternary) {
-            return $ternary;
-        }
-
-        if (! $this->nodeComparator->areNodesEqual($parentNode, $ternary)) {
-            return $ternary;
-        }
-
-        return null;
+        return new Ternary($this->nodeFactory->createFuncCall('method_exists', $args), $node, new Array_([]));
     }
 }
