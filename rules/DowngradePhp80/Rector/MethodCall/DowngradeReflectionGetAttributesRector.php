@@ -63,23 +63,27 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [MethodCall::class, FuncCall::class];
+        return [Ternary::class, MethodCall::class];
     }
 
     /**
-     * @param MethodCall|Node\Expr\FuncCall $node
+     * @param Ternary|MethodCall|Node\Expr\FuncCall $node
      */
     public function refactor(Node $node): Ternary|null|int
     {
-        if ($node instanceof FuncCall) {
-            if ($this->isName($node, 'method_exists')) {
-                return NodeTraverser::STOP_TRAVERSAL;
+        if ($node instanceof Ternary) {
+            if ($node->cond instanceof FuncCall && $this->isName($node->cond, 'method_exists')) {
+                $node->if->setAttribute('is_if_ternary', true);
             }
 
             return null;
         }
 
         if (! $this->isName($node->name, 'getAttributes')) {
+            return null;
+        }
+
+        if ($node->getAttribute('is_if_ternary') === true) {
             return null;
         }
 
