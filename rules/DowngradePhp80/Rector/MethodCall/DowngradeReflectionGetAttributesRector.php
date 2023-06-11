@@ -22,6 +22,11 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeReflectionGetAttributesRector extends AbstractRector
 {
+    /**
+     * @var string
+     */
+    private const IS_IF_TERNARY = 'is_if_ternary';
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Remove reflection getAttributes() class method code', [
@@ -75,7 +80,7 @@ CODE_SAMPLE
             if ($node->if instanceof Expr
                 && $node->cond instanceof FuncCall
                 && $this->isName($node->cond, 'method_exists')) {
-                $node->if->setAttribute('is_if_ternary', true);
+                $node->if->setAttribute(self::IS_IF_TERNARY, true);
             }
 
             return null;
@@ -85,7 +90,7 @@ CODE_SAMPLE
             return null;
         }
 
-        if ($node->getAttribute('is_if_ternary') === true) {
+        if ($node->getAttribute(self::IS_IF_TERNARY) === true) {
             return null;
         }
 
