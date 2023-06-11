@@ -8,8 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
-use PhpParser\Node\Expr\FuncCall;
-use PhpParser\NodeTraverser;
+use PhpParser\Node\Stmt\If_;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp72\NodeManipulator\JsonConstCleaner;
 use Rector\Enum\JsonConstant;
@@ -24,6 +23,11 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradePhp71JsonConstRector extends AbstractRector
 {
+    /**
+     * @var string
+     */
+    private const PHP71_JSON_CONSTANT_IS_KNOWN = 'php71_json_constant_is_known';
+
     public function __construct(
         private readonly JsonConstCleaner $jsonConstCleaner,
         private readonly DefineFuncCallAnalyzer $defineFuncCallAnalyzer,
@@ -53,24 +57,39 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [ConstFetch::class, BitwiseOr::class];
+        return [ConstFetch::class, BitwiseOr::class, If_::class];
     }
 
     /**
-     * @param ConstFetch|BitwiseOr|FuncCall $node
+     * @param ConstFetch|BitwiseOr|If_ $node
      */
-    public function refactor(Node $node): Expr|null|int
+    public function refactor(Node $node): Expr|If_|null|int
     {
-        if ($node instanceof FuncCall) {
-            if ($this->defineFuncCallAnalyzer->isDefinedWithConstants($node, [
-                JsonConstant::UNESCAPED_LINE_TERMINATORS,
-            ])) {
-                return NodeTraverser::STOP_TRAVERSAL;
-            }
+        if ($node instanceof If_) {
+            return $this->refactorIf($node);
+        }
 
+        // skip as known
+        if ((bool) $node->getAttribute(self::PHP71_JSON_CONSTANT_IS_KNOWN)) {
             return null;
         }
 
         return $this->jsonConstCleaner->clean($node, [JsonConstant::UNESCAPED_LINE_TERMINATORS]);
+    }
+
+    private function refactorIf(If_ $if): ?If_
+    {
+        if (! $this->defineFuncCallAnalyzer->isDefinedWithConstants($if->cond, [
+            JsonConstant::UNESCAPED_LINE_TERMINATORS,
+        ])) {
+            return null;
+        }
+
+        $this->traverseNodesWithCallable($if, static function (Node $node) {
+            $node->setAttribute(self::PHP71_JSON_CONSTANT_IS_KNOWN, true);
+            return null;
+        });
+
+        return $if;
     }
 }
