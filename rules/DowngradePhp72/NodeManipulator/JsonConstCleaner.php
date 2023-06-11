@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp72\NodeManipulator;
 
-use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
-use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\LNumber;
-use PhpParser\Node\Scalar\String_;
-use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Enum\JsonConstant;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -20,50 +16,19 @@ final class JsonConstCleaner
 {
     public function __construct(
         private readonly NodeNameResolver $nodeNameResolver,
-        private readonly BetterNodeFinder $betterNodeFinder
     ) {
     }
 
     /**
      * @param array<JsonConstant::*> $constants
      */
-    public function clean(ConstFetch|BitwiseOr $node, array $constants): ConstFetch|Expr|null
+    public function clean(ConstFetch|BitwiseOr $node, array $constants): Expr|null
     {
         if ($node instanceof ConstFetch) {
             return $this->cleanByConstFetch($node, $constants);
         }
 
         return $this->cleanByBitwiseOr($node, $constants);
-    }
-
-    /**
-     * @param array<JsonConstant::*> $constants
-     */
-    private function hasDefinedCheck(ConstFetch|BitwiseOr $node, array $constants): bool
-    {
-        return (bool) $this->betterNodeFinder->findFirstPrevious(
-            $node,
-            function (Node $subNode) use ($constants): bool {
-                if (! $subNode instanceof FuncCall) {
-                    return false;
-                }
-
-                if (! $this->nodeNameResolver->isName($subNode, 'defined')) {
-                    return false;
-                }
-
-                $args = $subNode->getArgs();
-                if (! isset($args[0])) {
-                    return false;
-                }
-
-                if (! $args[0]->value instanceof String_) {
-                    return false;
-                }
-
-                return in_array($args[0]->value->value, $constants, true);
-            }
-        );
     }
 
     /**
@@ -80,10 +45,6 @@ final class JsonConstCleaner
             return null;
         }
 
-        if ($this->hasDefinedCheck($constFetch, $constants)) {
-            return null;
-        }
-
         return new LNumber(0);
     }
 
@@ -96,10 +57,6 @@ final class JsonConstCleaner
         $isRightTransformed = $this->isTransformed($bitwiseOr->right, $constants);
 
         if (! $isLeftTransformed && ! $isRightTransformed) {
-            return null;
-        }
-
-        if ($this->hasDefinedCheck($bitwiseOr, $constants)) {
             return null;
         }
 
