@@ -7,6 +7,7 @@ namespace Rector\DowngradePhp80\Rector\MethodCall;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Scalar\String_;
@@ -62,7 +63,7 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [MethodCall::class, Node\Expr\FuncCall::class];
+        return [MethodCall::class, FuncCall::class];
     }
 
     /**
@@ -70,7 +71,7 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): Ternary|null|int
     {
-        if ($node instanceof Node\Expr\FuncCall) {
+        if ($node instanceof FuncCall) {
             if ($this->isName($node, 'method_exists')) {
                 return NodeTraverser::STOP_TRAVERSAL;
             }

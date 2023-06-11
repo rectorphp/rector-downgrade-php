@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Scalar\String_;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
+use Rector\Enum\JsonConstant;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
@@ -24,7 +25,7 @@ final class JsonConstCleaner
     }
 
     /**
-     * @param string[] $constants
+     * @param array<JsonConstant::*> $constants
      */
     public function clean(ConstFetch|BitwiseOr $node, array $constants): ConstFetch|Expr|null
     {
@@ -36,7 +37,7 @@ final class JsonConstCleaner
     }
 
     /**
-     * @param string[] $constants
+     * @param array<JsonConstant::*> $constants
      */
     private function hasDefinedCheck(ConstFetch|BitwiseOr $node, array $constants): bool
     {
@@ -66,7 +67,7 @@ final class JsonConstCleaner
     }
 
     /**
-     * @param string[] $constants
+     * @param array<JsonConstant::*> $constants
      */
     private function cleanByConstFetch(ConstFetch $constFetch, array $constants): ?LNumber
     {
@@ -87,7 +88,7 @@ final class JsonConstCleaner
     }
 
     /**
-     * @param string[] $constants
+     * @param array<JsonConstant::*> $constants
      */
     private function cleanByBitwiseOr(BitwiseOr $bitwiseOr, array $constants): null|Expr|LNumber
     {
