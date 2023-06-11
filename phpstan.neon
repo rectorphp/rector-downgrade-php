@@ -88,3 +88,5 @@ parameters:
         -
             message: '#Use value object over return of values#'
             path: rules/DowngradePhp80/Rector/Expression/DowngradeThrowExprRector.php
+
+        - '#New objects with "\$defaultExpr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
