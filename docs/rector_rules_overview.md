@@ -1382,17 +1382,10 @@ Remove reflection `getAttributes()` class method code
 - class: [`Rector\DowngradePhp80\Rector\MethodCall\DowngradeReflectionGetAttributesRector`](../rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionGetAttributesRector.php)
 
 ```diff
- class SomeClass
+ function run(ReflectionClass $reflectionClass)
  {
-     public function run(ReflectionClass $reflectionClass)
-     {
--        if ($reflectionClass->getAttributes()) {
-+        if ([]) {
-             return true;
-         }
-
-         return false;
-     }
+-    return $reflectionClass->getAttributes();
++    return method_exists($reflectionClass, 'getAttributes') ? $reflectionClass->getAttributes() ? [];
  }
 ```
 

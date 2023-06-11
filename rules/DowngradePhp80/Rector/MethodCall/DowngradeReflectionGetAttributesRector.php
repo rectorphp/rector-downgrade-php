@@ -32,31 +32,17 @@ final class DowngradeReflectionGetAttributesRector extends AbstractRector
         return new RuleDefinition('Remove reflection getAttributes() class method code', [
             new CodeSample(
                 <<<'CODE_SAMPLE'
-class SomeClass
+function run(ReflectionClass $reflectionClass)
 {
-    public function run(ReflectionClass $reflectionClass)
-    {
-        if ($reflectionClass->getAttributes()) {
-            return true;
-        }
-
-        return false;
-    }
+    return $reflectionClass->getAttributes();
 }
 CODE_SAMPLE
 
                 ,
                 <<<'CODE_SAMPLE'
-class SomeClass
+function run(ReflectionClass $reflectionClass)
 {
-    public function run(ReflectionClass $reflectionClass)
-    {
-        if ([]) {
-            return true;
-        }
-
-        return false;
-    }
+    return method_exists($reflectionClass, 'getAttributes') ? $reflectionClass->getAttributes() ? [];
 }
 CODE_SAMPLE
             ),
@@ -99,7 +85,8 @@ CODE_SAMPLE
         }
 
         $args = [new Arg($node->var), new Arg(new String_('getAttributes'))];
+        $methodExistsFuncCall = $this->nodeFactory->createFuncCall('method_exists', $args);
 
-        return new Ternary($this->nodeFactory->createFuncCall('method_exists', $args), $node, new Array_([]));
+        return new Ternary($methodExistsFuncCall, $node, new Array_([]));
     }
 }
