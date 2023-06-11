@@ -1,14 +1,12 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\String_\DowngradeNegativeStringOffsetToStrlenRector\Fixture;
-final class SomeStaticPropertyFetch
-{
-    private static $var;
 
+final class BareString
+{
     public function run()
     {
-        self::$var = 'abc';
-        echo self::$var[-2];
+        echo 'abcdef'[-2];
     }
 }
 
@@ -17,14 +15,12 @@ final class SomeStaticPropertyFetch
 <?php
 
 namespace Rector\Tests\DowngradePhp71\Rector\String_\DowngradeNegativeStringOffsetToStrlenRector\Fixture;
-final class SomeStaticPropertyFetch
-{
-    private static $var;
 
+final class BareString
+{
     public function run()
     {
-        self::$var = 'abc';
-        echo substr(self::$var, -2, 1);
+        echo substr('abcdef', -2, 1);
     }
 }
 

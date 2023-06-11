@@ -18,7 +18,7 @@ final class SomeVariable
 {
     public function run(string $var)
     {
-        echo $var[strlen($var) - 2];
+        echo substr($var, -2, 1);
     }
 }
 

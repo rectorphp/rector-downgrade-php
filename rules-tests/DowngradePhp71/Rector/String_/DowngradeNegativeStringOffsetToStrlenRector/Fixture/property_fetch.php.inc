@@ -24,7 +24,7 @@ final class SomePropertyFetch
     public function run()
     {
         $this->var = 'abc';
-        echo $this->var[strlen($this->var) - 2];
+        echo substr($this->var, -2, 1);
     }
 }
 
