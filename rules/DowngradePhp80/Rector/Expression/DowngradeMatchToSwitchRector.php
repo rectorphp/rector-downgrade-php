@@ -88,7 +88,6 @@ CODE_SAMPLE
             $defaultExpr = new ConstFetch(new Name('null'));
         }
 
-        $firstTernary = null;
         $currentTernary = null;
 
         foreach ($reversedMatchArms as $matchArm) {
@@ -97,11 +96,7 @@ CODE_SAMPLE
             }
 
             $cond = $this->createCond($matchArm->conds, $node);
-
-            $currentTernary = new Ternary($cond, $matchArm->body, $firstTernary ?: $defaultExpr);
-            if ($firstTernary === null) {
-                $firstTernary = $currentTernary;
-            }
+            $currentTernary = new Ternary($cond, $matchArm->body, $currentTernary ?: $defaultExpr);
         }
 
         return $currentTernary;
