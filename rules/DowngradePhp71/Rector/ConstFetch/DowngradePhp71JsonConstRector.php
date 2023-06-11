@@ -9,6 +9,7 @@ use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp72\NodeManipulator\JsonConstCleaner;
+use Rector\Enum\JsonConstant;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -19,11 +20,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradePhp71JsonConstRector extends AbstractRector
 {
-    /**
-     * @var string[]
-     */
-    private const CONSTANTS = ['JSON_UNESCAPED_LINE_TERMINATORS'];
-
     public function __construct(
         private readonly JsonConstCleaner $jsonConstCleaner
     ) {
@@ -60,6 +56,6 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        return $this->jsonConstCleaner->clean($node, self::CONSTANTS);
+        return $this->jsonConstCleaner->clean($node, [JsonConstant::UNESCAPED_LINE_TERMINATORS]);
     }
 }
