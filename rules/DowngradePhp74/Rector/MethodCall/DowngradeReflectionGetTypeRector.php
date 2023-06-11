@@ -22,6 +22,11 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeReflectionGetTypeRector extends AbstractRector
 {
+    /**
+     * @var string
+     */
+    private const SKIP_NODE = 'skip_node';
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Downgrade reflection $reflection->getType() method call', [
@@ -74,7 +79,7 @@ CODE_SAMPLE
         if ($node instanceof Instanceof_) {
             if ($this->isName($node->class, 'ReflectionNamedType') && $node->expr instanceof MethodCall) {
                 // checked typed → safe
-                $node->expr->setAttribute('skip_node', true);
+                $node->expr->setAttribute(self::SKIP_NODE, true);
             }
 
             return null;
@@ -84,13 +89,13 @@ CODE_SAMPLE
             if ($node->if instanceof Expr
                 && $node->cond instanceof FuncCall
                 && $this->isName($node->cond, 'method_exists')) {
-                $node->if->setAttribute('skip_node', true);
+                $node->if->setAttribute(self::SKIP_NODE, true);
             }
 
             return null;
         }
 
-        if ($node->getAttribute('skip_node') === true) {
+        if ($node->getAttribute(self::SKIP_NODE) === true) {
             return null;
         }
 
