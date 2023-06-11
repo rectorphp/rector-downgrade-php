@@ -67,7 +67,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param Ternary|MethodCall|Node\Expr\FuncCall $node
+     * @param Ternary|MethodCall $node
      */
     public function refactor(Node $node): Ternary|null|int
     {
