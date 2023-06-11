@@ -6,12 +6,12 @@ namespace Rector\DowngradePhp80\Rector\MethodCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Scalar\String_;
-use PhpParser\NodeTraverser;
 use PHPStan\Type\ObjectType;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -72,7 +72,9 @@ CODE_SAMPLE
     public function refactor(Node $node): Ternary|null|int
     {
         if ($node instanceof Ternary) {
-            if ($node->cond instanceof FuncCall && $this->isName($node->cond, 'method_exists')) {
+            if ($node->if instanceof Expr
+                && $node->cond instanceof FuncCall
+                && $this->isName($node->cond, 'method_exists')) {
                 $node->if->setAttribute('is_if_ternary', true);
             }
 
