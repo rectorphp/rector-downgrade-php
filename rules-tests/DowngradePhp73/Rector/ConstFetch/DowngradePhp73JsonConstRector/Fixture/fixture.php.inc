@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\Tests\DowngradePhp73\Rector\FuncCall\DowngradePhp73JsonConstRector\Fixture;
+namespace Rector\Tests\DowngradePhp73\Rector\ConstFetch\DowngradePhp73JsonConstRector\Fixture;
 
 class Fixture
 {
@@ -18,7 +18,7 @@ class Fixture
 
 declare(strict_types=1);
 
-namespace Rector\Tests\DowngradePhp73\Rector\FuncCall\DowngradePhp73JsonConstRector\Fixture;
+namespace Rector\Tests\DowngradePhp73\Rector\ConstFetch\DowngradePhp73JsonConstRector\Fixture;
 
 class Fixture
 {

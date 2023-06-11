@@ -22,7 +22,7 @@ final class JsonConstCleaner
     /**
      * @param array<JsonConstant::*> $constants
      */
-    public function clean(ConstFetch|BitwiseOr $node, array $constants): ConstFetch|Expr|null
+    public function clean(ConstFetch|BitwiseOr $node, array $constants): Expr|null
     {
         if ($node instanceof ConstFetch) {
             return $this->cleanByConstFetch($node, $constants);

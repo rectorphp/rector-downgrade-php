@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp72\Rector\ConstFetch;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\NodeTraverser;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp72\NodeManipulator\JsonConstCleaner;
 use Rector\Enum\JsonConstant;
+use Rector\NodeAnalyzer\DefineFuncCallAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -21,7 +25,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradePhp72JsonConstRector extends AbstractRector
 {
     public function __construct(
-        private readonly JsonConstCleaner $jsonConstCleaner
+        private readonly JsonConstCleaner $jsonConstCleaner,
+        private readonly DefineFuncCallAnalyzer $defineFuncCallAnalyzer
     ) {
     }
 
@@ -33,11 +38,13 @@ final class DowngradePhp72JsonConstRector extends AbstractRector
                 new CodeSample(
                     <<<'CODE_SAMPLE'
 $inDecoder = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
+
 $inDecoder = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_SUBSTITUTE);
 CODE_SAMPLE
                     ,
                     <<<'CODE_SAMPLE'
 $inDecoder = new Decoder($connection, true, 512, 0);
+
 $inDecoder = new Decoder($connection, true, 512, 0);
 CODE_SAMPLE
                 ),
@@ -50,14 +57,25 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [ConstFetch::class, BitwiseOr::class];
+        return [ConstFetch::class, BitwiseOr::class, FuncCall::class];
     }
 
     /**
-     * @param ConstFetch|BitwiseOr $node
+     * @param ConstFetch|BitwiseOr|FuncCall $node
      */
-    public function refactor(Node $node): ?Node
+    public function refactor(Node $node): Expr|null|int
     {
+        if ($node instanceof FuncCall) {
+            if ($this->defineFuncCallAnalyzer->isDefinedWithConstants($node, [
+                JsonConstant::INVALID_UTF8_IGNORE,
+                JsonConstant::INVALID_UTF8_SUBSTITUTE,
+            ])) {
+                return NodeTraverser::STOP_TRAVERSAL;
+            }
+
+            return null;
+        }
+
         return $this->jsonConstCleaner->clean($node, [
             JsonConstant::INVALID_UTF8_IGNORE,
             JsonConstant::INVALID_UTF8_SUBSTITUTE,

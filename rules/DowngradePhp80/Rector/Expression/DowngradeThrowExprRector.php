@@ -76,7 +76,7 @@ CODE_SAMPLE
      * @param Expression|Return_ $node
      * @return Node|Node[]|null
      */
-    public function refactor(Node $node)
+    public function refactor(Node $node): Node|array|null
     {
         if ($node instanceof Return_) {
             return $this->refactorReturn($node);
