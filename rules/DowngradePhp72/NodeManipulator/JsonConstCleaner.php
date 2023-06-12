@@ -8,12 +8,15 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Scalar\LNumber;
-use Rector\Enum\JsonConstant;
 use Rector\NodeNameResolver\NodeNameResolver;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 
 final class JsonConstCleaner
 {
+    /**
+     * @var string
+     */
+    private const IS_CONSTFETCH_FROM_BITWISE_OR = 'is_constfetch_from_bitwise_or';
+
     public function __construct(
         private readonly NodeNameResolver $nodeNameResolver,
     ) {
@@ -24,6 +27,16 @@ final class JsonConstCleaner
      */
     public function clean(ConstFetch|BitwiseOr $node, array $constants): Expr|null
     {
+        if ($node instanceof BitwiseOr) {
+            if ($node->left instanceof ConstFetch) {
+                $node->left->setAttribute(self::IS_CONSTFETCH_FROM_BITWISE_OR, true);
+            }
+
+            if ($node->right instanceof ConstFetch) {
+                $node->right->setAttribute(self::IS_CONSTFETCH_FROM_BITWISE_OR, true);
+            }
+        }
+
         if ($node instanceof ConstFetch) {
             return $this->cleanByConstFetch($node, $constants);
         }
@@ -40,8 +53,7 @@ final class JsonConstCleaner
             return null;
         }
 
-        $parentNode = $constFetch->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parentNode instanceof BitwiseOr) {
+        if ($constFetch->getAttribute(self::IS_CONSTFETCH_FROM_BITWISE_OR) === true) {
             return null;
         }
 
