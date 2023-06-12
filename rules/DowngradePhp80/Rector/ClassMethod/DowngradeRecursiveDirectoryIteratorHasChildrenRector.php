@@ -66,20 +66,20 @@ CODE_SAMPLE
     {
         foreach ($node->getMethods() as $classMethod) {
             if (! $this->nodeNameResolver->isName($classMethod, 'hasChildren')) {
-                return null;
+                continue;
             }
 
             if (! isset($classMethod->params[0])) {
-                return null;
+                continue;
             }
 
             $ancestorClassNames = $this->familyRelationsAnalyzer->getClassLikeAncestorNames($node);
             if (! in_array('RecursiveDirectoryIterator', $ancestorClassNames, true)) {
-                return null;
+                continue;
             }
 
             if ($classMethod->params[0]->type === null) {
-                return null;
+                continue;
             }
 
             $classMethod->params[0]->type = null;
