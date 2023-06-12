@@ -90,13 +90,13 @@ CODE_SAMPLE
 
         $currentTernary = null;
 
-        foreach ($reversedMatchArms as $matchArm) {
-            if ($matchArm->conds === null) {
+        foreach ($reversedMatchArms as $reversedMatchArm) {
+            if ($reversedMatchArm->conds === null) {
                 continue;
             }
 
-            $cond = $this->createCond($matchArm->conds, $node);
-            $currentTernary = new Ternary($cond, $matchArm->body, $currentTernary ?: $defaultExpr);
+            $cond = $this->createCond($reversedMatchArm->conds, $node);
+            $currentTernary = new Ternary($cond, $reversedMatchArm->body, $currentTernary ?: $defaultExpr);
         }
 
         return $currentTernary;
