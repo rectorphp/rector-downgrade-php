@@ -62,8 +62,6 @@ parameters:
             message: '#New objects with "\$returnType" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             path: src/PhpDocDecorator/PhpDocFromTypeDeclarationDecorator.php
 
-        # class-string
-        - '#Parameter \#2 \$expectedClass of method Rector\\NodeAnalyzer\\MethodCallTypeAnalyzer\:\:isInstanceOf\(\) expects class\-string, string given#'
         -
             message: '#Class cognitive complexity is 32, keep it under 30#'
             path: rules/DowngradePhp73/Rector/List_/DowngradeListReferenceAssignmentRector.php
@@ -78,12 +76,6 @@ parameters:
 
 
         - '#(.*?)\:\:refactor\(\) should return array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\\ClassConst\|null but returns array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\|null#'
-
-        -
-            message: '#Use value object over return of values#'
-            path: rules/DowngradePhp71/Rector/StaticCall/DowngradeClosureFromCallableRector.php
-
-        - '#Cognitive complexity for "Rector\\DowngradePhp70\\Rector\\FuncCall\\DowngradeSessionStartArrayOptionsRector\:\:refactor\(\)" is 12, keep it under 10#'
 
         -
             message: '#Use value object over return of values#'
