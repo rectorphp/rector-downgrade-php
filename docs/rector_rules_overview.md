@@ -1403,7 +1403,7 @@ Downgrade reflection `$reflection->getType()` method call
      public function run(ReflectionProperty $reflectionProperty)
      {
 -        if ($reflectionProperty->getType()) {
-+        if (null) {
++        if (method_exists($reflectionProperty, 'getType') ? $reflectionProperty->getType() ? null) {
              return true;
          }
 
