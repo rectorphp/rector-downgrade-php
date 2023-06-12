@@ -27,7 +27,7 @@ final class DowngradeRecursiveDirectoryIteratorHasChildrenRector extends Abstrac
      */
     public function getNodeTypes(): array
     {
-        return [ClassMethod::class];
+        return [Class_::class];
     }
 
     public function getRuleDefinition(): RuleDefinition
@@ -61,33 +61,32 @@ CODE_SAMPLE
     }
 
     /**
-     * @param ClassMethod $node
+     * @param Class_ $node
      */
     public function refactor(Node $node): ?Node
     {
-        if (! $this->nodeNameResolver->isName($node, 'hasChildren')) {
-            return null;
+        foreach ($node->getMethods() as $method) {
+            if (! $this->nodeNameResolver->isName($method, 'hasChildren')) {
+                return null;
+            }
+
+            if (! isset($method->params[0])) {
+                return null;
+            }
+
+            $ancestorClassNames = $this->familyRelationsAnalyzer->getClassLikeAncestorNames($node);
+            if (! in_array('RecursiveDirectoryIterator', $ancestorClassNames, true)) {
+                return null;
+            }
+
+            if ($method->params[0]->type === null) {
+                return null;
+            }
+
+            $method->params[0]->type = null;
+            return $node;
         }
 
-        if (! isset($node->params[0])) {
-            return null;
-        }
-
-        $classLike = $this->betterNodeFinder->findParentType($node, Class_::class);
-        if (! $classLike instanceof Class_) {
-            return null;
-        }
-
-        $ancestorClassNames = $this->familyRelationsAnalyzer->getClassLikeAncestorNames($classLike);
-        if (! in_array('RecursiveDirectoryIterator', $ancestorClassNames, true)) {
-            return null;
-        }
-
-        if ($node->params[0]->type === null) {
-            return null;
-        }
-
-        $node->params[0]->type = null;
-        return $node;
+        return null;
     }
 }
