@@ -6,7 +6,6 @@ namespace Rector\DowngradePhp80\Rector\ClassMethod;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Core\Rector\AbstractRector;
 use Rector\FamilyTree\Reflection\FamilyRelationsAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -65,12 +64,12 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        foreach ($node->getMethods() as $method) {
-            if (! $this->nodeNameResolver->isName($method, 'hasChildren')) {
+        foreach ($node->getMethods() as $classMethod) {
+            if (! $this->nodeNameResolver->isName($classMethod, 'hasChildren')) {
                 return null;
             }
 
-            if (! isset($method->params[0])) {
+            if (! isset($classMethod->params[0])) {
                 return null;
             }
 
@@ -79,11 +78,11 @@ CODE_SAMPLE
                 return null;
             }
 
-            if ($method->params[0]->type === null) {
+            if ($classMethod->params[0]->type === null) {
                 return null;
             }
 
-            $method->params[0]->type = null;
+            $classMethod->params[0]->type = null;
             return $node;
         }
 
