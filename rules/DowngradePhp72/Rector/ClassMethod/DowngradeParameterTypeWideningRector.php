@@ -9,6 +9,7 @@ use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Reflection\ClassReflection;
+use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Core\Contract\Rector\AllowEmptyConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\Reflection\ReflectionResolver;
@@ -40,7 +41,8 @@ final class DowngradeParameterTypeWideningRector extends AbstractRector implemen
         private readonly AutowiredClassMethodOrPropertyAnalyzer $autowiredClassMethodOrPropertyAnalyzer,
         private readonly BuiltInMethodAnalyzer $builtInMethodAnalyzer,
         private readonly OverrideFromAnonymousClassMethodAnalyzer $overrideFromAnonymousClassMethodAnalyzer,
-        private readonly SealedClassAnalyzer $sealedClassAnalyzer
+        private readonly SealedClassAnalyzer $sealedClassAnalyzer,
+        private readonly DocBlockUpdater $docBlockUpdater
     ) {
     }
 
@@ -111,6 +113,8 @@ CODE_SAMPLE
 
                 if ($classMethod instanceof ClassMethod) {
                     $hasChanged = true;
+                    $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($classMethod);
+
                     continue;
                 }
 
@@ -121,6 +125,7 @@ CODE_SAMPLE
             $classMethod = $this->processRemoveParamTypeFromMethod($classReflection, $method);
 
             if ($classMethod instanceof ClassMethod) {
+                $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($classMethod);
                 $hasChanged = true;
             }
         }
