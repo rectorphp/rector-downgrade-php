@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\IssueseDowngradeParamType\FixtureDownToPhp71;
+namespace Rector\Tests\Issues\IssueDowngradeParamType\FixtureDownToPhp71;
 
 use ReflectionClass;
 
@@ -21,7 +21,7 @@ class DowngradeParamReflectionGetAttribute
 -----
 <?php
 
-namespace Rector\Tests\IssueseDowngradeParamType\FixtureDownToPhp71;
+namespace Rector\Tests\Issues\IssueDowngradeParamType\FixtureDownToPhp71;
 
 use ReflectionClass;
 
