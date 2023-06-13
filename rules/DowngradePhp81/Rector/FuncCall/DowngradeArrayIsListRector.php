@@ -19,9 +19,9 @@ use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractScopeAwareRector;
-use Rector\DowngradePhp72\NodeAnalyzer\FunctionExistsFunCallAnalyzer;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeAnalyzer\ExprInTopStmtMatcher;
+use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -36,7 +36,6 @@ final class DowngradeArrayIsListRector extends AbstractScopeAwareRector
 
     public function __construct(
         private readonly InlineCodeParser $inlineCodeParser,
-        private readonly FunctionExistsFunCallAnalyzer $functionExistsFunCallAnalyzer,
         private readonly VariableNaming $variableNaming,
         private readonly ExprInTopStmtMatcher $exprInTopStmtMatcher
     ) {
@@ -97,7 +96,9 @@ CODE_SAMPLE
                     return false;
                 }
 
-                return ! $this->shouldSkip($subNode);
+                // need pull Scope from target traversed sub Node
+                $scope = $subNode->getAttribute(AttributeKey::SCOPE);
+                return ! $this->shouldSkip($subNode, $scope);
             }
         );
 
@@ -136,7 +137,7 @@ CODE_SAMPLE
         return $expr;
     }
 
-    private function shouldSkip(CallLike $callLike): bool
+    private function shouldSkip(CallLike $callLike, ?Scope $scope): bool
     {
         if (! $callLike instanceof FuncCall) {
             return false;
@@ -146,7 +147,12 @@ CODE_SAMPLE
             return true;
         }
 
-        if ($this->functionExistsFunCallAnalyzer->detect($callLike, 'array_is_list')) {
+        if (! $scope instanceof Scope) {
+            $args = $callLike->getArgs();
+            return count($args) !== 1;
+        }
+
+        if ($scope->isInFunctionExists('array_is_list')) {
             return true;
         }
 
