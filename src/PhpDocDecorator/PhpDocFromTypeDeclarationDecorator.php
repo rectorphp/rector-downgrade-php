@@ -86,7 +86,7 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
-        $this->phpDocTypeChanger->changeReturnType($phpDocInfo, $returnType);
+        $this->phpDocTypeChanger->changeReturnType($functionLike, $phpDocInfo, $returnType);
 
         $functionLike->returnType = null;
         if (! $functionLike instanceof ClassMethod) {
@@ -234,7 +234,7 @@ final class PhpDocFromTypeDeclarationDecorator
     ): void {
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($functionLike);
         $paramName = $this->nodeNameResolver->getName($param);
-        $this->phpDocTypeChanger->changeParamType($phpDocInfo, $type, $param, $paramName);
+        $this->phpDocTypeChanger->changeParamType($functionLike, $phpDocInfo, $type, $param, $paramName);
 
         $param->type = null;
     }

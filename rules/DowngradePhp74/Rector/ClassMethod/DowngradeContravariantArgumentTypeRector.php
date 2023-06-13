@@ -257,6 +257,6 @@ CODE_SAMPLE
         $paramName = $this->getName($param->var) ?? '';
 
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($functionLike);
-        $this->phpDocTypeChanger->changeParamType($phpDocInfo, $type, $param, $paramName);
+        $this->phpDocTypeChanger->changeParamType($functionLike, $phpDocInfo, $type, $param, $paramName);
     }
 }
