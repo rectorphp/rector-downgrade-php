@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\Tests\Issues\IssueDowngradeParamType;
+namespace Rector\Tests\IssueseDowngradeParamType;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;

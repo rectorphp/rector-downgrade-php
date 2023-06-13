@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\Issues\IssueDowngradeParamType\Fixture;
+namespace Rector\Tests\IssueseDowngradeParamType\Fixture;
 
 class ParentClass
 {
@@ -20,7 +20,7 @@ class ChildClass extends ParentClass
 -----
 <?php
 
-namespace Rector\Tests\Issues\IssueDowngradeParamType\Fixture;
+namespace Rector\Tests\IssueseDowngradeParamType\Fixture;
 
 class ParentClass
 {
