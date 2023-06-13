@@ -13,7 +13,7 @@
         "phpunit/phpunit": "^10.1",
         "rector/phpstan-rules": "^0.6",
         "rector/rector-generator": "^0.6",
-        "rector/rector-src": "dev-main#bd1f997c31eac49ec691b358496d6512f7b6ab1c",
+        "rector/rector-src": "dev-move-docblock-updater",
         "symplify/easy-ci": "^11.2",
         "symplify/easy-coding-standard": "^11.2",
         "symplify/phpstan-extensions": "^11.2",
