@@ -5,44 +5,18 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp72\NodeAnalyzer;
 
 use PhpParser\Node\Expr\FuncCall;
-use PhpParser\Node\Stmt\If_;
-use Rector\Core\PhpParser\Node\BetterNodeFinder;
-use Rector\Core\PhpParser\Node\Value\ValueResolver;
-use Rector\NodeNameResolver\NodeNameResolver;
+use PHPStan\Analyser\Scope;
+use Rector\NodeTypeResolver\Node\AttributeKey;
 
 final class FunctionExistsFunCallAnalyzer
 {
-    public function __construct(
-        private readonly BetterNodeFinder $betterNodeFinder,
-        private readonly NodeNameResolver $nodeNameResolver,
-        private readonly ValueResolver $valueResolver
-    ) {
-    }
-
     public function detect(FuncCall $funcCall, string $functionName): bool
     {
-        /** @var If_|null $firstParentIf */
-        $firstParentIf = $this->betterNodeFinder->findParentType($funcCall, If_::class);
-        if (! $firstParentIf instanceof If_) {
+        $scope = $funcCall->getAttribute(AttributeKey::SCOPE);
+        if (! $scope instanceof Scope) {
             return false;
         }
 
-        if (! $firstParentIf->cond instanceof FuncCall) {
-            return false;
-        }
-
-        if (! $this->nodeNameResolver->isName($firstParentIf->cond, 'function_exists')) {
-            return false;
-        }
-
-        /** @var FuncCall $functionExists */
-        $functionExists = $firstParentIf->cond;
-
-        $args = $functionExists->getArgs();
-        if (! isset($args[0])) {
-            return false;
-        }
-
-        return $this->valueResolver->isValue($args[0]->value, $functionName);
+        return $scope->isInFunctionExists($functionName);
     }
 }
