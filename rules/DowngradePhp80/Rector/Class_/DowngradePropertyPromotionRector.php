@@ -252,6 +252,6 @@ CODE_SAMPLE
         }
 
         $propertyDocInfo = $this->phpDocInfoFactory->createEmpty($property);
-        $this->phpDocTypeChanger->changeVarTypeNode($property, $propertyDocInfo);
+        $this->phpDocTypeChanger->changeVarTypeNode($property, $propertyDocInfo, $paramTagValueNode->type);
     }
 }
