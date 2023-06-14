@@ -30,6 +30,6 @@ final class PropertyDecorator
         }
 
         $newType = $this->staticTypeMapper->mapPhpParserNodePHPStanType($typeNode);
-        $this->phpDocTypeChanger->changeVarType($phpDocInfo, $newType);
+        $this->phpDocTypeChanger->changeVarType($property, $phpDocInfo, $newType);
     }
 }
