@@ -70,6 +70,6 @@ final class NativeParamToPhpDocDecorator
         }
 
         // add default null type
-        return new UnionType([$paramType, new NullType()]);
+        return TypeCombinator::addNull($paramType);
     }
 }
