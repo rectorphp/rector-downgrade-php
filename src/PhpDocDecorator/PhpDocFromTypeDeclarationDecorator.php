@@ -10,12 +10,10 @@ use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Param;
-use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
-use PhpParser\Node\Stmt\Interface_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
@@ -24,7 +22,6 @@ use PHPStan\Type\UnionType;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Core\Php\PhpVersionProvider;
-use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Reflection\ReflectionResolver;
 use Rector\Core\ValueObject\PhpVersionFeature;
 use Rector\NodeNameResolver\NodeNameResolver;
@@ -50,7 +47,6 @@ final class PhpDocFromTypeDeclarationDecorator
         private readonly PhpDocInfoFactory $phpDocInfoFactory,
         private readonly NodeNameResolver $nodeNameResolver,
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
-        private readonly BetterNodeFinder $betterNodeFinder,
         private readonly PhpAttributeGroupFactory $phpAttributeGroupFactory,
         private readonly ReflectionResolver $reflectionResolver,
         private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer,
@@ -93,12 +89,12 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
-        $classLike = $this->betterNodeFinder->findParentByTypes($functionLike, [Class_::class, Interface_::class]);
-        if (! $classLike instanceof ClassLike) {
+        $classReflection = $this->reflectionResolver->resolveClassReflection($functionLike);
+        if (! $classReflection instanceof ClassReflection || (! $classReflection->isInterface() && ! $classReflection->isClass())) {
             return;
         }
 
-        if (! $this->isRequireReturnTypeWillChange($classLike, $functionLike)) {
+        if (! $this->isRequireReturnTypeWillChange($classReflection, $functionLike)) {
             return;
         }
 
@@ -173,18 +169,13 @@ final class PhpDocFromTypeDeclarationDecorator
         return true;
     }
 
-    private function isRequireReturnTypeWillChange(ClassLike $classLike, ClassMethod $classMethod): bool
+    private function isRequireReturnTypeWillChange(ClassReflection $classReflection, ClassMethod $classMethod): bool
     {
-        $className = $this->nodeNameResolver->getName($classLike);
-        if (! is_string($className)) {
+        if ($classReflection->isAnonymous()) {
             return false;
         }
 
         $methodName = $classMethod->name->toString();
-        $classReflection = $this->reflectionResolver->resolveClassAndAnonymousClass($classLike);
-        if ($classReflection->isAnonymous()) {
-            return false;
-        }
 
         // support for will return change type in case of removed return doc type
         // @see https://php.watch/versions/8.1/ReturnTypeWillChange
