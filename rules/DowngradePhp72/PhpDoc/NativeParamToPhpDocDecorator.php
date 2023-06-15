@@ -7,7 +7,6 @@ namespace Rector\DowngradePhp72\PhpDoc;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
-use PHPStan\Type\NullType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
