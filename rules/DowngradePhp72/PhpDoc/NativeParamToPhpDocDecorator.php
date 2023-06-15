@@ -7,7 +7,6 @@ namespace Rector\DowngradePhp72\PhpDoc;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
-use PHPStan\Type\NullType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
@@ -70,6 +69,6 @@ final class NativeParamToPhpDocDecorator
         }
 
         // add default null type
-        return new UnionType([$paramType, new NullType()]);
+        return TypeCombinator::addNull($paramType);
     }
 }
