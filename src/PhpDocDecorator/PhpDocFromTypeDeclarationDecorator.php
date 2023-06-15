@@ -94,7 +94,6 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
-        $classReflection->getName();
         if (! $this->isRequireReturnTypeWillChange($classReflection, $functionLike)) {
             return;
         }
