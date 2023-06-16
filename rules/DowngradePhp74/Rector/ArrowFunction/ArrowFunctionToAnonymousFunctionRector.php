@@ -6,7 +6,10 @@ namespace Rector\DowngradePhp74\Rector\ArrowFunction;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
+use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Closure;
+use PhpParser\Node\Expr\ClosureUse;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Throw_;
 use Rector\Core\Rector\AbstractRector;
@@ -78,6 +81,10 @@ CODE_SAMPLE
             $node->returnType,
             $node->static
         );
+
+        if ($node->expr instanceof Assign && $node->expr->expr instanceof Variable) {
+            $anonymousFunctionFactory->uses[] = new ClosureUse($node->expr->expr);
+        }
 
         // downgrade "return throw"
         $this->traverseNodesWithCallable($anonymousFunctionFactory, static function (Node $node): ?Throw_ {
