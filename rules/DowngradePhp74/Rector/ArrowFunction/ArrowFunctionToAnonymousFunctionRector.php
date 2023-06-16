@@ -84,6 +84,9 @@ CODE_SAMPLE
 
         if ($node->expr instanceof Assign && $node->expr->expr instanceof Variable) {
             $anonymousFunctionFactory->uses[] = new ClosureUse($node->expr->expr);
+
+            // ensure no duplicate uses as append
+            $anonymousFunctionFactory->uses = array_unique($anonymousFunctionFactory->uses, SORT_REGULAR);
         }
 
         // downgrade "return throw"
