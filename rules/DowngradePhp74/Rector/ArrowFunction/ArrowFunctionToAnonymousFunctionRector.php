@@ -85,7 +85,10 @@ CODE_SAMPLE
         if ($node->expr instanceof Assign && $node->expr->expr instanceof Variable) {
             $isFound = (bool) $this->betterNodeFinder->findFirst(
                 $anonymousFunctionFactory->uses,
-                fn (Node $subNode): bool => $subNode instanceof Variable && $this->nodeComparator->areNodesEqual($subNode, $node->expr->expr)
+                fn (Node $subNode): bool => $subNode instanceof Variable && $this->nodeComparator->areNodesEqual(
+                    $subNode,
+                    $node->expr->expr
+                )
             );
 
             if (! $isFound) {
