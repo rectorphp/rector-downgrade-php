@@ -83,10 +83,14 @@ CODE_SAMPLE
         );
 
         if ($node->expr instanceof Assign && $node->expr->expr instanceof Variable) {
-            $anonymousFunctionFactory->uses[] = new ClosureUse($node->expr->expr);
+            $isFound = (bool) $this->betterNodeFinder->findFirst(
+                $anonymousFunctionFactory->uses,
+                fn (Node $subNode): bool => $subNode instanceof Variable && $this->nodeComparator->areNodesEqual($subNode, $node->expr->expr)
+            );
 
-            // ensure no duplicate uses as append
-            $anonymousFunctionFactory->uses = array_unique($anonymousFunctionFactory->uses, SORT_REGULAR);
+            if (! $isFound) {
+                $anonymousFunctionFactory->uses[] = new ClosureUse($node->expr->expr);
+            }
         }
 
         // downgrade "return throw"
