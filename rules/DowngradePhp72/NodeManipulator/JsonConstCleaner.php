@@ -76,6 +76,6 @@ final class JsonConstCleaner
             return true;
         }
 
-        return !$expr->getAttribute(AttributeKey::ORIGINAL_NODE) instanceof Node;
+        return ! $expr->getAttribute(AttributeKey::ORIGINAL_NODE) instanceof Node;
     }
 }
