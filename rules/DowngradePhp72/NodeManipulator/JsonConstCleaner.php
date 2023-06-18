@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp72\NodeManipulator;
 
+use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
@@ -24,11 +25,11 @@ final class JsonConstCleaner
      */
     public function clean(ConstFetch|BitwiseOr $node, array $constants): Expr|null
     {
-        if ($node instanceof ConstFetch) {
-            return $this->cleanByConstFetch($node, $constants);
+        if ($node instanceof BitwiseOr) {
+            return $this->cleanByBitwiseOr($node, $constants);
         }
 
-        return $this->cleanByBitwiseOr($node, $constants);
+        return $this->cleanByConstFetch($node, $constants);
     }
 
     /**
@@ -37,11 +38,6 @@ final class JsonConstCleaner
     private function cleanByConstFetch(ConstFetch $constFetch, array $constants): ?LNumber
     {
         if (! $this->nodeNameResolver->isNames($constFetch, $constants)) {
-            return null;
-        }
-
-        $parentNode = $constFetch->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parentNode instanceof BitwiseOr) {
             return null;
         }
 
@@ -76,6 +72,10 @@ final class JsonConstCleaner
      */
     private function isTransformed(Expr $expr, array $constants): bool
     {
-        return $expr instanceof ConstFetch && $this->nodeNameResolver->isNames($expr, $constants);
+        if ($expr instanceof ConstFetch && $this->nodeNameResolver->isNames($expr, $constants)) {
+            return true;
+        }
+
+        return ! $expr->getAttribute(AttributeKey::ORIGINAL_NODE) instanceof Node;
     }
 }
