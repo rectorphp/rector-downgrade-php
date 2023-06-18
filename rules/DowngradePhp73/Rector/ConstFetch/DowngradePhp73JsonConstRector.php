@@ -49,6 +49,15 @@ CODE_SAMPLE
 json_encode($content, 0);
 CODE_SAMPLE
                 ),
+                new CodeSample(
+                    <<<'CODE_SAMPLE'
+$content = json_decode($json, null, 512, JSON_THROW_ON_ERROR);
+CODE_SAMPLE
+                    ,
+                    <<<'CODE_SAMPLE'
+$content = json_decode($json, null, 512, 0);
+CODE_SAMPLE
+                ),
             ]
         );
     }
