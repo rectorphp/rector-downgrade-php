@@ -25,6 +25,9 @@ class InBitwise
     public function run($argument)
     {
         $argument = json_encode($argument, JSON_UNESCAPED_SLASHES);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception(json_last_error_msg());
+        }
     }
 }
 
