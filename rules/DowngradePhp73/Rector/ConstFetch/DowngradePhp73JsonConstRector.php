@@ -135,19 +135,21 @@ CODE_SAMPLE
      * complex analysis to be 100% accurate, beyond Rector actual capabilities.
      * @return null|array<StmtExpression|If_>
      */
-    private function refactorStmt(StmtExpression $node): ?array
+    private function refactorStmt(StmtExpression $stmtExpression): ?array
     {
+        $nodes = [$stmtExpression];
+
         // retrieve a `FuncCall`, if any, from the statement
-        $funcCall = match ($node->expr::class) {
-            Assign::class => $node->expr->expr instanceof FuncCall
-                ? $node->expr->expr
+        $funcCall = match ($stmtExpression->expr::class) {
+            Assign::class => $stmtExpression->expr->expr instanceof FuncCall
+                ? $stmtExpression->expr->expr
                 : null,
-            FuncCall::class => $node->expr,
+            FuncCall::class => $stmtExpression->expr,
             default => null,
         };
 
         // Nothing to do if no `FuncCall` found
-        if ($funcCall === null) {
+        if (! $funcCall instanceof FuncCall) {
             return null;
         }
 
@@ -161,7 +163,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $ifNode = new If_(
+        $nodes[] = new If_(
             new NotIdentical(
                 new FuncCall(new Name('json_last_error')),
                 new ConstFetch(new Name('JSON_ERROR_NONE'))
@@ -178,9 +180,7 @@ CODE_SAMPLE
             ]
         );
 
-        $stmts = [$node, $ifNode];
-
-        return $stmts;
+        return $nodes;
     }
 
     /**
@@ -212,11 +212,11 @@ CODE_SAMPLE
     /**
      * Search if a given constant is set within a `BitwiseOr`
      */
-    private function hasConstFetchInBitwiseOr(BitwiseOr $node, string $constName): bool
+    private function hasConstFetchInBitwiseOr(BitwiseOr $bitwiseOr, string $constName): bool
     {
         $found = false;
 
-        foreach ([$node->left, $node->right] as $subNode) {
+        foreach ([$bitwiseOr->left, $bitwiseOr->right] as $subNode) {
             // Only `Node` instances can hold the constant.
             if (! ($subNode instanceof Node)) {
                 continue;
