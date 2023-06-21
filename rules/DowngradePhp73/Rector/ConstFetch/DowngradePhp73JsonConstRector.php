@@ -118,7 +118,7 @@ CODE_SAMPLE
         if ($node instanceof TryCatch) {
             $this->traverseNodesWithCallable(
                 $node->stmts,
-                function (Node $subNode) {
+                function (Node $subNode): ?int {
                     if ($subNode instanceof Class_ || $subNode instanceof Function_ || $subNode instanceof Closure) {
                         return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
                     }
@@ -133,7 +133,8 @@ CODE_SAMPLE
                     }
 
                     return null;
-                });
+                }
+            );
 
             return null;
         }
