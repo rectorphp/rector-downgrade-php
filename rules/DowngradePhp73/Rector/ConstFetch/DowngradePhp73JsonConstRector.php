@@ -10,15 +10,20 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\BinaryOp\NotIdentical;
+use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified as NameFullyQualified;
-use PhpParser\Node\Stmt\Expression as StmtExpression;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\Expression;
+use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Throw_;
+use PhpParser\Node\Stmt\TryCatch;
 use PhpParser\Node\VariadicPlaceholder;
+use PhpParser\NodeTraverser;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp72\NodeManipulator\JsonConstCleaner;
 use Rector\Enum\JsonConstant;
@@ -42,6 +47,11 @@ final class DowngradePhp73JsonConstRector extends AbstractRector
      * @var array<string>
      */
     private const REFACTOR_FUNCS = ['json_decode', 'json_encode'];
+
+    /**
+     * @var string
+     */
+    private const IS_EXPRESSION_INSIDE_TRY_CATCH = 'is_expression_inside_try_catch';
 
     public function __construct(
         private readonly JsonConstCleaner $jsonConstCleaner,
@@ -87,12 +97,12 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [ConstFetch::class, BitwiseOr::class, If_::class, StmtExpression::class];
+        return [ConstFetch::class, BitwiseOr::class, If_::class, TryCatch::class, Expression::class];
     }
 
     /**
-     * @param ConstFetch|BitwiseOr|If_|StmtExpression $node
-     * @return int|null|Expr|If_|array<StmtExpression|If_>
+     * @param ConstFetch|BitwiseOr|If_|TryCatch|Expression $node
+     * @return int|null|Expr|If_|array<Expression|If_>
      */
     public function refactor(Node $node): int|null|Expr|If_|array
     {
@@ -105,7 +115,31 @@ CODE_SAMPLE
             return null;
         }
 
-        if ($node instanceof StmtExpression) {
+        if ($node instanceof TryCatch) {
+            $this->traverseNodesWithCallable(
+                $node->stmts,
+                function (Node $subNode): ?int {
+                    if ($subNode instanceof Class_ || $subNode instanceof Function_ || $subNode instanceof Closure) {
+                        return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
+                    }
+
+                    if (! $subNode instanceof Expression) {
+                        return null;
+                    }
+
+                    $funcCall = $this->resolveFuncCall($subNode);
+                    if ($funcCall instanceof FuncCall) {
+                        $subNode->setAttribute(self::IS_EXPRESSION_INSIDE_TRY_CATCH, true);
+                    }
+
+                    return null;
+                }
+            );
+
+            return null;
+        }
+
+        if ($node instanceof Expression) {
             return $this->refactorStmt($node);
         }
 
@@ -126,9 +160,9 @@ CODE_SAMPLE
         return $if;
     }
 
-    private function resolveFuncCall(StmtExpression $stmtExpression): ?FuncCall
+    private function resolveFuncCall(Expression $Expression): ?FuncCall
     {
-        $expr = $stmtExpression->expr;
+        $expr = $Expression->expr;
         if ($expr instanceof Assign) {
             if ($expr->expr instanceof FuncCall) {
                 return $expr->expr;
@@ -151,12 +185,16 @@ CODE_SAMPLE
      * only when the flags are directly set in the function call.
      * If the flags are set from a variable, that would require a much more
      * complex analysis to be 100% accurate, beyond Rector actual capabilities.
-     * @return null|array<StmtExpression|If_>
+     * @return null|array<Expression|If_>
      */
-    private function refactorStmt(StmtExpression $stmtExpression): ?array
+    private function refactorStmt(Expression $Expression): ?array
     {
+        if ($Expression->getAttribute(self::IS_EXPRESSION_INSIDE_TRY_CATCH) === true) {
+            return null;
+        }
+
         // retrieve a `FuncCall`, if any, from the statement
-        $funcCall = $this->resolveFuncCall($stmtExpression);
+        $funcCall = $this->resolveFuncCall($Expression);
 
         // Nothing to do if no `FuncCall` found
         if (! $funcCall instanceof FuncCall) {
@@ -173,7 +211,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $nodes = [$stmtExpression];
+        $nodes = [$Expression];
         $nodes[] = new If_(
             new NotIdentical(
                 new FuncCall(new Name('json_last_error')),
