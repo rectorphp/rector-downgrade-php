@@ -53,9 +53,6 @@ class DowngradePhp73JsonConstRectorFixture
     {
         try {
             $payload = json_decode($json, null, 512, 0);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception(json_last_error_msg());
-            }
             return $payload;
         } catch (\Exception $e) {
             return false;
@@ -66,9 +63,6 @@ class DowngradePhp73JsonConstRectorFixture
     {
         try {
             $payload = json_decode($json, null, 512, JSON_OBJECT_AS_ARRAY);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception(json_last_error_msg());
-            }
             return $payload;
         } catch (\Exception $e) {
             return false;
@@ -81,9 +75,6 @@ function func_json_decode(string $json): string | bool
 {
     try {
         $payload = json_decode($json, null, 512, 0);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception(json_last_error_msg());
-        }
         return $payload;
     } catch (\Exception $e) {
         return false;
