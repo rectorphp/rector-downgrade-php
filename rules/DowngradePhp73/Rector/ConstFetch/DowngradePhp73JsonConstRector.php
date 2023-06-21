@@ -126,6 +126,24 @@ CODE_SAMPLE
         return $if;
     }
 
+    private function resolveFuncCall(StmtExpression $stmtExpression): ?FuncCall
+    {
+        $expr = $stmtExpression->expr;
+        if ($expr instanceof Assign) {
+            if ($expr->expr instanceof FuncCall) {
+                return $expr->expr;
+            }
+
+            return null;
+        }
+
+        if ($expr instanceof FuncCall) {
+            return $expr;
+        }
+
+        return null;
+    }
+
     /**
      * Add an alternative throwing error behavior after any `json_encode`
      * or `json_decode` function called with the `JSON_THROW_ON_ERROR` flag set.
@@ -137,16 +155,8 @@ CODE_SAMPLE
      */
     private function refactorStmt(StmtExpression $stmtExpression): ?array
     {
-        $nodes = [$stmtExpression];
-
         // retrieve a `FuncCall`, if any, from the statement
-        $funcCall = match ($stmtExpression->expr::class) {
-            Assign::class => $stmtExpression->expr->expr instanceof FuncCall
-                ? $stmtExpression->expr->expr
-                : null,
-            FuncCall::class => $stmtExpression->expr,
-            default => null,
-        };
+        $funcCall = $this->resolveFuncCall($stmtExpression);
 
         // Nothing to do if no `FuncCall` found
         if (! $funcCall instanceof FuncCall) {
@@ -163,6 +173,7 @@ CODE_SAMPLE
             return null;
         }
 
+        $nodes = [$stmtExpression];
         $nodes[] = new If_(
             new NotIdentical(
                 new FuncCall(new Name('json_last_error')),
