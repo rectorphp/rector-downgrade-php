@@ -25,6 +25,7 @@ use PhpParser\Node\Stmt\Echo_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Switch_;
+use PhpParser\NodeTraverser;
 use PHPStan\Analyser\Scope;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -100,10 +101,30 @@ CODE_SAMPLE
      */
     public function refactorWithScope(Node $node, Scope $scope): ?Node
     {
-        $match = $this->betterNodeFinder->findFirst(
+        /** @var Match_|null $match */
+        $match = null;
+        $hasChanged = false;
+
+        $this->traverseNodesWithCallable(
             $node,
-            static fn (Node $subNode): bool => $subNode instanceof Match_
-        );
+            function (Node $subNode) use (&$match, &$hasChanged) {
+                if ($subNode instanceof ArrowFunction && $subNode->expr instanceof Match_) {
+                    $this->refactorInArrowFunction($subNode, $subNode->expr);
+                    $hasChanged = true;
+
+                    return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
+                }
+
+                if ($subNode instanceof Match_) {
+                    $match = $subNode;
+                    return NodeTraverser::STOP_TRAVERSAL;
+                }
+            });
+
+        if ($hasChanged) {
+            return $node;
+        }
+
         if (! $match instanceof Match_) {
             return null;
         }
@@ -121,10 +142,6 @@ CODE_SAMPLE
         $switch = new Switch_($match->cond, $switchCases);
 
         $parentMatch = $match->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parentMatch instanceof ArrowFunction) {
-            return $this->refactorInArrowFunction($parentMatch, $match, $node);
-        }
-
         if ($parentMatch instanceof ArrayItem) {
             $parentMatch->value = new FuncCall($this->anonymousFunctionFactory->create([], [$switch], null));
             return $node;
@@ -135,13 +152,12 @@ CODE_SAMPLE
 
     private function refactorInArrowFunction(
         ArrowFunction $arrowFunction,
-        Match_ $match,
-        Echo_|Expression|Return_ $node
-    ): Echo_|Expression|Return_|null {
+        Match_ $match
+    ): void {
         $parentOfParentMatch = $arrowFunction->getAttribute(AttributeKey::PARENT_NODE);
 
         if (! $parentOfParentMatch instanceof Node) {
-            return null;
+            return;
         }
 
         /**
@@ -158,20 +174,17 @@ CODE_SAMPLE
 
         if ($parentOfParentMatch instanceof Arg && $parentOfParentMatch->value === $arrowFunction) {
             $parentOfParentMatch->value = $closure;
-            return $node;
+            return;
         }
 
         if (($parentOfParentMatch instanceof Assign || $parentOfParentMatch instanceof Expression || $parentOfParentMatch instanceof Return_) && $parentOfParentMatch->expr === $arrowFunction) {
             $parentOfParentMatch->expr = $closure;
-            return $node;
+            return;
         }
 
         if ($parentOfParentMatch instanceof FuncCall && $parentOfParentMatch->name === $arrowFunction) {
             $parentOfParentMatch->name = $closure;
-            return $node;
         }
-
-        return null;
     }
 
     /**
