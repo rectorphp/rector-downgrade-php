@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
 
-class AnonymousFunctionCallExecute
+class CallAnonymousFunction
 {
     public function execute($statusCode)
     {
@@ -24,7 +24,7 @@ class AnonymousFunctionCallExecute
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
 
-class AnonymousFunctionCallExecute
+class CallAnonymousFunction
 {
     public function execute($statusCode)
     {
