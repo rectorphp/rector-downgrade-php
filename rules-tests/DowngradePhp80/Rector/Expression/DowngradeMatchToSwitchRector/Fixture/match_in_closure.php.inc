@@ -1,8 +1,7 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
-final class InClosure
+final class MatchInClosure
 {
     public function run($value)
     {
@@ -23,8 +22,7 @@ final class InClosure
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
-final class InClosure
+final class MatchInClosure
 {
     public function run($value)
     {
@@ -43,4 +41,3 @@ final class InClosure
 }
 
 ?>
-

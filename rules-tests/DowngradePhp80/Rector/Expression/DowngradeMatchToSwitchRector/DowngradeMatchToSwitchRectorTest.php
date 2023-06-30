@@ -6,8 +6,10 @@ namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRe
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
+#[RunTestsInSeparateProcesses]
 final class DowngradeMatchToSwitchRectorTest extends AbstractRectorTestCase
 {
     #[DataProvider('provideData')]

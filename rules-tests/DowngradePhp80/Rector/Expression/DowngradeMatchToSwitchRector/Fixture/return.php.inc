@@ -2,20 +2,15 @@
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
 
-class ClassFunctionCall
+class MatchReturn
 {
-    public function output($value)
-    {
-        echo $value;
-    }
-
     public function run($statusCode)
     {
-        $this->output(match ($statusCode) {
+        return match ($statusCode) {
             200, 300 => null,
             400 => 'not found',
             default => 'unknown status code',
-        });
+        };
     }
 }
 
@@ -25,26 +20,18 @@ class ClassFunctionCall
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
 
-class ClassFunctionCall
+class MatchReturn
 {
-    public function output($value)
-    {
-        echo $value;
-    }
-
     public function run($statusCode)
     {
         switch ($statusCode) {
             case 200:
             case 300:
-                $this->output(null);
-                break;
+                return null;
             case 400:
-                $this->output('not found');
-                break;
+                return 'not found';
             default:
-                $this->output('unknown status code');
-                break;
+                return 'unknown status code';
         }
     }
 }

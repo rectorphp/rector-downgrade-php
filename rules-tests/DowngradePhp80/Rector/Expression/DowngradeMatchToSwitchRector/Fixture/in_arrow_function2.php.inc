@@ -1,14 +1,16 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-final class InArrowFunctionInReturn
+final class InArrowFunction2
 {
     public function run($value)
     {
-        return static fn (mixed $default): mixed => match (true) {
+        $mapped = static fn (mixed $default): mixed => match (true) {
                 is_string($default) => sprintf('"%s"', $default),
                 default => $default,
             };
+
+        return $mapped($value);
     }
 }
 
@@ -17,11 +19,11 @@ final class InArrowFunctionInReturn
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-final class InArrowFunctionInReturn
+final class InArrowFunction2
 {
     public function run($value)
     {
-        return static function (mixed $default) : mixed {
+        $mapped = static function (mixed $default) : mixed {
             switch (true) {
                 case is_string($default):
                     return sprintf('"%s"', $default);
@@ -29,6 +31,8 @@ final class InArrowFunctionInReturn
                     return $default;
             }
         };
+
+        return $mapped($value);
     }
 }
 

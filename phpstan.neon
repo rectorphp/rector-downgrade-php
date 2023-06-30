@@ -82,3 +82,11 @@ parameters:
             path: rules/DowngradePhp80/Rector/Expression/DowngradeThrowExprRector.php
 
         - '#New objects with "\$defaultExpr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
+
+        -
+            message: '#Class cognitive complexity is 60, keep it under 30#'
+            path: rules/DowngradePhp80/Rector/Expression/DowngradeMatchToSwitchRector.php
+
+        -
+            message: '#Cognitive complexity for "Rector\\DowngradePhp80\\Rector\\Expression\\DowngradeMatchToSwitchRector\:\:refactorWithScope\(\)" is 38, keep it under 10#'
+            path: rules/DowngradePhp80/Rector/Expression/DowngradeMatchToSwitchRector.php

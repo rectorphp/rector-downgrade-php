@@ -17,7 +17,6 @@ final class BracketMatches
 }
 
 ?>
-
 -----
 <?php
 
@@ -27,9 +26,24 @@ final class BracketMatches
 {
     public function run($delimiter)
     {
-        $delimiter = $delimiter === '(' ? ')' : ($delimiter === '{' ? '}' : ($delimiter === '[' ? ']' : ($delimiter === '<' ? '>' : $delimiter)));
+        switch ($delimiter) {
+            case '(':
+                $delimiter = ')';
+                break;
+            case '{':
+                $delimiter = '}';
+                break;
+            case '[':
+                $delimiter = ']';
+                break;
+            case '<':
+                $delimiter = '>';
+                break;
+            default:
+                $delimiter = $delimiter;
+                break;
+        }
     }
 }
 
 ?>
-
