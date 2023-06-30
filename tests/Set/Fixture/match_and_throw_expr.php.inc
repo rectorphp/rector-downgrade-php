@@ -29,8 +29,14 @@ final class MatchAndThrowExpr
 {
     public function run($value)
     {
-        return $value === 1 ? 'one' : ($value === 2 ? 'two' : null);
-
+        switch ($value) {
+            case 1:
+                return 'one';
+            case 2:
+                return 'two';
+            default:
+                throw new InvalidArgumentException();
+        }
     }
 }
 
