@@ -2,17 +2,17 @@
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
 
-class AnonymousFunctionCall
+class AnonymousFunctionCallExecute
 {
-    public function run($statusCode)
+    public function execute($statusCode)
     {
         $output = function($value) {
             echo $value;
         };
 
         $output(match ($statusCode) {
-            200, 300 => null,
-            400 => 'not found',
+            100, 200 => null,
+            300 => 'not found',
             default => 'unknown status code',
         });
     }
@@ -24,20 +24,20 @@ class AnonymousFunctionCall
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
 
-class AnonymousFunctionCall
+class AnonymousFunctionCallExecute
 {
-    public function run($statusCode)
+    public function execute($statusCode)
     {
         $output = function($value) {
             echo $value;
         };
 
         switch ($statusCode) {
+            case 100:
             case 200:
-            case 300:
                 $output(null);
                 break;
-            case 400:
+            case 300:
                 $output('not found');
                 break;
             default:
