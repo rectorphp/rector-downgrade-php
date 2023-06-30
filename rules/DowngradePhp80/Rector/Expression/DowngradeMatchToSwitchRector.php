@@ -107,38 +107,60 @@ CODE_SAMPLE
 
         $this->traverseNodesWithCallable(
             $node,
-            function (Node $subNode) use (&$match, &$hasChanged) {
-                if ($subNode instanceof Arg && $subNode->value instanceof ArrowFunction && $subNode->value->expr instanceof Match_) {
-                    $this->refactorInArrowFunction($subNode, $subNode->value, $subNode->value->expr);
+            function (Node $subNode) use ($node, &$match, &$hasChanged, $scope) {
+                if ($subNode instanceof ArrayItem && $subNode->value instanceof Match_ && $this->isEqualScope(
+                    $subNode->value,
+                    $scope
+                )) {
+                    $switchCases = $this->createSwitchCasesFromMatchArms($node, $subNode->value);
+                    $switch = new Switch_($subNode->value->cond, $switchCases);
+                    $subNode->value = new FuncCall($this->anonymousFunctionFactory->create([], [$switch], null));
+
                     $hasChanged = true;
+                    return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
+                }
+
+                if ($subNode instanceof Arg && $subNode->value instanceof ArrowFunction && $subNode->value->expr instanceof Match_) {
+                    $refactoredNode = $this->refactorInArrowFunction($subNode, $subNode->value, $subNode->value->expr);
+                    if ($refactoredNode instanceof Node) {
+                        $hasChanged = true;
+                    }
 
                     return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
                 }
 
                 if ($subNode instanceof Assign && $subNode->expr instanceof ArrowFunction && $subNode->expr->expr instanceof Match_) {
-                    $this->refactorInArrowFunction($subNode, $subNode->expr, $subNode->expr->expr);
-                    $hasChanged = true;
+                    $refactoredNode = $this->refactorInArrowFunction($subNode, $subNode->expr, $subNode->expr->expr);
+                    if ($refactoredNode instanceof Node) {
+                        $hasChanged = true;
+                    }
 
                     return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
                 }
 
                 if ($subNode instanceof Expression && $subNode->expr instanceof ArrowFunction && $subNode->expr->expr instanceof Match_) {
-                    $this->refactorInArrowFunction($subNode, $subNode->expr, $subNode->expr->expr);
-                    $hasChanged = true;
+                    $refactoredNode = $this->refactorInArrowFunction($subNode, $subNode->expr, $subNode->expr->expr);
+                    if ($refactoredNode instanceof Node) {
+                        $hasChanged = true;
+                    }
 
                     return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
                 }
 
                 if ($subNode instanceof Return_ && $subNode->expr instanceof ArrowFunction && $subNode->expr->expr instanceof Match_) {
-                    $this->refactorInArrowFunction($subNode, $subNode->expr, $subNode->expr->expr);
-                    $hasChanged = true;
+                    $refactoredNode = $this->refactorInArrowFunction($subNode, $subNode->expr, $subNode->expr->expr);
+                    if ($refactoredNode instanceof Node) {
+                        $hasChanged = true;
+                    }
 
                     return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
                 }
 
                 if ($subNode instanceof FuncCall && $subNode->name instanceof ArrowFunction && $subNode->name->expr instanceof Match_) {
-                    $this->refactorInArrowFunction($subNode, $subNode->name, $subNode->name->expr);
-                    $hasChanged = true;
+                    $refactoredNode = $this->refactorInArrowFunction($subNode, $subNode->name, $subNode->name->expr);
+                    if ($refactoredNode instanceof Node) {
+                        $hasChanged = true;
+                    }
 
                     return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
                 }
@@ -158,32 +180,41 @@ CODE_SAMPLE
             return null;
         }
 
-        $matchScope = $match->getAttribute(AttributeKey::SCOPE);
-        if (! $matchScope instanceof Scope) {
-            return null;
-        }
-
-        if ($matchScope->getParentScope() !== $scope->getParentScope()) {
+        if (! $this->isEqualScope($match, $scope)) {
             return null;
         }
 
         $switchCases = $this->createSwitchCasesFromMatchArms($node, $match);
         $switch = new Switch_($match->cond, $switchCases);
 
-        $parentMatch = $match->getAttribute(AttributeKey::PARENT_NODE);
-        if ($parentMatch instanceof ArrayItem) {
-            $parentMatch->value = new FuncCall($this->anonymousFunctionFactory->create([], [$switch], null));
-            return $node;
+        return $switch;
+    }
+
+    private function isEqualScope(Match_ $match, ?Scope $containerScope): bool
+    {
+        $matchScope = $match->getAttribute(AttributeKey::SCOPE);
+        if (! $matchScope instanceof Scope) {
+            return false;
         }
 
-        return $switch;
+        if (! $containerScope instanceof Scope) {
+            return false;
+        }
+
+        return $matchScope->getParentScope() === $containerScope->getParentScope();
     }
 
     private function refactorInArrowFunction(
         Arg|FuncCall|Assign|Expression|Return_ $containerArrowFunction,
         ArrowFunction $arrowFunction,
         Match_ $match
-    ): void {
+    ): Arg|FuncCall|Assign|Expression|Return_|null {
+        $containerArrowFunctionScope = $containerArrowFunction->getAttribute(AttributeKey::SCOPE);
+
+        if (! $this->isEqualScope($match, $containerArrowFunctionScope)) {
+            return null;
+        }
+
         /**
          * Yes, Pass Match_ object itself to Return_
          * Let the Rule revisit the Match_ after the ArrowFunction converted to Closure_
@@ -198,17 +229,20 @@ CODE_SAMPLE
 
         if ($containerArrowFunction instanceof Arg && $containerArrowFunction->value === $arrowFunction) {
             $containerArrowFunction->value = $closure;
-            return;
+            return $containerArrowFunction;
         }
 
         if (($containerArrowFunction instanceof Assign || $containerArrowFunction instanceof Expression || $containerArrowFunction instanceof Return_) && $containerArrowFunction->expr === $arrowFunction) {
             $containerArrowFunction->expr = $closure;
-            return;
+            return $containerArrowFunction;
         }
 
         if ($containerArrowFunction instanceof FuncCall && $containerArrowFunction->name === $arrowFunction) {
             $containerArrowFunction->name = $closure;
+            return $containerArrowFunction;
         }
+
+        return null;
     }
 
     /**
