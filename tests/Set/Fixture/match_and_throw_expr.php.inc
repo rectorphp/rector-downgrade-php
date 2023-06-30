@@ -13,7 +13,6 @@ final class MatchAndThrowExpr
             2 => 'two',
             default => throw new InvalidArgumentException()
         };
-
     }
 }
 
