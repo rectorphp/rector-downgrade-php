@@ -119,7 +119,8 @@ CODE_SAMPLE
                     $match = $subNode;
                     return NodeTraverser::STOP_TRAVERSAL;
                 }
-            });
+            }
+        );
 
         if ($hasChanged) {
             return $node;
@@ -150,13 +151,11 @@ CODE_SAMPLE
         return $switch;
     }
 
-    private function refactorInArrowFunction(
-        ArrowFunction $arrowFunction,
-        Match_ $match
-    ): void {
-        $parentOfParentMatch = $arrowFunction->getAttribute(AttributeKey::PARENT_NODE);
+    private function refactorInArrowFunction(ArrowFunction $arrowFunction, Match_ $match): void
+    {
+        $node = $arrowFunction->getAttribute(AttributeKey::PARENT_NODE);
 
-        if (! $parentOfParentMatch instanceof Node) {
+        if (! $node instanceof Node) {
             return;
         }
 
@@ -172,18 +171,18 @@ CODE_SAMPLE
             $arrowFunction->static
         );
 
-        if ($parentOfParentMatch instanceof Arg && $parentOfParentMatch->value === $arrowFunction) {
-            $parentOfParentMatch->value = $closure;
+        if ($node instanceof Arg && $node->value === $arrowFunction) {
+            $node->value = $closure;
             return;
         }
 
-        if (($parentOfParentMatch instanceof Assign || $parentOfParentMatch instanceof Expression || $parentOfParentMatch instanceof Return_) && $parentOfParentMatch->expr === $arrowFunction) {
-            $parentOfParentMatch->expr = $closure;
+        if (($node instanceof Assign || $node instanceof Expression || $node instanceof Return_) && $node->expr === $arrowFunction) {
+            $node->expr = $closure;
             return;
         }
 
-        if ($parentOfParentMatch instanceof FuncCall && $parentOfParentMatch->name === $arrowFunction) {
-            $parentOfParentMatch->name = $closure;
+        if ($node instanceof FuncCall && $node->name === $arrowFunction) {
+            $node->name = $closure;
         }
     }
 
