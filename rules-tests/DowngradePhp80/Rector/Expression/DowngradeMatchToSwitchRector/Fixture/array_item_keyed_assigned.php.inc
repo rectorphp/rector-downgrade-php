@@ -2,11 +2,11 @@
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
 
-class ArrayItemKeyed
+class ArrayItemKeyedAssigned
 {
     public function run($statusCode)
     {
-        return [
+        $value = [
             'result' => match ($statusCode) {
                 200, 300 => null,
                 400 => 'not found',
@@ -22,11 +22,11 @@ class ArrayItemKeyed
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
 
-class ArrayItemKeyed
+class ArrayItemKeyedAssigned
 {
     public function run($statusCode)
     {
-        return [
+        $value = [
             'result' => (function () use ($statusCode) {
                 switch ($statusCode) {
                     case 200:

@@ -24,7 +24,17 @@ class TrueSubjectExpression
 {
     public function run($statusCode)
     {
-        $result = true === ($statusCode >= 200 && $statusCode < 300) ? 'success' : (true === in_array($statusCode, range(400, 499)) ? 'client error' : 'unknown status code');
+        switch (true) {
+            case $statusCode >= 200 && $statusCode < 300:
+                $result = 'success';
+                break;
+            case in_array($statusCode, range(400, 499)):
+                $result = 'client error';
+                break;
+            default:
+                $result = 'unknown status code';
+                break;
+        }
     }
 }
 

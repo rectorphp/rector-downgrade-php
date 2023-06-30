@@ -1,7 +1,6 @@
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
 final class InsideArray
 {
     public function run($statusCode)
@@ -21,13 +20,22 @@ final class InsideArray
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\Fixture;
-
 final class InsideArray
 {
     public function run($statusCode)
     {
         return [
-            $statusCode === 200 || $statusCode === 300 ? null : ($statusCode === 400 ? 'not found' : 'unknown status code'),
+            (function () use ($statusCode) {
+                switch ($statusCode) {
+                    case 200:
+                    case 300:
+                        return null;
+                    case 400:
+                        return 'not found';
+                    default:
+                        return 'unknown status code';
+                }
+            })(),
         ];
     }
 }
