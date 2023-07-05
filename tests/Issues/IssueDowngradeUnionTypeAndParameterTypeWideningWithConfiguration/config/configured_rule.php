@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector;
 use Rector\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector;
+use Rector\Tests\Issues\IssueDowngradeUnionTypeAndParameterTypeWideningWithConfiguration\Source\WithInstanceManagerServiceTrait;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->import(__DIR__ . '/../../../../config/config.php');
@@ -14,6 +15,6 @@ return static function (RectorConfig $rectorConfig): void {
     
     $rectorConfig
         ->ruleWithConfiguration(DowngradeParameterTypeWideningRector::class, [
-            // WithInstanceManagerServiceTrait::class => ['getInstanceManager'],
+            WithInstanceManagerServiceTrait::class => ['getInstanceManager'],
         ]);
 };
