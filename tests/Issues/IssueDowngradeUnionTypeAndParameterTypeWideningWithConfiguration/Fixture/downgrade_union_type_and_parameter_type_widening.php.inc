@@ -24,6 +24,9 @@ namespace Rector\Tests\Issues\IssueDowngradeUnionTypeAndParameterTypeWideningWit
 
 class ParentClass
 {
+    /**
+     * @param string|mixed[] $exclude
+     */
     public function import($ignoreErrors = false, string $sourceResource = null, $exclude = null)
     {
     }
@@ -31,6 +34,9 @@ class ParentClass
 
 class ChildClass extends ParentClass
 {
+    /**
+     * @param bool|string $ignoreErrors
+     */
     public function import($ignoreErrors = false, string $sourceResource = null, $exclude = null): mixed
     {
     }
