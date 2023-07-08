@@ -185,9 +185,8 @@ CODE_SAMPLE
         }
 
         $switchCases = $this->createSwitchCasesFromMatchArms($node, $match);
-        $switch = new Switch_($match->cond, $switchCases);
 
-        return $switch;
+        return new Switch_($match->cond, $switchCases);
     }
 
     private function isEqualScope(Match_ $match, ?Scope $containerScope): bool
