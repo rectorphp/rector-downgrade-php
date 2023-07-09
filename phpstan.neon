@@ -90,3 +90,5 @@ parameters:
         -
             message: '#Cognitive complexity for "Rector\\DowngradePhp80\\Rector\\Expression\\DowngradeMatchToSwitchRector\:\:refactorWithScope\(\)" is 38, keep it under 10#'
             path: rules/DowngradePhp80/Rector/Expression/DowngradeMatchToSwitchRector.php
+
+        - '#Parameter \#1 \$stmt of method Rector\\NodeAnalyzer\\ExprInTopStmtMatcher\:\:resolveExpr\(\) expects PhpParser\\Node\\Stmt\\Echo_\|PhpParser\\Node\\Stmt\\Expression\|PhpParser\\Node\\Stmt\\Return_\|PhpParser\\Node\\Stmt\\Switch_\|Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface, PhpParser\\Node\\Stmt\\Case_\|PhpParser\\Node\\Stmt\\ElseIf_ given#'
