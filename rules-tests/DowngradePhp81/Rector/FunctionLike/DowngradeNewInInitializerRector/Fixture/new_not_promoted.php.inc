@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector\Fixture;
 
-class SomeClass
+final class NewNotPromoted
 {
     public stdClass $obj;
 
@@ -18,7 +18,7 @@ class SomeClass
 
 namespace Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector\Fixture;
 
-class SomeClass
+final class NewNotPromoted
 {
     public stdClass $obj;
 
