@@ -20,7 +20,6 @@ use PhpParser\Node\Stmt\While_;
 use PHPStan\Analyser\Scope;
 use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\PhpParser\Node\BetterNodeFinder;
-use Rector\Core\Util\MultiInstanceofChecker;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
 /**
@@ -31,7 +30,6 @@ final class ExprInTopStmtMatcher
 {
     public function __construct(
         private readonly BetterNodeFinder $betterNodeFinder,
-        private readonly MultiInstanceofChecker $multiInstanceofChecker
     ) {
     }
 
@@ -56,13 +54,7 @@ final class ExprInTopStmtMatcher
             $nodes = array_merge($nodes, $stmt->loop);
         }
 
-        if ($this->multiInstanceofChecker->isInstanceOf($stmt, [
-            If_::class,
-            While_::class,
-            Do_::class,
-            Switch_::class,
-        ])) {
-            /** @var If_|While_|Do_|Switch_ $stmt */
+        if ($stmt instanceof If_ || $stmt instanceof While_ || $stmt instanceof Do_ || $stmt instanceof Switch_) {
             $nodes = [$stmt->cond];
         }
 
