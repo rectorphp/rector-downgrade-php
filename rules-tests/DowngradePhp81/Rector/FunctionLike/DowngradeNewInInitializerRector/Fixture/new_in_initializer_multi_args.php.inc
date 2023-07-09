@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector\Fixture;
 
-class SomeClass
+final class NewInInitializerMultiArgs
 {
     public function __construct(public stdClass $o1 = new stdClass, public stdClass $o2 = new stdClass)
     {
@@ -15,7 +15,7 @@ class SomeClass
 
 namespace Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector\Fixture;
 
-class SomeClass
+final class NewInInitializerMultiArgs
 {
     public function __construct(public ?stdClass $o1 = null, public ?stdClass $o2 = null)
     {

@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector\Fixture;
 
-class SomeClass
+final class NewInInitializerWithStmts
 {
     public function __construct(public stdClass $obj = new stdClass)
     {
@@ -16,7 +16,7 @@ class SomeClass
 
 namespace Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector\Fixture;
 
-class SomeClass
+final class NewInInitializerWithStmts
 {
     public function __construct(public ?stdClass $obj = null)
     {
