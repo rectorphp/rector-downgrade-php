@@ -1,11 +1,27 @@
 <?php
 
-! str_contains('abc', 'b');
+namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector\Fixture;
+
+final class NoStrContains
+{
+    public function run()
+    {
+        ! str_contains('abc', 'b');
+    }
+}
 
 ?>
 -----
 <?php
 
-strpos('abc', 'b') === false;
+namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector\Fixture;
+
+final class NoStrContains
+{
+    public function run()
+    {
+        strpos('abc', 'b') === false;
+    }
+}
 
 ?>
