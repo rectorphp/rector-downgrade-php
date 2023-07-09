@@ -250,7 +250,10 @@ CODE_SAMPLE
     private function createSwitchCasesFromMatchArms(Echo_ | Expression | Return_ $node, Match_ $match): array
     {
         $switchCases = [];
-        $parentNode = $match->getAttribute(AttributeKey::PARENT_NODE);
+
+        $isInsideArrayItem = (bool) $match->getAttribute(AttributeKey::INSIDE_ARRAY_ITEM);
+
+        // $parentNode = $match->getAttribute(AttributeKey::PARENT_NODE);
 
         foreach ($match->arms as $matchArm) {
             if (count((array) $matchArm->conds) > 1) {
@@ -262,9 +265,9 @@ CODE_SAMPLE
                 }
 
                 /** @var Case_ $lastCase */
-                $lastCase->stmts = $this->createSwitchStmts($node, $matchArm, $parentNode);
+                $lastCase->stmts = $this->createSwitchStmts($node, $matchArm, $isInsideArrayItem);
             } else {
-                $stmts = $this->createSwitchStmts($node, $matchArm, $parentNode);
+                $stmts = $this->createSwitchStmts($node, $matchArm, $isInsideArrayItem);
                 $switchCases[] = new Case_($matchArm->conds[0] ?? null, $stmts);
             }
         }
@@ -275,11 +278,14 @@ CODE_SAMPLE
     /**
      * @return Stmt[]
      */
-    private function createSwitchStmts(Echo_ | Expression | Return_ $node, MatchArm $matchArm, ?Node $parentNode): array
-    {
+    private function createSwitchStmts(
+        Echo_ | Expression | Return_ $node,
+        MatchArm $matchArm,
+        bool $isInsideArrayItem
+    ): array {
         $stmts = [];
 
-        if ($parentNode instanceof ArrayItem) {
+        if ($isInsideArrayItem) {
             $stmts[] = new Return_($matchArm->body);
         } elseif ($matchArm->body instanceof Throw_) {
             $stmts[] = new Expression($matchArm->body);
