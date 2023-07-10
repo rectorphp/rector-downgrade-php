@@ -27,7 +27,6 @@ use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\UnionType;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\ValueObject\MethodName;
@@ -40,7 +39,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  *
  * @see \Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector\DowngradeNewInInitializerRectorTest
  */
-#[RunTestsInSeparateProcesses]
 final class DowngradeNewInInitializerRector extends AbstractRector
 {
     public function __construct(
