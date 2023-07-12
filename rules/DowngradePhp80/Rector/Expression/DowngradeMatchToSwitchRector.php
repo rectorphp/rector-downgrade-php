@@ -112,7 +112,7 @@ CODE_SAMPLE
                     $subNode->value,
                     $scope
                 )) {
-                    $switchCases = $this->createSwitchCasesFromMatchArms($node, $subNode->value);
+                    $switchCases = $this->createSwitchCasesFromMatchArms($node, $subNode->value, true);
                     $switch = new Switch_($subNode->value->cond, $switchCases);
                     $subNode->value = new FuncCall($this->anonymousFunctionFactory->create([], [$switch], null));
 
@@ -247,11 +247,12 @@ CODE_SAMPLE
     /**
      * @return Case_[]
      */
-    private function createSwitchCasesFromMatchArms(Echo_ | Expression | Return_ $node, Match_ $match): array
-    {
+    private function createSwitchCasesFromMatchArms(
+        Echo_ | Expression | Return_ $node,
+        Match_ $match,
+        bool $isInsideArrayItem = false
+    ): array {
         $switchCases = [];
-
-        $isInsideArrayItem = (bool) $match->getAttribute(AttributeKey::INSIDE_ARRAY_ITEM);
 
         foreach ($match->arms as $matchArm) {
             if (count((array) $matchArm->conds) > 1) {
