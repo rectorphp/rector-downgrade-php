@@ -247,8 +247,11 @@ CODE_SAMPLE
     /**
      * @return Case_[]
      */
-    private function createSwitchCasesFromMatchArms(Echo_ | Expression | Return_ $node, Match_ $match, bool $isInsideArrayItem = false): array
-    {
+    private function createSwitchCasesFromMatchArms(
+        Echo_ | Expression | Return_ $node,
+        Match_ $match,
+        bool $isInsideArrayItem = false
+    ): array {
         $switchCases = [];
 
         foreach ($match->arms as $matchArm) {
