@@ -25,7 +25,7 @@ namespace Rector\Tests\DowngradePhp80\Rector\ClassMethod\DowngradeStaticTypeDecl
 class DocblockExists {
     /**
      * This property is the best one
-     * @return $this
+     * @return static
      */
     public function getAnything()
     {

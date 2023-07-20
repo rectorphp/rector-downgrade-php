@@ -18,7 +18,7 @@ namespace Rector\Tests\DowngradePhp80\Rector\ClassMethod\DowngradeStaticTypeDecl
 trait AlsoTrait
 {
     /**
-     * @return $this
+     * @return static
      */
     public function getAnything()
     {

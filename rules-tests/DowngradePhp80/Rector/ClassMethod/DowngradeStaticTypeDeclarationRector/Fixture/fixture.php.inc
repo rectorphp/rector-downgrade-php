@@ -23,7 +23,7 @@ namespace Rector\Tests\DowngradePhp80\Rector\ClassMethod\DowngradeStaticTypeDecl
 class Fixture
 {
     /**
-     * @return $this
+     * @return static
      */
     public function getAnything()
     {
