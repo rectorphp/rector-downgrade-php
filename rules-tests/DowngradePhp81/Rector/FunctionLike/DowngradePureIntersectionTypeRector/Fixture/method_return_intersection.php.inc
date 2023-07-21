@@ -20,7 +20,7 @@ use Baz\Bar;
 final class SomeClass
 {
     /**
-     * @return \Baz\Bar&\Qux
+     * @return (Baz\Bar & Qux)
      */
     public function run()
     {

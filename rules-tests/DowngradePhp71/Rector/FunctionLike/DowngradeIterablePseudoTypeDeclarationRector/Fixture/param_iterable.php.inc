@@ -17,7 +17,7 @@ namespace Rector\Tests\DowngradePhp71\Rector\FunctionLike\DowngradeIterablePseud
 final class ParamIterable
 {
     /**
-     * @param mixed[] $iterator
+     * @param iterable $iterator
      */
     public function run($iterator)
     {
