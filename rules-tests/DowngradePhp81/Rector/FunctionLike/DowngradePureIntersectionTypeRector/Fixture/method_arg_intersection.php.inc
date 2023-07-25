@@ -20,7 +20,7 @@ use Baz\Bar;
 final class SomeClass
 {
     /**
-     * @param (Baz\Bar & Qux) $value
+     * @param (\Baz\Bar & \Qux) $value
      */
     public function run($value)
     {

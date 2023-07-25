@@ -17,7 +17,7 @@ namespace Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradePureIntersect
 use Baz\Bar;
 
 /**
- * @return (Baz\Bar & Qux)
+ * @return (\Baz\Bar & \Qux)
  */
 function foo()
 {
