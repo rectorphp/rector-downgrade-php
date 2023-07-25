@@ -18,8 +18,8 @@ namespace Rector\Tests\DowngradePhp81\Rector\FunctionLike\DowngradePureIntersect
 use Baz\Bar;
 
 /**
- * @param (Baz\Bar & Qux) $var
- * @return (Baz\Bar & Qux)
+ * @param (\Baz\Bar & \Qux) $var
+ * @return (\Baz\Bar & \Qux)
  */
 function foo($var)
 {
