@@ -70,18 +70,11 @@ parameters:
 
         - '#but class PhpParser\\Node\\Stmt\\Expression is not generic#'
 
-        # generics
-        - '#Access to an undefined property Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface\:\:\$stmts#'
-        - '#(.*?) should return array<PhpParser\\Node\\Stmt>\|Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface\|null but returns array<int, PhpParser\\Node\\Stmt\\Expression\|Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface>#'
-
-
         - '#(.*?)\:\:refactor\(\) should return array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\\ClassConst\|null but returns array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\|null#'
 
         -
             message: '#Use value object over return of values#'
             path: rules/DowngradePhp80/Rector/Expression/DowngradeThrowExprRector.php
-
-        - '#New objects with "\$defaultExpr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
 
         -
             message: '#Class cognitive complexity is \d+, keep it under 30#'
@@ -91,4 +84,6 @@ parameters:
             message: '#Cognitive complexity for "Rector\\DowngradePhp80\\Rector\\Expression\\DowngradeMatchToSwitchRector\:\:refactorWithScope\(\)" is 38, keep it under 10#'
             path: rules/DowngradePhp80/Rector/Expression/DowngradeMatchToSwitchRector.php
 
-        - '#Parameter \#1 \$stmt of method Rector\\NodeAnalyzer\\ExprInTopStmtMatcher\:\:resolveExpr\(\) expects PhpParser\\Node\\Stmt\\Echo_\|PhpParser\\Node\\Stmt\\Expression\|PhpParser\\Node\\Stmt\\Return_\|PhpParser\\Node\\Stmt\\Switch_\|Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface, PhpParser\\Node\\Stmt\\Case_\|PhpParser\\Node\\Stmt\\ElseIf_ given#'
+        # phpstan need to load rector nodes first to avoid this
+        - '#Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface#'
+
