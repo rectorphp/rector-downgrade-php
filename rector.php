@@ -15,13 +15,13 @@ return static function (RectorConfig $rectorConfig): void {
         LevelSetList::UP_TO_PHP_81,
         PHPUnitSetList::PHPUNIT_100,
         SetList::CODE_QUALITY,
+        SetList::CODING_STYLE,
         SetList::DEAD_CODE,
         SetList::PRIVATIZATION,
         SetList::NAMING,
         SetList::TYPE_DECLARATION,
         SetList::EARLY_RETURN,
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
-        SetList::CODING_STYLE,
     ]);
 
     $rectorConfig->paths([
@@ -37,8 +37,6 @@ return static function (RectorConfig $rectorConfig): void {
 
         \Rector\CodingStyle\Rector\String_\UseClassKeywordForClassNameResolutionRector::class => [
             // not useful short class cases, possibly skip in the rule
-            __DIR__ . '/rules/DowngradePhp70/Rector/MethodCall/DowngradeClosureCallRector.php',
-            __DIR__ . '/rules/DowngradePhp71/Rector/StaticCall/DowngradeClosureFromCallableRector.php',
             __DIR__ . '/rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionClassGetConstantsFilterRector.php',
             __DIR__ . '/rules/DowngradePhp81/Rector/FuncCall/DowngradeFirstClassCallableSyntaxRector.php',
         ],
@@ -49,7 +47,5 @@ return static function (RectorConfig $rectorConfig): void {
         '**/Expected/*',
     ]);
 
-
     $rectorConfig->import(__DIR__ . '/config/config.php');
-    $rectorConfig->phpstanConfig(__DIR__ . '/phpstan-for-rector.neon');
 };
