@@ -16,7 +16,7 @@ final class NamedVariableFactory
     ) {
     }
 
-    public function createVariable(string $variableName, Stmt $currentStmt): Variable
+    public function createVariable(string $variableName, Stmt\Expression $currentStmt): Variable
     {
         $scope = $currentStmt->getAttribute(AttributeKey::SCOPE);
 
