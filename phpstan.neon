@@ -11,6 +11,7 @@ parameters:
 
     paths:
         - src
+        - config
         - rules
         - tests
         - rules-tests
@@ -37,9 +38,6 @@ parameters:
         - '#Class Rector\\Tests\\DowngradePhp72\\Rector\\ClassMethod\\DowngradeParameterTypeWideningRector\\Fixture\\SomeContainerInterface not found#'
 
         - '#Calling PHPStan\\Reflection\\Native\\NativeFunctionReflection\:\:getName\(\) is not covered by backward compatibility promise\. The method might change in a minor PHPStan version#'
-
-        # bool as status return
-        - '#Method "refactorParamType\(\)" returns bool type, so the name should start with is/has/was#'
 
         -
             message: '#New objects with "\$functionLikeReflection" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
@@ -68,8 +66,6 @@ parameters:
 
         - '#Parameter \#3 \$stmt of method Rector\\DowngradePhp72\\Rector\\FuncCall\\DowngradePregUnmatchedAsNullConstantRector\:\:processReplace\(\) expects PhpParser\\Node\\Stmt, PhpParser\\Node given#'
 
-        - '#but class PhpParser\\Node\\Stmt\\Expression is not generic#'
-
         - '#(.*?)\:\:refactor\(\) should return array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\\ClassConst\|null but returns array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\|null#'
 
         -
@@ -87,3 +83,6 @@ parameters:
         # phpstan need to load rector nodes first to avoid this
         - '#Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface#'
 
+        -
+            message: '#Parameter \#1 \$attributeClass of class Rector\\DowngradePhp80\\ValueObject\\DowngradeAttributeToAnnotation constructor expects class\-string, string given#'
+            path: "config/*"
