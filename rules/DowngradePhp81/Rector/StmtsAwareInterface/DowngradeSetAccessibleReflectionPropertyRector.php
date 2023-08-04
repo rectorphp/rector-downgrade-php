@@ -5,6 +5,13 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp81\Rector\StmtsAwareInterface;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Stmt;
+use PhpParser\Node\Stmt\Expression;
+use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -18,36 +25,39 @@ final class DowngradeSetAccessibleReflectionPropertyRector extends AbstractRecto
 {
     public function getRuleDefinition(): RuleDefinition
     {
-        return new RuleDefinition('Add setAccessible() on ReflectionProperty to allow reading private properties in PHP 8.0-', [
-            new CodeSample(
-                <<<'CODE_SAMPLE'
+        return new RuleDefinition(
+            'Add setAccessible() on ReflectionProperty to allow reading private properties in PHP 8.0-',
+            [
+                new CodeSample(
+                    <<<'CODE_SAMPLE'
 class SomeClass
 {
     public function run($object)
     {
-        $reflectionProperty = new ReflectionProperty(Foo::class, 'bar');
+        $reflectionProperty = new ReflectionProperty($object, 'bar');
 
         return $reflectionProperty->getValue($object);
     }
 }
 CODE_SAMPLE
 
-                ,
-                <<<'CODE_SAMPLE'
+                    ,
+                    <<<'CODE_SAMPLE'
 class SomeClass
 {
     public function run($object)
     {
-        $reflectionProperty = new ReflectionProperty(Foo::class, 'bar');
+        $reflectionProperty = new ReflectionProperty($object, 'bar');
         $reflectionProperty->setAccessible(true);
 
         return $reflectionProperty->getValue($object);
     }
 }
 CODE_SAMPLE
+                ),
 
-            )
-        ]);
+            ]
+        );
     }
 
     /**
@@ -55,16 +65,77 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [\Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface::class];
+        return [StmtsAwareInterface::class];
     }
 
     /**
-     * @param \Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface $node
+     * @param StmtsAwareInterface $node
      */
     public function refactor(Node $node): ?Node
     {
-        // change the node
+        if ($node->stmts === null) {
+            return null;
+        }
 
-        return $node;
+        $hasChanged = false;
+
+        foreach ($node->stmts as $key => $stmt) {
+            if (! $stmt instanceof Expression) {
+                continue;
+            }
+
+            if (! $stmt->expr instanceof Assign) {
+                continue;
+            }
+
+            $assign = $stmt->expr;
+            if (! $assign->expr instanceof New_) {
+                continue;
+            }
+
+            $new = $assign->expr;
+            if (! $this->isName($new->class, 'ReflectionProperty')) {
+                continue;
+            }
+
+            // next stmts should be setAccessible() call
+            $nextStmt = $node->stmts[$key + 1] ?? null;
+            if ($this->isSetAccessibleMethodCall($nextStmt)) {
+                continue;
+            }
+
+            array_splice($node->stmts, $key + 1, 0, [$this->createSetAccessibleExpression($assign->var)]);
+
+            $hasChanged = true;
+        }
+
+        if ($hasChanged) {
+            return $node;
+        }
+
+        return null;
+    }
+
+    private function createSetAccessibleExpression(Expr $expr): Expression
+    {
+        $args = [$this->nodeFactory->createArg($this->nodeFactory->createTrue())];
+
+        $setAccessibleMethodCall = $this->nodeFactory->createMethodCall($expr, 'setAccessible', $args);
+        return new Expression($setAccessibleMethodCall);
+    }
+
+    private function isSetAccessibleMethodCall(?Stmt $stmt): bool
+    {
+        if (! $stmt instanceof Expression) {
+            return false;
+        }
+
+        if (! $stmt->expr instanceof MethodCall) {
+            return false;
+        }
+
+        $methodCall = $stmt->expr;
+
+        return $this->isName($methodCall->name, 'setAccessible');
     }
 }

@@ -2,23 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\StmtsAwareInterface\DowngradeSetAccessibleReflectionPropertyRector\Fixture;
 
-class SomeClass
-{
-    public function run($object)
-    {
-        $reflectionProperty = new \ReflectionProperty($object, 'bar');
-
-        return $reflectionProperty->getValue($object);
-    }
-}
-
-?>
------
-<?php
-
-namespace Rector\Tests\DowngradePhp81\Rector\StmtsAwareInterface\DowngradeSetAccessibleReflectionPropertyRector\Fixture;
-
-class SomeClass
+final class SkipAlreadyAccessible
 {
     public function run($object)
     {
@@ -28,5 +12,3 @@ class SomeClass
         return $reflectionProperty->getValue($object);
     }
 }
-
-?>

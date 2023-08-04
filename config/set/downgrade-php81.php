@@ -13,6 +13,7 @@ use Rector\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector;
 use Rector\DowngradePhp81\Rector\FunctionLike\DowngradePureIntersectionTypeRector;
 use Rector\DowngradePhp81\Rector\Instanceof_\DowngradePhp81ResourceReturnToObjectRector;
 use Rector\DowngradePhp81\Rector\Property\DowngradeReadonlyPropertyRector;
+use Rector\DowngradePhp81\Rector\StmtsAwareInterface\DowngradeSetAccessibleReflectionPropertyRector;
 use Rector\Renaming\Rector\FuncCall\RenameFunctionRector;
 
 return static function (RectorConfig $rectorConfig): void {
@@ -28,6 +29,7 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeReadonlyPropertyRector::class,
         DowngradeArraySpreadStringKeyRector::class,
         DowngradeArrayIsListRector::class,
+        DowngradeSetAccessibleReflectionPropertyRector::class,
     ]);
 
     $rectorConfig->ruleWithConfiguration(RenameFunctionRector::class, [
