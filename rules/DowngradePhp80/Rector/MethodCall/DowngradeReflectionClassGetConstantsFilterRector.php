@@ -21,7 +21,6 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
 use PHPStan\Type\ObjectType;
-use Rector\Core\NodeManipulator\IfManipulator;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeCollector\BinaryOpConditionsCollector;
@@ -45,7 +44,6 @@ final class DowngradeReflectionClassGetConstantsFilterRector extends AbstractRec
 
     public function __construct(
         private readonly VariableNaming $variableNaming,
-        private readonly IfManipulator $ifManipulator,
         private readonly BinaryOpConditionsCollector $binaryOpConditionsCollector,
     ) {
     }
@@ -288,10 +286,11 @@ CODE_SAMPLE
         foreach ($classConstFetchNames as $classConstFetchName) {
             $methodCallName = self::MAP_CONSTANT_TO_METHOD[$classConstFetchName];
 
-            $ifs[] = $this->ifManipulator->createIfStmt(
-                new MethodCall($valueVariable, $methodCallName),
-                new Expression(new Assign($arrayDimFetch, $methodCall))
-            );
+            $if = new If_(new MethodCall($valueVariable, $methodCallName), [
+                'stmts' => [new Expression(new Assign($arrayDimFetch, $methodCall))],
+            ]);
+
+            $ifs[] = $if;
         }
 
         return $ifs;

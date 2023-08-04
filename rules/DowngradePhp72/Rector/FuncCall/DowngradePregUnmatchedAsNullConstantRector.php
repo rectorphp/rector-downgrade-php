@@ -20,7 +20,6 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
-use Rector\Core\NodeManipulator\IfManipulator;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp72\NodeAnalyzer\RegexFuncAnalyzer;
 use Rector\DowngradePhp72\NodeManipulator\BitwiseFlagCleaner;
@@ -39,7 +38,6 @@ final class DowngradePregUnmatchedAsNullConstantRector extends AbstractRector
     private const UNMATCHED_NULL_FLAG = 'PREG_UNMATCHED_AS_NULL';
 
     public function __construct(
-        private readonly IfManipulator $ifManipulator,
         private readonly BitwiseFlagCleaner $bitwiseFlagCleaner,
         private readonly RegexFuncAnalyzer $regexFuncAnalyzer,
     ) {
@@ -165,10 +163,7 @@ CODE_SAMPLE
         $variablePass = new Variable('value');
         $assign = new Assign($variablePass, $this->nodeFactory->createNull());
 
-        $if = $this->ifManipulator->createIfStmt(
-            new Identical($variablePass, new String_('')),
-            new Expression($assign)
-        );
+        $if = $this->createIf($variablePass, $assign);
 
         $param = new Param($variablePass, null, null, true);
         $closure = new Closure([
@@ -230,5 +225,14 @@ CODE_SAMPLE
         }
 
         return null;
+    }
+
+    private function createIf(Variable $variable, Assign $assign): If_
+    {
+        $conditionIdentical = new Identical($variable, new String_(''));
+
+        return new If_($conditionIdentical, [
+            'stmts' => [new Expression($assign)],
+        ]);
     }
 }

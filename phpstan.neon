@@ -86,3 +86,8 @@ parameters:
         -
             message: '#Parameter \#1 \$attributeClass of class Rector\\DowngradePhp80\\ValueObject\\DowngradeAttributeToAnnotation constructor expects class\-string, string given#'
             path: "config/*"
+
+        # we need exact types
+        - '#Doing instanceof PHPStan\\Type\\(.*?) is error\-prone and deprecated#'
+        # easier to run for simple cases
+        - '#Call to deprecated method getTypeFromValue\(\) of class PHPStan\\Type\\ConstantTypeHelper#'
