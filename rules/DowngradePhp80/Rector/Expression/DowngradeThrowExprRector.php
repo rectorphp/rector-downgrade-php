@@ -24,7 +24,6 @@ use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
 use Rector\Core\NodeManipulator\BinaryOpManipulator;
-use Rector\Core\NodeManipulator\IfManipulator;
 use Rector\Core\Rector\AbstractRector;
 use Rector\NodeAnalyzer\CoalesceAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -38,7 +37,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeThrowExprRector extends AbstractRector
 {
     public function __construct(
-        private readonly IfManipulator $ifManipulator,
         private readonly CoalesceAnalyzer $coalesceAnalyzer,
         private readonly BinaryOpManipulator $binaryOpManipulator,
     ) {
@@ -139,7 +137,10 @@ CODE_SAMPLE
 
         $inversedTernaryExpr = $this->binaryOpManipulator->inverseNode($ternary->cond);
 
-        $if = $this->ifManipulator->createIfStmt($inversedTernaryExpr, new Expression($ternary->else));
+        $if = new If_($inversedTernaryExpr, [
+            'stmts' => [new Expression($ternary->else)],
+        ]);
+
         if (! $assign instanceof Assign) {
             return $if;
         }
@@ -163,8 +164,10 @@ CODE_SAMPLE
         }
 
         $condExpr = $this->createCondExpr($coalesce);
+        $if = new If_($condExpr, [
+            'stmts' => [new Expression($coalesce->right)],
+        ]);
 
-        $if = $this->ifManipulator->createIfStmt($condExpr, new Expression($coalesce->right));
         if (! $assign instanceof Assign) {
             return $if;
         }
