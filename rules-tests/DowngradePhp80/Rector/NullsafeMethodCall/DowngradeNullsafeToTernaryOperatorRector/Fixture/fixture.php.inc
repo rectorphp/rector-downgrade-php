@@ -37,22 +37,22 @@ class Fixture
     public function run($booking)
     {
         // with argument
-        $dateAsString = ($getStartDate = $booking->getStartDate($args1)) ? $getStartDate->asDateTimeString($arg2) : null;
+        $dateAsString = ($nullsafeVariable1 = $booking->getStartDate($args1)) ? $nullsafeVariable1->asDateTimeString($arg2) : null;
 
         // without argument, one is method call, next property fetch
-        $dateAsString = ($getStartDate = $booking->getStartDate()) ? $getStartDate->asDateTimeString : null;
+        $dateAsString = ($nullsafeVariable2 = $booking->getStartDate()) ? $nullsafeVariable2->asDateTimeString : null;
 
         // without argument, one is property call, next method fetch
-        $dateAsString = ($bookingGetStartDate = $booking->getStartDate) ? $bookingGetStartDate->asDateTimeString() : null;
+        $dateAsString = ($nullsafeVariable3 = $booking->getStartDate) ? $nullsafeVariable3->asDateTimeString() : null;
 
         // all are property fetch
-        $dateAsString = ($bookingGetStartDate = $booking->getStartDate) ? $bookingGetStartDate->asDateTimeString : null;
+        $dateAsString = ($nullsafeVariable4 = $booking->getStartDate) ? $nullsafeVariable4->asDateTimeString : null;
 
         $getStartDate = true;
         $bookingGetStartDate = true;
 
         // previously named vars aren't reused
-        $dateAsString = ($bookingGetStartDate2 = $booking->getStartDate) ? $bookingGetStartDate2->asDateTimeString : null;
+        $dateAsString = ($nullsafeVariable5 = $booking->getStartDate) ? $nullsafeVariable5->asDateTimeString : null;
     }
 }
 

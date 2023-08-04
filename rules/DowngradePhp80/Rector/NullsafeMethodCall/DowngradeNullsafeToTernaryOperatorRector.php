@@ -12,22 +12,16 @@ use PhpParser\Node\Expr\NullsafePropertyFetch;
 use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
-use PHPStan\Analyser\MutatingScope;
-use PHPStan\Analyser\Scope;
-use Rector\Core\Rector\AbstractScopeAwareRector;
-use Rector\Naming\Naming\VariableNaming;
+use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @see \Rector\Tests\DowngradePhp80\Rector\NullsafeMethodCall\DowngradeNullsafeToTernaryOperatorRector\DowngradeNullsafeToTernaryOperatorRectorTest
  */
-final class DowngradeNullsafeToTernaryOperatorRector extends AbstractScopeAwareRector
+final class DowngradeNullsafeToTernaryOperatorRector extends AbstractRector
 {
-    public function __construct(
-        private readonly VariableNaming $variableNaming
-    ) {
-    }
+    private int $counter = 1;
 
     public function getRuleDefinition(): RuleDefinition
     {
@@ -35,12 +29,10 @@ final class DowngradeNullsafeToTernaryOperatorRector extends AbstractScopeAwareR
             new CodeSample(
                 <<<'CODE_SAMPLE'
 $dateAsString = $booking->getStartDate()?->asDateTimeString();
-$dateAsString = $booking->startDate?->dateTimeString;
 CODE_SAMPLE
                 ,
                 <<<'CODE_SAMPLE'
 $dateAsString = ($bookingGetStartDate = $booking->getStartDate()) ? $bookingGetStartDate->asDateTimeString() : null;
-$dateAsString = ($bookingGetStartDate = $booking->startDate) ? $bookingGetStartDate->dateTimeString : null;
 CODE_SAMPLE
             ),
         ]);
@@ -57,18 +49,21 @@ CODE_SAMPLE
     /**
      * @param NullsafeMethodCall|NullsafePropertyFetch $node
      */
-    public function refactorWithScope(Node $node, Scope $scope): Ternary
+    public function refactor(Node $node): Ternary
     {
-        /** @var MutatingScope $scope */
-        $tempVarName = $this->variableNaming->resolveFromNodeWithScopeCountAndFallbackName($node->var, $scope, '_');
+        $variableName = $this->createNullsafeVariableName($node->var);
+        $variable = new Variable($variableName);
 
-        $variable = new Variable($tempVarName);
-
-        $called = $node instanceof NullsafeMethodCall
+        $methodCallOrPropertyFetch = $node instanceof NullsafeMethodCall
             ? new MethodCall($variable, $node->name, $node->getArgs())
             : new PropertyFetch($variable, $node->name);
 
         $assign = new Assign($variable, $node->var);
-        return new Ternary($assign, $called, $this->nodeFactory->createNull());
+        return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
+    }
+
+    private function createNullsafeVariableName(): string
+    {
+        return 'nullsafeVariable' . $this->counter++;
     }
 }
