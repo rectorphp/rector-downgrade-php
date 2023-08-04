@@ -21,7 +21,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeNullsafeToTernaryOperatorRector extends AbstractRector
 {
-    private int $counter = 1;
+    private int $counter = 0;
 
     public function getRuleDefinition(): RuleDefinition
     {
@@ -51,19 +51,21 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): Ternary
     {
-        $variableName = $this->createNullsafeVariableName($node->var);
-        $variable = new Variable($variableName);
+        $nullsafeVariableName = $this->createNullsafeVariable();
 
         $methodCallOrPropertyFetch = $node instanceof NullsafeMethodCall
-            ? new MethodCall($variable, $node->name, $node->getArgs())
-            : new PropertyFetch($variable, $node->name);
+            ? new MethodCall($nullsafeVariableName, $node->name, $node->getArgs())
+            : new PropertyFetch($nullsafeVariableName, $node->name);
 
-        $assign = new Assign($variable, $node->var);
+        $assign = new Assign($nullsafeVariableName, $node->var);
+
         return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
     }
 
-    private function createNullsafeVariableName(): string
+    private function createNullsafeVariable(): Variable
     {
-        return 'nullsafeVariable' . $this->counter++;
+        $nullsafeVariableName = 'nullsafeVariable' . ++$this->counter;
+
+        return new Variable($nullsafeVariableName);
     }
 }
