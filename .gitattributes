@@ -9,4 +9,3 @@ tests export-ignore
 rules-tests export-ignore
 /easy-ci.php export-ignore
 /rector.php export-ignore
-/phpstan-for-rector.neon export-ignore
