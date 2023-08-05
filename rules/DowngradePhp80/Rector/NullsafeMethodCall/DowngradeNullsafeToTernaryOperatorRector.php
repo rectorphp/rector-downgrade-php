@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\NullsafePropertyFetch;
 use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
+use Rector\Core\Provider\CurrentFileProvider;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -22,6 +23,13 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeNullsafeToTernaryOperatorRector extends AbstractRector
 {
     private int $counter = 0;
+
+    private ?string $previousFileName = null;
+    private ?string $currentFileName = null;
+
+    public function __construct(private readonly CurrentFileProvider $currentFileProvider)
+    {
+    }
 
     public function getRuleDefinition(): RuleDefinition
     {
@@ -51,7 +59,13 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): Ternary
     {
-        $nullsafeVariable = $this->createNullsafeVariable();
+        if ($this->previousFileName === null) {
+            $this->previousFileName = $this->currentFileProvider->getFile()->getFilePath();
+        }
+
+        $this->currentFileName = $this->currentFileProvider->getFile()->getFilePath();
+
+        $nullsafeVariable = $this->createNullsafeVariable($this->previousFileName, $this->currentFileName);
 
         $methodCallOrPropertyFetch = $node instanceof NullsafeMethodCall
             ? new MethodCall($nullsafeVariable, $node->name, $node->getArgs())
@@ -64,6 +78,11 @@ CODE_SAMPLE
 
     private function createNullsafeVariable(): Variable
     {
+        if ($this->previousFileName !== $this->currentFileName) {
+            $this->counter = 0;
+            $this->previousFileName = $this->currentFileName;
+        }
+
         $nullsafeVariableName = 'nullsafeVariable' . ++$this->counter;
 
         return new Variable($nullsafeVariableName);
