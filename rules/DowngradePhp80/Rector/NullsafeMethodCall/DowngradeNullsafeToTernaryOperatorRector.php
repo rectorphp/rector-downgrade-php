@@ -25,10 +25,12 @@ final class DowngradeNullsafeToTernaryOperatorRector extends AbstractRector
     private int $counter = 0;
 
     private ?string $previousFileName = null;
+
     private ?string $currentFileName = null;
 
-    public function __construct(private readonly CurrentFileProvider $currentFileProvider)
-    {
+    public function __construct(
+        private readonly CurrentFileProvider $currentFileProvider
+    ) {
     }
 
     public function getRuleDefinition(): RuleDefinition
@@ -60,12 +62,14 @@ CODE_SAMPLE
     public function refactor(Node $node): Ternary
     {
         if ($this->previousFileName === null) {
-            $this->previousFileName = $this->currentFileProvider->getFile()->getFilePath();
+            $this->previousFileName = $this->currentFileProvider->getFile()
+                ->getFilePath();
         }
 
-        $this->currentFileName = $this->currentFileProvider->getFile()->getFilePath();
+        $this->currentFileName = $this->currentFileProvider->getFile()
+            ->getFilePath();
 
-        $nullsafeVariable = $this->createNullsafeVariable($this->previousFileName, $this->currentFileName);
+        $nullsafeVariable = $this->createNullsafeVariable();
 
         $methodCallOrPropertyFetch = $node instanceof NullsafeMethodCall
             ? new MethodCall($nullsafeVariable, $node->name, $node->getArgs())
