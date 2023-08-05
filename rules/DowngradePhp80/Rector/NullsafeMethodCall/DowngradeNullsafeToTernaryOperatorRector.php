@@ -14,6 +14,7 @@ use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
 use Rector\Core\Provider\CurrentFileProvider;
 use Rector\Core\Rector\AbstractRector;
+use Rector\Core\ValueObject\Application\File;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -59,15 +60,23 @@ CODE_SAMPLE
     /**
      * @param NullsafeMethodCall|NullsafePropertyFetch $node
      */
-    public function refactor(Node $node): Ternary
+    public function refactor(Node $node): ?Ternary
     {
         if ($this->previousFileName === null) {
-            $this->previousFileName = $this->currentFileProvider->getFile()
-                ->getFilePath();
+            $previousFile = $this->currentFileProvider->getFile();
+            if (! $previousFile instanceof File) {
+                return null;
+            }
+
+            $this->previousFileName = $previousFile->getFilePath();
         }
 
-        $this->currentFileName = $this->currentFileProvider->getFile()
-            ->getFilePath();
+        $currentFile = $this->currentFileProvider->getFile();
+        if (! $currentFile instanceof File) {
+            return null;
+        }
+
+        $this->currentFileName = $currentFile->getFilePath();
 
         $nullsafeVariable = $this->createNullsafeVariable();
 
