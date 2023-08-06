@@ -12,5 +12,5 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->import(ConfigList::MAIN);
     $rectorConfig->rule(DowngradeCovariantReturnTypeRector::class);
 
-    $rectorConfig->setPhpVersion(PhpVersionFeature::COVARIANT_RETURN);
+    $rectorConfig->phpVersion(PhpVersionFeature::COVARIANT_RETURN);
 };
