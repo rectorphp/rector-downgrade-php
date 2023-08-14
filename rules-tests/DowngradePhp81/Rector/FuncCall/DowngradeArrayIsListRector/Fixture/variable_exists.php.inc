@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector\Fixture;
 
-$arrayIsList = false;
+$arrayIsListFunction = false;
 array_is_list([1 => 'apple', 'orange']);
 
 ?>
@@ -11,8 +11,8 @@ array_is_list([1 => 'apple', 'orange']);
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector\Fixture;
 
-$arrayIsList = false;
-$arrayIsListFunction = function (array $array) : bool {
+$arrayIsListFunction = false;
+$arrayIsListFunction1 = function (array $array) : bool {
     if (function_exists('array_is_list')) {
         return array_is_list($array);
     }
@@ -28,6 +28,6 @@ $arrayIsListFunction = function (array $array) : bool {
     }
     return true;
 };
-$arrayIsListFunction([1 => 'apple', 'orange']);
+$arrayIsListFunction1([1 => 'apple', 'orange']);
 
 ?>
