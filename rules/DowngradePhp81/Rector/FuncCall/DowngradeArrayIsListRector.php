@@ -18,7 +18,7 @@ use PHPStan\Analyser\Scope;
 use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
-use Rector\Core\Rector\AbstractScopeAwareRector;
+use Rector\Core\Rector\AbstractRector;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeAnalyzer\ExprInTopStmtMatcher;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -30,7 +30,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  *
  * @see \Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector\DowngradeArrayIsListRectorTest
  */
-final class DowngradeArrayIsListRector extends AbstractScopeAwareRector
+final class DowngradeArrayIsListRector extends AbstractRector
 {
     private ?Closure $cachedClosure = null;
 
@@ -87,7 +87,7 @@ CODE_SAMPLE
      * @param StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $node
      * @return Node[]|null
      */
-    public function refactorWithScope(Node $node, Scope $scope): ?array
+    public function refactor(Node $node): ?array
     {
         $expr = $this->exprInTopStmtMatcher->match(
             $node,
@@ -106,7 +106,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $variable = new Variable($this->variableNaming->createCountedValueName('arrayIsList', $scope));
+        $variable = new Variable('arrayIsListFunction');
 
         $function = $this->createClosure();
         $expression = new Expression(new Assign($variable, $function));
@@ -137,7 +137,7 @@ CODE_SAMPLE
         return $expr;
     }
 
-    private function shouldSkip(CallLike $callLike, ?Scope $scope): bool
+    private function shouldSkip(CallLike $callLike): bool
     {
         if (! $callLike instanceof FuncCall) {
             return false;
@@ -147,12 +147,8 @@ CODE_SAMPLE
             return true;
         }
 
-        if (! $scope instanceof Scope) {
-            $args = $callLike->getArgs();
-            return count($args) !== 1;
-        }
-
-        if ($scope->isInFunctionExists('array_is_list')) {
+        $scope = $callLike->getAttribute(AttributeKey::SCOPE);
+        if ($scope instanceof Scope && $scope->isInFunctionExists('array_is_list')) {
             return true;
         }
 
