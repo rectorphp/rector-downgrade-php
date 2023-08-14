@@ -41,7 +41,7 @@ final class Loop
         }
 
         register_shutdown_function(function () {
-            $arrayIsList = function (array $array) : bool {
+            $arrayIsListFunction = function (array $array) : bool {
                 if (function_exists('array_is_list')) {
                     return array_is_list($array);
                 }
@@ -57,7 +57,7 @@ final class Loop
                 }
                 return true;
             };
-            $test = $arrayIsList([]);
+            $test = $arrayIsListFunction([]);
         });
     }
 }
