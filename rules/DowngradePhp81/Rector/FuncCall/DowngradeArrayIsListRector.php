@@ -19,6 +19,8 @@ use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractRector;
+use Rector\Core\Rector\AbstractScopeAwareRector;
+use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeAnalyzer\ExprInTopStmtMatcher;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -29,13 +31,14 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  *
  * @see \Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector\DowngradeArrayIsListRectorTest
  */
-final class DowngradeArrayIsListRector extends AbstractRector
+final class DowngradeArrayIsListRector extends AbstractScopeAwareRector
 {
     private ?Closure $cachedClosure = null;
 
     public function __construct(
         private readonly InlineCodeParser $inlineCodeParser,
-        private readonly ExprInTopStmtMatcher $exprInTopStmtMatcher
+        private readonly ExprInTopStmtMatcher $exprInTopStmtMatcher,
+        private readonly VariableNaming $variableNaming
     ) {
     }
 
@@ -85,7 +88,7 @@ CODE_SAMPLE
      * @param StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $node
      * @return Node[]|null
      */
-    public function refactor(Node $node): ?array
+    public function refactorWithScope(Node $node, Scope $scope): ?array
     {
         $expr = $this->exprInTopStmtMatcher->match(
             $node,
@@ -103,7 +106,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $variable = new Variable('arrayIsListFunction');
+        $variable = new Variable($this->variableNaming->createCountedValueName('arrayIsListFunction', $scope));
 
         $function = $this->createClosure();
         $expression = new Expression(new Assign($variable, $function));
