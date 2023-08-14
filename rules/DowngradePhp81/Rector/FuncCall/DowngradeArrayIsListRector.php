@@ -19,7 +19,6 @@ use Rector\Core\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\Parser\InlineCodeParser;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeAnalyzer\ExprInTopStmtMatcher;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -36,7 +35,6 @@ final class DowngradeArrayIsListRector extends AbstractRector
 
     public function __construct(
         private readonly InlineCodeParser $inlineCodeParser,
-        private readonly VariableNaming $variableNaming,
         private readonly ExprInTopStmtMatcher $exprInTopStmtMatcher
     ) {
     }
@@ -97,8 +95,7 @@ CODE_SAMPLE
                 }
 
                 // need pull Scope from target traversed sub Node
-                $scope = $subNode->getAttribute(AttributeKey::SCOPE);
-                return ! $this->shouldSkip($subNode, $scope);
+                return ! $this->shouldSkip($subNode);
             }
         );
 
