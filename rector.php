@@ -46,6 +46,4 @@ return static function (RectorConfig $rectorConfig): void {
         '**/Source/*',
         '**/Expected/*',
     ]);
-
-    $rectorConfig->import(__DIR__ . '/config/config.php');
 };
