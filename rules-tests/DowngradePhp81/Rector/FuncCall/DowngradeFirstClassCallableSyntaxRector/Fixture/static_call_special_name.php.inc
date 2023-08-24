@@ -4,7 +4,7 @@ namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallabl
 
 class StaticCallSpecialName
 {
-    public function run(): \Closure
+    public function callDump(): \Closure
     {
         return self::dump(...);
     }
@@ -23,7 +23,7 @@ namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallabl
 
 class StaticCallSpecialName
 {
-    public function run(): \Closure
+    public function callDump(): \Closure
     {
         return \Closure::fromCallable([self::class, 'dump']);
     }
