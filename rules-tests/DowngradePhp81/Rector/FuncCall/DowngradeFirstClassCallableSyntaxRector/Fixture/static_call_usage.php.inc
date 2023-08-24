@@ -2,11 +2,11 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector\Fixture;
 
-class SomeClass
+class StaticCallUsage
 {
     public function run(): \Closure
     {
-        return SomeClass::dump(...);
+        return StaticCallUsage::dump(...);
     }
 
     public static function dump(...$args): void
@@ -21,11 +21,11 @@ class SomeClass
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector\Fixture;
 
-class SomeClass
+class StaticCallUsage
 {
     public function run(): \Closure
     {
-        return \Closure::fromCallable([SomeClass::class, 'dump']);
+        return \Closure::fromCallable([StaticCallUsage::class, 'dump']);
     }
 
     public static function dump(...$args): void

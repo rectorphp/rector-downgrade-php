@@ -2,9 +2,9 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector\Fixture;
 
-class SomeClass
+class StaticCallSpecialName
 {
-    public function run(): \Closure
+    public function callDump(): \Closure
     {
         return self::dump(...);
     }
@@ -21,9 +21,9 @@ class SomeClass
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector\Fixture;
 
-class SomeClass
+class StaticCallSpecialName
 {
-    public function run(): \Closure
+    public function callDump(): \Closure
     {
         return \Closure::fromCallable([self::class, 'dump']);
     }

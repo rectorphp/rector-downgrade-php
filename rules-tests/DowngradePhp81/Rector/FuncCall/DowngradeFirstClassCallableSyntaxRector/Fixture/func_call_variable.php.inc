@@ -2,8 +2,14 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector\Fixture;
 
-$fn = 'strlen';
-$cb = $fn(...);
+class FuncCallInVariable
+{
+    public function run()
+    {
+        $fn = 'strlen';
+        $cb = $fn(...);
+    }
+}
 
 ?>
 -----
@@ -11,7 +17,13 @@ $cb = $fn(...);
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector\Fixture;
 
-$fn = 'strlen';
-$cb = \Closure::fromCallable($fn);
+class FuncCallInVariable
+{
+    public function run()
+    {
+        $fn = 'strlen';
+        $cb = \Closure::fromCallable($fn);
+    }
+}
 
 ?>
