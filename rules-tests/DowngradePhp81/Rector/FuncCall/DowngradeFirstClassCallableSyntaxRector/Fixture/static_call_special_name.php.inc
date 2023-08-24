@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector\Fixture;
 
-class SomeClass
+class StaticCallSpecialName
 {
     public function run(): \Closure
     {
@@ -21,7 +21,7 @@ class SomeClass
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector\Fixture;
 
-class SomeClass
+class StaticCallSpecialName
 {
     public function run(): \Closure
     {
