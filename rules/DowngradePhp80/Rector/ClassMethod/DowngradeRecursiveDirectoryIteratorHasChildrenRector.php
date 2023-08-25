@@ -68,7 +68,7 @@ CODE_SAMPLE
             if (! isset($classMethod->params[0])) {
                 continue;
             }
-            
+
             if (! $this->nodeNameResolver->isName($classMethod, 'hasChildren')) {
                 continue;
             }
