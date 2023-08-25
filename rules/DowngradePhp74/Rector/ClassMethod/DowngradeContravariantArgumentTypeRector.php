@@ -29,6 +29,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeContravariantArgumentTypeRector extends AbstractRector
 {
+    private bool $hasChanged = false;
+
     public function __construct(
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
         private readonly ParamAnalyzer $paramAnalyzer,
@@ -101,8 +103,13 @@ CODE_SAMPLE
             return null;
         }
 
+        $this->hasChanged = false;
         foreach ($node->params as $param) {
             $this->refactorParam($param, $node);
+        }
+
+        if ($this->hasChanged) {
+            return $node;
         }
 
         return null;
@@ -245,6 +252,8 @@ CODE_SAMPLE
 
         $this->decorateWithDocBlock($functionLike, $param);
         $param->type = null;
+
+        $this->hasChanged = true;
     }
 
     private function decorateWithDocBlock(ClassMethod | Function_ $functionLike, Param $param): void
