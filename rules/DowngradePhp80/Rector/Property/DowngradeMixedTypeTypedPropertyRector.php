@@ -59,11 +59,11 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node->type === null) {
+        if (! $node->type instanceof Node\Identifier) {
             return null;
         }
 
-        if ($this->shouldSkip($node)) {
+        if ($node->type->toString() !== 'mixed') {
             return null;
         }
 
