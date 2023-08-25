@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp80\Rector\Property;
 
 use PhpParser\Node;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\Property;
-use PHPStan\Type\MixedType;
 use Rector\Core\Rector\AbstractRector;
 use Rector\NodeManipulator\PropertyDecorator;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -59,11 +59,11 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node->type === null) {
+        if (! $node->type instanceof Identifier) {
             return null;
         }
 
-        if ($this->shouldSkip($node)) {
+        if ($node->type->toString() !== 'mixed') {
             return null;
         }
 
@@ -71,19 +71,5 @@ CODE_SAMPLE
         $node->type = null;
 
         return $node;
-    }
-
-    private function shouldSkip(Property $property): bool
-    {
-        if ($property->type === null) {
-            return true;
-        }
-
-        $type = $this->staticTypeMapper->mapPhpParserNodePHPStanType($property->type);
-        if (! $type instanceof MixedType) {
-            return true;
-        }
-
-        return ! $type->isExplicitMixed();
     }
 }
