@@ -65,11 +65,11 @@ CODE_SAMPLE
     public function refactor(Node $node): ?Node
     {
         foreach ($node->getMethods() as $classMethod) {
-            if (! $this->nodeNameResolver->isName($classMethod, 'hasChildren')) {
+            if (! isset($classMethod->params[0])) {
                 continue;
             }
 
-            if (! isset($classMethod->params[0])) {
+            if (! $this->nodeNameResolver->isName($classMethod, 'hasChildren')) {
                 continue;
             }
 
