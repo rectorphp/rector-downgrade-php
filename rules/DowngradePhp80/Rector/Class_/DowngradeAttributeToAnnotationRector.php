@@ -94,6 +94,10 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
+        if ($node->attrGroups === []) {
+            return null;
+        }
+        
         $this->isDowngraded = false;
 
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
