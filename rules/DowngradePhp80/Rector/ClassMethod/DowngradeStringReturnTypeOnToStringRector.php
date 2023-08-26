@@ -98,7 +98,7 @@ CODE_SAMPLE
         if ($classMethod->returnType instanceof Node) {
             return true;
         }
-        
+
         if (! $this->nodeNameResolver->isName($classMethod, '__toString')) {
             return true;
         }
