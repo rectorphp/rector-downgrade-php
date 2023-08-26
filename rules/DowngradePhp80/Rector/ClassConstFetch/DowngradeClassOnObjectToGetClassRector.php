@@ -60,11 +60,11 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if (! $this->isName($node->name, 'class')) {
+        if (! $node->class instanceof Expr) {
             return null;
         }
 
-        if (! $node->class instanceof Expr) {
+        if (! $this->isName($node->name, 'class')) {
             return null;
         }
 
