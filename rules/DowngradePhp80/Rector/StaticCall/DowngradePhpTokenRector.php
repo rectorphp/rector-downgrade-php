@@ -84,7 +84,7 @@ CODE_SAMPLE
         if (! $this->isName($staticCall->name, 'tokenize')) {
             return null;
         }
-        
+
         if (! $this->isObjectType($staticCall->class, new ObjectType(self::PHP_TOKEN))) {
             return null;
         }
@@ -97,7 +97,7 @@ CODE_SAMPLE
         if (! $this->isName($methodCall->name, 'getTokenName')) {
             return null;
         }
-        
+
         if (! $this->isObjectType($methodCall->var, new ObjectType(self::PHP_TOKEN))) {
             return null;
         }
@@ -114,11 +114,11 @@ CODE_SAMPLE
         if (! $this->isName($propertyFetch->name, 'text')) {
             return null;
         }
-        
+
         if (! $this->isObjectType($propertyFetch->var, new ObjectType(self::PHP_TOKEN))) {
             return null;
         }
-        
+
         $isArrayFuncCall = new FuncCall(new Name('is_array'), [new Arg($propertyFetch->var)]);
         $arrayDimFetch = new ArrayDimFetch($propertyFetch->var, new LNumber(1));
 
