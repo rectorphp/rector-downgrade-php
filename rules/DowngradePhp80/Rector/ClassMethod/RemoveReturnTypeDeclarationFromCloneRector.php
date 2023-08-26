@@ -59,7 +59,7 @@ CODE_SAMPLE
         if (! $node->returnType instanceof Node) {
             return null;
         }
-        
+
         if (! $this->isName($node, '__clone')) {
             return null;
         }
