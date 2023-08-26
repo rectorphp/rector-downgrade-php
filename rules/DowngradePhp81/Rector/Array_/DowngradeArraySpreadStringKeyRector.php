@@ -72,7 +72,7 @@ CODE_SAMPLE
         }
 
         /** @var MutatingScope $scope */
-        return $this->arrayMergeFromArraySpreadFactory->createFromArray($node, $scope, $this->file);
+        return $this->arrayMergeFromArraySpreadFactory->createFromArray($node, $scope);
     }
 
     private function shouldSkipArray(Array_ $array): bool

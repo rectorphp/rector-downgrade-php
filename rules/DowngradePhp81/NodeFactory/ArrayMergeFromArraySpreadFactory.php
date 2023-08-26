@@ -18,7 +18,6 @@ use PHPStan\Type\IterableType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use Rector\Core\Exception\ShouldNotHappenException;
-use Rector\Core\ValueObject\Application\File;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -31,7 +30,7 @@ final class ArrayMergeFromArraySpreadFactory
     ) {
     }
 
-    public function createFromArray(Array_ $array, MutatingScope $mutatingScope, File $file): ?Node
+    public function createFromArray(Array_ $array, MutatingScope $mutatingScope): ?Node
     {
         if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($array)) {
             return null;
