@@ -81,11 +81,11 @@ CODE_SAMPLE
 
     private function refactorStaticCall(StaticCall $staticCall): ?FuncCall
     {
-        if (! $this->isObjectType($staticCall->class, new ObjectType(self::PHP_TOKEN))) {
+        if (! $this->isName($staticCall->name, 'tokenize')) {
             return null;
         }
 
-        if (! $this->isName($staticCall->name, 'tokenize')) {
+        if (! $this->isObjectType($staticCall->class, new ObjectType(self::PHP_TOKEN))) {
             return null;
         }
 
@@ -94,11 +94,11 @@ CODE_SAMPLE
 
     private function refactorMethodCall(MethodCall $methodCall): ?Ternary
     {
-        if (! $this->isObjectType($methodCall->var, new ObjectType(self::PHP_TOKEN))) {
+        if (! $this->isName($methodCall->name, 'getTokenName')) {
             return null;
         }
 
-        if (! $this->isName($methodCall->name, 'getTokenName')) {
+        if (! $this->isObjectType($methodCall->var, new ObjectType(self::PHP_TOKEN))) {
             return null;
         }
 
@@ -111,11 +111,11 @@ CODE_SAMPLE
 
     private function refactorPropertyFetch(PropertyFetch $propertyFetch): ?Ternary
     {
-        if (! $this->isObjectType($propertyFetch->var, new ObjectType(self::PHP_TOKEN))) {
+        if (! $this->isName($propertyFetch->name, 'text')) {
             return null;
         }
 
-        if (! $this->isName($propertyFetch->name, 'text')) {
+        if (! $this->isObjectType($propertyFetch->var, new ObjectType(self::PHP_TOKEN))) {
             return null;
         }
 
