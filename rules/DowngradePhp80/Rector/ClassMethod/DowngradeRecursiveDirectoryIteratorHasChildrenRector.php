@@ -69,16 +69,16 @@ CODE_SAMPLE
                 continue;
             }
 
+            if ($classMethod->params[0]->type === null) {
+                continue;
+            }
+
             if (! $this->nodeNameResolver->isName($classMethod, 'hasChildren')) {
                 continue;
             }
 
             $ancestorClassNames = $this->familyRelationsAnalyzer->getClassLikeAncestorNames($node);
             if (! in_array('RecursiveDirectoryIterator', $ancestorClassNames, true)) {
-                continue;
-            }
-
-            if ($classMethod->params[0]->type === null) {
                 continue;
             }
 
