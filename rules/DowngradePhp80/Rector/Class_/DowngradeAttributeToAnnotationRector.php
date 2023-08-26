@@ -125,12 +125,12 @@ CODE_SAMPLE
                     );
                     continue;
                 }
-                
+
                 $doctrineAnnotation = $this->doctrineAnnotationFactory->createFromAttribute(
                     $attribute,
                     $attributeToAnnotation->getTag()
                 );
-                $phpDocInfo->addTagValueNode($doctrineAnnotation);   
+                $phpDocInfo->addTagValueNode($doctrineAnnotation);
             }
         }
 
