@@ -97,7 +97,7 @@ CODE_SAMPLE
         if ($node->attrGroups === []) {
             return null;
         }
-        
+
         $this->isDowngraded = false;
 
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
