@@ -67,6 +67,10 @@ CODE_SAMPLE
      */
     public function refactorWithScope(Node $node, Scope $scope): ?Node
     {
+        if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($node)) {
+            return null;
+        }
+
         if ($this->shouldSkipArray($node)) {
             return null;
         }
@@ -77,10 +81,6 @@ CODE_SAMPLE
 
     private function shouldSkipArray(Array_ $array): bool
     {
-        if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($array)) {
-            return true;
-        }
-
         foreach ($array->items as $item) {
             if (! $item instanceof ArrayItem) {
                 continue;

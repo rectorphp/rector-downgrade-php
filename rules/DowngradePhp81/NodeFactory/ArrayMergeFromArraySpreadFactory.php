@@ -18,24 +18,18 @@ use PHPStan\Type\IterableType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use Rector\Core\Exception\ShouldNotHappenException;
-use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
 final class ArrayMergeFromArraySpreadFactory
 {
     public function __construct(
-        private readonly NodeNameResolver $nodeNameResolver,
-        private readonly ArraySpreadAnalyzer $arraySpreadAnalyzer
+        private readonly NodeNameResolver $nodeNameResolver
     ) {
     }
 
     public function createFromArray(Array_ $array, MutatingScope $mutatingScope): ?Node
     {
-        if (! $this->arraySpreadAnalyzer->isArrayWithUnpack($array)) {
-            return null;
-        }
-
         $newArrayItems = $this->disolveArrayItems($array);
         return $this->createArrayMergeFuncCall($newArrayItems, $mutatingScope);
     }
