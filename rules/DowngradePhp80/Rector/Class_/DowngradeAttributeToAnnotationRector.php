@@ -118,19 +118,19 @@ CODE_SAMPLE
 
                 unset($attrGroup->attrs[$key]);
 
+                $this->isDowngraded = true;
                 if (! \str_contains($attributeToAnnotation->getTag(), '\\')) {
                     $phpDocInfo->addPhpDocTagNode(
                         new PhpDocTagNode('@' . $attributeToAnnotation->getTag(), new GenericTagValueNode(''))
                     );
-                } else {
-                    $doctrineAnnotation = $this->doctrineAnnotationFactory->createFromAttribute(
-                        $attribute,
-                        $attributeToAnnotation->getTag()
-                    );
-                    $phpDocInfo->addTagValueNode($doctrineAnnotation);
+                    continue;
                 }
-
-                $this->isDowngraded = true;
+                
+                $doctrineAnnotation = $this->doctrineAnnotationFactory->createFromAttribute(
+                    $attribute,
+                    $attributeToAnnotation->getTag()
+                );
+                $phpDocInfo->addTagValueNode($doctrineAnnotation);   
             }
         }
 
