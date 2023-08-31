@@ -84,8 +84,8 @@ CODE_SAMPLE
             return null;
         }
 
-        $oldComments = $this->getOldComments($node, $constructorClassMethod);
-        $promotedParams = $this->resolvePromotedParams($node, $constructorClassMethod);
+        $oldComments = $this->getOldComments($constructorClassMethod);
+        $promotedParams = $this->resolvePromotedParams($constructorClassMethod);
         if ($promotedParams === []) {
             return null;
         }
@@ -103,7 +103,7 @@ CODE_SAMPLE
     /**
      * @return array<string, Comment|null>
      */
-    private function getOldComments(Class_ $class, ClassMethod $constructorClassMethod): array
+    private function getOldComments(ClassMethod $constructorClassMethod): array
     {
         $oldComments = [];
         foreach ($constructorClassMethod->params as $param) {
@@ -116,7 +116,7 @@ CODE_SAMPLE
     /**
      * @return Param[]
      */
-    private function resolvePromotedParams(Class_ $class, ClassMethod $constructorClassMethod): array
+    private function resolvePromotedParams(ClassMethod $constructorClassMethod): array
     {
         $promotedParams = [];
 
