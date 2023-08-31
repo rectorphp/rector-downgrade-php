@@ -83,8 +83,6 @@ CODE_SAMPLE
         $staticType = new StaticType($classReflection);
 
         $hasChanged = false;
-        $hasParamChanged = false;
-
         foreach ($node->getParams() as $param) {
             $hasParamChanged = $this->phpDocFromTypeDeclarationDecorator->decorateParamWithSpecificType(
                 $param,
