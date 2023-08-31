@@ -79,17 +79,18 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        $oldComments = $this->getOldComments($node);
-        $promotedParams = $this->resolvePromotedParams($node);
+        $constructorClassMethod = $node->getMethod(MethodName::CONSTRUCT);
+        if (! $constructorClassMethod instanceof ClassMethod) {
+            return [];
+        }
+
+        $oldComments = $this->getOldComments($node, $constructorClassMethod);
+        $promotedParams = $this->resolvePromotedParams($node, $constructorClassMethod);
         if ($promotedParams === []) {
             return null;
         }
 
-        /** @var ClassMethod $constructClassMethod */
-        $constructClassMethod = $node->getMethod(MethodName::CONSTRUCT);
-
         $properties = $this->resolvePropertiesFromPromotedParams($constructClassMethod, $promotedParams, $node);
-
         $this->addPropertyAssignsToConstructorClassMethod($properties, $node, $oldComments);
 
         foreach ($promotedParams as $promotedParam) {
@@ -102,13 +103,8 @@ CODE_SAMPLE
     /**
      * @return array<string, Comment|null>
      */
-    private function getOldComments(Class_ $class): array
+    private function getOldComments(Class_ $class, ClassMethod $constructorClassMethod): array
     {
-        $constructorClassMethod = $class->getMethod(MethodName::CONSTRUCT);
-        if (! $constructorClassMethod instanceof ClassMethod) {
-            return [];
-        }
-
         $oldComments = [];
         foreach ($constructorClassMethod->params as $param) {
             $oldComments[$this->getName($param->var)] = $param->getAttribute(AttributeKey::COMMENTS);
@@ -120,13 +116,8 @@ CODE_SAMPLE
     /**
      * @return Param[]
      */
-    private function resolvePromotedParams(Class_ $class): array
+    private function resolvePromotedParams(Class_ $class, ClassMethod $constructorClassMethod): array
     {
-        $constructorClassMethod = $class->getMethod(MethodName::CONSTRUCT);
-        if (! $constructorClassMethod instanceof ClassMethod) {
-            return [];
-        }
-
         $promotedParams = [];
 
         foreach ($constructorClassMethod->params as $param) {
