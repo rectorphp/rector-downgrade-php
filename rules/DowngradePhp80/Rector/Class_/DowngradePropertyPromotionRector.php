@@ -81,7 +81,7 @@ CODE_SAMPLE
     {
         $constructorClassMethod = $node->getMethod(MethodName::CONSTRUCT);
         if (! $constructorClassMethod instanceof ClassMethod) {
-            return [];
+            return null;
         }
 
         $oldComments = $this->getOldComments($node, $constructorClassMethod);
