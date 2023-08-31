@@ -81,16 +81,16 @@ CODE_SAMPLE
 
     private function shouldSkip(FuncCall $funcCall): bool
     {
+        $args = $funcCall->getArgs();
+        if (isset($args[3])) {
+            return true;
+        }
+
         if (! $this->nodeNameResolver->isName($funcCall, 'number_format')) {
             return true;
         }
 
-        $args = $funcCall->getArgs();
         if ($this->argsAnalyzer->hasNamedArg($args)) {
-            return true;
-        }
-
-        if (isset($args[3])) {
             return true;
         }
 
