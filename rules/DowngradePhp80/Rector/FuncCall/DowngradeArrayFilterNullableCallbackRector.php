@@ -89,16 +89,16 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): FuncCall|Ternary|null
     {
+        $args = $node->getArgs();
+        if (! isset($args[1])) {
+            return null;
+        }
+
         if (! $this->isName($node, 'array_filter')) {
             return null;
         }
 
-        $args = $node->getArgs();
         if ($this->argsAnalyzer->hasNamedArg($args)) {
-            return null;
-        }
-
-        if (! isset($args[1])) {
             return null;
         }
 
