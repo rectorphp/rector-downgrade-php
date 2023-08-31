@@ -90,7 +90,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $properties = $this->resolvePropertiesFromPromotedParams($constructClassMethod, $promotedParams, $node);
+        $properties = $this->resolvePropertiesFromPromotedParams($constructorClassMethod, $promotedParams, $node);
         $this->addPropertyAssignsToConstructorClassMethod($properties, $node, $oldComments);
 
         foreach ($promotedParams as $promotedParam) {
