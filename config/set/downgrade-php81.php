@@ -1,8 +1,9 @@
 <?php
 
 declare(strict_types=1);
-use Rector\DowngradePhp81\Rector\MethodCall\DowngradeIsEnumRector;
 
+use Rector\DowngradePhp81\Rector\LNumber\DowngradeOctalNumberRector;
+use Rector\DowngradePhp81\Rector\MethodCall\DowngradeIsEnumRector;
 use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
 use Rector\DowngradePhp81\Rector\Array_\DowngradeArraySpreadStringKeyRector;
@@ -34,6 +35,7 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeArrayIsListRector::class,
         DowngradeSetAccessibleReflectionPropertyRector::class,
         DowngradeIsEnumRector::class,
+        DowngradeOctalNumberRector::class
     ]);
 
     // @see https://php.watch/versions/8.1/internal-method-return-types#reflection
