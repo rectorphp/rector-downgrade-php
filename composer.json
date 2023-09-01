@@ -13,7 +13,7 @@
         "phpstan/phpstan-webmozart-assert": "^1.2",
         "phpunit/phpunit": "^10.3",
         "rector/phpstan-rules": "^0.7",
-        "rector/rector-generator": "^0.7",
+        "rector/rector-generator": "^0.7.3",
         "rector/rector-src": "dev-main",
         "symplify/easy-ci": "^11.2",
         "symplify/easy-coding-standard": "^12.0",

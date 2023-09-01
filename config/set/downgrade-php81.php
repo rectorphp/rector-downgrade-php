@@ -12,9 +12,12 @@ use Rector\DowngradePhp81\Rector\FunctionLike\DowngradeNeverTypeDeclarationRecto
 use Rector\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector;
 use Rector\DowngradePhp81\Rector\FunctionLike\DowngradePureIntersectionTypeRector;
 use Rector\DowngradePhp81\Rector\Instanceof_\DowngradePhp81ResourceReturnToObjectRector;
+use Rector\DowngradePhp81\Rector\MethodCall\ReflectionTentativeTypeRector;
 use Rector\DowngradePhp81\Rector\Property\DowngradeReadonlyPropertyRector;
 use Rector\DowngradePhp81\Rector\StmtsAwareInterface\DowngradeSetAccessibleReflectionPropertyRector;
 use Rector\Renaming\Rector\FuncCall\RenameFunctionRector;
+use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
+use Rector\Renaming\ValueObject\MethodCallRename;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->phpVersion(PhpVersion::PHP_80);
@@ -30,6 +33,12 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeArraySpreadStringKeyRector::class,
         DowngradeArrayIsListRector::class,
         DowngradeSetAccessibleReflectionPropertyRector::class,
+    ]);
+
+    // @see https://php.watch/versions/8.1/internal-method-return-types#reflection
+    $rectorConfig->ruleWithConfiguration(RenameMethodRector::class, [
+        new MethodCallRename('ReflectionFunctionAbstract', 'hasTentativeReturnType', 'hasReturnType'),
+        new MethodCallRename('ReflectionFunctionAbstract', 'getTentativeReturnType', 'getReturnType'),
     ]);
 
     $rectorConfig->ruleWithConfiguration(RenameFunctionRector::class, [
