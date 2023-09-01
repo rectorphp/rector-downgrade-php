@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\FixtureEmptyConfig;
+namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\Fixture;
 
 abstract class ParentClass implements \SplObserver
 {
@@ -20,7 +20,7 @@ class IndirectImplementsNativeInterface extends ParentClass
 -----
 <?php
 
-namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\FixtureEmptyConfig;
+namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\Fixture;
 
 abstract class ParentClass implements \SplObserver
 {

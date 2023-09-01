@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\FixtureEmptyConfig;
+namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\Fixture;
 
 interface SomeInterface2
 {
@@ -24,7 +24,7 @@ return new class extends SomeAbstractClass {
 -----
 <?php
 
-namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\FixtureEmptyConfig;
+namespace Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\Fixture;
 
 interface SomeInterface2
 {

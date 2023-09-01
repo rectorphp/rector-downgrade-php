@@ -12,7 +12,6 @@ use Rector\DowngradePhp81\Rector\FunctionLike\DowngradeNeverTypeDeclarationRecto
 use Rector\DowngradePhp81\Rector\FunctionLike\DowngradeNewInInitializerRector;
 use Rector\DowngradePhp81\Rector\FunctionLike\DowngradePureIntersectionTypeRector;
 use Rector\DowngradePhp81\Rector\Instanceof_\DowngradePhp81ResourceReturnToObjectRector;
-use Rector\DowngradePhp81\Rector\MethodCall\ReflectionTentativeTypeRector;
 use Rector\DowngradePhp81\Rector\Property\DowngradeReadonlyPropertyRector;
 use Rector\DowngradePhp81\Rector\StmtsAwareInterface\DowngradeSetAccessibleReflectionPropertyRector;
 use Rector\Renaming\Rector\FuncCall\RenameFunctionRector;
