@@ -57,11 +57,11 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if (! $this->isObjectType($node->var, new ObjectType('ReflectionClass'))) {
+        if (! $this->isName($node->name, 'isEnum')) {
             return null;
         }
 
-        if (! $this->isName($node->name, 'isEnum')) {
+        if (! $this->isObjectType($node->var, new ObjectType('ReflectionClass'))) {
             return null;
         }
 
