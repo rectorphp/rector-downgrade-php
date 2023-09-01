@@ -20,7 +20,7 @@ class SomeClass
 {
     public function run(\ReflectionClass $reflectionClass)
     {
-        return false;
+        return method_exists($reflectionClass, 'isEnum') ? $reflectionClass->isEnum() : false;
     }
 }
 
