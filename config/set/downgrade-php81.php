@@ -40,8 +40,10 @@ return static function (RectorConfig $rectorConfig): void {
 
     // @see https://php.watch/versions/8.1/internal-method-return-types#reflection
     $rectorConfig->ruleWithConfiguration(RenameMethodRector::class, [
-        new MethodCallRename('ReflectionFunctionAbstract', 'hasTentativeReturnType', 'hasReturnType'),
-        new MethodCallRename('ReflectionFunctionAbstract', 'getTentativeReturnType', 'getReturnType'),
+        new MethodCallRename('ReflectionFunction', 'hasTentativeReturnType', 'hasReturnType'),
+        new MethodCallRename('ReflectionFunction', 'getTentativeReturnType', 'getReturnType'),
+        new MethodCallRename('ReflectionMethod', 'hasTentativeReturnType', 'hasReturnType'),
+        new MethodCallRename('ReflectionMethod', 'getTentativeReturnType', 'getReturnType'),
     ]);
 
     $rectorConfig->ruleWithConfiguration(RenameFunctionRector::class, [
