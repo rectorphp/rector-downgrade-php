@@ -123,7 +123,7 @@ CODE_SAMPLE
      * @param Assign[] $assigns
      * @return Node\Stmt[]|null
      */
-    private function refactorAssign($assigns, Expression $expression): array|null
+    private function refactorAssign(array $assigns, Expression $expression): array|null
     {
         foreach ($assigns as $assign) {
             if (! $assign->expr instanceof New_ && ! $assign->expr instanceof Instanceof_) {
