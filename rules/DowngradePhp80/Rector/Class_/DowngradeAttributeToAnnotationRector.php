@@ -14,6 +14,7 @@ use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Property;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
+use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp80\ValueObject\DowngradeAttributeToAnnotation;
@@ -42,7 +43,8 @@ final class DowngradeAttributeToAnnotationRector extends AbstractRector implemen
     private bool $isDowngraded = false;
 
     public function __construct(
-        private readonly DoctrineAnnotationFactory $doctrineAnnotationFactory
+        private readonly DoctrineAnnotationFactory $doctrineAnnotationFactory,
+        private readonly DocBlockUpdater $docBlockUpdater,
     ) {
     }
 
@@ -123,6 +125,8 @@ CODE_SAMPLE
                     $phpDocInfo->addPhpDocTagNode(
                         new PhpDocTagNode('@' . $attributeToAnnotation->getTag(), new GenericTagValueNode(''))
                     );
+                    $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($node);
+
                     continue;
                 }
 
@@ -131,6 +135,7 @@ CODE_SAMPLE
                     $attributeToAnnotation->getTag()
                 );
                 $phpDocInfo->addTagValueNode($doctrineAnnotation);
+                $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($node);
             }
         }
 

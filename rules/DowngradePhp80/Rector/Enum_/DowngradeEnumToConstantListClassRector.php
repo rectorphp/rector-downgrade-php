@@ -19,6 +19,7 @@ use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
+use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp80\NodeAnalyzer\EnumAnalyzer;
 use Rector\NodeFactory\ClassFromEnumFactory;
@@ -34,6 +35,7 @@ final class DowngradeEnumToConstantListClassRector extends AbstractRector
         private readonly ClassFromEnumFactory $classFromEnumFactory,
         private readonly ReflectionProvider $reflectionProvider,
         private readonly EnumAnalyzer $enumAnalyzer,
+        private readonly DocBlockUpdater $docBlockUpdater,
     ) {
     }
 
@@ -81,7 +83,7 @@ CODE_SAMPLE
         }
 
         $hasChanged = false;
-        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
+        $classMethodPhpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
 
         foreach ($node->params as $param) {
             if ($param->type instanceof Name) {
@@ -110,7 +112,7 @@ CODE_SAMPLE
 
             $hasChanged = true;
 
-            $this->decorateParamDocType($classLikeReflection, $param, $phpDocInfo, $isNullable);
+            $this->decorateParamDocType($classLikeReflection, $param, $classMethodPhpDocInfo, $isNullable, $node);
         }
 
         if ($hasChanged) {
@@ -124,7 +126,8 @@ CODE_SAMPLE
         ClassReflection $classReflection,
         Param $param,
         PhpDocInfo $phpDocInfo,
-        bool $isNullable
+        bool $isNullable,
+        ClassMethod $classMethod
     ): void {
         $constFetchNode = new ConstFetchNode('\\' . $classReflection->getName(), '*');
         $constTypeNode = new ConstTypeNode($constFetchNode);
@@ -134,6 +137,8 @@ CODE_SAMPLE
 
         $paramTagValueNode = new ParamTagValueNode($paramTypeNode, false, $paramName, '');
         $phpDocInfo->addTagValueNode($paramTagValueNode);
+
+        $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($classMethod);
     }
 
     private function refactorParamType(ClassReflection $classReflection, bool $isNullable, Param $param): void
