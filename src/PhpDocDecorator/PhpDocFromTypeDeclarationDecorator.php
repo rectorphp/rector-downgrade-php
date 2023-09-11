@@ -14,6 +14,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
@@ -25,7 +26,6 @@ use Rector\Core\Php\PhpVersionProvider;
 use Rector\Core\Reflection\ReflectionResolver;
 use Rector\Core\ValueObject\PhpVersionFeature;
 use Rector\NodeNameResolver\NodeNameResolver;
-use Rector\NodeTypeResolver\TypeComparator\TypeComparator;
 use Rector\Php80\NodeAnalyzer\PhpAttributeAnalyzer;
 use Rector\PhpAttribute\NodeFactory\PhpAttributeGroupFactory;
 use Rector\PHPStanStaticTypeMapper\Enum\TypeKind;
@@ -51,8 +51,7 @@ final class PhpDocFromTypeDeclarationDecorator
         private readonly PhpAttributeGroupFactory $phpAttributeGroupFactory,
         private readonly ReflectionResolver $reflectionResolver,
         private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer,
-        private readonly PhpVersionProvider $phpVersionProvider,
-        private readonly TypeComparator $typeComparator
+        private readonly PhpVersionProvider $phpVersionProvider
     ) {
         $this->classMethodWillChangeReturnTypes = [
             // @todo how to make list complete? is the method list needed or can we use just class names?
@@ -231,7 +230,7 @@ final class PhpDocFromTypeDeclarationDecorator
         $paramName = $this->nodeNameResolver->getName($param);
 
         $phpDocParamType = $phpDocInfo->getParamType($paramName);
-        if ($type::class === $phpDocParamType::class) {
+        if (! $type instanceof MixedType && $type::class === $phpDocParamType::class) {
             return;
         }
 
