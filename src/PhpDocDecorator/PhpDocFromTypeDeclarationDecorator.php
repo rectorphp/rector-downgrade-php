@@ -25,6 +25,7 @@ use Rector\Core\Php\PhpVersionProvider;
 use Rector\Core\Reflection\ReflectionResolver;
 use Rector\Core\ValueObject\PhpVersionFeature;
 use Rector\NodeNameResolver\NodeNameResolver;
+use Rector\NodeTypeResolver\TypeComparator\TypeComparator;
 use Rector\Php80\NodeAnalyzer\PhpAttributeAnalyzer;
 use Rector\PhpAttribute\NodeFactory\PhpAttributeGroupFactory;
 use Rector\PHPStanStaticTypeMapper\Enum\TypeKind;
@@ -50,7 +51,8 @@ final class PhpDocFromTypeDeclarationDecorator
         private readonly PhpAttributeGroupFactory $phpAttributeGroupFactory,
         private readonly ReflectionResolver $reflectionResolver,
         private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer,
-        private readonly PhpVersionProvider $phpVersionProvider
+        private readonly PhpVersionProvider $phpVersionProvider,
+        private readonly TypeComparator $typeComparator
     ) {
         $this->classMethodWillChangeReturnTypes = [
             // @todo how to make list complete? is the method list needed or can we use just class names?
@@ -223,11 +225,17 @@ final class PhpDocFromTypeDeclarationDecorator
         Param $param,
         Type $type
     ): void {
+        $param->type = null;
+
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($functionLike);
         $paramName = $this->nodeNameResolver->getName($param);
-        $this->phpDocTypeChanger->changeParamType($functionLike, $phpDocInfo, $type, $param, $paramName);
 
-        $param->type = null;
+        $phpDocParamType = $phpDocInfo->getParamType($paramName);
+        if ($type::class === $phpDocParamType::class) {
+            return;
+        }
+
+        $this->phpDocTypeChanger->changeParamType($functionLike, $phpDocInfo, $type, $param, $paramName);
     }
 
     /**
