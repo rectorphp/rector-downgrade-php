@@ -19,6 +19,7 @@ use PHPStan\Type\StaticType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
+use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\Reflection\ReflectionResolver;
 use Rector\Core\Util\Reflection\PrivatesAccessor;
@@ -42,7 +43,8 @@ final class DowngradeCovariantReturnTypeRector extends AbstractRector
         private readonly ReturnTagRemover $returnTagRemover,
         private readonly ReflectionResolver $reflectionResolver,
         private readonly PrivatesAccessor $privatesAccessor,
-        private readonly UnionTypeAnalyzer $unionTypeAnalyzer
+        private readonly UnionTypeAnalyzer $unionTypeAnalyzer,
+        private readonly DocBlockUpdater $docBlockUpdater,
     ) {
     }
 
@@ -187,6 +189,8 @@ CODE_SAMPLE
 
         $this->phpDocTypeChanger->changeReturnType($classMethod, $phpDocInfo, $type);
         $this->returnTagRemover->removeReturnTagIfUseless($phpDocInfo, $classMethod);
+
+        $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($classMethod);
     }
 
     /**
