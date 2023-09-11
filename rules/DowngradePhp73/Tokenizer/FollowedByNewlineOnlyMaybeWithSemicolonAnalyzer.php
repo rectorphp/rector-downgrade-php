@@ -21,6 +21,6 @@ final class FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer
 
         return ! isset($oldTokens[$nextTokenPosition]) ||
             isset($oldTokens[$nextTokenPosition][1]) &&
-            \str_starts_with((string) $oldTokens[$nextTokenPosition][1], "\n");
+            \str_starts_with($oldTokens[$nextTokenPosition][1], "\n");
     }
 }
