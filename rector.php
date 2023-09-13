@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\String_\UseClassKeywordForClassNameResolutionRector;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
@@ -10,6 +11,7 @@ use Rector\Set\ValueObject\SetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
+    $rectorConfig->removeUnusedImports();
 
     $rectorConfig->sets([
         LevelSetList::UP_TO_PHP_81,
@@ -30,12 +32,14 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/tests',
         __DIR__ . '/rules-tests',
         __DIR__ . '/config',
+        __DIR__ . '/rector.php',
+        __DIR__ . '/ecs.php',
     ]);
 
     $rectorConfig->skip([
         StringClassNameToClassConstantRector::class,
 
-        \Rector\CodingStyle\Rector\String_\UseClassKeywordForClassNameResolutionRector::class => [
+        UseClassKeywordForClassNameResolutionRector::class => [
             // not useful short class cases, possibly skip in the rule
             __DIR__ . '/rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionClassGetConstantsFilterRector.php',
             __DIR__ . '/rules/DowngradePhp81/Rector/FuncCall/DowngradeFirstClassCallableSyntaxRector.php',
