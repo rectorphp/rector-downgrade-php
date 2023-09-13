@@ -18,6 +18,7 @@ return static function (ECSConfig $ecsConfig): void {
         __DIR__ . '/tests',
         __DIR__ . '/rules-tests',
         __DIR__ . '/ecs.php',
+        __DIR__ . '/rector.php',
     ]);
 
     $ecsConfig->ruleWithConfiguration(NoSuperfluousPhpdocTagsFixer::class, [
