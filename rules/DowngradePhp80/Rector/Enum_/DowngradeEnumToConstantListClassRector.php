@@ -19,6 +19,7 @@ use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp80\NodeAnalyzer\EnumAnalyzer;
@@ -36,6 +37,7 @@ final class DowngradeEnumToConstantListClassRector extends AbstractRector
         private readonly ReflectionProvider $reflectionProvider,
         private readonly EnumAnalyzer $enumAnalyzer,
         private readonly DocBlockUpdater $docBlockUpdater,
+        private readonly PhpDocInfoFactory $phpDocInfoFactory,
     ) {
     }
 

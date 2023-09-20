@@ -16,6 +16,7 @@ use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\PropertyProperty;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Core\PhpParser\Printer\BetterStandardPrinter;
 use Rector\Core\Rector\AbstractRector;
@@ -34,6 +35,7 @@ final class DowngradePropertyPromotionRector extends AbstractRector
     public function __construct(
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
         private readonly BetterStandardPrinter $betterStandardPrinter,
+        private readonly PhpDocInfoFactory $phpDocInfoFactory,
     ) {
     }
 

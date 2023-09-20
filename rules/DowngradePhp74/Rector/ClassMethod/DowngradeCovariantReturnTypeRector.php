@@ -18,6 +18,7 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\StaticType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Core\Rector\AbstractRector;
@@ -45,6 +46,7 @@ final class DowngradeCovariantReturnTypeRector extends AbstractRector
         private readonly PrivatesAccessor $privatesAccessor,
         private readonly UnionTypeAnalyzer $unionTypeAnalyzer,
         private readonly DocBlockUpdater $docBlockUpdater,
+        private readonly PhpDocInfoFactory $phpDocInfoFactory,
     ) {
     }
 

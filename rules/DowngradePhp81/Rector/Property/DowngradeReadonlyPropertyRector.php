@@ -9,6 +9,7 @@ use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\Property;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Privatization\NodeManipulator\VisibilityManipulator;
@@ -30,6 +31,7 @@ final class DowngradeReadonlyPropertyRector extends AbstractRector
     public function __construct(
         private readonly VisibilityManipulator $visibilityManipulator,
         private readonly DocBlockUpdater $docBlockUpdater,
+        protected PhpDocInfoFactory $phpDocInfoFactory,
     ) {
     }
 
