@@ -192,8 +192,8 @@ CODE_SAMPLE
      */
     private function refactorReturn(Return_ $return): ?array
     {
-        $node = $this->betterNodeFinder->findFirstInstanceOf($return, Throw_::class);
-        if (! $node instanceof Throw_) {
+        $throw = $this->betterNodeFinder->findFirstInstanceOf($return, Throw_::class);
+        if (! $throw instanceof Throw_) {
             return null;
         }
 
