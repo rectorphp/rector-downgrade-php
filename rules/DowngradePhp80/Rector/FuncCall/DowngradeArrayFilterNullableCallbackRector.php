@@ -27,6 +27,7 @@ use PHPStan\Type\ClosureType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\StringType;
 use Rector\Core\NodeAnalyzer\ArgsAnalyzer;
+use Rector\Core\PhpParser\Node\Value\ValueResolver;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -40,7 +41,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeArrayFilterNullableCallbackRector extends AbstractRector
 {
     public function __construct(
-        private readonly ArgsAnalyzer $argsAnalyzer
+        private readonly ArgsAnalyzer $argsAnalyzer,
+        private readonly ValueResolver $valueResolver
     ) {
     }
 

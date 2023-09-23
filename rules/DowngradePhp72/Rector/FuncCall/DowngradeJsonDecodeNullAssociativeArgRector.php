@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Ternary;
 use PHPStan\Type\BooleanType;
 use Rector\Core\NodeAnalyzer\ArgsAnalyzer;
+use Rector\Core\PhpParser\Node\Value\ValueResolver;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -25,6 +26,7 @@ final class DowngradeJsonDecodeNullAssociativeArgRector extends AbstractRector
 {
     public function __construct(
         private readonly ArgsAnalyzer $argsAnalyzer,
+        private readonly ValueResolver $valueResolver,
     ) {
     }
 

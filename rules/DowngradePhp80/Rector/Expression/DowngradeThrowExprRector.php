@@ -24,6 +24,7 @@ use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
 use Rector\Core\NodeManipulator\BinaryOpManipulator;
+use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Rector\AbstractRector;
 use Rector\NodeAnalyzer\CoalesceAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -39,6 +40,7 @@ final class DowngradeThrowExprRector extends AbstractRector
     public function __construct(
         private readonly CoalesceAnalyzer $coalesceAnalyzer,
         private readonly BinaryOpManipulator $binaryOpManipulator,
+        private readonly BetterNodeFinder $betterNodeFinder,
     ) {
     }
 
@@ -190,8 +192,8 @@ CODE_SAMPLE
      */
     private function refactorReturn(Return_ $return): ?array
     {
-        $throwExpr = $this->betterNodeFinder->findFirstInstanceOf($return, Throw_::class);
-        if (! $throwExpr instanceof Throw_) {
+        $throw = $this->betterNodeFinder->findFirstInstanceOf($return, Throw_::class);
+        if (! $throw instanceof Throw_) {
             return null;
         }
 
