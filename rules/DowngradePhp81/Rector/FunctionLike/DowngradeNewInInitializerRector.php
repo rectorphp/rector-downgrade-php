@@ -28,6 +28,7 @@ use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\UnionType;
 use Rector\Core\Exception\ShouldNotHappenException;
+use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\ValueObject\MethodName;
 use Rector\Php72\NodeFactory\AnonymousFunctionFactory;
@@ -42,7 +43,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeNewInInitializerRector extends AbstractRector
 {
     public function __construct(
-        private readonly AnonymousFunctionFactory $anonymousFunctionFactory
+        private readonly AnonymousFunctionFactory $anonymousFunctionFactory,
+        private readonly BetterNodeFinder $betterNodeFinder
     ) {
     }
 

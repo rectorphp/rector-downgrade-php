@@ -16,6 +16,7 @@ use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 use Rector\Core\PhpParser\AstResolver;
+use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Rector\AbstractScopeAwareRector;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
@@ -33,7 +34,8 @@ final class DowngradeArraySpreadRector extends AbstractScopeAwareRector
     public function __construct(
         private readonly ArrayMergeFromArraySpreadFactory $arrayMergeFromArraySpreadFactory,
         private readonly ArraySpreadAnalyzer $arraySpreadAnalyzer,
-        private readonly AstResolver $astResolver
+        private readonly AstResolver $astResolver,
+        private readonly BetterNodeFinder $betterNodeFinder
     ) {
     }
 

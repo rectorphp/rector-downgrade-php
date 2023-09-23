@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\ClosureUse;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Throw_;
+use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Php72\NodeFactory\AnonymousFunctionFactory;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -25,7 +26,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class ArrowFunctionToAnonymousFunctionRector extends AbstractRector
 {
     public function __construct(
-        private readonly AnonymousFunctionFactory $anonymousFunctionFactory
+        private readonly AnonymousFunctionFactory $anonymousFunctionFactory,
+        private readonly BetterNodeFinder $betterNodeFinder
     ) {
     }
 

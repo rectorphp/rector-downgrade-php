@@ -16,6 +16,7 @@ use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\StaticPropertyFetch;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Expression;
+use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Rector\AbstractRector;
 use Rector\NodeFactory\NamedVariableFactory;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -31,6 +32,7 @@ final class DowngradeArbitraryExpressionsSupportRector extends AbstractRector
 {
     public function __construct(
         private readonly NamedVariableFactory $namedVariableFactory,
+        private readonly BetterNodeFinder $betterNodeFinder,
     ) {
     }
 

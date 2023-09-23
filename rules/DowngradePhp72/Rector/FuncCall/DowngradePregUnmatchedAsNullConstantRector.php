@@ -20,6 +20,7 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
+use Rector\Core\PhpParser\Node\BetterNodeFinder;
 use Rector\Core\Rector\AbstractRector;
 use Rector\DowngradePhp72\NodeAnalyzer\RegexFuncAnalyzer;
 use Rector\DowngradePhp72\NodeManipulator\BitwiseFlagCleaner;
@@ -40,6 +41,7 @@ final class DowngradePregUnmatchedAsNullConstantRector extends AbstractRector
     public function __construct(
         private readonly BitwiseFlagCleaner $bitwiseFlagCleaner,
         private readonly RegexFuncAnalyzer $regexFuncAnalyzer,
+        private readonly BetterNodeFinder $betterNodeFinder,
     ) {
     }
 
