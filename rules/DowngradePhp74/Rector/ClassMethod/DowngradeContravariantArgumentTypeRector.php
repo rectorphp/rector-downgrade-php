@@ -17,6 +17,7 @@ use Rector\Core\NodeAnalyzer\ParamAnalyzer;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\Reflection\ReflectionResolver;
 use Rector\Core\ValueObject\MethodName;
+use Rector\StaticTypeMapper\StaticTypeMapper;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
@@ -36,7 +37,8 @@ final class DowngradeContravariantArgumentTypeRector extends AbstractRector
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
         private readonly ParamAnalyzer $paramAnalyzer,
         private readonly ReflectionResolver $reflectionResolver,
-        private readonly PhpDocInfoFactory $phpDocInfoFactory
+        private readonly PhpDocInfoFactory $phpDocInfoFactory,
+        private readonly StaticTypeMapper $staticTypeMapper
     ) {
     }
 
