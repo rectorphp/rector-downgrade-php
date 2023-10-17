@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+use Rector\Config\RectorConfig;
+use Rector\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHashRector;
+
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->ruleWithConfiguration(DowngradeHashAlgorithmXxHashRector::class, [
+        'xxh3' => 'sha1',
+    ]);
+};

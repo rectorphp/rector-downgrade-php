@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHashRector;
 use Rector\DowngradePhp81\Rector\LNumber\DowngradeOctalNumberRector;
 use Rector\DowngradePhp81\Rector\MethodCall\DowngradeIsEnumRector;
 use Rector\Config\RectorConfig;
@@ -35,7 +36,8 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeArrayIsListRector::class,
         DowngradeSetAccessibleReflectionPropertyRector::class,
         DowngradeIsEnumRector::class,
-        DowngradeOctalNumberRector::class
+        DowngradeOctalNumberRector::class,
+        DowngradeHashAlgorithmXxHashRector::class,
     ]);
 
     // @see https://php.watch/versions/8.1/internal-method-return-types#reflection
