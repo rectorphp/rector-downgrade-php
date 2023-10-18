@@ -6,7 +6,7 @@ class NonVariable
 {
     function run()
     {
-        $process = proc_open(['ls', '-l'], $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
+        $process = proc_open(['rm', '-r', 'my dir'], $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
     }
 }
 
@@ -20,7 +20,7 @@ class NonVariable
 {
     function run()
     {
-        $process = proc_open(is_array(['ls', '-l']) ? implode(' ', ['ls', '-l']) : ['ls', '-l'], $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
+        $process = proc_open(is_array(['rm', '-r', 'my dir']) ? implode(' ', array_map('escapeshellarg', ['rm', '-r', 'my dir'])) : ['rm', '-r', 'my dir'], $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
     }
 }
 

@@ -20,7 +20,7 @@ class Fixture
 {
     function run(array|string $command)
     {
-        $process = proc_open(is_array($command) ? implode(' ', $command) : $command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
+        $process = proc_open(is_array($command) ? implode(' ', array_map('escapeshellarg', $command)) : $command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
     }
 }
 
