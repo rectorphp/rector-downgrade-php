@@ -25,11 +25,11 @@ final class DowngradeProcOpenArrayCommandArgRector extends AbstractRector
             [
                 new CodeSample(
                     <<<'CODE_SAMPLE'
-return proc_open($command, $descriptorspec, $pipes);
+return proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
 CODE_SAMPLE
                     ,
                     <<<'CODE_SAMPLE'
-return proc_open(is_array($command) ? implode(' ', $command) : $command, $descriptorspec, $pipes);
+return proc_open(is_array($command) ? implode(' ', array_map('escapeshellarg', $command)) : $command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
 CODE_SAMPLE
                 ),
             ]
@@ -65,7 +65,11 @@ CODE_SAMPLE
         }
 
         $isArrayFuncCall = $this->nodeFactory->createFuncCall('is_array', [new Arg($firstArg->value)]);
-        $implodeFuncCall = $this->nodeFactory->createFuncCall('implode', [new String_(' '), $firstArg->value]);
+        $value = $this->nodeFactory->createFuncCall(
+            'array_map',
+            [new Arg(new String_('escapeshellarg')), new Arg($firstArg->value)]
+        );
+        $implodeFuncCall = $this->nodeFactory->createFuncCall('implode', [new String_(' '), $value]);
 
         $firstArg->value = new Ternary($isArrayFuncCall, $implodeFuncCall, $firstArg->value);
 
