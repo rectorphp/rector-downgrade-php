@@ -6,7 +6,5 @@ use Rector\Config\RectorConfig;
 use Rector\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHashRector;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->ruleWithConfiguration(DowngradeHashAlgorithmXxHashRector::class, [
-        'xxh3' => 'sha1',
-    ]);
+    $rectorConfig->rule(DowngradeHashAlgorithmXxHashRector::class);
 };

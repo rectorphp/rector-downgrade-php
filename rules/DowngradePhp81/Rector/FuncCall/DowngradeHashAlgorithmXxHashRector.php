@@ -9,20 +9,17 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;
-use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\NodeAnalyzer\ArgsAnalyzer;
 use Rector\Core\PhpParser\Node\Value\ValueResolver;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
-use Webmozart\Assert\Assert;
 
 /**
  * @see \Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHash\DowngradeHashAlgorithmXxHashRectorTest
  */
-final class DowngradeHashAlgorithmXxHashRector extends AbstractRector implements ConfigurableRectorInterface
+final class DowngradeHashAlgorithmXxHashRector extends AbstractRector
 {
     private const HASH_ALGORITHMS_TO_DOWNGRADE = [
         'xxh32' => MHASH_XXH32,
@@ -31,10 +28,7 @@ final class DowngradeHashAlgorithmXxHashRector extends AbstractRector implements
         'xxh128' => MHASH_XXH128,
     ];
 
-    /**
-     * @var array<string, string>
-     */
-    private array $hashAlgorithmsToDowngradeMapping = [];
+    private const REPLACEMENT_ALGORITHM = 'md5';
 
     private int $argNamedKey;
 
@@ -70,31 +64,6 @@ class SomeClass
 }
 CODE_SAMPLE
                 ),
-                new ConfiguredCodeSample(
-                    <<<'CODE_SAMPLE'
-class SomeClass
-{
-    public function run()
-    {
-        return hash('xxh3', 'some-data-to-hash');
-    }
-}
-CODE_SAMPLE
-                    ,
-                    <<<'CODE_SAMPLE'
-class SomeClass
-{
-    public function run()
-    {
-        return hash('sha1', 'some-data-to-hash');
-    }
-}
-CODE_SAMPLE
-                    ,
-                    [
-                        'xxh3' => 'sha1',
-                    ]
-                ),
             ]
         );
     }
@@ -124,28 +93,15 @@ CODE_SAMPLE
             return null;
         }
 
-        $newAlgorithm = $this->hashAlgorithmsToDowngradeMapping[$algorithm] ?? 'md5';
-
         $arg = $node->args[$this->argNamedKey];
 
         if (! $arg instanceof Arg) {
             throw new ShouldNotHappenException();
         }
 
-        $arg->value = new String_($newAlgorithm);
+        $arg->value = new String_(self::REPLACEMENT_ALGORITHM);
 
         return $node;
-    }
-
-    /**
-     * @param mixed[] $configuration
-     */
-    public function configure(array $configuration): void
-    {
-        Assert::allString($configuration);
-        Assert::allString(array_keys($configuration));
-
-        $this->hashAlgorithmsToDowngradeMapping = $configuration;
     }
 
     private function shouldSkip(FuncCall $funcCall): bool
