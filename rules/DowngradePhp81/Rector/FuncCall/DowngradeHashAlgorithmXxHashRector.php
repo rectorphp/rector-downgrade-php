@@ -112,7 +112,7 @@ CODE_SAMPLE
     /**
      * @param Arg[] $args
      */
-    private function getHashAlgorithm(array $args): string
+    private function getHashAlgorithm(array $args): ?string
     {
         $arg = null;
 
@@ -137,7 +137,7 @@ CODE_SAMPLE
             $algorithmNode instanceof ConstFetch => $this->mapConstantToString(
                 $this->valueResolver->getValue($algorithmNode)
             ),
-            default => throw new ShouldNotHappenException(),
+            default => null,
         };
     }
 
