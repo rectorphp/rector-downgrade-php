@@ -9,7 +9,6 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;
-use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\NodeAnalyzer\ArgsAnalyzer;
 use Rector\Core\PhpParser\Node\Value\ValueResolver;
 use Rector\Core\Rector\AbstractRector;
@@ -88,17 +87,16 @@ CODE_SAMPLE
         $this->argNamedKey = 0;
 
         $algorithm = $this->getHashAlgorithm($node->getArgs());
-
-        if (! array_key_exists($algorithm, self::HASH_ALGORITHMS_TO_DOWNGRADE)) {
+        if ($algorithm === null || ! array_key_exists($algorithm, self::HASH_ALGORITHMS_TO_DOWNGRADE)) {
             return null;
         }
 
-        $arg = $node->args[$this->argNamedKey];
-
-        if (! $arg instanceof Arg) {
-            throw new ShouldNotHappenException();
+        $args = $node->getArgs();
+        if (! isset($args[$this->argNamedKey])) {
+            return null;
         }
 
+        $arg = $args[$this->argNamedKey];
         $arg->value = new String_(self::REPLACEMENT_ALGORITHM);
 
         return $node;
@@ -106,13 +104,17 @@ CODE_SAMPLE
 
     private function shouldSkip(FuncCall $funcCall): bool
     {
+        if ($funcCall->isFirstClassCallable()) {
+            return true;
+        }
+
         return ! $this->nodeNameResolver->isName($funcCall, 'hash');
     }
 
     /**
      * @param Arg[] $args
      */
-    private function getHashAlgorithm(array $args): string
+    private function getHashAlgorithm(array $args): ?string
     {
         $arg = null;
 
@@ -137,7 +139,7 @@ CODE_SAMPLE
             $algorithmNode instanceof ConstFetch => $this->mapConstantToString(
                 $this->valueResolver->getValue($algorithmNode)
             ),
-            default => throw new ShouldNotHappenException(),
+            default => null,
         };
     }
 
