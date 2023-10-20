@@ -87,8 +87,7 @@ CODE_SAMPLE
         $this->argNamedKey = 0;
 
         $algorithm = $this->getHashAlgorithm($node->getArgs());
-
-        if (! array_key_exists($algorithm, self::HASH_ALGORITHMS_TO_DOWNGRADE)) {
+        if ($algorithm === null || ! array_key_exists($algorithm, self::HASH_ALGORITHMS_TO_DOWNGRADE)) {
             return null;
         }
 
