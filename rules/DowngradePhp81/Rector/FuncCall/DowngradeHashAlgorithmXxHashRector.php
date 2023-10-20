@@ -106,6 +106,10 @@ CODE_SAMPLE
 
     private function shouldSkip(FuncCall $funcCall): bool
     {
+        if ($funcCall->isFirstClassCallable()) {
+            return true;
+        }
+
         return ! $this->nodeNameResolver->isName($funcCall, 'hash');
     }
 
