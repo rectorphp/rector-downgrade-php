@@ -93,12 +93,12 @@ CODE_SAMPLE
             return null;
         }
 
-        $arg = $node->args[$this->argNamedKey];
-
-        if (! $arg instanceof Arg) {
-            throw new ShouldNotHappenException();
+        $args = $node->getArgs();
+        if (! isset($args[$this->argNamedKey])) {
+            return null;
         }
 
+        $arg = $args[$this->argNamedKey];
         $arg->value = new String_(self::REPLACEMENT_ALGORITHM);
 
         return $node;
