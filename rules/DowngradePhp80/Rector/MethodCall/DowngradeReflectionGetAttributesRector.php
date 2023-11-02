@@ -80,7 +80,10 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! $this->isObjectType($node->var, new ObjectType('Reflector'))) {
+        if (
+            ! $this->isObjectType($node->var, new ObjectType('Reflector'))
+            && ! $this->isObjectType($node->var, new ObjectType('ReflectionClass'))
+        ) {
             return null;
         }
 
