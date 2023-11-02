@@ -89,10 +89,7 @@ CODE_SAMPLE
                 continue;
             }
 
-            $collectInterfaces = array_merge(
-                $collectInterfaces,
-                $this->familyRelationsAnalyzer->getClassLikeAncestorNames($extend)
-            );
+            $collectInterfaces = [...$collectInterfaces, ...$this->familyRelationsAnalyzer->getClassLikeAncestorNames($extend)];
         }
 
         if (! $isCleaned) {
