@@ -173,7 +173,7 @@ CODE_SAMPLE
         $methodName = $this->getName($classMethod);
 
         /** @var ClassReflection[] $parentClassesAndInterfaces */
-        $parentClassesAndInterfaces = array_merge($classReflection->getParents(), $classReflection->getInterfaces());
+        $parentClassesAndInterfaces = [...$classReflection->getParents(), ...$classReflection->getInterfaces()];
 
         return $this->resolveMatchingReturnType($parentClassesAndInterfaces, $methodName, $classMethod, $returnType);
     }

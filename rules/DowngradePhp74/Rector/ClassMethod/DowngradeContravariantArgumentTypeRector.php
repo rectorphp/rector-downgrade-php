@@ -173,7 +173,7 @@ CODE_SAMPLE
 
         // parent classes or implemented interfaces
         /** @var ClassReflection[] $parentClassReflections */
-        $parentClassReflections = array_merge($classReflection->getParents(), $classReflection->getInterfaces());
+        $parentClassReflections = [...$classReflection->getParents(), ...$classReflection->getInterfaces()];
 
         foreach ($parentClassReflections as $parentClassReflection) {
             $parentReflectionMethod = $this->resolveParentReflectionMethod($parentClassReflection, $methodName);
