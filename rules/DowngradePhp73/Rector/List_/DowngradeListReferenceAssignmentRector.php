@@ -234,15 +234,12 @@ CODE_SAMPLE
             // Nested list. Combine with the nodes from the recursive call
             /** @var List_ $nestedList */
             $nestedList = $listItem->value;
-            $listNestedArrayIndexes = array_merge($nestedArrayIndexes, [$key]);
-            $newNodes = array_merge(
-                $newNodes,
-                $this->createAssignRefArrayFromListReferences(
-                    $nestedList->items,
-                    $exprVariable,
-                    $listNestedArrayIndexes
-                )
-            );
+            $listNestedArrayIndexes = [...$nestedArrayIndexes, $key];
+            $newNodes = [...$newNodes, ...$this->createAssignRefArrayFromListReferences(
+                $nestedList->items,
+                $exprVariable,
+                $listNestedArrayIndexes
+            )];
         }
 
         return $newNodes;
