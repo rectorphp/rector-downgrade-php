@@ -85,7 +85,7 @@ CODE_SAMPLE
             $node->returnType = new Identifier('mixed');
 
             $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
-            $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, new \PHPStan\Type\NullType());
+            $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, new NullType());
 
             return $node;
         }
