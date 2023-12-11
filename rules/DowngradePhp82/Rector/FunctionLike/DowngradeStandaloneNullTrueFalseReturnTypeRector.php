@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp82\Rector\FunctionLike;
 
 use PhpParser\Node;
+use PhpParser\Node\ComplexType;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\FunctionLike;
@@ -81,8 +82,8 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        $returnType = $node->getReturnType();
-        if (! $returnType instanceof Node) {
+        $returnType = $node->returnType;
+        if (! $returnType instanceof Identifier) {
             return null;
         }
 
@@ -94,16 +95,16 @@ CODE_SAMPLE
         // in closure and arrow function can't add `@return null` docblock as they are Expr
         // that rely on Stmt
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
-        $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $this->resolveType($node->returnType));
+        $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $this->resolveType($returnType));
 
-        $node->returnType = $this->resolveNativeType($node, $node->returnType);
+        $node->returnType = $this->resolveNativeType($node, $returnType);
 
         return $node;
     }
 
-    private function resolveType(Node $node): Type
+    private function resolveType(Identifier $identifier): Type
     {
-        $nodeName = $this->getName($node);
+        $nodeName = $this->getName($identifier);
 
         if ($nodeName === 'null') {
             return new NullType();
@@ -116,20 +117,21 @@ CODE_SAMPLE
         return new ConstantBooleanType(true);
     }
 
-    private function resolveNativeType(Node $node, Node $returnType): Node
+    private function resolveNativeType(Node $node, Identifier $identifier): ComplexType|Identifier
     {
         if ($node instanceof ClassMethod) {
             $returnTypeFromParent = $this->resolveParentNativeReturnType($node);
             if ($returnTypeFromParent instanceof UnionType || $returnTypeFromParent instanceof NullableType) {
-                $this->traverseNodesWithCallable($returnTypeFromParent, static function (Node $subNode): void {
+                $this->traverseNodesWithCallable($returnTypeFromParent, static function (Node $subNode): Node {
                     $subNode->setAttribute(AttributeKey::ORIGINAL_NODE, null);
+                    return $subNode;
                 });
 
                 return $returnTypeFromParent;
             }
         }
 
-        $nodeName = $this->getName($returnType);
+        $nodeName = $this->getName($identifier);
 
         if ($nodeName === 'null') {
             return new Identifier('mixed');
