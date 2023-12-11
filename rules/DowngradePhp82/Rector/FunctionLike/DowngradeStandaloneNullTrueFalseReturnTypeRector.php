@@ -9,8 +9,10 @@ use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\NullableType;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\UnionType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\Type;
@@ -118,7 +120,7 @@ CODE_SAMPLE
     {
         if ($node instanceof ClassMethod) {
             $returnTypeFromParent = $this->resolveParentNativeReturnType($node);
-            if ($returnTypeFromParent instanceof Node) {
+            if ($returnTypeFromParent instanceof UnionType || $returnTypeFromParent instanceof NullableType) {
                 $this->traverseNodesWithCallable($returnTypeFromParent, static function (Node $subNode): void {
                     $subNode->setAttribute(AttributeKey::ORIGINAL_NODE, null);
                 });
