@@ -2,11 +2,11 @@
 
 namespace Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeStandaloneNullTrueFalseReturnTypeRector\Fixture;
 
-use Rector\Tests\DowngradePhp82\Rector\FunctionLike\DowngradeStandaloneNullTrueFalseReturnTypeRector\ParentClass;
+use Rector\Tests\DowngradePhp82\Rector\FunctionLike\DowngradeStandaloneNullTrueFalseReturnTypeRector\Source\ParentClass;
 
 final class OverrideParentMethod extends ParentClass
 {
-    public function run(): null
+    public function getSomeString(): null
     {
         return null;
     }
@@ -18,14 +18,14 @@ final class OverrideParentMethod extends ParentClass
 
 namespace Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeStandaloneNullTrueFalseReturnTypeRector\Fixture;
 
-use Rector\Tests\DowngradePhp82\Rector\FunctionLike\DowngradeStandaloneNullTrueFalseReturnTypeRector\ParentClass;
+use Rector\Tests\DowngradePhp82\Rector\FunctionLike\DowngradeStandaloneNullTrueFalseReturnTypeRector\Source\ParentClass;
 
 final class OverrideParentMethod extends ParentClass
 {
     /**
      * @return null
      */
-    public function run(): ?string
+    public function getSomeString(): ?string
     {
         return null;
     }
