@@ -18,6 +18,9 @@ namespace Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeStandaloneNullTrueF
 
 final class ReturnNull
 {
+    /**
+     * @return null
+     */
     public function run(): mixed
     {
         return null;

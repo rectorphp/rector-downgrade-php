@@ -8,6 +8,9 @@ use PhpParser\Node;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\ClassMethod;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
+use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
+use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -19,6 +22,14 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeStandaloneNullTrueFalseReturnTypeRector extends AbstractRector
 {
+    public function __construct(
+        private readonly PhpDocInfoFactory $phpDocInfoFactory,
+        private readonly PhpDocTypeChanger $phpDocTypeChanger,
+        private readonly DocBlockUpdater $docBlockUpdater
+    )
+    {
+    }
+
     /**
      * @return array<class-string<Node>>
      */
@@ -79,6 +90,10 @@ CODE_SAMPLE
 
         // todo: verify parent
         $node->returnType = new Identifier('mixed');
-        return null;
+
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
+        $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, new \PHPStan\Type\NullType());
+
+        return $node;
     }
 }
