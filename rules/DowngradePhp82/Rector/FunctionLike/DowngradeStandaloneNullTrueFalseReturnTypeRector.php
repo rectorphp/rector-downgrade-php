@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp82\Rector\FunctionLike;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr\ArrowFunction;
+use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
 use PHPStan\Type\NullType;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
@@ -67,7 +70,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param FunctionLike $node
+     * @param ClassMethod|Function_|Closure|ArrowFunction $node
      */
     public function refactor(Node $node): ?Node
     {
