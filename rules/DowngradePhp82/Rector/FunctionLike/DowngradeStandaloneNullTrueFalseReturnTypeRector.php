@@ -92,7 +92,7 @@ CODE_SAMPLE
             $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
             $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $this->resolveType($node->returnType));
 
-            $node->returnType = new Identifier('mixed');
+            $node->returnType = $this->resolveNativeType($node->returnType);
             return $node;
         }
 
@@ -100,7 +100,7 @@ CODE_SAMPLE
         $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $this->resolveType($node->returnType));
 
         // todo: verify parent
-        $node->returnType = new Identifier('mixed');
+        $node->returnType = $this->resolveNativeType($node->returnType);
 
         return $node;
     }
@@ -118,5 +118,16 @@ CODE_SAMPLE
         }
 
         return new ConstantBooleanType(true);
+    }
+
+    private function resolveNativeType($node): Identifier
+    {
+        $nodeName = $this->getName($node);
+
+        if ($nodeName === 'null') {
+            return new Identifier('mixed');
+        }
+
+        return new Identifier('bool');
     }
 }
