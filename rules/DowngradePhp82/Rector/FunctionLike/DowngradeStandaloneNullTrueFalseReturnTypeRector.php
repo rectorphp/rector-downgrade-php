@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp82\Rector\FunctionLike;
 
 use PhpParser\Node;
-use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Identifier;
-use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\Node\Stmt\Function_;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\ValueObject\MethodName;
-use Rector\Privatization\NodeManipulator\VisibilityManipulator;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -73,10 +68,9 @@ CODE_SAMPLE
         }
 
         $returnTypeName = $this->getName($returnType);
-        if (! in_array($returnTypeName, ['null', 'false', 'true'])) {
+        if (! in_array($returnTypeName, ['null', 'false', 'true'], true)) {
             return null;
         }
-
 
         if (! $node instanceof ClassMethod) {
             $node->returnType = new Identifier('mixed');
