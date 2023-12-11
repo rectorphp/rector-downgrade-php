@@ -84,6 +84,8 @@ CODE_SAMPLE
         if (! $node instanceof ClassMethod) {
             $node->returnType = new Identifier('mixed');
 
+            // in closure and arrow function can't add `@return null` docblock as they are Expr
+            // that rely on Stmt
             $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
             $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, new NullType());
 
