@@ -89,16 +89,8 @@ CODE_SAMPLE
             return null;
         }
 
-        if (! $node instanceof ClassMethod) {
-            // in closure and arrow function can't add `@return null` docblock as they are Expr
-            // that rely on Stmt
-            $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
-            $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $this->resolveType($node->returnType));
-
-            $node->returnType = $this->resolveNativeType($node, $node->returnType);
-            return $node;
-        }
-
+        // in closure and arrow function can't add `@return null` docblock as they are Expr
+        // that rely on Stmt
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
         $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $this->resolveType($node->returnType));
 
