@@ -120,7 +120,7 @@ CODE_SAMPLE
         return new ConstantBooleanType(true);
     }
 
-    private function resolveNativeType($node): Identifier
+    private function resolveNativeType(Node $node): Identifier
     {
         $nodeName = $this->getName($node);
 
