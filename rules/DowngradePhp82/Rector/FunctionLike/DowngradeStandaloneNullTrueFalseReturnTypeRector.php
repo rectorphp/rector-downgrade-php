@@ -83,6 +83,10 @@ CODE_SAMPLE
 
         if (! $node instanceof ClassMethod) {
             $node->returnType = new Identifier('mixed');
+
+            $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
+            $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, new \PHPStan\Type\NullType());
+
             return $node;
         }
 
