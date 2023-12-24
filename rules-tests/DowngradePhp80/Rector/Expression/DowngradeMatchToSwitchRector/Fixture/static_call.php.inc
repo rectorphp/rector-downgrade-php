@@ -34,18 +34,17 @@ class SomeStaticCall
 
     public function run($statusCode)
     {
-        switch ($statusCode) {
-            case 200:
-            case 300:
-                self::output(null);
-                break;
-            case 400:
-                self::output('not found');
-                break;
-            default:
-                self::output('unknown status code');
-                break;
-        }
+        self::output((function () use ($statusCode) {
+            switch ($statusCode) {
+                case 200:
+                case 300:
+                    return null;
+                case 400:
+                    return 'not found';
+                default:
+                    return 'unknown status code';
+            }
+        })());
     }
 }
 

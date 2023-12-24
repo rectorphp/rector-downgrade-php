@@ -34,18 +34,17 @@ class FunctionCall
 {
     public function run($statusCode)
     {
-        switch ($statusCode) {
-            case 200:
-            case 300:
-                output(null);
-                break;
-            case 400:
-                output('not found');
-                break;
-            default:
-                output('unknown status code');
-                break;
-        }
+        output((function () use ($statusCode) {
+            switch ($statusCode) {
+                case 200:
+                case 300:
+                    return null;
+                case 400:
+                    return 'not found';
+                default:
+                    return 'unknown status code';
+            }
+        })());
     }
 }
 

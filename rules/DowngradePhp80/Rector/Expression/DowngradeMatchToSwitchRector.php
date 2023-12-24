@@ -108,7 +108,7 @@ CODE_SAMPLE
         $this->traverseNodesWithCallable(
             $node,
             function (Node $subNode) use ($node, &$match, &$hasChanged, $scope) {
-                if ($subNode instanceof ArrayItem && $subNode->value instanceof Match_ && $this->isEqualScope(
+                if (($subNode instanceof ArrayItem || $subNode instanceof Arg) && $subNode->value instanceof Match_ && $this->isEqualScope(
                     $subNode->value,
                     $scope
                 )) {
