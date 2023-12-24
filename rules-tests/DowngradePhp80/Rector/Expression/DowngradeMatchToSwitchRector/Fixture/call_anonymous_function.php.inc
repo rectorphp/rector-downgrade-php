@@ -22,17 +22,16 @@ $output = function($value) {
     echo $value;
 };
 
-switch ($statusCode) {
-    case 100:
-    case 200:
-        $output(null);
-        break;
-    case 300:
-        $output('not found');
-        break;
-    default:
-        $output('unknown status code');
-        break;
-}
+$output((function () use ($statusCode) {
+    switch ($statusCode) {
+        case 100:
+        case 200:
+            return null;
+        case 300:
+            return 'not found';
+        default:
+            return 'unknown status code';
+    }
+})());
 
 ?>

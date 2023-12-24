@@ -34,18 +34,17 @@ class ClassFunctionCall
 
     public function run($statusCode)
     {
-        switch ($statusCode) {
-            case 200:
-            case 300:
-                $this->output(null);
-                break;
-            case 400:
-                $this->output('not found');
-                break;
-            default:
-                $this->output('unknown status code');
-                break;
-        }
+        $this->output((function () use ($statusCode) {
+            switch ($statusCode) {
+                case 200:
+                case 300:
+                    return null;
+                case 400:
+                    return 'not found';
+                default:
+                    return 'unknown status code';
+            }
+        })());
     }
 }
 
