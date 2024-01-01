@@ -4,7 +4,7 @@ includes:
 parameters:
     level: 8
 
-    reportUnmatchedIgnoredErrors: false
+    # reportUnmatchedIgnoredErrors: false
 
     # requires exact closure types
     checkMissingCallableSignature: true
@@ -16,16 +16,11 @@ parameters:
         - tests
         - rules-tests
 
-
     excludePaths:
         # tests files
         - "*/Expected/*"
         - '*/Fixture/*'
         - '*/Source/*'
-
-    cognitive_complexity:
-        class: 30
-        function: 10
 
     ignoreErrors:
         # php enum value minus
