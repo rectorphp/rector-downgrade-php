@@ -8,9 +8,9 @@ use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Stmt\Property;
-use Rector\Core\PhpParser\Node\Value\ValueResolver;
-use Rector\Core\Rector\AbstractRector;
 use Rector\NodeManipulator\PropertyDecorator;
+use Rector\PhpParser\Node\Value\ValueResolver;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 

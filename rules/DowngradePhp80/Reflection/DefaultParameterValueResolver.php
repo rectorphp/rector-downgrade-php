@@ -14,7 +14,7 @@ use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\ConstantType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
-use Rector\Core\Exception\ShouldNotHappenException;
+use Rector\Exception\ShouldNotHappenException;
 
 final class DefaultParameterValueResolver
 {

@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp80\Rector\ClassConstFetch\DowngradeClassOnObjectToGetClassRector\Fixture;
 
-use Rector\Core\Contract\Rector\RectorInterface;
+use Rector\Contract\Rector\RectorInterface;
 final class SomePropertyFetch
 {
     public function __construct(
@@ -25,7 +25,7 @@ final class SomePropertyFetch
 
 namespace Rector\Tests\DowngradePhp80\Rector\ClassConstFetch\DowngradeClassOnObjectToGetClassRector\Fixture;
 
-use Rector\Core\Contract\Rector\RectorInterface;
+use Rector\Contract\Rector\RectorInterface;
 final class SomePropertyFetch
 {
     public function __construct(

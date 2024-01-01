@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp73\Tokenizer;
 
 use PhpParser\Node;
-use Rector\Core\Util\StringUtils;
-use Rector\Core\ValueObject\Application\File;
+use Rector\Util\StringUtils;
+use Rector\ValueObject\Application\File;
 
 final class FollowedByCommaAnalyzer
 {

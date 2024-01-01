@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\Core\ValueObject\PhpVersion;
+use Rector\ValueObject\PhpVersion;
 use Rector\DowngradePhp73\Rector\ConstFetch\DowngradePhp73JsonConstRector;
 use Rector\DowngradePhp73\Rector\FuncCall\DowngradeArrayKeyFirstLastRector;
 use Rector\DowngradePhp73\Rector\FuncCall\DowngradeIsCountableRector;
