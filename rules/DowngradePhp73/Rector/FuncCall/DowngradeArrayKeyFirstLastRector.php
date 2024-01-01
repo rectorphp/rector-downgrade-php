@@ -217,8 +217,11 @@ CODE_SAMPLE
         return $newStmts;
     }
 
-    private function resolvePrependNewStmt(Expr|Variable $array, FuncCall $funcCall, Stmt|StmtsAwareInterface $stmt): Expression|If_
-    {
+    private function resolvePrependNewStmt(
+        Expr|Variable $array,
+        FuncCall $funcCall,
+        Stmt|StmtsAwareInterface $stmt
+    ): Expression|If_ {
         if (! $stmt instanceof If_ || $stmt->cond instanceof FuncCall || ! $stmt->cond instanceof BooleanOr) {
             return new Expression($funcCall);
         }
