@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp73\Tokenizer;
 
 use PhpParser\Node;
-use Rector\Core\ValueObject\Application\File;
+use Rector\ValueObject\Application\File;
 
 final class FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer
 {

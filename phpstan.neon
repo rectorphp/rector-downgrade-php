@@ -16,16 +16,11 @@ parameters:
         - tests
         - rules-tests
 
-
     excludePaths:
         # tests files
         - "*/Expected/*"
         - '*/Fixture/*'
         - '*/Source/*'
-
-    cognitive_complexity:
-        class: 30
-        function: 10
 
     ignoreErrors:
         # php enum value minus
@@ -33,9 +28,6 @@ parameters:
 
         # part of implicit contract
         - '#Call to an undefined method PHPStan\\Type\\ConstantType\:\:getValue\(\)#'
-
-        # part of tests
-        - '#Class Rector\\Tests\\DowngradePhp72\\Rector\\ClassMethod\\DowngradeParameterTypeWideningRector\\Fixture\\SomeContainerInterface not found#'
 
         - '#Calling PHPStan\\Reflection\\Native\\NativeFunctionReflection\:\:getName\(\) is not covered by backward compatibility promise\. The method might change in a minor PHPStan version#'
 
@@ -60,10 +52,6 @@ parameters:
             message: '#New objects with "\$returnType" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
             path: src/PhpDocDecorator/PhpDocFromTypeDeclarationDecorator.php
 
-        -
-            message: '#Class cognitive complexity is 32, keep it under 30#'
-            path: rules/DowngradePhp73/Rector/List_/DowngradeListReferenceAssignmentRector.php
-
         - '#Parameter \#3 \$stmt of method Rector\\DowngradePhp72\\Rector\\FuncCall\\DowngradePregUnmatchedAsNullConstantRector\:\:processReplace\(\) expects PhpParser\\Node\\Stmt, PhpParser\\Node given#'
 
         - '#(.*?)\:\:refactor\(\) should return array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\\ClassConst\|null but returns array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\|null#'
@@ -72,22 +60,9 @@ parameters:
             message: '#Use value object over return of values#'
             path: rules/DowngradePhp80/Rector/Expression/DowngradeThrowExprRector.php
 
-        -
-            message: '#Class cognitive complexity is \d+, keep it under 30#'
-            path: rules/DowngradePhp80/Rector/Expression/DowngradeMatchToSwitchRector.php
-
-        -
-            message: '#Cognitive complexity for "Rector\\DowngradePhp80\\Rector\\Expression\\DowngradeMatchToSwitchRector\:\:refactorWithScope\(\)" is 38, keep it under 10#'
-            path: rules/DowngradePhp80/Rector/Expression/DowngradeMatchToSwitchRector.php
-
         # phpstan need to load rector nodes first to avoid this
         - '#Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface#'
 
         -
             message: '#Parameter \#1 \$attributeClass of class Rector\\DowngradePhp80\\ValueObject\\DowngradeAttributeToAnnotation constructor expects class\-string, string given#'
             path: "config/*"
-
-        # we need exact types
-        - '#Doing instanceof PHPStan\\Type\\(.*?) is error\-prone and deprecated#'
-        # easier to run for simple cases
-        - '#Call to deprecated method getTypeFromValue\(\) of class PHPStan\\Type\\ConstantTypeHelper#'

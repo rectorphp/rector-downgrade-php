@@ -12,8 +12,8 @@ use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
-use Rector\Core\PhpParser\Node\Value\ValueResolver;
 use Rector\NodeNameResolver\NodeNameResolver;
+use Rector\PhpParser\Node\Value\ValueResolver;
 use Rector\StaticTypeMapper\StaticTypeMapper;
 
 final class NativeParamToPhpDocDecorator
