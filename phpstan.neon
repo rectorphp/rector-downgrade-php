@@ -62,7 +62,9 @@ parameters:
 
         # phpstan need to load rector nodes first to avoid this
         - '#Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface#'
+        - '#Access to an undefined property Rector\\Contract\\PhpParser\\Node\\StmtsAwareInterface\:\:\$stmts#'
 
         -
             message: '#Parameter \#1 \$attributeClass of class Rector\\DowngradePhp80\\ValueObject\\DowngradeAttributeToAnnotation constructor expects class\-string, string given#'
             path: "config/*"
+
