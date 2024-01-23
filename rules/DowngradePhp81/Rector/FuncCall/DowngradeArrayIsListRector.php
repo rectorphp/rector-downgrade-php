@@ -119,7 +119,7 @@ CODE_SAMPLE
             return clone $this->cachedClosure;
         }
 
-        $stmts = $this->inlineCodeParser->parse(__DIR__ . '/../../snippet/array_is_list_closure.php.inc');
+        $stmts = $this->inlineCodeParser->parseFile(__DIR__ . '/../../snippet/array_is_list_closure.php.inc');
 
         /** @var Expression $expression */
         $expression = $stmts[0];
