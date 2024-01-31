@@ -6,14 +6,12 @@ namespace Rector\DowngradePhp72\NodeAnalyzer;
 
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Reflection\ClassReflection;
-use Rector\FamilyTree\NodeAnalyzer\ClassChildAnalyzer;
 use Rector\NodeNameResolver\NodeNameResolver;
 
 final class BuiltInMethodAnalyzer
 {
     public function __construct(
         private readonly NodeNameResolver $nodeNameResolver,
-        private readonly ClassChildAnalyzer $classChildAnalyzer
     ) {
     }
 
@@ -24,9 +22,6 @@ final class BuiltInMethodAnalyzer
         }
 
         $methodName = $this->nodeNameResolver->getName($classMethod);
-        if ($this->classChildAnalyzer->hasChildClassMethod($classReflection, $methodName)) {
-            return false;
-        }
 
         foreach ($classReflection->getInterfaces() as $interfaceReflection) {
             if (! $interfaceReflection->isBuiltin()) {
