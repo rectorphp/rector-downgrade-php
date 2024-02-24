@@ -6,13 +6,8 @@ namespace Rector\DowngradePhp83\Rector\ClassConst;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassConst;
-use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
-use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
-use Rector\Comments\NodeDocBlock\DocBlockUpdater;
-use Rector\NodeDecorator\PropertyTypeDecorator;
 use Rector\NodeManipulator\PropertyDecorator;
 use Rector\Rector\AbstractRector;
-use Rector\StaticTypeMapper\StaticTypeMapper;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -25,8 +20,7 @@ final class DowngradeTypedClassConstRector extends AbstractRector
 {
     public function __construct(
         private readonly PropertyDecorator $propertyDecorator
-    )
-    {
+    ) {
     }
 
     /**
@@ -73,10 +67,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $this->propertyDecorator->decorateWithDocBlock(
-            $node,
-            $node->type
-        );
+        $this->propertyDecorator->decorateWithDocBlock($node, $node->type);
 
         $node->type = null;
         return $node;
