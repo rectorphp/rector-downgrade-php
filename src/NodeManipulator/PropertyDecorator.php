@@ -7,6 +7,7 @@ namespace Rector\NodeManipulator;
 use PhpParser\Node\ComplexType;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\Property;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
@@ -22,7 +23,7 @@ final class PropertyDecorator
     ) {
     }
 
-    public function decorateWithDocBlock(Property $property, ComplexType|Identifier|Name $typeNode): void
+    public function decorateWithDocBlock(Property|ClassConst $property, ComplexType|Identifier|Name $typeNode): void
     {
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($property);
         if ($phpDocInfo->getVarTagValueNode() instanceof VarTagValueNode) {
