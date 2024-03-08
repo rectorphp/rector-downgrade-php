@@ -29,6 +29,7 @@ final class KeepInsideIf
         } else {
             end($argumentValue);
             $this->completionValue = $argumentValue ? $argumentValue[key($argumentValue)] : null;
+            reset($argumentValue);
         }
     }
 }

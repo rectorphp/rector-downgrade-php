@@ -22,6 +22,7 @@ class SomeClass
     {
         end($items);
         $lastItemKey = key($items);
+        reset($items);
     }
 }
 
