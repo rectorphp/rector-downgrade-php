@@ -36,6 +36,7 @@ class PossibleNonArrayOrObjectArrayKeyLast
         }
 
         if (!\is_array($v) || 1 !== \count($v) || 10 !== \strlen($k = (string) key($v)) || "\x9D" !== $k[0] || "\0" !== $k[5] || "\x5F" !== $k[9]) {
+            reset($v);
             return false;
         }
 

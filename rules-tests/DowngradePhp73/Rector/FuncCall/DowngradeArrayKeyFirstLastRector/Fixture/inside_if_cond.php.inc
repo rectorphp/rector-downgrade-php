@@ -26,6 +26,7 @@ final class InsideIfCond
     {
         end($items);
         if (key($items)) {
+            reset($items);
             return true;
         } else {
             return false;
