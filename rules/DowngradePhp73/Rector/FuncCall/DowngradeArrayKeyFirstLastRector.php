@@ -221,10 +221,7 @@ CODE_SAMPLE
         }
 
         if ($stmt instanceof StmtsAwareInterface) {
-            $stmt->stmts = array_merge(
-                [$resetExpression],
-                $stmt->stmts
-            );
+            $stmt->stmts = array_merge([$resetExpression], $stmt->stmts);
         }
 
         return $newStmts;
