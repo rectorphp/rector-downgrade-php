@@ -27,6 +27,7 @@ final class KeepInsideIf
         if (\is_array($argumentValue)) {
             end($argumentValue);
             $this->completionValue = $argumentValue ? $argumentValue[key($argumentValue)] : null;
+            reset($argumentValue);
         }
     }
 }

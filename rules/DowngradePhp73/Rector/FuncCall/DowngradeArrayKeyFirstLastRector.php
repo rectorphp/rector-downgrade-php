@@ -214,6 +214,10 @@ CODE_SAMPLE
 
         $newStmts[] = $stmt;
 
+        if (! $stmt instanceof StmtsAwareInterface && ! $stmt instanceof Return_) {
+            $newStmts[] = new Expression($this->nodeFactory->createFuncCall('reset', [$array]));
+        }
+
         return $newStmts;
     }
 

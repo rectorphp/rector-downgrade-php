@@ -27,6 +27,7 @@ class DoubleCast
         $stmts = (array)(array) $classMethod->stmts;
         end($stmts);
         $lastItemKey = key($stmts);
+        reset($stmts);
     }
 }
 

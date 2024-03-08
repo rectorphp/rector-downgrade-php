@@ -27,6 +27,7 @@ class CastArrayKeyLastValue
         $stmts = (array) $classMethod->stmts;
         end($stmts);
         $lastItemKey = key($stmts);
+        reset($stmts);
     }
 }
 

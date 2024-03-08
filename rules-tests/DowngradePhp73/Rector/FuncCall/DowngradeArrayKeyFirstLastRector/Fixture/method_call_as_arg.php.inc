@@ -27,6 +27,7 @@ class MethodCallAsArg
         $getArgs = $node->getArgs();
         end($getArgs);
         $lastItemKey = key($getArgs);
+        reset($getArgs);
     }
 }
 
