@@ -28,7 +28,7 @@ use ReflectionClass;
 class DowngradeParamReflectionGetAttribute
 {
     /**
-     * @param \ReflectionClass $reflectionClass
+     * @param ReflectionClass $reflectionClass
      */
     public function run($reflectionClass)
     {
