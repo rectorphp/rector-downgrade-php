@@ -10,10 +10,7 @@ use Rector\PHPUnit\Set\PHPUnitSetList;
 return RectorConfig::configure()
     ->withImportNames(removeUnusedImports: true)
     ->withPhpSets(php82: true)
-    ->withSets([
-        PHPUnitSetList::PHPUNIT_100,
-        PHPUnitSetList::PHPUNIT_CODE_QUALITY,
-    ])
+    ->withSets([PHPUnitSetList::PHPUNIT_100, PHPUnitSetList::PHPUNIT_CODE_QUALITY])
     ->withPreparedSets(
         codeQuality: true,
         codingStyle: true,
