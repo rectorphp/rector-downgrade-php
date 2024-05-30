@@ -25,10 +25,10 @@ use Rector\PhpParser\Node\BetterNodeFinder;
  * To resolve Expr in top Stmt from early Expr attribute
  * so the usage can append code before the Stmt
  */
-final class ExprInTopStmtMatcher
+final readonly class ExprInTopStmtMatcher
 {
     public function __construct(
-        private readonly BetterNodeFinder $betterNodeFinder,
+        private BetterNodeFinder $betterNodeFinder,
     ) {
     }
 

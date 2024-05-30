@@ -18,7 +18,7 @@ use Rector\PhpParser\Comparing\NodeComparator;
 use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\PhpParser\Node\NodeFactory;
 
-final class ObjectToResourceReturn
+final readonly class ObjectToResourceReturn
 {
     /**
      * @var string
@@ -26,11 +26,11 @@ final class ObjectToResourceReturn
     private const IS_INSTANCEOF_IN_BINARYOP = 'is_instanceof_in_binaryop';
 
     public function __construct(
-        private readonly NodeNameResolver $nodeNameResolver,
-        private readonly NodeFactory $nodeFactory,
-        private readonly BetterNodeFinder $betterNodeFinder,
-        private readonly SimpleCallableNodeTraverser $simpleCallableNodeTraverser,
-        private readonly NodeComparator $nodeComparator
+        private NodeNameResolver $nodeNameResolver,
+        private NodeFactory $nodeFactory,
+        private BetterNodeFinder $betterNodeFinder,
+        private SimpleCallableNodeTraverser $simpleCallableNodeTraverser,
+        private NodeComparator $nodeComparator
     ) {
     }
 

@@ -13,10 +13,10 @@ use Rector\BetterPhpDocParser\PhpDoc\DoctrineAnnotationTagValueNode;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PhpParser\Printer\BetterStandardPrinter;
 
-final class DoctrineAnnotationFactory
+final readonly class DoctrineAnnotationFactory
 {
     public function __construct(
-        private readonly BetterStandardPrinter $betterStandardPrinter
+        private BetterStandardPrinter $betterStandardPrinter
     ) {
     }
 

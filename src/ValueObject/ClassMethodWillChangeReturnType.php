@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Rector\ValueObject;
 
-final class ClassMethodWillChangeReturnType
+final readonly class ClassMethodWillChangeReturnType
 {
     public function __construct(
-        private readonly string $className,
-        private readonly string $methodName,
+        private string $className,
+        private string $methodName,
     ) {
     }
 

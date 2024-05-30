@@ -9,10 +9,10 @@ use PhpParser\Node\Stmt\Expression;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
-final class NamedVariableFactory
+final readonly class NamedVariableFactory
 {
     public function __construct(
-        private readonly VariableNaming $variableNaming,
+        private VariableNaming $variableNaming,
     ) {
     }
 

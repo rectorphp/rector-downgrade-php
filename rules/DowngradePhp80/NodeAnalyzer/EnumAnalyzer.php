@@ -16,11 +16,11 @@ use PHPStan\Type\Type;
 use Rector\NodeTypeResolver\NodeTypeResolver;
 use Rector\PhpParser\AstResolver;
 
-final class EnumAnalyzer
+final readonly class EnumAnalyzer
 {
     public function __construct(
-        private readonly AstResolver $astResolver,
-        private readonly NodeTypeResolver $nodeTypeResolver
+        private AstResolver $astResolver,
+        private NodeTypeResolver $nodeTypeResolver
     ) {
     }
 

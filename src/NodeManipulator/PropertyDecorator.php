@@ -14,12 +14,12 @@ use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\StaticTypeMapper\StaticTypeMapper;
 
-final class PropertyDecorator
+final readonly class PropertyDecorator
 {
     public function __construct(
-        private readonly PhpDocInfoFactory $phpDocInfoFactory,
-        private readonly StaticTypeMapper $staticTypeMapper,
-        private readonly PhpDocTypeChanger $phpDocTypeChanger,
+        private PhpDocInfoFactory $phpDocInfoFactory,
+        private StaticTypeMapper $staticTypeMapper,
+        private PhpDocTypeChanger $phpDocTypeChanger,
     ) {
     }
 

@@ -6,37 +6,32 @@ use Rector\CodingStyle\Rector\String_\UseClassKeywordForClassNameResolutionRecto
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
-use Rector\Set\ValueObject\LevelSetList;
-use Rector\Set\ValueObject\SetList;
 
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->importNames();
-    $rectorConfig->removeUnusedImports();
-
-    $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_81,
+return RectorConfig::configure()
+    ->withImportNames(removeUnusedImports: true)
+    ->withPhpSets(php82: true)
+    ->withSets([
         PHPUnitSetList::PHPUNIT_100,
-        SetList::CODE_QUALITY,
-        SetList::CODING_STYLE,
-        SetList::DEAD_CODE,
-        SetList::PRIVATIZATION,
-        SetList::NAMING,
-        SetList::TYPE_DECLARATION,
-        SetList::EARLY_RETURN,
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
-    ]);
-
-    $rectorConfig->paths([
+    ])
+    ->withPreparedSets(
+        codeQuality: true,
+        codingStyle: true,
+        deadCode: true,
+        privatization: true,
+        naming: true,
+        typeDeclarations: true,
+        earlyReturn: true,
+        rectorPreset: true
+    )->withPaths([
         __DIR__ . '/src',
         __DIR__ . '/rules',
         __DIR__ . '/tests',
         __DIR__ . '/rules-tests',
         __DIR__ . '/config',
-        __DIR__ . '/rector.php',
-        __DIR__ . '/ecs.php',
-    ]);
-
-    $rectorConfig->skip([
+    ])
+    ->withRootFiles()
+    ->withSkip([
         StringClassNameToClassConstantRector::class,
 
         UseClassKeywordForClassNameResolutionRector::class => [
@@ -50,4 +45,3 @@ return static function (RectorConfig $rectorConfig): void {
         '**/Source/*',
         '**/Expected/*',
     ]);
-};
