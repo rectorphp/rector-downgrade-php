@@ -16,14 +16,14 @@ use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\PhpParser\Node\Value\ValueResolver;
 use Rector\StaticTypeMapper\StaticTypeMapper;
 
-final class NativeParamToPhpDocDecorator
+final readonly class NativeParamToPhpDocDecorator
 {
     public function __construct(
-        private readonly PhpDocInfoFactory $phpDocInfoFactory,
-        private readonly NodeNameResolver $nodeNameResolver,
-        private readonly StaticTypeMapper $staticTypeMapper,
-        private readonly PhpDocTypeChanger $phpDocTypeChanger,
-        private readonly ValueResolver $valueResolver
+        private PhpDocInfoFactory $phpDocInfoFactory,
+        private NodeNameResolver $nodeNameResolver,
+        private StaticTypeMapper $staticTypeMapper,
+        private PhpDocTypeChanger $phpDocTypeChanger,
+        private ValueResolver $valueResolver
     ) {
     }
 

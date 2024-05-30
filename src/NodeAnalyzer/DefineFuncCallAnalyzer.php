@@ -9,10 +9,10 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;
 use Rector\NodeNameResolver\NodeNameResolver;
 
-final class DefineFuncCallAnalyzer
+final readonly class DefineFuncCallAnalyzer
 {
     public function __construct(
-        private readonly NodeNameResolver $nodeNameResolver,
+        private NodeNameResolver $nodeNameResolver,
     ) {
     }
 

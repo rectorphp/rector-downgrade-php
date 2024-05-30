@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\ValueObject;
 
-final class DowngradeAttributeToAnnotation
+final readonly class DowngradeAttributeToAnnotation
 {
     /**
      * @param class-string $attributeClass
      * @param class-string|string|null $tag
      */
     public function __construct(
-        private readonly string $attributeClass,
-        private readonly ?string $tag = null
+        private string $attributeClass,
+        private ?string $tag = null
     ) {
     }
 

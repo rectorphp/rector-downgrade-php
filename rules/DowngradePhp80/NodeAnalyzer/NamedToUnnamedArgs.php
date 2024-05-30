@@ -16,11 +16,11 @@ use Rector\DowngradePhp80\Reflection\SimplePhpParameterReflection;
 use Rector\NodeNameResolver\NodeNameResolver;
 use ReflectionFunction;
 
-final class NamedToUnnamedArgs
+final readonly class NamedToUnnamedArgs
 {
     public function __construct(
-        private readonly NodeNameResolver $nodeNameResolver,
-        private readonly DefaultParameterValueResolver $defaultParameterValueResolver
+        private NodeNameResolver $nodeNameResolver,
+        private DefaultParameterValueResolver $defaultParameterValueResolver
     ) {
     }
 

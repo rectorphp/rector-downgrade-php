@@ -16,12 +16,12 @@ use Rector\NodeAnalyzer\ClassAnalyzer;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
-final class OverrideFromAnonymousClassMethodAnalyzer
+final readonly class OverrideFromAnonymousClassMethodAnalyzer
 {
     public function __construct(
-        private readonly ClassAnalyzer $classAnalyzer,
-        private readonly NodeNameResolver $nodeNameResolver,
-        private readonly ReflectionProvider $reflectionProvider
+        private ClassAnalyzer $classAnalyzer,
+        private NodeNameResolver $nodeNameResolver,
+        private ReflectionProvider $reflectionProvider
     ) {
     }
 

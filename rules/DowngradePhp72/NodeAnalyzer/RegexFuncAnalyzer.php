@@ -10,7 +10,7 @@ use PHPStan\Analyser\Scope;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
-final class RegexFuncAnalyzer
+final readonly class RegexFuncAnalyzer
 {
     /**
      * @var string[]
@@ -18,7 +18,7 @@ final class RegexFuncAnalyzer
     private const REGEX_FUNCTION_NAMES = ['preg_match', 'preg_match_all'];
 
     public function __construct(
-        private readonly NodeNameResolver $nodeNameResolver,
+        private NodeNameResolver $nodeNameResolver,
     ) {
     }
 

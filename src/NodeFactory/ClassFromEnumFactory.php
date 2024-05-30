@@ -14,10 +14,10 @@ use PhpParser\Node\Stmt\EnumCase;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\ValueObject\Visibility;
 
-final class ClassFromEnumFactory
+final readonly class ClassFromEnumFactory
 {
     public function __construct(
-        private readonly NodeNameResolver $nodeNameResolver
+        private NodeNameResolver $nodeNameResolver
     ) {
     }
 

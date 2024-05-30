@@ -13,11 +13,11 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use Rector\NodeNameResolver\NodeNameResolver;
 use ReflectionFunction;
 
-final class UnnamedArgumentResolver
+final readonly class UnnamedArgumentResolver
 {
     public function __construct(
-        private readonly NodeNameResolver $nodeNameResolver,
-        private readonly NamedToUnnamedArgs $namedToUnnamedArgs
+        private NodeNameResolver $nodeNameResolver,
+        private NamedToUnnamedArgs $namedToUnnamedArgs
     ) {
     }
 

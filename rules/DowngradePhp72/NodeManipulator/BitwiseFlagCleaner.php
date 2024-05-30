@@ -11,10 +11,10 @@ use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use Rector\NodeNameResolver\NodeNameResolver;
 
-final class BitwiseFlagCleaner
+final readonly class BitwiseFlagCleaner
 {
     public function __construct(
-        private readonly NodeNameResolver $nodeNameResolver
+        private NodeNameResolver $nodeNameResolver
     ) {
     }
 
