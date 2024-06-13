@@ -212,12 +212,12 @@ CODE_SAMPLE
         }
 
         if ($return->expr instanceof Ternary) {
-            $ternary = $this->refactorTernary($return->expr, null);
-            if (! $ternary instanceof If_) {
+            $if = $this->refactorTernary($return->expr, null);
+            if (! $if instanceof If_) {
                 return null;
             }
 
-            return [$ternary, new Return_($return->expr->cond)];
+            return [$if, new Return_($return->expr->cond)];
         }
 
         return null;
