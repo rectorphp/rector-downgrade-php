@@ -211,6 +211,15 @@ CODE_SAMPLE
             return [new Expression($return->expr)];
         }
 
+        if ($return->expr instanceof Ternary) {
+            $if = $this->refactorTernary($return->expr, null);
+            if (! $if instanceof If_) {
+                return null;
+            }
+
+            return [$if, new Return_($return->expr->cond)];
+        }
+
         return null;
     }
 
