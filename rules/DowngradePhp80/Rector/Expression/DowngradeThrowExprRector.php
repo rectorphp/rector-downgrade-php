@@ -188,9 +188,9 @@ CODE_SAMPLE
     }
 
     /**
-     * @return Node[]|null|If_
+     * @return Node[]|null
      */
-    private function refactorReturn(Return_ $return): array|null|If_
+    private function refactorReturn(Return_ $return): array|null
     {
         $throw = $this->betterNodeFinder->findFirstInstanceOf($return, Throw_::class);
         if (! $throw instanceof Throw_) {
@@ -212,7 +212,12 @@ CODE_SAMPLE
         }
 
         if ($return->expr instanceof Ternary) {
-            return [$this->refactorTernary($return->expr, null), new Return_($return->expr->cond)];
+            $ternary = $this->refactorTernary($return->expr, null);
+            if (! $ternary instanceof If_) {
+                return null;
+            }
+
+            return [$ternary, new Return_($return->expr->cond)];
         }
 
         return null;
