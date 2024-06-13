@@ -190,7 +190,7 @@ CODE_SAMPLE
     /**
      * @return Node[]|null
      */
-    private function refactorReturn(Return_ $return): array|null
+    private function refactorReturn(Return_ $return): ?array
     {
         $throw = $this->betterNodeFinder->findFirstInstanceOf($return, Throw_::class);
         if (! $throw instanceof Throw_) {
