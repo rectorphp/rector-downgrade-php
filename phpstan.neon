@@ -1,5 +1,6 @@
 includes:
     - vendor/symplify/phpstan-rules/config/symplify-rules.neon
+    - vendor/symplify/phpstan-rules/config/rector-rules.neon
 
 parameters:
     level: 8
@@ -22,6 +23,13 @@ parameters:
         - '*/Fixture/*'
         - '*/Source/*'
 
+    # see https://github.com/rectorphp/type-perfect/
+    type_perfect:
+        no_mixed: true
+        null_over_false: true
+        narrow_param: true
+        narrow_return: true
+
     ignoreErrors:
         # php enum value minus
         - '#Parameter \#1 \$phpVersion of method Rector\\Config\\RectorConfig\:\:phpVersion\(\) expects (.*?), (.*?) given#'
@@ -30,27 +38,6 @@ parameters:
         - '#Call to an undefined method PHPStan\\Type\\ConstantType\:\:getValue\(\)#'
 
         - '#Calling PHPStan\\Reflection\\Native\\NativeFunctionReflection\:\:getName\(\) is not covered by backward compatibility promise\. The method might change in a minor PHPStan version#'
-
-        -
-            message: '#New objects with "\$functionLikeReflection" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
-            path: rules/DowngradePhp80/NodeAnalyzer/UnnamedArgumentResolver.php
-
-        # nullable correction type
-        -
-            message: '#New objects with "\$parentReturnTypeNode" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
-            path: rules/DowngradePhp74/Rector/ClassMethod/DowngradeCovariantReturnTypeRector.php
-
-        # cleaning expr
-        -
-            message: '#New objects with "\$bitwiseOr" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
-            path: rules/DowngradePhp72/NodeManipulator/BitwiseFlagCleaner.php
-
-        - '#Method "decorateReturnWithSpecificType\(\)" returns bool type, so the name should start with is/has/was#'
-        - '#Method "decorateParamWithSpecificType\(\)" returns bool type, so the name should start with is/has/was#'
-
-        -
-            message: '#New objects with "\$returnType" name are overridden\. This can lead to unwanted bugs, please pick a different name to avoid it#'
-            path: src/PhpDocDecorator/PhpDocFromTypeDeclarationDecorator.php
 
         - '#Parameter \#3 \$stmt of method Rector\\DowngradePhp72\\Rector\\FuncCall\\DowngradePregUnmatchedAsNullConstantRector\:\:processReplace\(\) expects PhpParser\\Node\\Stmt, PhpParser\\Node given#'
 
