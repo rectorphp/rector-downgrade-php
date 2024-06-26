@@ -26,7 +26,7 @@ final class DowngradeNullsafeToTernaryOperatorRector extends AbstractRector
     /**
      * Hack-ish way to reset counter for a new file, to avoid rising counter for each file
      *
-     * @param \PhpParser\Node[] $nodes
+     * @param Node[] $nodes
      * @return array|Node[]|null
      */
     public function beforeTraverse(array $nodes): ?array
