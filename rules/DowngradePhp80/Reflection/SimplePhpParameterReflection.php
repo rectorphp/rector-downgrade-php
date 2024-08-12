@@ -13,9 +13,9 @@ use ReflectionFunction;
 use ReflectionParameter;
 use Throwable;
 
-final class SimplePhpParameterReflection implements ParameterReflection
+final readonly class SimplePhpParameterReflection implements ParameterReflection
 {
-    private readonly ReflectionParameter $reflectionParameter;
+    private ReflectionParameter $reflectionParameter;
 
     public function __construct(ReflectionFunction $reflectionFunction, int $position)
     {

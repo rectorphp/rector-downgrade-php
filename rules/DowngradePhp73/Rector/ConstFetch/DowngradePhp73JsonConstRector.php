@@ -152,7 +152,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $this->traverseNodesWithCallable($if, static function (Node $node) {
+        $this->traverseNodesWithCallable($if, static function (Node $node): null {
             $node->setAttribute(self::PHP73_JSON_CONSTANT_IS_KNOWN, true);
             return null;
         });
