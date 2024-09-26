@@ -29,7 +29,7 @@ final readonly class UnnamedArgumentResolver
         FunctionReflection | MethodReflection $functionLikeReflection,
         array $currentArgs
     ): array {
-        $parametersAcceptor = ParametersAcceptorSelector::selectSingle($functionLikeReflection->getVariants());
+        $parametersAcceptor = ParametersAcceptorSelector::combineAcceptors($functionLikeReflection->getVariants());
 
         $parameters = $parametersAcceptor->getParameters();
 
