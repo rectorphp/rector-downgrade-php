@@ -29,9 +29,11 @@ final readonly class UnnamedArgumentResolver
         FunctionReflection | MethodReflection $functionLikeReflection,
         array $currentArgs
     ): array {
-        $parametersAcceptor = ParametersAcceptorSelector::selectSingle($functionLikeReflection->getVariants());
+        $parametersAcceptorWithPhpDocs = ParametersAcceptorSelector::combineAcceptors(
+            $functionLikeReflection->getVariants()
+        );
 
-        $parameters = $parametersAcceptor->getParameters();
+        $parameters = $parametersAcceptorWithPhpDocs->getParameters();
 
         if ($functionLikeReflection instanceof NativeFunctionReflection) {
             $functionLikeReflection = new ReflectionFunction($functionLikeReflection->getName());
