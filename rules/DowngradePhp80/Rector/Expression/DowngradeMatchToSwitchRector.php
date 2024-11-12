@@ -29,7 +29,8 @@ use PhpParser\NodeTraverser;
 use PHPStan\Analyser\Scope;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Php72\NodeFactory\AnonymousFunctionFactory;
-use Rector\Rector\AbstractScopeAwareRector;
+use Rector\PHPStan\ScopeFetcher;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -38,7 +39,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  *
  * @see \Rector\Tests\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector\DowngradeMatchToSwitchRectorTest
  */
-final class DowngradeMatchToSwitchRector extends AbstractScopeAwareRector
+final class DowngradeMatchToSwitchRector extends AbstractRector
 {
     public function __construct(
         private readonly AnonymousFunctionFactory $anonymousFunctionFactory
@@ -99,11 +100,13 @@ CODE_SAMPLE
     /**
      * @param Echo_|Expression|Return_ $node
      */
-    public function refactorWithScope(Node $node, Scope $scope): ?Node
+    public function refactor(Node $node): ?Node
     {
         /** @var Match_|null $match */
         $match = null;
         $hasChanged = false;
+
+        $scope = ScopeFetcher::fetch($node);
 
         $this->traverseNodesWithCallable(
             $node,
@@ -180,6 +183,7 @@ CODE_SAMPLE
             return null;
         }
 
+        $scope = ScopeFetcher::fetch($node);
         if (! $this->isEqualScope($match, $scope)) {
             return null;
         }
@@ -191,6 +195,7 @@ CODE_SAMPLE
 
     private function isEqualScope(Match_ $match, ?Scope $containerScope): bool
     {
+
         $matchScope = $match->getAttribute(AttributeKey::SCOPE);
         if (! $matchScope instanceof Scope) {
             return false;
