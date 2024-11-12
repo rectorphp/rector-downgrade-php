@@ -31,7 +31,7 @@ final class DowngradeReadonlyPropertyRector extends AbstractRector
     public function __construct(
         private readonly VisibilityManipulator $visibilityManipulator,
         private readonly DocBlockUpdater $docBlockUpdater,
-        protected PhpDocInfoFactory $phpDocInfoFactory,
+        private PhpDocInfoFactory $phpDocInfoFactory,
     ) {
     }
 
