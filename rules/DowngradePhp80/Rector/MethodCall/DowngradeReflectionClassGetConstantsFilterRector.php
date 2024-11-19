@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\MethodCall;
 
-use PhpParser\Node\ClosureUse;
 use PhpParser\Node;
+use PhpParser\Node\ClosureUse;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\Assign;

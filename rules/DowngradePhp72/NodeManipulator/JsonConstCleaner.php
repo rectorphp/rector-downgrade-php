@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp72\NodeManipulator;
 
-use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Scalar\Int_;
 use Rector\Enum\JsonConstant;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;

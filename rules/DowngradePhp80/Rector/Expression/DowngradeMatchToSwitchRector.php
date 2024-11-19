@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\Expression;
 
-use PhpParser\Node\ArrayItem;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\CallLike;

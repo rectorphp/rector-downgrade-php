@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp73\Rector\String_;
 
-use PhpParser\Node\Scalar\InterpolatedString;
 use PhpParser\Node;
+use PhpParser\Node\Scalar\InterpolatedString;
 use PhpParser\Node\Scalar\String_;
 use Rector\DowngradePhp73\Tokenizer\FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer;
 use Rector\NodeTypeResolver\Node\AttributeKey;

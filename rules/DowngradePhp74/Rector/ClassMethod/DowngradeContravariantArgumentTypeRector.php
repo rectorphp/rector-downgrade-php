@@ -125,7 +125,7 @@ CODE_SAMPLE
             return false;
         }
 
-        if (!$param->type instanceof Node) {
+        if (! $param->type instanceof Node) {
             return false;
         }
 
@@ -262,7 +262,7 @@ CODE_SAMPLE
 
     private function decorateWithDocBlock(ClassMethod | Function_ $functionLike, Param $param): void
     {
-        if (!$param->type instanceof Node) {
+        if (! $param->type instanceof Node) {
             return;
         }
 

@@ -30,7 +30,7 @@ final readonly class NativeParamToPhpDocDecorator
 
     public function decorate(ClassMethod $classMethod, Param $param): void
     {
-        if (!$param->type instanceof Node) {
+        if (! $param->type instanceof Node) {
             return;
         }
 

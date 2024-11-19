@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp73\Rector\List_;
 
-use PhpParser\Node\ArrayItem;
-use PhpParser\Node\Scalar\Int_;
 use PhpParser\BuilderHelpers;
 use PhpParser\Node;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\AssignRef;
 use PhpParser\Node\Expr\List_;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Expression;
 use Rector\Rector\AbstractRector;

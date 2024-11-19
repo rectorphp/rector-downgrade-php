@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp81\NodeFactory;
 
-use PhpParser\Node\ArrayItem;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Ternary;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp81\Rector\LNumber;
 
-use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node;
+use PhpParser\Node\Scalar\Int_;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;

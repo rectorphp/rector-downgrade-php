@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp74\Rector\ArrowFunction;
 
-use PhpParser\Node\ClosureUse;
 use PhpParser\Node;
+use PhpParser\Node\ClosureUse;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;

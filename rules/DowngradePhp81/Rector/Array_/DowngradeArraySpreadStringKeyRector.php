@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp81\Rector\Array_;
 
-use PhpParser\Node\ArrayItem;
 use PhpParser\Node;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Type\ArrayType;

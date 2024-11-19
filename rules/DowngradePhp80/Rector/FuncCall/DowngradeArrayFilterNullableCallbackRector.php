@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\FuncCall;
 
-use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
@@ -21,6 +20,7 @@ use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Param;
+use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\ClosureType;

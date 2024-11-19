@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp73\Rector\FuncCall;
 
-use PhpParser\Node\ArrayItem;
 use PhpParser\BuilderHelpers;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;

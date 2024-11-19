@@ -111,7 +111,7 @@ final class PhpDocFromTypeDeclarationDecorator
         ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         array $requiredTypes
     ): void {
-        if (!$param->type instanceof Node) {
+        if (! $param->type instanceof Node) {
             return;
         }
 
@@ -133,7 +133,7 @@ final class PhpDocFromTypeDeclarationDecorator
         ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         Type $requireType
     ): bool {
-        if (!$param->type instanceof Node) {
+        if (! $param->type instanceof Node) {
             return false;
         }
 

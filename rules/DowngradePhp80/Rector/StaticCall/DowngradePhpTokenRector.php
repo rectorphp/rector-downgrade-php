@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\StaticCall;
 
-use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ArrayDimFetch;
@@ -14,6 +13,7 @@ use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\Int_;
 use PHPStan\Type\ObjectType;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;

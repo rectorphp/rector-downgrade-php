@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\ClassMethod;
 
-use PhpParser\Node\ClosureUse;
 use PhpParser\Node;
+use PhpParser\Node\ClosureUse;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
