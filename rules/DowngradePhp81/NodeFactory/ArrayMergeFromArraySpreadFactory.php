@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp81\NodeFactory;
 
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
@@ -92,7 +92,7 @@ final readonly class ArrayMergeFromArraySpreadFactory
     }
 
     /**
-     * @param array<ArrayItem|null> $items
+     * @param array<(ArrayItem | null)> $items
      */
     private function createArrayItemFromArray(array $items): ArrayItem
     {

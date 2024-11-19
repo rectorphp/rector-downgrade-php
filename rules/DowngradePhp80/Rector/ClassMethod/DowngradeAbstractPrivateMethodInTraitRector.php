@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\ClassMethod;
 
+use PhpParser\Modifiers;
 use PhpParser\Node;
-use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Reflection\ClassReflection;
 use Rector\Rector\AbstractRector;
@@ -65,7 +65,7 @@ CODE_SAMPLE
         }
 
         // remove abstract
-        $node->flags -= Class_::MODIFIER_ABSTRACT;
+        $node->flags -= Modifiers::ABSTRACT;
 
         // Add empty array for stmts to generate empty function body
         $node->stmts = [];

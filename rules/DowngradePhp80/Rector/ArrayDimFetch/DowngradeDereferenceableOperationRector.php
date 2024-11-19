@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\ArrayDimFetch;
 
+use PhpParser\Node\Scalar\InterpolatedString;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ArrayDimFetch;
-use PhpParser\Node\Scalar\Encapsed;
 use PhpParser\Node\Scalar\MagicConst;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
@@ -70,7 +70,7 @@ CODE_SAMPLE
             return true;
         }
 
-        if ($arrayDimFetch->var instanceof Encapsed) {
+        if ($arrayDimFetch->var instanceof InterpolatedString) {
             return $this->hasParentheses($arrayDimFetch);
         }
 

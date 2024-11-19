@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\FuncCall;
 
+use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\BinaryOp\Identical;
@@ -11,7 +12,6 @@ use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Name;
-use PhpParser\Node\Scalar\LNumber;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -65,7 +65,7 @@ final class DowngradeStrStartsWithRector extends AbstractRector
         $strlenFuncCall = $this->createStrlenFuncCall($funcCall);
         $strncmpFuncCall = $this->createStrncmpFuncCall($funcCall, $strlenFuncCall);
 
-        return new Identical($strncmpFuncCall, new LNumber(0));
+        return new Identical($strncmpFuncCall, new Int_(0));
     }
 
     private function createNotIdenticalStrncmpFuncCall(FuncCall $funcCall): NotIdentical
@@ -73,7 +73,7 @@ final class DowngradeStrStartsWithRector extends AbstractRector
         $strlenFuncCall = $this->createStrlenFuncCall($funcCall);
         $strncmpFuncCall = $this->createStrncmpFuncCall($funcCall, $strlenFuncCall);
 
-        return new NotIdentical($strncmpFuncCall, new LNumber(0));
+        return new NotIdentical($strncmpFuncCall, new Int_(0));
     }
 
     private function createStrlenFuncCall(FuncCall $funcCall): FuncCall

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp74\Rector\ArrowFunction;
 
+use PhpParser\Node\ClosureUse;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Closure;
-use PhpParser\Node\Expr\ClosureUse;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Throw_;

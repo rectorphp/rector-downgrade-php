@@ -266,11 +266,6 @@ CODE_SAMPLE
         $found = false;
 
         foreach ([$bitwiseOr->left, $bitwiseOr->right] as $subNode) {
-            // Only `Node` instances can hold the constant.
-            if (! ($subNode instanceof Node)) {
-                continue;
-            }
-
             $found = match (true) {
                 $subNode instanceof BitwiseOr => (
                     $this->hasConstFetchInBitwiseOr($subNode, $constName)
