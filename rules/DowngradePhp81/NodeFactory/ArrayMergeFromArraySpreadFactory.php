@@ -91,7 +91,7 @@ final readonly class ArrayMergeFromArraySpreadFactory
     }
 
     /**
-     * @param array<(ArrayItem | null)> $items
+     * @param array<ArrayItem> $items
      */
     private function createArrayItemFromArray(array $items): ArrayItem
     {

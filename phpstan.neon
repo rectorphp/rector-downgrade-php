@@ -71,4 +71,7 @@ parameters:
         -
             identifier: phpstanApi.instanceofAssumption
 
+        -
+            identifier: phpstanApi.varTagAssumption
+
         - '#Asking about instanceof PHPStan\\.* is not covered by backward compatibility promise#'

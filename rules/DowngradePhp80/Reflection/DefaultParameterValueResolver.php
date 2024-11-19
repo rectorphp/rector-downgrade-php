@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Reflection;
 
+use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\Constant\ConstantIntegerType;
+use PHPStan\Type\NullType;
 use PhpParser\BuilderHelpers;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ConstFetch;
@@ -50,6 +53,7 @@ final class DefaultParameterValueResolver
             return BuilderHelpers::normalizeValue($values);
         }
 
+        /** @var ConstantStringType|ConstantIntegerType|NullType $constantType */
         return BuilderHelpers::normalizeValue($constantType->getValue());
     }
 
