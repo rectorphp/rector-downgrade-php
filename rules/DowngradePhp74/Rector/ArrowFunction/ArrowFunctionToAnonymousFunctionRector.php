@@ -11,6 +11,7 @@ use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Throw_;
 use PHPStan\Analyser\Scope;
@@ -102,7 +103,7 @@ CODE_SAMPLE
         }
 
         // downgrade "return throw"
-        $this->traverseNodesWithCallable($anonymousFunctionFactory, static function (Node $node): ?Throw_ {
+        $this->traverseNodesWithCallable($anonymousFunctionFactory, static function (Node $node): ?Expression {
             if (! $node instanceof Return_) {
                 return null;
             }
@@ -111,10 +112,8 @@ CODE_SAMPLE
                 return null;
             }
 
-            $throw = $node->expr;
-
             // throw expr to throw stmts
-            return new Throw_($throw->expr);
+            return new Expression($node->expr);
         });
 
         $this->appendUsesFromInsertedVariable($node->expr, $anonymousFunctionFactory);
