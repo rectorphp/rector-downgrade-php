@@ -80,7 +80,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $node->setAttribute(AttributeKey::DOC_INDENTATION, '');
+        $node->setAttribute(AttributeKey::DOC_INDENTATION, '__REMOVED__');
         $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
 
         return $node;
