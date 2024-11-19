@@ -37,7 +37,7 @@ class PreserveByRefClosureUse
         $nameScopeMap = [];
         $f = function () use ($j, &$nameScopeMap): ?int {
             $nameScopeMap[] = function () use ($j): callable {
-                return static function (int $i) use ($j) : int {
+                return static function (int $i) use ($j): int {
                     return $i + $j;
                 };
             };

@@ -33,8 +33,8 @@ class ErrorsConsoleStyle
 
     public function table(int $terminalWidth, int $maxHeaderWidth): void
     {
-        $f = static function ($rows) use ($terminalWidth, $maxHeaderWidth) : array {
-            return array_map(static function ($row) use ($terminalWidth, $maxHeaderWidth) : array {
+        $f = static function ($rows) use ($terminalWidth, $maxHeaderWidth): array {
+            return array_map(static function ($row) use ($terminalWidth, $maxHeaderWidth): array {
                 return array_map(static function ($s) use ($terminalWidth, $maxHeaderWidth) {
                     if ($terminalWidth > $maxHeaderWidth + 5) {
                         return wordwrap(
