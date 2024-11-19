@@ -262,10 +262,9 @@ CODE_SAMPLE
 
             // add condition if above
             $throwExpr = $coalesce->right;
-            $throw = new Stmt\Throw_($throwExpr->expr);
 
             $if = new If_(new Identical($coalesce->left, new ConstFetch(new Name('null'))), [
-                'stmts' => [$throw],
+                'stmts' => [new Expression($throwExpr)],
             ]);
 
             // replace coalsese with left :)
