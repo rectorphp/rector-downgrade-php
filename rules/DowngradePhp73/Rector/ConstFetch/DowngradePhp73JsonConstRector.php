@@ -14,13 +14,13 @@ use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified as NameFullyQualified;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\If_;
-use PhpParser\Node\Stmt\Throw_;
 use PhpParser\Node\Stmt\TryCatch;
 use PhpParser\Node\VariadicPlaceholder;
 use PhpParser\NodeVisitor;
@@ -219,12 +219,12 @@ CODE_SAMPLE
             ),
             [
                 'stmts' => [
-                    new Throw_(
+                    new Expression(new Throw_(
                         new New_(
                             new NameFullyQualified('Exception'),
                             [new Arg(new FuncCall(new Name('json_last_error_msg')))]
                         )
-                    ),
+                    )),
                 ],
             ]
         );
