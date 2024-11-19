@@ -109,12 +109,12 @@ CODE_SAMPLE
             $token = $oldTokens[$previousTokenPos] ?? null;
             --$previousTokenPos;
 
-            if (! isset($token[0])) {
-                return $token === '(';
+            if ((string) $token === '(') {
+                return true;
             }
 
-            if (! in_array($token[0], [\T_COMMENT, \T_WHITESPACE], true)) {
-                return $token === '(';
+            if (! in_array((string) $token, [\T_COMMENT, \T_WHITESPACE], true)) {
+                continue;
             }
         }
 
