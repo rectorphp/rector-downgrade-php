@@ -98,7 +98,7 @@ CODE_SAMPLE
                 continue;
             }
 
-            if ($oldTokens[$i] !== ')') {
+            if ((string) $oldTokens[$i] !== ')') {
                 continue;
             }
 
