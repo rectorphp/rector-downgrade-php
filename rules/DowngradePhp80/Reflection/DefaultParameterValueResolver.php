@@ -11,7 +11,6 @@ use PhpParser\Node\Name;
 use PHPStan\Reflection\ParameterReflection;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
-use PHPStan\Type\ConstantType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
 use Rector\Exception\ShouldNotHappenException;
@@ -41,7 +40,7 @@ final class DefaultParameterValueResolver
         if ($constantType instanceof ConstantArrayType) {
             $values = [];
             foreach ($constantType->getValueTypes() as $valueType) {
-                if (! $valueType instanceof ConstantType) {
+                if (! $valueType->isConstantValue()->yes()) {
                     throw new ShouldNotHappenException();
                 }
 
