@@ -10,10 +10,10 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Closure;
+use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
-use PhpParser\Node\Stmt\Throw_;
 use PHPStan\Analyser\Scope;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Php72\NodeFactory\AnonymousFunctionFactory;
@@ -108,7 +108,7 @@ CODE_SAMPLE
                 return null;
             }
 
-            if (! $node->expr instanceof Node\Expr\Throw_) {
+            if (! $node->expr instanceof Throw_) {
                 return null;
             }
 
