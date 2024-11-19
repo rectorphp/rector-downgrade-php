@@ -13,7 +13,6 @@ use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\MutatingScope;
-use PHPStan\Type\ArrayType;
 use PHPStan\Type\IterableType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
@@ -85,7 +84,7 @@ final readonly class ArrayMergeFromArraySpreadFactory
                 return $this->createArgFromSpreadArrayItem($mutatingScope, $arrayItem);
             }
 
-            return new Arg($arrayItem);
+            return new Arg($arrayItem->value);
         }, $arrayItems);
 
         return new FuncCall(new Name('array_merge'), $args);
@@ -121,13 +120,13 @@ final readonly class ArrayMergeFromArraySpreadFactory
             }
         }
 
-        $iteratorToArrayFuncCall = new FuncCall(new Name('iterator_to_array'), [new Arg($arrayItem)]);
+        $iteratorToArrayFuncCall = new FuncCall(new Name('iterator_to_array'), [new Arg($arrayItem->value)]);
 
         // If we know it is an array, then print it directly
         // Otherwise PHPStan throws an error:
         // "Else branch is unreachable because ternary operator condition is always true."
-        if ($type instanceof ArrayType) {
-            return new Arg($arrayItem);
+        if ($type->isArray()->yes()) {
+            return new Arg($arrayItem->value);
         }
 
         // If it is iterable, then directly return `iterator_to_array`
@@ -136,8 +135,8 @@ final readonly class ArrayMergeFromArraySpreadFactory
         }
 
         // Print a ternary, handling either an array or an iterator
-        $inArrayFuncCall = new FuncCall(new Name('is_array'), [new Arg($arrayItem)]);
-        return new Arg(new Ternary($inArrayFuncCall, $arrayItem, $iteratorToArrayFuncCall));
+        $inArrayFuncCall = new FuncCall(new Name('is_array'), [new Arg($arrayItem->value)]);
+        return new Arg(new Ternary($inArrayFuncCall, $arrayItem->value, $iteratorToArrayFuncCall));
     }
 
     /**

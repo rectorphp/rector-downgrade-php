@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp81\Rector\Array_;
 
+use PHPStan\Type\Constant\ConstantArrayType;
 use PhpParser\Node;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
@@ -89,10 +90,11 @@ CODE_SAMPLE
             }
 
             $type = $this->nodeTypeResolver->getType($item->value);
-            if (! $type instanceof ArrayType) {
+            if (! $type->isArray()->yes()) {
                 continue;
             }
 
+            /** @var ArrayType|ConstantArrayType $type */
             $keyType = $type->getKeyType();
             if ($keyType instanceof IntegerType) {
                 return true;
