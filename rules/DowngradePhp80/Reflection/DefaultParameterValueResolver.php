@@ -25,14 +25,14 @@ final class DefaultParameterValueResolver
             return null;
         }
 
-        if (! $defaultValueType instanceof ConstantType) {
+        if (! $defaultValueType->isConstantValue()->yes()) {
             throw new ShouldNotHappenException();
         }
 
         return $this->resolveValueFromType($defaultValueType);
     }
 
-    private function resolveValueFromType(ConstantType $constantType): ConstFetch | Expr
+    private function resolveValueFromType(Type $constantType): ConstFetch | Expr
     {
         if ($constantType instanceof ConstantBooleanType) {
             return $this->resolveConstantBooleanType($constantType);
