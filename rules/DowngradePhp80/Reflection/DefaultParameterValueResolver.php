@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Reflection;
 
-use PHPStan\Type\Constant\ConstantStringType;
-use PHPStan\Type\Constant\ConstantIntegerType;
-use PHPStan\Type\NullType;
 use PhpParser\BuilderHelpers;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ConstFetch;
@@ -14,6 +11,9 @@ use PhpParser\Node\Name;
 use PHPStan\Reflection\ParameterReflection;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
+use PHPStan\Type\Constant\ConstantIntegerType;
+use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\NullType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
 use Rector\Exception\ShouldNotHappenException;
