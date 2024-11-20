@@ -102,9 +102,9 @@ CODE_SAMPLE
 
     /**
      * @param ConstFetch|BitwiseOr|If_|TryCatch|Expression $node
-     * @return int|null|Expr|If_|array<Expression|If_>
+     * @return null|Expr|If_|array<Expression|If_>
      */
-    public function refactor(Node $node): int|null|Expr|If_|array
+    public function refactor(Node $node): null|Expr|If_|array
     {
         if ($node instanceof If_) {
             return $this->refactorIf($node);

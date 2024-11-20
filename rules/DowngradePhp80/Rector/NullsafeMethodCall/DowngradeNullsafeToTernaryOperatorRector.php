@@ -61,7 +61,7 @@ CODE_SAMPLE
     /**
      * @param NullsafeMethodCall|NullsafePropertyFetch $node
      */
-    public function refactor(Node $node): ?Ternary
+    public function refactor(Node $node): Ternary
     {
         $nullsafeVariable = $this->createNullsafeVariable();
 

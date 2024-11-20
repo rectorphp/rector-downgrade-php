@@ -70,9 +70,9 @@ CODE_SAMPLE
 
     /**
      * @param Expression $node
-     * @return Node\Stmt[]|null|Expression
+     * @return Expression[]|null
      */
-    public function refactor(Node $node): array|null|Expression
+    public function refactor(Node $node): array|null
     {
         /** @var Assign[] $assigns */
         $assigns = $this->betterNodeFinder->findInstancesOf($node, [Assign::class]);
@@ -123,7 +123,7 @@ CODE_SAMPLE
 
     /**
      * @param Assign[] $assigns
-     * @return Node\Stmt[]|null
+     * @return Expression[]|null
      */
     private function refactorAssign(array $assigns, Expression $expression): array|null
     {
@@ -167,7 +167,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @return Node\Stmt[]|null
+     * @return Expression[]|null
      */
     private function refactorInstanceof(Instanceof_ $instanceof, Expression $expression): ?array
     {

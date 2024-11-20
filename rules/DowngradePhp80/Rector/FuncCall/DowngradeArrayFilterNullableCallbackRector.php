@@ -89,7 +89,7 @@ CODE_SAMPLE
     /**
      * @param FuncCall $node
      */
-    public function refactor(Node $node): FuncCall|Ternary|null
+    public function refactor(Node $node): FuncCall|null
     {
         if (! $this->isName($node, 'array_filter')) {
             return null;

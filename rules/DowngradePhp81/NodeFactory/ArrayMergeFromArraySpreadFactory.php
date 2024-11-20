@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp81\NodeFactory;
 
-use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
@@ -27,7 +26,7 @@ final readonly class ArrayMergeFromArraySpreadFactory
     ) {
     }
 
-    public function createFromArray(Array_ $array, MutatingScope $mutatingScope): ?Node
+    public function createFromArray(Array_ $array, MutatingScope $mutatingScope): FuncCall
     {
         $newArrayItems = $this->disolveArrayItems($array);
         return $this->createArrayMergeFuncCall($newArrayItems, $mutatingScope);

@@ -67,7 +67,7 @@ CODE_SAMPLE
     /**
      * @param ConstFetch|BitwiseOr|If_ $node
      */
-    public function refactor(Node $node): Expr|If_|null|int
+    public function refactor(Node $node): Expr|If_|null
     {
         if ($node instanceof If_) {
             return $this->refactorIf($node);

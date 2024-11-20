@@ -74,7 +74,7 @@ CODE_SAMPLE
     /**
      * @param MethodCall|Ternary|Instanceof_ $node
      */
-    public function refactor(Node $node): Node|null|int
+    public function refactor(Node $node): Node|null
     {
         if ($node instanceof Instanceof_) {
             return $this->refactorInstanceof($node);
