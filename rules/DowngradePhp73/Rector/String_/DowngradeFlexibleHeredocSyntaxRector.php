@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp73\Rector\String_;
 
 use PhpParser\Node;
-use PhpParser\Node\Scalar\Encapsed;
+use PhpParser\Node\Scalar\InterpolatedString;
 use PhpParser\Node\Scalar\String_;
 use Rector\DowngradePhp73\Tokenizer\FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -59,11 +59,11 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [String_::class, Encapsed::class];
+        return [String_::class, InterpolatedString::class];
     }
 
     /**
-     * @param Encapsed|String_ $node
+     * @param InterpolatedString|String_ $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -80,7 +80,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $node->setAttribute(AttributeKey::DOC_INDENTATION, '');
+        $node->setAttribute(AttributeKey::DOC_INDENTATION, '__REMOVED__');
         $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
 
         return $node;

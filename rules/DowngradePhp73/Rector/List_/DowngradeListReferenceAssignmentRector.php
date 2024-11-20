@@ -6,14 +6,14 @@ namespace Rector\DowngradePhp73\Rector\List_;
 
 use PhpParser\BuilderHelpers;
 use PhpParser\Node;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayDimFetch;
-use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\AssignRef;
 use PhpParser\Node\Expr\List_;
 use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Expression;
 use Rector\Rector\AbstractRector;
@@ -157,7 +157,7 @@ CODE_SAMPLE
     /**
      * Count the number of params by reference placed at the end
      * These params are not needed anymore, so they can be removed
-     * @param (ArrayItem|null)[] $listItems
+     * @param (ArrayItem | null)[] $listItems
      */
     private function countRightSideMostParamsByRefOrEmpty(array $listItems): int
     {
@@ -192,7 +192,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param (ArrayItem|null)[] $listItems
+     * @param (ArrayItem | null)[] $listItems
      * @param (int|string)[] $nestedArrayIndexes
      * @return Node\Stmt[]
      */
@@ -250,7 +250,7 @@ CODE_SAMPLE
      * - list(&$a, $b)
      * - list($a, $b, list(&$c, $d))
      *
-     * @param (ArrayItem|null)[] $items
+     * @param (ArrayItem | null)[] $items
      */
     private function hasAnyItemByRef(array $items): bool
     {
@@ -262,7 +262,7 @@ CODE_SAMPLE
      * - list(&$a, &$b)
      * - list(&$a, &$b, list(&$c, &$d))
      *
-     * @param (ArrayItem|null)[] $items
+     * @param (ArrayItem | null)[] $items
      */
     private function hasAllItemsByRef(array $items): bool
     {
@@ -278,7 +278,7 @@ CODE_SAMPLE
             return $arrayItem->key->value;
         }
 
-        if ($arrayItem->key instanceof LNumber) {
+        if ($arrayItem->key instanceof Int_) {
             return $arrayItem->key->value;
         }
 
@@ -309,7 +309,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param array<ArrayItem|null> $arrayItems
+     * @param array<(ArrayItem | null)> $arrayItems
      * @return ArrayItem[]
      */
     private function getItemsByRef(array $arrayItems, int $condition): array

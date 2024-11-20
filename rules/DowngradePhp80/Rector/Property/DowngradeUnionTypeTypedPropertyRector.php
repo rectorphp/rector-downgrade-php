@@ -75,7 +75,7 @@ CODE_SAMPLE
 
     private function shouldRemoveProperty(Property $property): bool
     {
-        if ($property->type === null) {
+        if (! $property->type instanceof Node) {
             return false;
         }
 

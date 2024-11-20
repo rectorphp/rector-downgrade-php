@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\PhpDocDecorator;
 
+use PhpParser\Node;
 use PhpParser\Node\ComplexType;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;
@@ -110,7 +111,7 @@ final class PhpDocFromTypeDeclarationDecorator
         ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         array $requiredTypes
     ): void {
-        if ($param->type === null) {
+        if (! $param->type instanceof Node) {
             return;
         }
 
@@ -132,7 +133,7 @@ final class PhpDocFromTypeDeclarationDecorator
         ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         Type $requireType
     ): bool {
-        if ($param->type === null) {
+        if (! $param->type instanceof Node) {
             return false;
         }
 

@@ -46,13 +46,11 @@ EOS
 
         $needsDowngrade1 = sprintf(<<<EOS
 test %s
-EOS
-, 'more');
+EOS, 'more');
 
         $needsDowngrade2 = <<<EOS
 test
-EOS
-; $z = '';
+EOS; $z = '';
     }
 }
 

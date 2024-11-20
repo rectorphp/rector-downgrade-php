@@ -8,7 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
-use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Scalar\Int_;
 use Rector\Enum\JsonConstant;
 use Rector\NodeNameResolver\NodeNameResolver;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -35,19 +35,19 @@ final readonly class JsonConstCleaner
     /**
      * @param array<JsonConstant::*> $constants
      */
-    private function cleanByConstFetch(ConstFetch $constFetch, array $constants): ?LNumber
+    private function cleanByConstFetch(ConstFetch $constFetch, array $constants): ?Int_
     {
         if (! $this->nodeNameResolver->isNames($constFetch, $constants)) {
             return null;
         }
 
-        return new LNumber(0);
+        return new Int_(0);
     }
 
     /**
      * @param array<JsonConstant::*> $constants
      */
-    private function cleanByBitwiseOr(BitwiseOr $bitwiseOr, array $constants): null|Expr|LNumber
+    private function cleanByBitwiseOr(BitwiseOr $bitwiseOr, array $constants): null|Expr|Int_
     {
         $isLeftTransformed = $this->isTransformed($bitwiseOr->left, $constants);
         $isRightTransformed = $this->isTransformed($bitwiseOr->right, $constants);
@@ -64,7 +64,7 @@ final readonly class JsonConstCleaner
             return $bitwiseOr->right;
         }
 
-        return new LNumber(0);
+        return new Int_(0);
     }
 
     /**

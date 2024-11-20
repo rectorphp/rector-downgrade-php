@@ -20,7 +20,7 @@ class WithNullableReturnType
 {
     public function run()
     {
-        $callable = function () : ?string {
+        $callable = function (): ?string {
             return 'Hello world';
         };
     }

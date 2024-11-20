@@ -14,7 +14,7 @@ use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Param;
-use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ClassConst;
@@ -150,7 +150,7 @@ CODE_SAMPLE
                 continue;
             }
 
-            $classConst->consts[$key]->value = new LNumber(512);
+            $classConst->consts[$key]->value = new Int_(512);
             return $classConst;
         }
 

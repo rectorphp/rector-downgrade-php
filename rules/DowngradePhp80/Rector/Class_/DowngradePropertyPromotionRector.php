@@ -9,11 +9,11 @@ use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Param;
+use PhpParser\Node\PropertyItem;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Property;
-use PhpParser\Node\Stmt\PropertyProperty;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
@@ -208,7 +208,7 @@ CODE_SAMPLE
             /** @var string $name */
             $name = $this->getName($param->var);
 
-            $property = new Property($param->flags, [new PropertyProperty($name)], [], $param->type);
+            $property = new Property($param->flags, [new PropertyItem($name)], [], $param->type);
             $this->decoratePropertyWithParamDocInfo($classMethod, $param, $property);
 
             $hasNew = $param->default instanceof Expr && (bool) $this->betterNodeFinder->findFirstInstanceOf(

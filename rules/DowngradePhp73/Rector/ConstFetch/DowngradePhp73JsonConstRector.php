@@ -14,16 +14,16 @@ use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified as NameFullyQualified;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\If_;
-use PhpParser\Node\Stmt\Throw_;
 use PhpParser\Node\Stmt\TryCatch;
 use PhpParser\Node\VariadicPlaceholder;
-use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor;
 use Rector\DowngradePhp72\NodeManipulator\JsonConstCleaner;
 use Rector\Enum\JsonConstant;
 use Rector\NodeAnalyzer\DefineFuncCallAnalyzer;
@@ -102,9 +102,9 @@ CODE_SAMPLE
 
     /**
      * @param ConstFetch|BitwiseOr|If_|TryCatch|Expression $node
-     * @return int|null|Expr|If_|array<Expression|If_>
+     * @return null|Expr|If_|array<Expression|If_>
      */
-    public function refactor(Node $node): int|null|Expr|If_|array
+    public function refactor(Node $node): null|Expr|If_|array
     {
         if ($node instanceof If_) {
             return $this->refactorIf($node);
@@ -120,7 +120,7 @@ CODE_SAMPLE
                 $node->stmts,
                 function (Node $subNode): ?int {
                     if ($subNode instanceof Class_ || $subNode instanceof Function_ || $subNode instanceof Closure) {
-                        return NodeTraverser::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
+                        return NodeVisitor::DONT_TRAVERSE_CURRENT_AND_CHILDREN;
                     }
 
                     if (! $subNode instanceof Expression) {
@@ -219,12 +219,12 @@ CODE_SAMPLE
             ),
             [
                 'stmts' => [
-                    new Throw_(
+                    new Expression(new Throw_(
                         new New_(
                             new NameFullyQualified('Exception'),
                             [new Arg(new FuncCall(new Name('json_last_error_msg')))]
                         )
-                    ),
+                    )),
                 ],
             ]
         );
@@ -266,11 +266,6 @@ CODE_SAMPLE
         $found = false;
 
         foreach ([$bitwiseOr->left, $bitwiseOr->right] as $subNode) {
-            // Only `Node` instances can hold the constant.
-            if (! ($subNode instanceof Node)) {
-                continue;
-            }
-
             $found = match (true) {
                 $subNode instanceof BitwiseOr => (
                     $this->hasConstFetchInBitwiseOr($subNode, $constName)

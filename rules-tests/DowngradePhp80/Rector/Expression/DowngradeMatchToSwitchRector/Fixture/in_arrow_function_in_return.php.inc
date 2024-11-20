@@ -21,7 +21,7 @@ final class InArrowFunctionInReturn
 {
     public function run($value)
     {
-        return static function (mixed $default) : mixed {
+        return static function (mixed $default): mixed {
             switch (true) {
                 case is_string($default):
                     return sprintf('"%s"', $default);

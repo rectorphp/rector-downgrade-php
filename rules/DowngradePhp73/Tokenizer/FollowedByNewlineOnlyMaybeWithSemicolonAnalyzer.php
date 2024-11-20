@@ -15,12 +15,12 @@ final class FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer
 
         $nextTokenPosition = $node->getEndTokenPos() + 1;
 
-        if (isset($oldTokens[$nextTokenPosition]) && $oldTokens[$nextTokenPosition] === ';') {
+        if (isset($oldTokens[$nextTokenPosition]) && (string) $oldTokens[$nextTokenPosition] === ';') {
             ++$nextTokenPosition;
         }
 
         return ! isset($oldTokens[$nextTokenPosition]) ||
-            isset($oldTokens[$nextTokenPosition][1]) &&
-            \str_starts_with($oldTokens[$nextTokenPosition][1], "\n");
+            isset($oldTokens[$nextTokenPosition]) &&
+            \str_starts_with((string) $oldTokens[$nextTokenPosition], "\n");
     }
 }

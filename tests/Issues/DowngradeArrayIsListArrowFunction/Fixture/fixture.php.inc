@@ -23,7 +23,7 @@ class Fixture
 {
     public function run($items)
     {
-        $arrayIsListFunction = function (array $array) : bool {
+        $arrayIsListFunction = function (array $array): bool {
             if (function_exists('array_is_list')) {
                 return array_is_list($array);
             }

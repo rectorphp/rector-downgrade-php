@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp72\PhpDoc;
 
+use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -29,7 +30,7 @@ final readonly class NativeParamToPhpDocDecorator
 
     public function decorate(ClassMethod $classMethod, Param $param): void
     {
-        if ($param->type === null) {
+        if (! $param->type instanceof Node) {
             return;
         }
 

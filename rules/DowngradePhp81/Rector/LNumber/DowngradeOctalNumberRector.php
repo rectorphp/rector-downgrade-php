@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp81\Rector\LNumber;
 
 use PhpParser\Node;
-use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Scalar\Int_;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -51,16 +51,16 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [LNumber::class];
+        return [Int_::class];
     }
 
     /**
-     * @param LNumber $node
+     * @param Int_ $node
      */
     public function refactor(Node $node): ?Node
     {
         $numberKind = $node->getAttribute(AttributeKey::KIND);
-        if ($numberKind !== LNumber::KIND_OCT) {
+        if ($numberKind !== Int_::KIND_OCT) {
             return null;
         }
 

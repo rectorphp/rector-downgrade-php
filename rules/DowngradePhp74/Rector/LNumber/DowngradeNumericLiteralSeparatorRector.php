@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp74\Rector\LNumber;
 
 use PhpParser\Node;
-use PhpParser\Node\Scalar\DNumber;
-use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Scalar\Float_;
+use PhpParser\Node\Scalar\Int_;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -56,11 +56,11 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [LNumber::class, DNumber::class];
+        return [Int_::class, Float_::class];
     }
 
     /**
-     * @param LNumber|DNumber $node
+     * @param Int_|Float_ $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -81,16 +81,16 @@ CODE_SAMPLE
         return $node;
     }
 
-    private function shouldSkip(LNumber | DNumber $node, mixed $rawValue): bool
+    private function shouldSkip(Int_ | Float_ $node, mixed $rawValue): bool
     {
         if (! is_string($rawValue)) {
             return true;
         }
 
         // "_" notation can be applied to decimal numbers only
-        if ($node instanceof LNumber) {
+        if ($node instanceof Int_) {
             $numberKind = $node->getAttribute(AttributeKey::KIND);
-            if ($numberKind !== LNumber::KIND_DEC) {
+            if ($numberKind !== Int_::KIND_DEC) {
                 return true;
             }
         }

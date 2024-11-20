@@ -60,7 +60,7 @@ CODE_SAMPLE
     /**
      * @param Ternary|MethodCall $node
      */
-    public function refactor(Node $node): Ternary|null|int
+    public function refactor(Node $node): Ternary|null
     {
         if ($node instanceof Ternary) {
             if ($node->if instanceof Expr

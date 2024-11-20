@@ -23,7 +23,7 @@ final class InArrowFunction2
 {
     public function run($value)
     {
-        $mapped = static function (mixed $default) : mixed {
+        $mapped = static function (mixed $default): mixed {
             switch (true) {
                 case is_string($default):
                     return sprintf('"%s"', $default);

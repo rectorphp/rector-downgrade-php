@@ -20,7 +20,7 @@ class WithReturnType
 {
     public function run()
     {
-        $callable = function () : string {
+        $callable = function (): string {
             return 'Hello world';
         };
     }

@@ -152,7 +152,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param mixed[] $configuration
+     * @param DowngradeAttributeToAnnotation[] $configuration
      */
     public function configure(array $configuration): void
     {

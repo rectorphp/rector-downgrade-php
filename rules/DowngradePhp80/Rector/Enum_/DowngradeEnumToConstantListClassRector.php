@@ -137,7 +137,7 @@ CODE_SAMPLE
 
         $paramTypeNode = $isNullable ? new NullableTypeNode($constTypeNode) : $constTypeNode;
 
-        $paramTagValueNode = new ParamTagValueNode($paramTypeNode, false, $paramName, '');
+        $paramTagValueNode = new ParamTagValueNode($paramTypeNode, false, $paramName, '', false);
         $phpDocInfo->addTagValueNode($paramTagValueNode);
 
         $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($classMethod);

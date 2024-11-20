@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp81\Rector\Array_;
 
 use PhpParser\Node;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\ArrayItem;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Type\ArrayType;
+use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\IntegerType;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
@@ -89,10 +90,11 @@ CODE_SAMPLE
             }
 
             $type = $this->nodeTypeResolver->getType($item->value);
-            if (! $type instanceof ArrayType) {
+            if (! $type->isArray()->yes()) {
                 continue;
             }
 
+            /** @var ArrayType|ConstantArrayType $type */
             $keyType = $type->getKeyType();
             if ($keyType instanceof IntegerType) {
                 return true;

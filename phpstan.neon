@@ -1,6 +1,7 @@
-includes:
-    - vendor/symplify/phpstan-rules/config/symplify-rules.neon
-    - vendor/symplify/phpstan-rules/config/rector-rules.neon
+# to be enabled later once rector upgraded to use phpstan v2
+# includes:
+#    - vendor/symplify/phpstan-rules/config/symplify-rules.neon
+#    - vendor/symplify/phpstan-rules/config/rector-rules.neon
 
 parameters:
     level: 8
@@ -9,6 +10,8 @@ parameters:
 
     # requires exact closure types
     checkMissingCallableSignature: true
+
+    treatPhpDocTypesAsCertain: false
 
     paths:
         - src
@@ -24,11 +27,12 @@ parameters:
         - '*/Source/*'
 
     # see https://github.com/rectorphp/type-perfect/
-    type_perfect:
-        no_mixed: true
-        null_over_false: true
-        narrow_param: true
-        narrow_return: true
+# to be enabled later once rector upgraded to use phpstan v2
+#    type_perfect:
+#        no_mixed: true
+#        null_over_false: true
+#        narrow_param: true
+#        narrow_return: true
 
     ignoreErrors:
         # php enum value minus
@@ -55,3 +59,18 @@ parameters:
             message: '#Parameter \#1 \$attributeClass of class Rector\\DowngradePhp80\\ValueObject\\DowngradeAttributeToAnnotation constructor expects class\-string, string given#'
             path: "config/*"
 
+        # more advanced usage, but not always working
+        # see https://github.com/rectorphp/rector-src/actions/runs/11798721617/job/32865546672?pr=6422#step:5:110
+        - '#Doing instanceof PHPStan\\Type\\.+ is error\-prone and deprecated#'
+
+        # phpstan instanceof
+        -
+            identifier: phpstanApi.instanceofAssumption
+
+        -
+            identifier: phpstanApi.varTagAssumption
+
+        -
+            identifier: argument.type
+
+        - '#Asking about instanceof PHPStan\\.* is not covered by backward compatibility promise#'

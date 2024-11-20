@@ -20,7 +20,7 @@ use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Param;
-use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Scalar\Int_;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\ClosureType;
@@ -89,7 +89,7 @@ CODE_SAMPLE
     /**
      * @param FuncCall $node
      */
-    public function refactor(Node $node): FuncCall|Ternary|null
+    public function refactor(Node $node): FuncCall|null
     {
         if (! $this->isName($node, 'array_filter')) {
             return null;
@@ -164,7 +164,7 @@ CODE_SAMPLE
         $identical = new Identical($args[1]->value, $this->nodeFactory->createNull());
         $constFetch = new ConstFetch(new Name('ARRAY_FILTER_USE_BOTH'));
 
-        return new Ternary($identical, $constFetch, isset($args[2]) ? $args[2]->value : new LNumber(0));
+        return new Ternary($identical, $constFetch, isset($args[2]) ? $args[2]->value : new Int_(0));
     }
 
     private function isAlreadyConditionedToNull(Expr $expr): bool

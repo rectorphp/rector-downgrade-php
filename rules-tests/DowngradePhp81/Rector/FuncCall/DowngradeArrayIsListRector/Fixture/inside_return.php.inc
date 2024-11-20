@@ -15,7 +15,7 @@ namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector
 
 function insideReturn($arguments)
 {
-    $arrayIsListFunction = function (array $array) : bool {
+    $arrayIsListFunction = function (array $array): bool {
         if (function_exists('array_is_list')) {
             return array_is_list($array);
         }
