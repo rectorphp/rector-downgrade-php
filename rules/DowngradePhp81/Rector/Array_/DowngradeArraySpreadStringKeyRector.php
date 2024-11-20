@@ -11,6 +11,8 @@ use PHPStan\Analyser\MutatingScope;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\IntersectionType;
+use PHPStan\Type\UnionType;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
 use Rector\PHPStan\ScopeFetcher;
@@ -91,6 +93,14 @@ CODE_SAMPLE
 
             $type = $this->nodeTypeResolver->getType($item->value);
             if (! $type->isArray()->yes()) {
+                continue;
+            }
+
+            if ($type instanceof UnionType) {
+                continue;
+            }
+
+            if ($type instanceof IntersectionType) {
                 continue;
             }
 
