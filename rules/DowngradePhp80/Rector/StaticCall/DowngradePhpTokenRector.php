@@ -15,6 +15,7 @@ use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\Int_;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -144,6 +145,10 @@ CODE_SAMPLE
 
     private function skipPhpParserInternalToken(Type $type): bool
     {
+        if ($type instanceof ThisType) {
+            $type = $type->getStaticObjectType();
+        }
+
         if ($type instanceof ObjectType) {
             return $type->isInstanceOf('PhpParser\Internal\TokenPolyfill')
                 ->yes();
