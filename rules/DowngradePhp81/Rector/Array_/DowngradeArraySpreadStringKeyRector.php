@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp81\Rector\Array_;
 
-use PHPStan\Type\UnionType;
-use PHSPtan\Type\IntersectionType;
 use PhpParser\Node;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
@@ -13,6 +11,8 @@ use PHPStan\Analyser\MutatingScope;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\UnionType;
+use PHSPtan\Type\IntersectionType;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
 use Rector\PHPStan\ScopeFetcher;
