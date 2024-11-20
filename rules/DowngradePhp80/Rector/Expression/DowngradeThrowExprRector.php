@@ -7,11 +7,13 @@ namespace Rector\DowngradePhp80\Rector\Expression;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ArrayDimFetch;
+use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\Coalesce;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\BooleanNot;
+use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\Isset_;
 use PhpParser\Node\Expr\PropertyFetch;
@@ -25,6 +27,7 @@ use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
 use Rector\NodeAnalyzer\CoalesceAnalyzer;
 use Rector\NodeManipulator\BinaryOpManipulator;
+use Rector\Php72\NodeFactory\AnonymousFunctionFactory;
 use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -41,6 +44,7 @@ final class DowngradeThrowExprRector extends AbstractRector
         private readonly CoalesceAnalyzer $coalesceAnalyzer,
         private readonly BinaryOpManipulator $binaryOpManipulator,
         private readonly BetterNodeFinder $betterNodeFinder,
+        private readonly AnonymousFunctionFactory $anonymousFunctionFactory
     ) {
     }
 
@@ -69,15 +73,19 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Expression::class, Return_::class];
+        return [ArrowFunction::class, Expression::class, Return_::class];
     }
 
     /**
-     * @param Expression|Return_ $node
+     * @param ArrowFunction|Expression|Return_ $node
      * @return Node|Node[]|null
      */
     public function refactor(Node $node): Node|array|null
     {
+        if ($node instanceof ArrowFunction) {
+            return $this->refactorArrowFunctionReturn($node);
+        }
+
         if ($node instanceof Return_) {
             return $this->refactorReturn($node);
         }
@@ -102,6 +110,21 @@ CODE_SAMPLE
         }
 
         return $this->refactorDirectCoalesce($node);
+    }
+
+    private function refactorArrowFunctionReturn(ArrowFunction $arrowFunction): ?Closure
+    {
+        if (! $arrowFunction->expr instanceof Throw_) {
+            return null;
+        }
+
+        $stmts = [new Expression($arrowFunction->expr)];
+        return $this->anonymousFunctionFactory->create(
+            $arrowFunction->params,
+            $stmts,
+            $arrowFunction->returnType,
+            $arrowFunction->static
+        );
     }
 
     /**
