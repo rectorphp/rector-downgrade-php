@@ -12,7 +12,7 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\UnionType;
-use PHSPtan\Type\IntersectionType;
+use PHPStan\Type\IntersectionType;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
 use Rector\PHPStan\ScopeFetcher;
