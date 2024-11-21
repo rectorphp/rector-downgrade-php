@@ -157,7 +157,7 @@ CODE_SAMPLE
     /**
      * Count the number of params by reference placed at the end
      * These params are not needed anymore, so they can be removed
-     * @param (ArrayItem | null)[] $listItems
+     * @param (ArrayItem|null)[] $listItems
      */
     private function countRightSideMostParamsByRefOrEmpty(array $listItems): int
     {
@@ -192,7 +192,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param (ArrayItem | null)[] $listItems
+     * @param (ArrayItem|null)[] $listItems
      * @param (int|string)[] $nestedArrayIndexes
      * @return Node\Stmt[]
      */
@@ -250,7 +250,7 @@ CODE_SAMPLE
      * - list(&$a, $b)
      * - list($a, $b, list(&$c, $d))
      *
-     * @param (ArrayItem | null)[] $items
+     * @param (ArrayItem|null)[] $items
      */
     private function hasAnyItemByRef(array $items): bool
     {
@@ -262,7 +262,7 @@ CODE_SAMPLE
      * - list(&$a, &$b)
      * - list(&$a, &$b, list(&$c, &$d))
      *
-     * @param (ArrayItem | null)[] $items
+     * @param (ArrayItem|null)[] $items
      */
     private function hasAllItemsByRef(array $items): bool
     {
