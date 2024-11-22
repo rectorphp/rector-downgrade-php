@@ -22,9 +22,9 @@ final class NewNotPromoted
 {
     public stdClass $obj;
 
-    public function __construct(stdClass $obj = null)
+    public function __construct(?stdClass $obj = null)
     {
-        $obj ??= new stdClass;
+        $this->obj = $obj ?? new stdClass;
         $this->obj = $obj;
     }
 }
