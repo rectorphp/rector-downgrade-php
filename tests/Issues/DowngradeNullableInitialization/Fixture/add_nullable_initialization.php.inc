@@ -22,7 +22,7 @@ final class AddNullableInitializtion
     private array $doctrineTypeToScalarType;
     public function __construct(?array $doctrineTypeToScalarType = null)
     {
-        $doctrineTypeToScalarType ??= [
+        $this->doctrineTypeToScalarType = $doctrineTypeToScalarType ?? [
             'tinyint' => new \PHPStan\Type\BooleanType(),
         ];
         $this->doctrineTypeToScalarType = $doctrineTypeToScalarType;
