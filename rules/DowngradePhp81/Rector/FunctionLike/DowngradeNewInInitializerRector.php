@@ -162,7 +162,6 @@ CODE_SAMPLE
             /** @var Variable $paramVar */
             $paramVar = $param->var;
 
-            // check for property promotion
             if ($isConstructor) {
                 $propertyFetch = new PropertyFetch(new Variable('this'), $paramVar->name);
                 $coalesce = new Coalesce($param->var, $default);
