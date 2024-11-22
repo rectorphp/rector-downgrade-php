@@ -176,7 +176,7 @@ CODE_SAMPLE
             }
 
             // recheck after
-            if ($isConstructor) {
+            if ($isConstructor && $param->type !== null) {
                 $param->type = $this->ensureNullableType($param->type);
             }
 
