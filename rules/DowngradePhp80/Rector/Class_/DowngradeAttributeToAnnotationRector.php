@@ -110,6 +110,9 @@ CODE_SAMPLE
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
                 if ($this->shouldSkipAttribute($attribute)) {
+                    // avoid error on same line
+                    // as attribute ->getStartLine() always equal with node ->getStartLine()
+                    // can't validate it, so enforce to reprint later
                     $requireReprint = true;
                     continue;
                 }
