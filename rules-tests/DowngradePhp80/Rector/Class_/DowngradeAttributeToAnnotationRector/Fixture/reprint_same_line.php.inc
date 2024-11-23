@@ -17,7 +17,7 @@ namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotati
 use AllowDynamicProperties;
 
 #[AllowDynamicProperties]
-class User
+class ReprintSameLine
 {
 }
 
