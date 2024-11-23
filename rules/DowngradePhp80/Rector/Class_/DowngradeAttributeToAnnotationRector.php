@@ -19,7 +19,6 @@ use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
 use Rector\DowngradePhp80\ValueObject\DowngradeAttributeToAnnotation;
 use Rector\NodeFactory\DoctrineAnnotationFactory;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -106,14 +105,9 @@ CODE_SAMPLE
         $this->isDowngraded = false;
 
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
-        $requireReprint = false;
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
                 if ($this->shouldSkipAttribute($attribute)) {
-                    // avoid error on same line
-                    // as attribute ->getStartLine() always equal with node ->getStartLine()
-                    // can't validate it, so enforce to reprint later
-                    $requireReprint = true;
                     continue;
                 }
 
@@ -151,11 +145,6 @@ CODE_SAMPLE
         $this->cleanupEmptyAttrGroups($node);
 
         if (! $this->isDowngraded) {
-            if ($requireReprint) {
-                $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
-                return $node;
-            }
-
             return null;
         }
 
