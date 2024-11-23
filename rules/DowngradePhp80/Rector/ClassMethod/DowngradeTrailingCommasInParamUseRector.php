@@ -123,7 +123,6 @@ CODE_SAMPLE
         }
 
         $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
-        $last->setAttribute(AttributeKey::FUNC_ARGS_TRAILING_COMMA, false);
 
         return $node;
     }
