@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\Class_;
 
+use PhpParser\Comment;
 use PhpParser\Node;
 use PhpParser\Node\Attribute;
 use PhpParser\Node\Param;
@@ -19,6 +20,8 @@ use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
 use Rector\DowngradePhp80\ValueObject\DowngradeAttributeToAnnotation;
 use Rector\NodeFactory\DoctrineAnnotationFactory;
+use Rector\NodeTypeResolver\Node\AttributeKey;
+use Rector\PhpParser\Printer\BetterStandardPrinter;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -47,6 +50,7 @@ final class DowngradeAttributeToAnnotationRector extends AbstractRector implemen
         private readonly DoctrineAnnotationFactory $doctrineAnnotationFactory,
         private readonly DocBlockUpdater $docBlockUpdater,
         private readonly PhpDocInfoFactory $phpDocInfoFactory,
+        private readonly BetterStandardPrinter $betterStandardPrinter
     ) {
     }
 
@@ -105,9 +109,19 @@ CODE_SAMPLE
         $this->isDowngraded = false;
 
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
+        $attributesAsComments = [];
+        $oldTokens = $this->file->getOldTokens();
+
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
                 if ($this->shouldSkipAttribute($attribute)) {
+                    if (isset($oldTokens[$attrGroup->getEndTokenPos() + 1]) && ! str_contains((string) $oldTokens[$attrGroup->getEndTokenPos() + 1], "\n")) {
+                        $print = $this->betterStandardPrinter->print($attrGroup);
+                        $attributesAsComments[] = new Comment($print);
+
+                        unset($attrGroup->attrs[$key]);
+                    }
+
                     continue;
                 }
 
@@ -143,6 +157,12 @@ CODE_SAMPLE
 
         // cleanup empty attr groups
         $this->cleanupEmptyAttrGroups($node);
+
+        if ($attributesAsComments !== []) {
+            $this->isDowngraded = true;
+            $currentComments = $node->getAttribute(AttributeKey::COMMENTS) ?? [];
+            $node->setAttribute(AttributeKey::COMMENTS, array_merge($currentComments, $attributesAsComments));
+        }
 
         if (! $this->isDowngraded) {
             return null;
