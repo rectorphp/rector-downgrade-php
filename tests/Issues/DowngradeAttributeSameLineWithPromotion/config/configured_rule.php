@@ -7,8 +7,5 @@ use Rector\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector;
 use Rector\DowngradePhp80\Rector\Class_\DowngradePropertyPromotionRector;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->rules([
-        DowngradeAttributeToAnnotationRector::class,
-        DowngradePropertyPromotionRector::class
-    ]);
+    $rectorConfig->rules([DowngradeAttributeToAnnotationRector::class, DowngradePropertyPromotionRector::class]);
 };

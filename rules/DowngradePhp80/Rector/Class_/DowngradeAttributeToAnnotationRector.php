@@ -115,7 +115,10 @@ CODE_SAMPLE
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
                 if ($this->shouldSkipAttribute($attribute)) {
-                    if (isset($oldTokens[$attrGroup->getEndTokenPos() + 1]) && ! str_contains((string) $oldTokens[$attrGroup->getEndTokenPos() + 1], "\n")) {
+                    if (isset($oldTokens[$attrGroup->getEndTokenPos() + 1]) && ! str_contains(
+                        (string) $oldTokens[$attrGroup->getEndTokenPos() + 1],
+                        "\n"
+                    )) {
                         $print = $this->betterStandardPrinter->print($attrGroup);
                         $attributesAsComments[] = new Comment($print);
 
