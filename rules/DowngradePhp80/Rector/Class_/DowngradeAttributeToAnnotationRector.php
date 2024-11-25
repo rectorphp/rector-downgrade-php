@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp80\Rector\Class_;
 
-use PhpParser\Comment;
 use PhpParser\Node;
 use PhpParser\Node\Attribute;
 use PhpParser\Node\Param;
@@ -20,8 +19,6 @@ use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
 use Rector\DowngradePhp80\ValueObject\DowngradeAttributeToAnnotation;
 use Rector\NodeFactory\DoctrineAnnotationFactory;
-use Rector\NodeTypeResolver\Node\AttributeKey;
-use Rector\PhpParser\Printer\BetterStandardPrinter;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -49,8 +46,7 @@ final class DowngradeAttributeToAnnotationRector extends AbstractRector implemen
     public function __construct(
         private readonly DoctrineAnnotationFactory $doctrineAnnotationFactory,
         private readonly DocBlockUpdater $docBlockUpdater,
-        private readonly PhpDocInfoFactory $phpDocInfoFactory,
-        private readonly BetterStandardPrinter $betterStandardPrinter
+        private readonly PhpDocInfoFactory $phpDocInfoFactory
     ) {
     }
 
@@ -109,7 +105,6 @@ CODE_SAMPLE
         $this->isDowngraded = false;
 
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
-        $attributesAsComments = [];
         $oldTokens = $this->file->getOldTokens();
 
         foreach ($node->attrGroups as $attrGroup) {
