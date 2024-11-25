@@ -119,10 +119,9 @@ CODE_SAMPLE
                         (string) $oldTokens[$attrGroup->getEndTokenPos() + 1],
                         "\n"
                     )) {
-                        $print = $this->betterStandardPrinter->print($attrGroup);
-                        $attributesAsComments[] = new Comment($print);
-
-                        unset($attrGroup->attrs[$key]);
+                        // add new line
+                        $oldTokens[$attrGroup->getEndTokenPos() + 1]->text = "\n" . $oldTokens[$attrGroup->getEndTokenPos() + 1]->text;
+                        $this->isDowngraded = true;
                     }
 
                     continue;
@@ -160,12 +159,6 @@ CODE_SAMPLE
 
         // cleanup empty attr groups
         $this->cleanupEmptyAttrGroups($node);
-
-        if ($attributesAsComments !== []) {
-            $this->isDowngraded = true;
-            $currentComments = $node->getAttribute(AttributeKey::COMMENTS) ?? [];
-            $node->setAttribute(AttributeKey::COMMENTS, array_merge($currentComments, $attributesAsComments));
-        }
 
         if (! $this->isDowngraded) {
             return null;
