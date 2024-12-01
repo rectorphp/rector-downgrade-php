@@ -77,6 +77,7 @@ CODE_SAMPLE
                         ), $node->name, $node->args);
                         return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
                     }
+
                     $methodCallOrPropertyFetch = new MethodCall(new PropertyFetch(
                         $nullsafeVariable,
                         $node->var->name
@@ -98,12 +99,6 @@ CODE_SAMPLE
                     $node->var->name
                 ), $node->name);
                 return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
-
-                return new Ternary(
-                    $assign,
-                    $methodCallOrPropertyFetch,
-                    $this->nodeFactory->createNull()
-                );
             }
 
             return null;
