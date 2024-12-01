@@ -69,7 +69,11 @@ CODE_SAMPLE
 
                 $assign = new Assign($nullsafeVariable, $node->var->var);
                 $methodCallOrPropertyFetch = $node->var instanceof NullsafeMethodCall
-                    ? new MethodCall(new MethodCall($nullsafeVariable, $node->var->name, $node->var->args), $node->name, $node->args)
+                    ? new MethodCall(new MethodCall(
+                        $nullsafeVariable,
+                        $node->var->name,
+                        $node->var->args
+                    ), $node->name, $node->args)
                     : new PropertyFetch(new PropertyFetch($nullsafeVariable, $node->var->name), $node->name);
 
                 return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
