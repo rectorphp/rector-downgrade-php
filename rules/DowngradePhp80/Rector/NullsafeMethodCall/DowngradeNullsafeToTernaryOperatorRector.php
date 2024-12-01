@@ -68,13 +68,24 @@ CODE_SAMPLE
                 $nullsafeVariable = $this->createNullsafeVariable();
 
                 $assign = new Assign($nullsafeVariable, $node->var->var);
-                $methodCallOrPropertyFetch = $node->var instanceof NullsafeMethodCall
-                    ? new MethodCall(new MethodCall(
-                        $nullsafeVariable,
-                        $node->var->name,
-                        $node->var->args
-                    ), $node->name, $node->args)
-                    : new PropertyFetch(new PropertyFetch($nullsafeVariable, $node->var->name), $node->name);
+
+                if ($node instanceof MethodCall) {
+                    if ($node->var instanceof NullsafeMethodCall) {
+                        $methodCallOrPropertyFetch = new MethodCall(new MethodCall($nullsafeVariable, $node->var->name, $node->var->args), $node->name, $node->args);
+                        return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
+                    } else {
+                        $methodCallOrPropertyFetch = new MethodCall(new PropertyFetch($nullsafeVariable, $node->var->name), $node->name, $node->args);
+                        return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
+                    }
+                } else {
+                    if ($node->var instanceof NullsafeMethodCall) {
+                        $methodCallOrPropertyFetch = new PropertyFetch(new MethodCall($nullsafeVariable, $node->var->name, $node->var->args), $node->name);
+                        return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
+                    } else {
+                        $methodCallOrPropertyFetch = new PropertyFetch(new PropertyFetch($nullsafeVariable, $node->var->name), $node->name);
+                        return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
+                    }
+                }
 
                 return new Ternary($assign, $methodCallOrPropertyFetch, $this->nodeFactory->createNull());
             }
