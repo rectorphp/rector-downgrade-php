@@ -102,12 +102,8 @@ CODE_SAMPLE
                 break;
             }
 
-            if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) === ',') {
-                $tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text = '';
-                break;
-            }
-
-            ++$iteration;
+            $tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text = '';
+            break;
         }
 
         return $node;
