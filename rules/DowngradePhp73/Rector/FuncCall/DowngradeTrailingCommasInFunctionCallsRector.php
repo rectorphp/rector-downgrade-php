@@ -10,7 +10,6 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\StaticCall;
 use Rector\DowngradePhp73\Tokenizer\FollowedByCommaAnalyzer;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -90,8 +89,17 @@ CODE_SAMPLE
             return null;
         }
 
-        // remove comma
-        $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
+        $tokens = $this->file->getOldTokens();
+        $iteration = 1;
+
+        while (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration])) {
+            if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) === ',') {
+                $tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text = '';
+                break;
+            }
+
+            ++$iteration;
+        }
 
         return $node;
     }
