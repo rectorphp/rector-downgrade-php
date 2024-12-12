@@ -94,6 +94,7 @@ CODE_SAMPLE
 
         while (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration])) {
             if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) === '') {
+                ++$iteration;
                 continue;
             }
 
