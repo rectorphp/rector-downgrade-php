@@ -63,8 +63,11 @@ class Fixture
 {
     public function getDefinition(): FixerDefinitionInterface
     {
-        return new FixerDefinition('Sorts attributes using the configured sort algorithm.', [
-            new VersionSpecificCodeSample(<<<'EOL'
+        return new FixerDefinition(
+            'Sorts attributes using the configured sort algorithm.',
+            [
+                new VersionSpecificCodeSample(
+                    <<<'EOL'
 <?php
 
 #[Foo]
@@ -82,8 +85,11 @@ Corge(a: 'test'),
 class Sample2 {}
 
 EOL
-, new VersionSpecification(80000)),
-            new VersionSpecificCodeSample(<<<'EOL'
+,
+                    new VersionSpecification(80000)
+                ),
+                new VersionSpecificCodeSample(
+                    <<<'EOL'
 <?php
 
 use A\B\Foo;
@@ -97,8 +103,12 @@ use A\B as AB;
 class Sample1 {}
 
 EOL
-, new VersionSpecification(80000), ['sort_algorithm' => self::ORDER_CUSTOM, 'order' => ['A\B\Qux', 'A\B\Bar', 'A\B\Corge']]),
-        ]);
+,
+                    new VersionSpecification(80000),
+                    ['sort_algorithm' => self::ORDER_CUSTOM, 'order' => ['A\B\Qux', 'A\B\Bar', 'A\B\Corge']]
+                ),
+            ]
+        );
     }
 }
 

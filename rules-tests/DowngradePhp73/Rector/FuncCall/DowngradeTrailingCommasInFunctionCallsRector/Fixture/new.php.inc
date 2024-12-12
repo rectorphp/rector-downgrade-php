@@ -22,7 +22,10 @@ class Foo
 {
     public function doFoo()
     {
-        new self('foo', 'bar');
+        new self(
+            'foo',
+            'bar'
+        );
     }
 }
 ?>

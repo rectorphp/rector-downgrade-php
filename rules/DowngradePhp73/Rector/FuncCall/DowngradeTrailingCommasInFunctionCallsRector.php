@@ -90,8 +90,10 @@ CODE_SAMPLE
             return null;
         }
 
-        // remove comma
-        $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
+        $tokens = $this->file->getOldTokens();
+        if (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + 1]) && $tokens[$args[$lastArgKey]->getEndTokenPos() + 1]->text === ',') {
+            $tokens[$args[$lastArgKey]->getEndTokenPos() + 1]->text = '';
+        }
 
         return $node;
     }

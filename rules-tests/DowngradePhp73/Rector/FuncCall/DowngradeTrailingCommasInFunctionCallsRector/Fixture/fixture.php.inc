@@ -26,12 +26,13 @@ class Fixture
 {
     public function run()
     {
-        compact('posts', 'units');
-        $this->setData('posts', 'units');
+        compact('posts','units');
+        $this->setData('posts','units');
 
-        self::run('posts', 'units');
+        self::run('posts','units');
 
-        self::run('posts', 'units');
+        self::run('posts',
+                  'units');
     }
 }
 
