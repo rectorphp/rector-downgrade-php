@@ -37,16 +37,19 @@ class Fixture
 SELECT *
 FROM `table`
 WHERE `column` = true;
-SQL;
+SQL
+;
         $this->setOnClick(<<<SQL
 SELECT *
 FROM `table`
 WHERE `column` = true;
-SQL);
+SQL
+);
         $this->setOnClick(<<<JAVASCRIPT
 document.getElementById('{$this->getHtmlId()}').value = '';
 document.getElementById('{$this->getHtmlId()}').onchange();
-JAVASCRIPT);
+JAVASCRIPT
+);
     }
 }
 
