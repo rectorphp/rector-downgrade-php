@@ -33,7 +33,8 @@ class CommaInArray
 <?php
 /** @readonly */
 class C {
-}\n
+}
+
 EOT
 ,
             new \stdClass()
