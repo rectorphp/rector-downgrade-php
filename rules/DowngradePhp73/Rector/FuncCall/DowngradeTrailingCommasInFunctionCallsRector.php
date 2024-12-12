@@ -93,6 +93,14 @@ CODE_SAMPLE
         $iteration = 1;
 
         while (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration])) {
+            if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) === '') {
+                continue;
+            }
+
+            if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) !== ',') {
+                break;
+            }
+
             if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) === ',') {
                 $tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text = '';
                 break;
