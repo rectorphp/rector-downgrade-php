@@ -90,7 +90,7 @@ CODE_SAMPLE
         }
 
         $tokens = $this->file->getOldTokens();
-        if (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + 1]) && $tokens[$args[$lastArgKey]->getEndTokenPos() + 1]->text === ',') {
+        if (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + 1]) && trim($tokens[$args[$lastArgKey]->getEndTokenPos() + 1]->text) === ',') {
             $tokens[$args[$lastArgKey]->getEndTokenPos() + 1]->text = '';
         }
 
