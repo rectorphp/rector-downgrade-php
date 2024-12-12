@@ -22,7 +22,7 @@ class MultiSpace
 {
     public function run()
     {
-        self::run('posts','units');
+        self::run('posts','units'   );
     }
 }
 

@@ -90,8 +90,15 @@ CODE_SAMPLE
         }
 
         $tokens = $this->file->getOldTokens();
-        if (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + 1]) && trim($tokens[$args[$lastArgKey]->getEndTokenPos() + 1]->text) === ',') {
-            $tokens[$args[$lastArgKey]->getEndTokenPos() + 1]->text = '';
+        $iteration = 1;
+
+        while (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration])) {
+            if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) === ',') {
+                $tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text = '';
+                break;
+            }
+
+            ++$iteration;
         }
 
         return $node;
