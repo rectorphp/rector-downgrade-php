@@ -7,7 +7,6 @@ namespace Rector\DowngradePhp84\Rector\MethodCall;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -59,7 +58,9 @@ CODE_SAMPLE
             return null;
         }
 
-        $node->var->setAttribute(AttributeKey::ORIGINAL_NODE, null);
+        $oldTokens[$node->var->getStartTokenPos()]->text = '(' . $oldTokens[$node->var->getStartTokenPos()];
+        $oldTokens[$node->var->getEndTokenPos()]->text .= ')';
+
         return $node;
     }
 }

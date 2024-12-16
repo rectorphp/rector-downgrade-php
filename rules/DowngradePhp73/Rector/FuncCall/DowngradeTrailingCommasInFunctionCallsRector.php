@@ -10,6 +10,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\StaticCall;
 use Rector\DowngradePhp73\Tokenizer\FollowedByCommaAnalyzer;
+use Rector\DowngradePhp73\Tokenizer\TrailingCommaRemover;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -20,7 +21,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeTrailingCommasInFunctionCallsRector extends AbstractRector
 {
     public function __construct(
-        private readonly FollowedByCommaAnalyzer $followedByCommaAnalyzer
+        private readonly FollowedByCommaAnalyzer $followedByCommaAnalyzer,
+        private readonly TrailingCommaRemover $trailingCommaRemover
     ) {
     }
 
@@ -89,22 +91,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $tokens = $this->file->getOldTokens();
-        $iteration = 1;
-
-        while (isset($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration])) {
-            if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) === '') {
-                ++$iteration;
-                continue;
-            }
-
-            if (trim($tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text) !== ',') {
-                break;
-            }
-
-            $tokens[$args[$lastArgKey]->getEndTokenPos() + $iteration]->text = '';
-            break;
-        }
+        $this->trailingCommaRemover->remove($this->file, $lastArg);
 
         return $node;
     }
