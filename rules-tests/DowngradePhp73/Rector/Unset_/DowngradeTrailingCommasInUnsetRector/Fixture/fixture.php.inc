@@ -27,7 +27,10 @@ class Fixture
     {
         $a = '';
         unset($a, $b);
-        unset($c, $d);
+        unset(
+            $c,
+            $d
+        );
     }
 }
 
