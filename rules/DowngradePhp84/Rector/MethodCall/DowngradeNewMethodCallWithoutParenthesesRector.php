@@ -54,7 +54,14 @@ CODE_SAMPLE
         }
 
         $oldTokens = $this->file->getOldTokens();
-        if (isset($oldTokens[$node->getStartTokenPos()]) && (string) $oldTokens[$node->getStartTokenPos()] === '(') {
+        $startTokenPos = $node->getStartTokenPos();
+        $endTokenPos = $node->getEndTokenPos();
+
+        if (! isset($oldTokens[$startTokenPos], $oldTokens[$endTokenPos])) {
+            return null;
+        }
+
+        if ((string) $oldTokens[$node->getStartTokenPos()] === '(') {
             return null;
         }
 
