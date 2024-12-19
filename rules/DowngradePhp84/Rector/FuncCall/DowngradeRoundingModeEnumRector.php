@@ -6,8 +6,12 @@ namespace Rector\DowngradePhp84\Rector\FuncCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
+use PhpParser\Node\Name\FullyQualified;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -21,7 +25,7 @@ final class DowngradeRoundingModeEnumRector extends AbstractRector
 {
     public function getNodeTypes(): array
     {
-        return [Node\Expr\FuncCall::class];
+        return [FuncCall::class];
     }
 
     public function getRuleDefinition(): RuleDefinition
@@ -67,26 +71,23 @@ CODE_SAMPLE
 
         $modeArg = $args[2]->value;
         $hasChanged = false;
-        if ($modeArg instanceof ClassConstFetch) {
-            if ($modeArg->class instanceof Name && $modeArg->class->name === 'RoundingMode') {
-                if (!($modeArg->name instanceof Node\Identifier)) {
-                    return null;
-                }
-                $constantName = match ($modeArg->name->name) {
-                    'HalfAwayFromZero' => 'PHP_ROUND_HALF_UP',
-                    'HalfTowardsZero' => 'PHP_ROUND_HALF_DOWN',
-                    'HalfEven' => 'PHP_ROUND_HALF_EVEN',
-                    'HalfOdd' => 'PHP_ROUND_HALF_ODD',
-                    default => null,
-                };
-
-                if ($constantName === null) {
-                    return null;
-                }
-
-                $args[2]->value = new Node\Expr\ConstFetch(new Node\Name\FullyQualified($constantName));
-                $hasChanged = true;
+        if ($modeArg instanceof ClassConstFetch && ($modeArg->class instanceof Name && $modeArg->class->name === 'RoundingMode')) {
+            if (! ($modeArg->name instanceof Identifier)) {
+                return null;
             }
+
+            $constantName = match ($modeArg->name->name) {
+                'HalfAwayFromZero' => 'PHP_ROUND_HALF_UP',
+                'HalfTowardsZero' => 'PHP_ROUND_HALF_DOWN',
+                'HalfEven' => 'PHP_ROUND_HALF_EVEN',
+                'HalfOdd' => 'PHP_ROUND_HALF_ODD',
+                default => null,
+            };
+            if ($constantName === null) {
+                return null;
+            }
+            $args[2]->value = new ConstFetch(new FullyQualified($constantName));
+            $hasChanged = true;
         }
 
         if ($hasChanged) {
