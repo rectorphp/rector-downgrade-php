@@ -12,9 +12,9 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
- * @changelog https://wiki.php.net/rfc/new_without_parentheses
+ * @changelog wiki.php.net/rfc/correctly_name_the_rounding_mode_and_make_it_an_enum
  *
- * @see \Rector\Tests\DowngradePhp84\Rector\MethodCall\DowngradeNewMethodCallWithoutParenthesesRector\DowngradeNewMethodCallWithoutParenthesesRectorTest
+ * @see \Rector\Tests\DowngradePhp84\Rector\FuncCall\DowngradeRoundingModeEnumRector\DowngradeRoundingModeEnumRectorTest
  */
 final class DowngradeRoundingModeEnumRector extends AbstractRector
 {
