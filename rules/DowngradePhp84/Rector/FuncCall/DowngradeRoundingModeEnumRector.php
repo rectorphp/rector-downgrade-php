@@ -71,8 +71,8 @@ CODE_SAMPLE
 
         $modeArg = $args[2]->value;
         $hasChanged = false;
-        if ($modeArg instanceof ClassConstFetch && ($modeArg->class instanceof Name && $modeArg->class->name === 'RoundingMode')) {
-            if (! ($modeArg->name instanceof Identifier)) {
+        if ($modeArg instanceof ClassConstFetch && $modeArg->class instanceof FullyQualified && $this->isName($modeArg->class, 'RoundingMode')) {
+            if (! $modeArg->name instanceof Identifier) {
                 return null;
             }
 
