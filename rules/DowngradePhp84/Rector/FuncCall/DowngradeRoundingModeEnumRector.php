@@ -80,7 +80,7 @@ CODE_SAMPLE
                     return null;
                 }
 
-                $args[2]->value = new Node\Expr\ConstFetch(new Node\Name($constantName));
+                $args[2]->value = new Node\Expr\ConstFetch(new Node\Name\FullyQualified($constantName));
                 $hasChanged = true;
             }
         }

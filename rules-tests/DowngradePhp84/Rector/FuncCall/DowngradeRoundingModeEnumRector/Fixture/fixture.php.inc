@@ -23,10 +23,10 @@ namespace Rector\Tests\Php84\Rector\FuncCall\RoundingModeEnumRector;
 
 round(1.5, 0);
 round(1.5);
-round(1.5, 0, PHP_ROUND_HALF_UP);
-round(1.5, 0, PHP_ROUND_HALF_DOWN);
-round(1.5, 0, PHP_ROUND_HALF_EVEN);
-round(1.5, 0, PHP_ROUND_HALF_ODD);
+round(1.5, 0, \PHP_ROUND_HALF_UP);
+round(1.5, 0, \PHP_ROUND_HALF_DOWN);
+round(1.5, 0, \PHP_ROUND_HALF_EVEN);
+round(1.5, 0, \PHP_ROUND_HALF_ODD);
 round(1.5, 0, \RoundingMode::TowardsZero);
 round(1.5, 0, \RoundingMode::AwayFromZero);
 round(1.5, 0, \RoundingMode::NegativeInfinity);
