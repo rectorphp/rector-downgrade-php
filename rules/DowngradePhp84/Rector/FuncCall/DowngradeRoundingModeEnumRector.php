@@ -7,6 +7,7 @@ namespace Rector\DowngradePhp84\Rector\FuncCall;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Name;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -46,7 +47,7 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if (!$this->isName($node, 'round')) {
+        if (! $this->isName($node, 'round')) {
             return null;
         }
 
@@ -60,14 +61,17 @@ CODE_SAMPLE
             return null;
         }
 
-        if (!isset($args[2])) {
+        if (! isset($args[2])) {
             return null;
         }
 
         $modeArg = $args[2]->value;
         $hasChanged = false;
         if ($modeArg instanceof ClassConstFetch) {
-            if ($modeArg->class->name === 'RoundingMode') {
+            if ($modeArg->class instanceof Name && $modeArg->class->name === 'RoundingMode') {
+                if (!($modeArg->name instanceof Node\Identifier)) {
+                    return null;
+                }
                 $constantName = match ($modeArg->name->name) {
                     'HalfAwayFromZero' => 'PHP_ROUND_HALF_UP',
                     'HalfTowardsZero' => 'PHP_ROUND_HALF_DOWN',
