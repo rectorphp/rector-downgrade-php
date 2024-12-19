@@ -86,6 +86,7 @@ CODE_SAMPLE
             if ($constantName === null) {
                 return null;
             }
+
             $args[2]->value = new ConstFetch(new FullyQualified($constantName));
             $hasChanged = true;
         }
