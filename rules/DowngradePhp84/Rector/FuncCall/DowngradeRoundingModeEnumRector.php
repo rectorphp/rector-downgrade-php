@@ -60,7 +60,12 @@ CODE_SAMPLE
             return null;
         }
 
+        if (!isset($args[2])) {
+            return null;
+        }
+
         $modeArg = $args[2]->value;
+        $hasChanged = false;
         if ($modeArg instanceof ClassConstFetch) {
             if ($modeArg->class->name === 'RoundingMode') {
                 $constantName = match ($modeArg->name->name) {
@@ -76,9 +81,14 @@ CODE_SAMPLE
                 }
 
                 $args[2]->value = new Node\Expr\ConstFetch(new Node\Name($constantName));
+                $hasChanged = true;
             }
         }
 
-        return $node;
+        if ($hasChanged) {
+            return $node;
+        }
+
+        return null;
     }
 }
