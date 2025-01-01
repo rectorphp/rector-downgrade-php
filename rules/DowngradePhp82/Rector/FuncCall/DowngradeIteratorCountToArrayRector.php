@@ -12,13 +12,13 @@ use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\NodeTraverser;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use Rector\NodeAnalyzer\ArgsAnalyzer;
 use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
-use PHPStan\Type\TypeCombinator;
 
 /**
  * @changelog https://www.php.net/manual/en/migration82.other-changes.php#migration82.other-changes.functions.spl
