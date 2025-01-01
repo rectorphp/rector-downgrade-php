@@ -6,13 +6,11 @@ namespace Rector\DowngradePhp82\Rector\FuncCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
-use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name\FullyQualified;
 use PHPStan\Type\Type;
-use PHPStan\Type\UnionType;
 use Rector\NodeAnalyzer\ArgsAnalyzer;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -87,7 +85,7 @@ CODE_SAMPLE
         }
 
         $type = $this->nodeTypeResolver->getType($args[0]->value);
-        if ($this->shouldSkip($type, $args[0]->value)) {
+        if ($this->shouldSkip($type)) {
             return null;
         }
 
@@ -103,19 +101,12 @@ CODE_SAMPLE
         return $node;
     }
 
-    private function shouldSkip(Type $type, Expr $expr): bool
+    private function shouldSkip(Type $type): bool
     {
-        // only array type
         if ($type->isArray()->yes()) {
             return false;
         }
 
-        if ($type instanceof UnionType) {
-            // possibly already transformed
-            return $expr instanceof Ternary;
-        }
-
-        // already has object type check
         return $type->isObject()
             ->yes();
     }
