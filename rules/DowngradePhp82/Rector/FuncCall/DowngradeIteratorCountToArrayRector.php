@@ -10,8 +10,10 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name\FullyQualified;
+use PhpParser\NodeTraverser;
 use PHPStan\Type\Type;
 use Rector\NodeAnalyzer\ArgsAnalyzer;
+use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -26,7 +28,8 @@ use Webmozart\Assert\Assert;
 final class DowngradeIteratorCountToArrayRector extends AbstractRector
 {
     public function __construct(
-        private readonly ArgsAnalyzer $argsAnalyzer
+        private readonly ArgsAnalyzer $argsAnalyzer,
+        private readonly BetterNodeFinder $betterNodeFinder
     ) {
     }
 
@@ -35,7 +38,7 @@ final class DowngradeIteratorCountToArrayRector extends AbstractRector
      */
     public function getNodeTypes(): array
     {
-        return [FuncCall::class];
+        return [Ternary::class, FuncCall::class];
     }
 
     public function getRuleDefinition(): RuleDefinition
@@ -63,10 +66,23 @@ CODE_SAMPLE
     }
 
     /**
-     * @param FuncCall $node
+     * @param Ternary|FuncCall $node
      */
-    public function refactor(Node $node): ?Node
+    public function refactor(Node $node): null|FuncCall|int
     {
+        if ($node instanceof Ternary) {
+            $hasIsArrayCheck = (bool) $this->betterNodeFinder->findFirst(
+                $node,
+                fn (Node $subNode): bool => $subNode instanceof FuncCall && $this->isName($subNode, 'is_array')
+            );
+
+            if ($hasIsArrayCheck) {
+                return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+            }
+
+            return null;
+        }
+
         if (! $this->isNames($node, ['iterator_count', 'iterator_to_array'])) {
             return null;
         }

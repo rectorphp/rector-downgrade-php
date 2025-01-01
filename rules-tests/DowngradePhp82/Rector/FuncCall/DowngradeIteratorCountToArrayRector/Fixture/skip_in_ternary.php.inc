@@ -8,4 +8,9 @@ final class SkipInternary
     {
         return \is_array($taggedServices) ? $taggedServices : \iterator_to_array($taggedServices);
     }
+
+    public function run2($taggedServices)
+    {
+        return ! \is_array($taggedServices) ? \iterator_to_array($taggedServices): $taggedServices;
+    }
 }
