@@ -113,6 +113,7 @@ CODE_SAMPLE
         }
 
         // already has object type check
-        return $type->isObject()->yes();
+        return $type->isObject()
+            ->yes();
     }
 }
