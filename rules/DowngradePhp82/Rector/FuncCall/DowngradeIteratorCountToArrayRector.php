@@ -17,6 +17,7 @@ use Rector\NodeAnalyzer\ArgsAnalyzer;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Webmozart\Assert\Assert;
 
 /**
  * @changelog https://www.php.net/manual/en/migration82.other-changes.php#migration82.other-changes.functions.spl
@@ -89,6 +90,8 @@ CODE_SAMPLE
         if ($this->shouldSkip($type, $args[0]->value)) {
             return null;
         }
+
+        Assert::isInstanceOf($node->args[0], Arg::class);
 
         $firstValue = $node->args[0]->value;
         $node->args[0]->value = new Ternary(
