@@ -18,6 +18,7 @@ use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
+use PHPStan\Type\TypeCombinator;
 
 /**
  * @changelog https://www.php.net/manual/en/migration82.other-changes.php#migration82.other-changes.functions.spl
@@ -123,6 +124,7 @@ CODE_SAMPLE
             return false;
         }
 
+        $type = TypeCombinator::removeNull($type);
         return $type->isObject()
             ->yes();
     }
