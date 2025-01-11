@@ -294,7 +294,11 @@ CODE_SAMPLE
         } elseif ($matchArm->body instanceof Throw_) {
             $stmts[] = new Expression($matchArm->body);
         } elseif ($node instanceof Return_) {
-            $stmts[] = new Return_($matchArm->body);
+            if ($node->expr instanceof Node\Expr\BinaryOp) {
+                $stmts[] = $this->replicateBinaryOp($node->expr, $matchArm->body);
+            } else {
+                $stmts[] = new Return_($matchArm->body);
+            }
         } elseif ($node instanceof Echo_) {
             $stmts[] = new Echo_([$matchArm->body]);
             $stmts[] = new Break_();
@@ -313,5 +317,20 @@ CODE_SAMPLE
         }
 
         return $stmts;
+    }
+
+    private function replicateBinaryOp(Node\Expr\BinaryOp $expr, Node\Expr $body): Return_
+    {
+        $newExpr = clone $expr;
+        // remove the match statement from the binary operation
+        $this->traverseNodesWithCallable($newExpr, function (Node $node) use ($body): ?Node\Expr {
+            if ($node instanceof Match_) {
+                return $body;
+            }
+
+            return null;
+        });
+
+        return new Return_($newExpr);
     }
 }

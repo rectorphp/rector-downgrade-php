@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\Set\Fixture;
 
-final class MatchBoolean
+final class MatchInBinaryOp
 {
     public function run($value, $booleanFlag)
     {
@@ -10,6 +10,14 @@ final class MatchBoolean
             $value === 2 => true,
             default => false,
         } && $booleanFlag;
+    }
+
+    public function runTwo($value, $booleanFlag)
+    {
+        return match (true) {
+                $value === 2 => true,
+                default => false,
+        } || $booleanFlag;
     }
 }
 
@@ -19,7 +27,7 @@ final class MatchBoolean
 
 namespace Rector\Tests\Set\Fixture;
 
-final class MatchBoolean
+final class MatchInBinaryOp
 {
     public function run($value, $booleanFlag)
     {
@@ -28,6 +36,16 @@ final class MatchBoolean
                 return true && $booleanFlag;
             default:
                 return false && $booleanFlag;
+        }
+    }
+
+    public function runTwo($value, $booleanFlag)
+    {
+        switch (true) {
+            case $value === 2:
+                return true || $booleanFlag;
+            default:
+                return false || $booleanFlag;
         }
     }
 }
