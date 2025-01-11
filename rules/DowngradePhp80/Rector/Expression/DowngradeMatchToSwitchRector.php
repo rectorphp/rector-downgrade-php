@@ -323,7 +323,7 @@ CODE_SAMPLE
     {
         $newExpr = clone $expr;
         // remove the match statement from the binary operation
-        $this->traverseNodesWithCallable($newExpr, function (Node $node) use ($body): ?Node\Expr {
+        $this->traverseNodesWithCallable($newExpr, static function (Node $node) use ($body): ?Node\Expr {
             if ($node instanceof Match_) {
                 return $body;
             }
