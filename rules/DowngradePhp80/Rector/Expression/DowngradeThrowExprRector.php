@@ -11,7 +11,6 @@ use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\Coalesce;
 use PhpParser\Node\Expr\BinaryOp\Identical;
-use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ConstFetch;
@@ -253,7 +252,7 @@ CODE_SAMPLE
         if ($conditionalExpr instanceof Variable || $conditionalExpr instanceof ArrayDimFetch || $conditionalExpr instanceof PropertyFetch) {
             $booleanNot = new BooleanNot(new Isset_([$conditionalExpr]));
         } else {
-            $booleanNot = new NotIdentical($conditionalExpr, new ConstFetch(new Name('null')));
+            $booleanNot = new Identical($conditionalExpr, new ConstFetch(new Name('null')));
         }
 
         return new If_($booleanNot, [

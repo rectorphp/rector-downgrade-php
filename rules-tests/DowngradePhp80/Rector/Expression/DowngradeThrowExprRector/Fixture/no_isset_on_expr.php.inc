@@ -20,7 +20,7 @@ final class NoIssetOnExpr
 {
     public function run($backedEnumClassName, $backedEnumValue)
     {
-        if ($backedEnumClassName::tryFrom($backedEnumValue) !== null) {
+        if ($backedEnumClassName::tryFrom($backedEnumValue) === null) {
             throw new \Symfony\Component\DependencyInjection\Exception\RuntimeException(sprintf('Enum value "%s" is not backed by "%s".', $backedEnumValue, $backedEnumClassName));
         }
         return $backedEnumClassName::tryFrom($backedEnumValue);
