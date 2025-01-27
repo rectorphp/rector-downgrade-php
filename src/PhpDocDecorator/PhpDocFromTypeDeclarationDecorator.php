@@ -63,7 +63,7 @@ final class PhpDocFromTypeDeclarationDecorator
 
     public function decorateReturn(ClassMethod|Function_|Closure|ArrowFunction $functionLike): void
     {
-        if ($functionLike->returnType === null) {
+        if (! $functionLike->returnType instanceof Node) {
             return;
         }
 
@@ -159,7 +159,7 @@ final class PhpDocFromTypeDeclarationDecorator
         ClassMethod|Function_|Closure|ArrowFunction $functionLike,
         Type $requireType
     ): bool {
-        if ($functionLike->returnType === null) {
+        if (! $functionLike->returnType instanceof Node) {
             return false;
         }
 
