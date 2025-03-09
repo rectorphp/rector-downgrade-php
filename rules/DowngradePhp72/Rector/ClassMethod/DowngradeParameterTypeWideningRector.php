@@ -231,7 +231,7 @@ CODE_SAMPLE
                 continue;
             }
 
-            if ($classReflection->isSubclassOf($unsafeType)) {
+            if ($classReflection->is($unsafeType)) {
                 return false;
             }
 
