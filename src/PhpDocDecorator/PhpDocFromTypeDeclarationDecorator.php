@@ -186,7 +186,7 @@ final class PhpDocFromTypeDeclarationDecorator
                 continue;
             }
 
-            if (! $classReflection->isSubclassOf($classMethodWillChangeReturnType->getClassName())) {
+            if (! $classReflection->is($classMethodWillChangeReturnType->getClassName())) {
                 continue;
             }
 
