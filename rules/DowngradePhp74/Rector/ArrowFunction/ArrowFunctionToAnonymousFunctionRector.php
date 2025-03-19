@@ -98,7 +98,16 @@ CODE_SAMPLE
             );
 
             if (! $isFound) {
-                $anonymousFunctionFactory->uses[] = new ClosureUse($node->expr->expr);
+                $isAlsoParam = in_array(
+                    $node->expr->expr->name,
+                    array_map(function($param) {
+                        return $param->var->name;
+                    }, $node->params)
+                );
+
+                if (! $isAlsoParam) {
+                    $anonymousFunctionFactory->uses[] = new ClosureUse($node->expr->expr);
+                }
             }
         }
 
