@@ -101,7 +101,7 @@ CODE_SAMPLE
                 $isAlsoParam = in_array(
                     $node->expr->expr->name,
                     array_map(function($param) {
-                        return $param->var->name;
+                        return $param->var instanceof Variable ? $param->var->name : null;
                     }, $node->params)
                 );
 
