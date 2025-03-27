@@ -100,9 +100,7 @@ CODE_SAMPLE
             if (! $isFound) {
                 $isAlsoParam = in_array(
                     $node->expr->expr->name,
-                    array_map(function($param) {
-                        return $param->var instanceof Variable ? $param->var->name : null;
-                    }, $node->params)
+                    array_map(static fn ($param) => $param->var instanceof Variable ? $param->var->name : null, $node->params)
                 );
 
                 if (! $isAlsoParam) {
