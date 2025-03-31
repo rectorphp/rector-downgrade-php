@@ -107,7 +107,8 @@ CODE_SAMPLE
     public function refactor(Node $node): null|Expr|If_|array
     {
         if ($node instanceof If_) {
-            return $this->refactorIf($node);
+            $this->markConstantKnownInInnerStmts($node);
+            return null;
         }
 
         // skip as known
@@ -146,18 +147,16 @@ CODE_SAMPLE
         return $this->jsonConstCleaner->clean($node, [JsonConstant::THROW_ON_ERROR]);
     }
 
-    private function refactorIf(If_ $if): ?If_
+    private function markConstantKnownInInnerStmts(If_ $if): void
     {
         if (! $this->defineFuncCallAnalyzer->isDefinedWithConstants($if->cond, [JsonConstant::THROW_ON_ERROR])) {
-            return null;
+            return;
         }
 
         $this->traverseNodesWithCallable($if, static function (Node $node): null {
             $node->setAttribute(self::PHP73_JSON_CONSTANT_IS_KNOWN, true);
             return null;
         });
-
-        return $if;
     }
 
     private function resolveFuncCall(Expression $Expression): ?FuncCall
