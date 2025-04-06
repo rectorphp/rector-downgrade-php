@@ -77,11 +77,13 @@ CODE_SAMPLE
     public function refactor(Node $node): Node|null
     {
         if ($node instanceof Instanceof_) {
-            return $this->refactorInstanceof($node);
+            $this->markSkipInstanceof($node);
+            return null;
         }
 
         if ($node instanceof Ternary) {
-            return $this->refactorTernary($node);
+            $this->markSkipTernary($node);
+            return null;
         }
 
         if ($node->getAttribute(self::SKIP_NODE) === true) {
@@ -105,36 +107,34 @@ CODE_SAMPLE
         );
     }
 
-    private function refactorInstanceof(Instanceof_ $instanceof): ?Instanceof_
+    private function markSkipInstanceof(Instanceof_ $instanceof): void
     {
         if (! $this->isName($instanceof->class, 'ReflectionNamedType')) {
-            return null;
+            return;
         }
 
         if (! $instanceof->expr instanceof MethodCall) {
-            return null;
+            return;
         }
 
         // checked typed → safe
         $instanceof->expr->setAttribute(self::SKIP_NODE, true);
-        return $instanceof;
     }
 
-    private function refactorTernary(Ternary $ternary): ?Ternary
+    private function markSkipTernary(Ternary $ternary): void
     {
         if (! $ternary->if instanceof Expr) {
-            return null;
+            return;
         }
 
         if (! $ternary->cond instanceof FuncCall) {
-            return null;
+            return;
         }
 
         if (! $this->isName($ternary->cond, 'method_exists')) {
-            return null;
+            return;
         }
 
         $ternary->if->setAttribute(self::SKIP_NODE, true);
-        return $ternary;
     }
 }
