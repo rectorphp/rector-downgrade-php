@@ -102,9 +102,9 @@ CODE_SAMPLE
 
     /**
      * @param ConstFetch|BitwiseOr|If_|TryCatch|Expression $node
-     * @return null|Expr|If_|array<Expression|If_>
+     * @return null|Expr|array<Expression|If_>
      */
-    public function refactor(Node $node): null|Expr|If_|array
+    public function refactor(Node $node): null|Expr|array
     {
         if ($node instanceof If_) {
             $this->markConstantKnownInInnerStmts($node);

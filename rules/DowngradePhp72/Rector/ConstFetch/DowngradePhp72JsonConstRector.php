@@ -67,7 +67,7 @@ CODE_SAMPLE
     /**
      * @param ConstFetch|BitwiseOr|If_ $node
      */
-    public function refactor(Node $node): Expr|If_|null
+    public function refactor(Node $node): Expr|null
     {
         if ($node instanceof If_) {
             $this->markConstantKnownInInnerStmts($node);
