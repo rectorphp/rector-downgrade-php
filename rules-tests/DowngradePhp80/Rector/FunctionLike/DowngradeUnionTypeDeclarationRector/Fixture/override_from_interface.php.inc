@@ -29,7 +29,7 @@ class OverrideFromInterface implements SomeInterface
     /**
      * @return \Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Source\Foo1|\Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Source\Foo2
      */
-    public function run(): \Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Source\SomeInterface
+    public function run(): \Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector\Source\FooInterface
     {
         return new Foo1();
     }
