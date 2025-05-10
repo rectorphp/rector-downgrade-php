@@ -55,12 +55,6 @@ CODE_SAMPLE
             return null;
         }
 
-        return $this->nodeFactory->createFuncCall(
-            'method_exists',
-            [
-                $node->expr,
-                new String_('__toString'),
-            ]
-        );
+        return $this->nodeFactory->createFuncCall('method_exists', [$node->expr, new String_('__toString')]);
     }
 }
