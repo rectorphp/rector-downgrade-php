@@ -6,6 +6,7 @@ namespace Rector\DowngradePhp80\Rector\Instanceof_;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\BinaryOp\BooleanAnd;
+use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Instanceof_;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Scalar\String_;
@@ -46,7 +47,7 @@ CODE_SAMPLE
     /**
      * @param Instanceof_ $node
      */
-    public function refactor(Node $node): ?BooleanAnd
+    public function refactor(Node $node): null|FuncCall|BooleanAnd
     {
         if (! $node->class instanceof FullyQualified) {
             return null;
@@ -56,9 +57,13 @@ CODE_SAMPLE
             return null;
         }
 
-        return new BooleanAnd(
-            $this->nodeFactory->createFuncCall('is_object', [$node->expr]),
-            $this->nodeFactory->createFuncCall('method_exists', [$node->expr, new String_('__toString')])
-        );
+        $nativeExprType = $this->nodeTypeResolver->getNativeType($node->expr);
+        $funcCall = $this->nodeFactory->createFuncCall('method_exists', [$node->expr, new String_('__toString')]);
+
+        if ($nativeExprType->isObject()->yes()) {
+            return $funcCall;
+        }
+
+        return new BooleanAnd($this->nodeFactory->createFuncCall('is_object', [$node->expr]), $funcCall);
     }
 }
