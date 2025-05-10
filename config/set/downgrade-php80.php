@@ -25,6 +25,7 @@ use Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrEndsWithRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrStartsWithRector;
 use Rector\DowngradePhp80\Rector\FunctionLike\DowngradeMixedTypeDeclarationRector;
 use Rector\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector;
+use Rector\DowngradePhp80\Rector\Instanceof_\DowngradeInstanceofStringableRector;
 use Rector\DowngradePhp80\Rector\Instanceof_\DowngradePhp80ResourceReturnToObjectRector;
 use Rector\DowngradePhp80\Rector\MethodCall\DowngradeNamedArgumentRector;
 use Rector\DowngradePhp80\Rector\MethodCall\DowngradeReflectionClassGetConstantsFilterRector;
@@ -89,5 +90,6 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeMixedTypeTypedPropertyRector::class,
         RemoveReturnTypeDeclarationFromCloneRector::class,
         DowngradeEnumToConstantListClassRector::class,
+        DowngradeInstanceofStringableRector::class,
     ]);
 };
