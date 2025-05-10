@@ -20,7 +20,7 @@ class Fixture
 {
     public function run($obj)
     {
-        return method_exists($obj, '__toString');
+        return is_object($obj) && method_exists($obj, '__toString');
     }
 }
 

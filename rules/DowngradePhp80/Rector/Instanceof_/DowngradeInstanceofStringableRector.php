@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp80\Rector\Instanceof_;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr\BinaryOp\BooleanAnd;
 use PhpParser\Node\Expr\Instanceof_;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Scalar\String_;
@@ -28,7 +29,7 @@ CODE_SAMPLE
 
                 ,
                 <<<'CODE_SAMPLE'
-method_exists($obj, '__toString');
+is_object($obj) && method_exists($obj, '__toString');
 CODE_SAMPLE
             ),
         ]);
@@ -45,7 +46,7 @@ CODE_SAMPLE
     /**
      * @param Instanceof_ $node
      */
-    public function refactor(Node $node): ?Node
+    public function refactor(Node $node): ?BooleanAnd
     {
         if (! $node->class instanceof FullyQualified) {
             return null;
@@ -55,6 +56,9 @@ CODE_SAMPLE
             return null;
         }
 
-        return $this->nodeFactory->createFuncCall('method_exists', [$node->expr, new String_('__toString')]);
+        return new BooleanAnd(
+            $this->nodeFactory->createFuncCall('is_object', [$node->expr]),
+            $this->nodeFactory->createFuncCall('method_exists', [$node->expr, new String_('__toString')])
+        );
     }
 }
