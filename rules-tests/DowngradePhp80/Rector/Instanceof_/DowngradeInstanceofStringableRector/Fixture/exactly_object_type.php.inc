@@ -2,9 +2,9 @@
 
 namespace Rector\Tests\DowngradePhp80\Rector\Instanceof_\DowngradeInstanceofStringableRector\Fixture;
 
-class Fixture
+class ExactlyObjectType
 {
-    public function run($obj)
+    public function run(object $obj)
     {
         return $obj instanceof \Stringable;
     }
@@ -16,11 +16,11 @@ class Fixture
 
 namespace Rector\Tests\DowngradePhp80\Rector\Instanceof_\DowngradeInstanceofStringableRector\Fixture;
 
-class Fixture
+class ExactlyObjectType
 {
-    public function run($obj)
+    public function run(object $obj)
     {
-        return is_object($obj) && method_exists($obj, '__toString');
+        return method_exists($obj, '__toString');
     }
 }
 
