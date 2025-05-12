@@ -99,7 +99,7 @@ CODE_SAMPLE
             return true;
         }
 
-        if (! $this->nodeNameResolver->isName($classMethod, '__toString')) {
+        if (! $this->isName($classMethod, '__toString')) {
             return true;
         }
 

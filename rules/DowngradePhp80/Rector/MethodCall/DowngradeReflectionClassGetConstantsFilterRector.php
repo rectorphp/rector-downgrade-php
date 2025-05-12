@@ -238,12 +238,12 @@ CODE_SAMPLE
         }
 
         $constants = array_keys(self::MAP_CONSTANT_TO_METHOD);
-        return ! $this->nodeNameResolver->isNames($classConstFetch->name, $constants);
+        return ! $this->isNames($classConstFetch->name, $constants);
     }
 
     private function shouldSkipMethodCall(MethodCall $methodCall): bool
     {
-        if (! $this->nodeNameResolver->isName($methodCall->name, 'getConstants')) {
+        if (! $this->isName($methodCall->name, 'getConstants')) {
             return true;
         }
 
