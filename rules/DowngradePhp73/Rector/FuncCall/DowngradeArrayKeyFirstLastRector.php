@@ -126,9 +126,9 @@ CODE_SAMPLE
     {
         /** @var MethodCall|FuncCall|StaticCall|New_|NullsafeMethodCall $callLike */
         if ($callLike instanceof New_) {
-            $variableName = (string) $this->nodeNameResolver->getName($callLike->class);
+            $variableName = (string) $this->getName($callLike->class);
         } else {
-            $variableName = (string) $this->nodeNameResolver->getName($callLike->name);
+            $variableName = (string) $this->getName($callLike->name);
         }
 
         if ($variableName === '') {
@@ -253,7 +253,7 @@ CODE_SAMPLE
         $scope = $expr->getAttribute(AttributeKey::SCOPE);
 
         $variableName = $this->variableNaming->createCountedValueName(
-            (string) $this->nodeNameResolver->getName($expr->expr),
+            (string) $this->getName($expr->expr),
             $scope
         );
 

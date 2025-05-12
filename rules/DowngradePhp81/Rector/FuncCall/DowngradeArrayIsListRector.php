@@ -140,7 +140,7 @@ CODE_SAMPLE
             return false;
         }
 
-        if (! $this->nodeNameResolver->isName($callLike, 'array_is_list')) {
+        if (! $this->isName($callLike, 'array_is_list')) {
             return true;
         }
 
