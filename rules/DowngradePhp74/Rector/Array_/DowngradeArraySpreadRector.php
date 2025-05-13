@@ -174,7 +174,7 @@ CODE_SAMPLE
 
             /**
              * @var ArrayItem $item
-             * @var ClassConstFetch $value
+             * @var ClassConstFetch
              * @var Identifier $name
              */
             $value = $item->value;
