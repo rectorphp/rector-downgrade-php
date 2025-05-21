@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\DowngradePhp82\Rector\Class_;
+namespace Rector\DowngradePhp83\Rector\Class_;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
@@ -12,11 +12,10 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
- * @changelog https://wiki.php.net/rfc/readonly_classes
- *
- * @see \Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeReadonlyClassRector\DowngradeReadonlyClassRectorTest
+ * @see https://www.php.net/manual/en/migration83.new-features.php#migration83.new-features.core.readonly-modifier-improvements
+ * @see \Rector\Tests\DowngradePhp83\Rector\Class_\DowngradeReadonlyAnonymousClassRector\DowngradeReadonlyAnonymousClassRectorTest
  */
-final class DowngradeReadonlyClassRector extends AbstractRector
+final class DowngradeReadonlyAnonymousClassRector extends AbstractRector
 {
     public function __construct(
         private readonly DowngradeReadonlyClassManipulator $downgradeReadonlyClassManipulator
@@ -34,11 +33,11 @@ final class DowngradeReadonlyClassRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Remove "readonly" class type, decorate all properties to "readonly"',
+            'Remove "readonly" class type on anonymous class, decorate all properties to "readonly"',
             [
                 new CodeSample(
                     <<<'CODE_SAMPLE'
-final readonly class SomeClass
+new readonly class
 {
     public string $foo;
 
@@ -46,11 +45,11 @@ final readonly class SomeClass
     {
         $this->foo = 'foo';
     }
-}
+};
 CODE_SAMPLE
                     ,
                     <<<'CODE_SAMPLE'
-final class SomeClass
+new class
 {
     public readonly string $foo;
 
@@ -70,7 +69,7 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node->isAnonymous()) {
+        if (! $node->isAnonymous()) {
             return null;
         }
 
