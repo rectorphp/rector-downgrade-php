@@ -9,7 +9,6 @@ use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
-use Rector\NodeManipulator\PropertyDecorator;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -21,11 +20,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeDynamicClassConstFetchRector extends AbstractRector
 {
-    public function __construct(
-        private readonly PropertyDecorator $propertyDecorator
-    ) {
-    }
-
     /**
      * @return array<class-string<Node>>
      */
@@ -63,10 +57,7 @@ CODE_SAMPLE
 
         return $this->nodeFactory->createFuncCall('constant', [
             new Concat(
-                new Concat(
-                    new ClassConstFetch($node->class, new Identifier('class')),
-                    new String_('::')
-                ),
+                new Concat(new ClassConstFetch($node->class, new Identifier('class')), new String_('::')),
                 $node->name
             ),
         ]);
