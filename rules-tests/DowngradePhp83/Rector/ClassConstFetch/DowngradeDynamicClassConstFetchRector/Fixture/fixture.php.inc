@@ -10,7 +10,7 @@ class Fixture
 
     public function run()
     {
-        $someValue = 'foo';
+        $someValue = 'FOO';
         Fixture::{$someValue};
     }
 }
@@ -29,7 +29,7 @@ class Fixture
 
     public function run()
     {
-        $someValue = 'foo';
+        $someValue = 'FOO';
         constant(Fixture::class . '::' . $someValue);
     }
 }
