@@ -56,7 +56,7 @@ final readonly class NamedToUnnamedArgs
                     $currentArg->value,
                     $currentArg->byRef,
                     $currentArg->unpack,
-                    $currentArg->getAttributes(),
+                    [],
                     null
                 );
             }
