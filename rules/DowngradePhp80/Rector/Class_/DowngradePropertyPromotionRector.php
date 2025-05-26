@@ -14,6 +14,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Property;
+use PhpParser\Node\Stmt\Trait_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
@@ -75,11 +76,11 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Class_::class];
+        return [Class_::class, Trait_::class];
     }
 
     /**
-     * @param Class_ $node
+     * @param Class_|Trait_ $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -163,7 +164,7 @@ CODE_SAMPLE
     private function resolvePropertiesFromPromotedParams(
         ClassMethod $classMethod,
         array $promotedParams,
-        Class_ $class
+        Class_|Trait_ $class
     ): array {
         $properties = $this->createPropertiesFromParams($classMethod, $promotedParams);
         $class->stmts = array_merge($properties, $class->stmts);
@@ -177,7 +178,7 @@ CODE_SAMPLE
      */
     private function addPropertyAssignsToConstructorClassMethod(
         array $properties,
-        Class_ $class,
+        Class_|Trait_ $class,
         array $oldComments
     ): void {
         $assigns = [];
