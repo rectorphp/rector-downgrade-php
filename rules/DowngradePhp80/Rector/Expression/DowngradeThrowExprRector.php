@@ -190,7 +190,7 @@ CODE_SAMPLE
 
             if ($rightCoalesce instanceof Throw_) {
                 $coalesce = new Coalesce($leftCoalesce, $rightCoalesce);
-                return $this->processCoalesce($coalesce, $assign);
+                return $this->processCoalesce($coalesce, $assign, true);
             }
 
             return null;
@@ -202,7 +202,7 @@ CODE_SAMPLE
     /**
      * @return If_|Stmt[]|null
      */
-    private function processCoalesce(Coalesce $coalesce, ?Assign $assign): If_|null|array
+    private function processCoalesce(Coalesce $coalesce, ?Assign $assign, bool $innerAssign = false): If_|null|array
     {
         if (! $this->coalesceAnalyzer->hasIssetableLeft($coalesce)) {
             return null;
@@ -218,6 +218,11 @@ CODE_SAMPLE
         }
 
         $assign->expr = $coalesce->left;
+
+        if ($innerAssign && $if->cond instanceof Identical) {
+            $if->cond->left = new Assign($assign->var, $if->cond->left);
+            return $if;
+        }
 
         return [$if, new Expression($assign)];
     }

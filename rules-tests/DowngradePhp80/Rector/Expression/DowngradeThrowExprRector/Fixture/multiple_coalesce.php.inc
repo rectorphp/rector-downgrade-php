@@ -20,10 +20,9 @@ class MultipleCoalesce
 {
     public function run($content)
     {
-        if (($content->getInternalId() ?? $content->getId()) === null) {
+        if (($contentId = $content->getInternalId() ?? $content->getId()) === null) {
             throw new \LogicException('content id is required for ackVersion');
         }
-        $contentId = $content->getInternalId() ?? $content->getId();
     }
 }
 
