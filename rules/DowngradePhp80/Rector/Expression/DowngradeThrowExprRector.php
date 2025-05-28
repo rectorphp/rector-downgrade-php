@@ -202,7 +202,7 @@ CODE_SAMPLE
     /**
      * @return If_|Stmt[]|null
      */
-    private function processCoalesce(Coalesce $coalesce, ?Assign $assign, bool $innerAssign = false): If_|null|array
+    private function processCoalesce(Coalesce $coalesce, ?Assign $assign, bool $assignEarly = false): If_|null|array
     {
         if (! $this->coalesceAnalyzer->hasIssetableLeft($coalesce)) {
             return null;
@@ -219,9 +219,11 @@ CODE_SAMPLE
 
         $assign->expr = $coalesce->left;
 
-        if ($innerAssign && $if->cond instanceof Identical) {
-            $if->cond->left = new Assign($assign->var, $if->cond->left);
-            return $if;
+        if ($assignEarly && $if->cond instanceof Identical) {
+            $expression = new Expression(new Assign($assign->var, $if->cond->left));
+            $if->cond->left = $assign->var;
+
+            return [$expression, $if];
         }
 
         return [$if, new Expression($assign)];
