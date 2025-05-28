@@ -180,9 +180,30 @@ CODE_SAMPLE
     private function refactorCoalesce(Coalesce $coalesce, ?Assign $assign): If_|null|array
     {
         if (! $coalesce->right instanceof Throw_) {
+            $rightCoalesce = $coalesce->right;
+            $leftCoalesce = $coalesce->left;
+
+            while ($rightCoalesce instanceof Coalesce) {
+                $leftCoalesce = new Coalesce($leftCoalesce, $rightCoalesce->left);
+                $rightCoalesce = $rightCoalesce->right;
+            }
+
+            if ($rightCoalesce instanceof Throw_) {
+                $coalesce = new Coalesce($leftCoalesce, $rightCoalesce);
+                return $this->processCoalesce($coalesce, $assign, true);
+            }
+
             return null;
         }
 
+        return $this->processCoalesce($coalesce, $assign);
+    }
+
+    /**
+     * @return If_|Stmt[]|null
+     */
+    private function processCoalesce(Coalesce $coalesce, ?Assign $assign, bool $assignEarly = false): If_|null|array
+    {
         if (! $this->coalesceAnalyzer->hasIssetableLeft($coalesce)) {
             return null;
         }
@@ -197,6 +218,13 @@ CODE_SAMPLE
         }
 
         $assign->expr = $coalesce->left;
+
+        if ($assignEarly && $if->cond instanceof Identical) {
+            $expression = new Expression(new Assign($assign->var, $if->cond->left));
+            $if->cond->left = $assign->var;
+
+            return [$expression, $if];
+        }
 
         return [$if, new Expression($assign)];
     }
