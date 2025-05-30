@@ -25,7 +25,7 @@ namespace Rector\Tests\Set\Fixture;
 
 final class NamedArgumentTrailingComma3
 {
-	public function run(string $foo, string $bar)
+	public function run(string $foo, string $bar, string $baz)
     {}
 
     public function execute()
