@@ -13,6 +13,11 @@ final class NamedArgumentTrailingComma
             foo: 'foo',
             bar: 'bar',
         );
+
+        $this->run(
+            bar: 'bar',
+            foo: 'foo',
+        );
     }
 }
 
@@ -29,6 +34,11 @@ final class NamedArgumentTrailingComma
 
     public function execute()
     {
+        $this->run(
+            'foo',
+            'bar'
+        );
+
         $this->run(
             'foo',
             'bar'
