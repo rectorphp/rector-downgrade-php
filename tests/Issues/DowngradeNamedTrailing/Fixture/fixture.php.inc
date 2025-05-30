@@ -44,6 +44,10 @@ class Fixture
     }
 }
 
-$contents = new Fixture($content->getType(), ['error' => $e->getMessage()], $content->getId());
+$contents = new Fixture(
+    $content->getType(),
+    ['error' => $e->getMessage()],
+    $content->getId()
+);
 
 ?>

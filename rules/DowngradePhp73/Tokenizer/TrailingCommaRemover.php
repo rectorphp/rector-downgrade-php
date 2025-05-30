@@ -9,7 +9,7 @@ use Rector\ValueObject\Application\File;
 
 final class TrailingCommaRemover
 {
-    public function remove(File $file, Node $node): void
+    public function remove(File $file, Node $node, ?Node $previousNode = null): void
     {
         $tokens = $file->getOldTokens();
         $iteration = 1;
@@ -21,6 +21,12 @@ final class TrailingCommaRemover
             }
 
             if (trim($tokens[$node->getEndTokenPos() + $iteration]->text) !== ',') {
+                break;
+            }
+
+            // position just swapped
+            if ($previousNode instanceof Node && $previousNode->getEndTokenPos() > $node->getEndTokenPos()) {
+                $this->remove($file, $previousNode);
                 break;
             }
 

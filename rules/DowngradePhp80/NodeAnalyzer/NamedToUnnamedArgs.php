@@ -52,13 +52,8 @@ final readonly class NamedToUnnamedArgs
                     continue;
                 }
 
-                $unnamedArgs[$paramPosition] = new Arg(
-                    $currentArg->value,
-                    $currentArg->byRef,
-                    $currentArg->unpack,
-                    [],
-                    null
-                );
+                $currentArg->name = null;
+                $unnamedArgs[$paramPosition] = $currentArg;
             }
         }
 

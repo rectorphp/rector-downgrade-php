@@ -45,7 +45,7 @@ final readonly class UnnamedArgumentResolver
 
         foreach ($currentArgs as $key => $arg) {
             if (! $arg->name instanceof Identifier) {
-                $unnamedArgs[$key] = new Arg($arg->value, $arg->byRef, $arg->unpack, [], null);
+                $unnamedArgs[$key] = $arg;
 
                 continue;
             }
