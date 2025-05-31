@@ -30,14 +30,14 @@ final class TrailingCommaRemover
         }
     }
 
-    public function removeFromCallLike(File $file, CallLike $node): bool
+    public function removeFromCallLike(File $file, CallLike $callLike): bool
     {
         $tokens = $file->getOldTokens();
         $iteration = 1;
 
         $hasChanged = false;
-        while (isset($tokens[$node->getEndTokenPos() - $iteration])) {
-            $text = trim($tokens[$node->getEndTokenPos() - $iteration]->text);
+        while (isset($tokens[$callLike->getEndTokenPos() - $iteration])) {
+            $text = trim($tokens[$callLike->getEndTokenPos() - $iteration]->text);
 
             if (in_array($text, [')', ''], true)) {
                 ++$iteration;
@@ -45,7 +45,7 @@ final class TrailingCommaRemover
             }
 
             if ($text === ',') {
-                $tokens[$node->getEndTokenPos() - $iteration]->text = '';
+                $tokens[$callLike->getEndTokenPos() - $iteration]->text = '';
                 $hasChanged = true;
             }
 
