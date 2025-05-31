@@ -85,13 +85,14 @@ CODE_SAMPLE
             return null;
         }
 
-        // reprint is needed as position changed that can't rely on token position
-        // @see https://github.com/rectorphp/rector-downgrade-php/pull/281
-        // @see https://github.com/rectorphp/rector-downgrade-php/pull/285
         foreach ($args as $arg) {
+            // reprinted, needs to remove from call like itself
             if ($arg->getEndTokenPos() < 0) {
-                $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
-                return $node;
+                $hasChanged = $this->trailingCommaRemover->removeFromCallLike($this->file, $node);
+
+                if ($hasChanged) {
+                    return $node;
+                }
             }
         }
 

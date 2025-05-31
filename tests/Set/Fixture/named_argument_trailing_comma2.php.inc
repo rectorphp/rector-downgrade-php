@@ -29,7 +29,10 @@ final class NamedArgumentTrailingComma2
 
     public function execute()
     {
-        $this->run('foo', 'bar');
+        $this->run(
+            'foo',
+            'bar'
+        );
     }
 }
 
