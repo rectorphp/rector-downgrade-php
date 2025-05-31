@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\Set\Fixture;
 
-final class NamedArgumentTrailingComma3
+final class NamedArgumentWithoutTrailingComma
 {
 	public function run(string $foo, string $bar, string $baz)
     {}
@@ -10,9 +10,9 @@ final class NamedArgumentTrailingComma3
     public function execute()
     {
         $this->run(
-            bar: 'bar',
             baz: 'baz',
             foo: 'foo',
+            bar: 'bar'
         );
     }
 }
@@ -23,7 +23,7 @@ final class NamedArgumentTrailingComma3
 
 namespace Rector\Tests\Set\Fixture;
 
-final class NamedArgumentTrailingComma3
+final class NamedArgumentWithoutTrailingComma
 {
 	public function run(string $foo, string $bar, string $baz)
     {}
