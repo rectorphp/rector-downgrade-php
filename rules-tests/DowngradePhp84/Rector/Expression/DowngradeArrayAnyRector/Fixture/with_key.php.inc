@@ -6,7 +6,7 @@ class WithKey
 {
     public function run(array $animals)
     {
-        $found = array_all($animals, fn($animal, $key) => str_starts_with($animal, 'c') && $key > 0);
+        $found = array_any($animals, fn($animal, $key) => str_starts_with($animal, 'c') && $key > 0);
     }
 }
 
