@@ -11,6 +11,7 @@ use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Name;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Break_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Foreach_;
@@ -58,6 +59,7 @@ CODE_SAMPLE
 
     /**
      * @param Expression $node
+     * @return Stmt[]|null
      */
     public function refactor(Node $node): ?array
     {
