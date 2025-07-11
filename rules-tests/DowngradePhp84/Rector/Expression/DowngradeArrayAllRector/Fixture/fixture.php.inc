@@ -22,7 +22,7 @@ class Fixture
     {
         $found = true;
         foreach ($animals as $animal) {
-            if (! str_starts_with($animal, 'c')) {
+            if (!str_starts_with($animal, 'c')) {
                 $found = false;
                 break;
             }
