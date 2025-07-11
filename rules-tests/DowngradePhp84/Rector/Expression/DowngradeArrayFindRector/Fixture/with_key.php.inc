@@ -2,11 +2,11 @@
 
 namespace Rector\Tests\DowngradePhp84\Rector\Expression\DowngradeArrayAnyRector\Fixture;
 
-class Fixture
+class WithKey
 {
     public function run(array $animals)
     {
-        $found = array_any($animals, fn($animal) => str_starts_with($animal, 'c'));
+        $found = array_find($animals, fn($animal, $key) => str_starts_with($animal, 'c') && $key > 0);
     }
 }
 
@@ -16,14 +16,14 @@ class Fixture
 
 namespace Rector\Tests\DowngradePhp84\Rector\Expression\DowngradeArrayAnyRector\Fixture;
 
-class Fixture
+class WithKey
 {
     public function run(array $animals)
     {
-        $found = false;
-        foreach ($animals as $animal) {
-            if (str_starts_with($animal, 'c')) {
-                $found = true;
+        $found = null;
+        foreach ($animals as $key => $animal) {
+            if (str_starts_with($animal, 'c') && $key > 0) {
+                $found = $animal;
                 break;
             }
         }

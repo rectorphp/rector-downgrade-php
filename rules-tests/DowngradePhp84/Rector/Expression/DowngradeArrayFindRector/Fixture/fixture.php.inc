@@ -1,12 +1,12 @@
 <?php
 
-namespace Rector\Tests\DowngradePhp84\Rector\Expression\DowngradeArrayAnyRector\Fixture;
+namespace Rector\Tests\DowngradePhp84\Rector\Expression\DowngradeArrayFindRector\Fixture;
 
 class Fixture
 {
     public function run(array $animals)
     {
-        $found = array_any($animals, fn($animal) => str_starts_with($animal, 'c'));
+        $found = array_find($animals, fn($animal) => str_starts_with($animal, 'c'));
     }
 }
 
@@ -14,16 +14,16 @@ class Fixture
 -----
 <?php
 
-namespace Rector\Tests\DowngradePhp84\Rector\Expression\DowngradeArrayAnyRector\Fixture;
+namespace Rector\Tests\DowngradePhp84\Rector\Expression\DowngradeArrayFindRector\Fixture;
 
 class Fixture
 {
     public function run(array $animals)
     {
-        $found = false;
+        $found = null;
         foreach ($animals as $animal) {
             if (str_starts_with($animal, 'c')) {
-                $found = true;
+                $found = $animal;
                 break;
             }
         }
