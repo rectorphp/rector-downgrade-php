@@ -7,6 +7,7 @@ namespace Rector\DowngradePhp84\Rector\Expression;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Name;
@@ -14,6 +15,7 @@ use PhpParser\Node\Stmt\Break_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Foreach_;
 use PhpParser\Node\Stmt\If_;
+use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -84,7 +86,9 @@ CODE_SAMPLE
             return null;
         }
 
-        $if = new If_($args[1]->value->expr, [
+        $valueCond = $args[1]->value->expr;
+        $valueCond->setAttribute(AttributeKey::ORIGINAL_NODE, null);
+        $if = new If_(new BooleanNot($valueCond), [
             'stmts' => [
                 new Expression(new Assign($node->expr->var, new ConstFetch(new Name('false')))),
                 new Break_(),
