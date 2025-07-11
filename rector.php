@@ -12,12 +12,12 @@ return RectorConfig::configure()
     ->withPhpSets(php82: true)
     ->withSets([PHPUnitSetList::PHPUNIT_100, PHPUnitSetList::PHPUNIT_CODE_QUALITY])
     ->withPreparedSets(
+        deadCode: true,
         codeQuality: true,
         codingStyle: true,
-        deadCode: true,
+        typeDeclarations: true,
         privatization: true,
         naming: true,
-        typeDeclarations: true,
         earlyReturn: true,
         rectorPreset: true
     )->withPaths([

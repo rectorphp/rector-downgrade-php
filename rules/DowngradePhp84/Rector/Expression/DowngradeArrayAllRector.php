@@ -7,14 +7,10 @@ namespace Rector\DowngradePhp84\Rector\Expression;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
-use PhpParser\Node\Expr\ClassConstFetch;
-use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
-use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
-use PhpParser\Node\Name\FullyQualified;
+use PhpParser\Node\Stmt\Break_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Foreach_;
 use PhpParser\Node\Stmt\If_;
@@ -90,20 +86,14 @@ CODE_SAMPLE
 
         $if = new If_($args[1]->value->expr, [
             'stmts' => [
-                new Expression(new Assign(
-                    $node->expr->var,
-                    new ConstFetch(new Name('false'))
-                )),
-                new Node\Stmt\Break_(),
+                new Expression(new Assign($node->expr->var, new ConstFetch(new Name('false')))),
+                new Break_(),
             ],
         ]);
 
         return [
             // init
-            new Expression(new Assign(
-                $node->expr->var,
-                new ConstFetch(new Name('true'))
-            )),
+            new Expression(new Assign($node->expr->var, new ConstFetch(new Name('true')))),
 
             // foreach loop
             new Foreach_(
@@ -112,10 +102,12 @@ CODE_SAMPLE
                 isset($args[1]->value->params[1]->var)
                     ? [
                         'keyVar' => $args[1]->value->params[1]->var,
-                        'stmts' => [$if]
+                        'stmts' => [$if],
                     ]
-                    : ['stmts' => [$if]],
-            )
+                    : [
+                        'stmts' => [$if],
+                    ],
+            ),
         ];
     }
 }
