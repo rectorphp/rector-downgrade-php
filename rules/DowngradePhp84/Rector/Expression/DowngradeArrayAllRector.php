@@ -88,6 +88,7 @@ CODE_SAMPLE
 
         $valueCond = $args[1]->value->expr;
         $valueCond->setAttribute(AttributeKey::ORIGINAL_NODE, null);
+
         $if = new If_(new BooleanNot($valueCond), [
             'stmts' => [
                 new Expression(new Assign($node->expr->var, new ConstFetch(new Name('false')))),
