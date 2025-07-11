@@ -16,7 +16,6 @@ use PhpParser\Node\Stmt\Break_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Foreach_;
 use PhpParser\Node\Stmt\If_;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -89,8 +88,6 @@ CODE_SAMPLE
         }
 
         $valueCond = $args[1]->value->expr;
-        $valueCond->setAttribute(AttributeKey::ORIGINAL_NODE, null);
-
         $if = new If_(new BooleanNot($valueCond), [
             'stmts' => [
                 new Expression(new Assign($node->expr->var, new ConstFetch(new Name('false')))),
