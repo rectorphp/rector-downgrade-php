@@ -6,7 +6,7 @@ class WithKey
 {
     public function run(array $animals)
     {
-        $found = array_any($animals, fn($animal, $key) => str_starts_with($animal, 'c') && $key > 0);
+        $found = array_find($animals, fn($animal, $key) => str_starts_with($animal, 'c') && $key > 0);
     }
 }
 
@@ -20,10 +20,10 @@ class WithKey
 {
     public function run(array $animals)
     {
-        $found = false;
+        $found = null;
         foreach ($animals as $key => $animal) {
             if (str_starts_with($animal, 'c') && $key > 0) {
-                $found = true;
+                $found = $animal;
                 break;
             }
         }
