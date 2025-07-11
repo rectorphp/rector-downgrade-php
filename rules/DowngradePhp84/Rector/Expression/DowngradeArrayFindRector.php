@@ -89,7 +89,7 @@ CODE_SAMPLE
         $valueCond = $args[1]->value->expr;
         $if = new If_($valueCond, [
             'stmts' => [
-                new Expression(new Assign($node->expr->var, $args[1]->value->params[1]->var)),
+                new Expression(new Assign($node->expr->var, $args[1]->value->params[0]->var)),
                 new Break_(),
             ],
         ]);
