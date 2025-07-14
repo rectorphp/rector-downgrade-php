@@ -20,9 +20,6 @@ namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDecl
 
 final class NotMatchReturnDocWithNative
 {
-    /**
-     * @return \stdClass[]|null
-     */
     public function run($value)
     {
     }

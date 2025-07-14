@@ -90,7 +90,13 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
-        $this->phpDocTypeChanger->changeReturnType($functionLike, $phpDocInfo, $returnDocType);
+        if (! $this->isMatchingType($returnType, [$returnDocType])) {
+            // not match between @return and native return type, just remove the doc
+            $phpDocInfo->removeByName(ReturnTagValueNode::class);
+        } else {
+            $this->phpDocTypeChanger->changeReturnType($functionLike, $phpDocInfo, $returnDocType);
+        }
+
 
         $functionLike->returnType = null;
         if (! $functionLike instanceof ClassMethod) {
