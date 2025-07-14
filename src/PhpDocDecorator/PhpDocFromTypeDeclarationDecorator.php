@@ -74,7 +74,9 @@ final class PhpDocFromTypeDeclarationDecorator
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($functionLike);
 
         $returnTagValueNode = $phpDocInfo->getReturnTagValue();
-        $returnType = $returnTagValueNode instanceof ReturnTagValueNode
+
+        $returnType = $this->staticTypeMapper->mapPhpParserNodePHPStanType($functionLike->returnType);
+        $returnDocType = $returnTagValueNode instanceof ReturnTagValueNode
             ? $this->staticTypeMapper->mapPHPStanPhpDocTypeToPHPStanType($returnTagValueNode, $functionLike->returnType)
             : $this->staticTypeMapper->mapPhpParserNodePHPStanType($functionLike->returnType);
 
@@ -88,7 +90,7 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
-        $this->phpDocTypeChanger->changeReturnType($functionLike, $phpDocInfo, $returnType);
+        $this->phpDocTypeChanger->changeReturnType($functionLike, $phpDocInfo, $returnDocType);
 
         $functionLike->returnType = null;
         if (! $functionLike instanceof ClassMethod) {
