@@ -97,7 +97,6 @@ final class PhpDocFromTypeDeclarationDecorator
             $this->phpDocTypeChanger->changeReturnType($functionLike, $phpDocInfo, $returnDocType);
         }
 
-
         $functionLike->returnType = null;
         if (! $functionLike instanceof ClassMethod) {
             return;
