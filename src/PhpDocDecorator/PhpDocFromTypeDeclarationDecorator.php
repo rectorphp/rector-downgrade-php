@@ -56,7 +56,7 @@ final class PhpDocFromTypeDeclarationDecorator
         private readonly ReflectionResolver $reflectionResolver,
         private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer,
         private readonly PhpVersionProvider $phpVersionProvider,
-        private readonly AstResolver $astResolver,
+        private readonly AstResolver $astResolver
     ) {
         $this->classMethodWillChangeReturnTypes = [
             // @todo how to make list complete? is the method list needed or can we use just class names?
@@ -90,12 +90,7 @@ final class PhpDocFromTypeDeclarationDecorator
             return;
         }
 
-        if (! $this->isMatchingType($returnType, [$returnDocType])) {
-            // not match between @return and native return type, just remove the doc
-            $phpDocInfo->removeByName(ReturnTagValueNode::class);
-        } else {
-            $this->phpDocTypeChanger->changeReturnType($functionLike, $phpDocInfo, $returnDocType);
-        }
+        $this->phpDocTypeChanger->changeReturnType($functionLike, $phpDocInfo, $returnDocType);
 
         $functionLike->returnType = null;
         if (! $functionLike instanceof ClassMethod) {
