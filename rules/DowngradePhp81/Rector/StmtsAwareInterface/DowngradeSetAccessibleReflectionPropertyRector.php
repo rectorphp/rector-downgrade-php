@@ -94,7 +94,7 @@ CODE_SAMPLE
             }
 
             $new = $assign->expr;
-            if (! $this->isName($new->class, 'ReflectionProperty')) {
+            if (! $this->isNames($new->class, ['ReflectionProperty', 'ReflectionMethod'])) {
                 continue;
             }
 
