@@ -104,12 +104,15 @@ CODE_SAMPLE
                 }
 
                 $new = $assign->expr;
+                $variable = $assign->var;
             } else {
                 if (! $stmt->expr instanceof New_) {
                     continue;
                 }
 
                 $new = $stmt->expr;
+                $scope = ScopeFetcher::fetch($stmt);
+                $variable = new Variable($this->variableNaming->createCountedValueName('reflection', $scope));
             }
 
             if (! $this->isNames($new->class, ['ReflectionProperty', 'ReflectionMethod'])) {
@@ -123,11 +126,8 @@ CODE_SAMPLE
                     continue;
                 }
 
-                array_splice($node->stmts, $key + 1, 0, [$this->createSetAccessibleExpression($assign->var)]);
+                array_splice($node->stmts, $key + 1, 0, [$this->createSetAccessibleExpression($variable)]);
             } else {
-                $scope = ScopeFetcher::fetch($stmt);
-                $variable = new Variable($this->variableNaming->createCountedValueName('reflection', $scope));
-
                 $previousStmts = [
                     new Expression(new Assign($variable, $new)),
                     $this->createSetAccessibleExpression($variable),
