@@ -20,8 +20,10 @@ class MergeConst
 
     private const EXPECTED_KINDS_GENERIC = [
         \T_ABSTRACT,
-        \T_FINAL, \T_PRIVATE,
-        \T_PROTECTED, \T_PUBLIC,
+        \T_FINAL,
+        \T_PRIVATE,
+        \T_PROTECTED,
+        \T_PUBLIC,
         \T_STATIC,
         \T_VAR,
         CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
@@ -78,8 +80,10 @@ class MergeConst
 
     private const EXPECTED_KINDS_PROPERTY_KINDS = [
         \T_ABSTRACT,
-        \T_FINAL, \T_PRIVATE,
-        \T_PROTECTED, \T_PUBLIC,
+        \T_FINAL,
+        \T_PRIVATE,
+        \T_PROTECTED,
+        \T_PUBLIC,
         \T_STATIC,
         \T_VAR,
         CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
