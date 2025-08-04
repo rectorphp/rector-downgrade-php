@@ -9,7 +9,7 @@ use Rector\ValueObject\PhpVersion;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rules([
-        DowngradeArraySpreadStringKeyRector::class,
+        //DowngradeArraySpreadStringKeyRector::class,
         DowngradeArraySpreadRector::class
     ]);
 
