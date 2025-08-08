@@ -71,6 +71,14 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?array
     {
+        if ($node instanceof Return_ && ! $node->expr instanceof FuncCall) {
+            return null;
+        }
+
+        if ($node instanceof Expression && ! $node->expr instanceof Assign) {
+            return null;
+        }
+
         $expr = $node instanceof Expression && $node->expr instanceof Assign
             ? $node->expr->expr
             : $node->expr;
