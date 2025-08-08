@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
 use PHPStan\Analyser\Scope;
@@ -101,7 +102,7 @@ CODE_SAMPLE
                 $isAlsoParam = in_array(
                     $node->expr->expr->name,
                     array_map(
-                        static fn ($param) => $param->var instanceof Variable ? $param->var->name : null,
+                        static fn (Param $param) => $param->var instanceof Variable ? $param->var->name : null,
                         $node->params
                     )
                 );

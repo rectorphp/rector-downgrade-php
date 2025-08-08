@@ -32,9 +32,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeArrayAllRector extends AbstractRector
 {
     public function __construct(
-        private VariableNaming $variableNaming
-    )
-    {
+        private readonly VariableNaming $variableNaming
+    ) {
     }
 
     public function getNodeTypes(): array
@@ -104,10 +103,7 @@ CODE_SAMPLE
 
         $valueCond = $args[1]->value->expr;
         $if = new If_(new BooleanNot($valueCond), [
-            'stmts' => [
-                new Expression(new Assign($variable, new ConstFetch(new Name('false')))),
-                new Break_(),
-            ],
+            'stmts' => [new Expression(new Assign($variable, new ConstFetch(new Name('false')))), new Break_()],
         ]);
 
         $result = [
