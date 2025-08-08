@@ -9,12 +9,16 @@ use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Break_;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Foreach_;
 use PhpParser\Node\Stmt\If_;
+use PhpParser\Node\Stmt\Return_;
+use Rector\Naming\Naming\VariableNaming;
+use Rector\PHPStan\ScopeFetcher;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -26,9 +30,14 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeArrayFindRector extends AbstractRector
 {
+    public function __construct(
+        private readonly VariableNaming $variableNaming
+    ) {
+    }
+
     public function getNodeTypes(): array
     {
-        return [Expression::class];
+        return [Expression::class, Return_::class];
     }
 
     public function getRuleDefinition(): RuleDefinition
@@ -56,28 +65,36 @@ CODE_SAMPLE
     }
 
     /**
-     * @param Expression $node
+     * @param Expression|Return_ $node
      * @return Stmt[]|null
      */
     public function refactor(Node $node): ?array
     {
-        if (! $node->expr instanceof Assign) {
+        if ($node instanceof Return_ && ! $node->expr instanceof FuncCall) {
             return null;
         }
 
-        if (! $node->expr->expr instanceof FuncCall) {
+        if ($node instanceof Expression && ! $node->expr instanceof Assign) {
             return null;
         }
 
-        if (! $this->isName($node->expr->expr, 'array_find')) {
+        $expr = $node instanceof Expression && $node->expr instanceof Assign
+            ? $node->expr->expr
+            : $node->expr;
+
+        if (! $expr instanceof FuncCall) {
             return null;
         }
 
-        if ($node->expr->expr->isFirstClassCallable()) {
+        if (! $this->isName($expr, 'array_find')) {
             return null;
         }
 
-        $args = $node->expr->expr->getArgs();
+        if ($expr->isFirstClassCallable()) {
+            return null;
+        }
+
+        $args = $expr->getArgs();
         if (count($args) !== 2) {
             return null;
         }
@@ -86,17 +103,22 @@ CODE_SAMPLE
             return null;
         }
 
+        $scope = ScopeFetcher::fetch($node);
+        $variable = $node instanceof Expression && $node->expr instanceof Assign
+            ? $node->expr->var
+            : new Variable($this->variableNaming->createCountedValueName('found', $scope));
+
         $valueCond = $args[1]->value->expr;
         $if = new If_($valueCond, [
             'stmts' => [
-                new Expression(new Assign($node->expr->var, $args[1]->value->params[0]->var)),
+                new Expression(new Assign($variable, $args[1]->value->params[0]->var)),
                 new Break_(),
             ],
         ]);
 
-        return [
+        $result = [
             // init
-            new Expression(new Assign($node->expr->var, new ConstFetch(new Name('null')))),
+            new Expression(new Assign($variable, new ConstFetch(new Name('null')))),
 
             // foreach loop
             new Foreach_(
@@ -112,5 +134,11 @@ CODE_SAMPLE
                     ],
             ),
         ];
+
+        if ($node instanceof Return_) {
+            $result[] = new Return_($variable);
+        }
+
+        return $result;
     }
 }
