@@ -110,10 +110,7 @@ CODE_SAMPLE
 
         $valueCond = $args[1]->value->expr;
         $if = new If_($valueCond, [
-            'stmts' => [
-                new Expression(new Assign($variable, new ConstFetch(new Name('true')))),
-                new Break_(),
-            ],
+            'stmts' => [new Expression(new Assign($variable, new ConstFetch(new Name('true')))), new Break_()],
         ]);
 
         $result = [
