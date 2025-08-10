@@ -194,7 +194,6 @@ CODE_SAMPLE
 
             $constants = $classLike->getConstants();
 
-            $hasChangedOnCurrentIteration = false;
             foreach ($constants as $constant) {
                 $const = $constant->consts[0];
 
@@ -202,14 +201,8 @@ CODE_SAMPLE
                     $newArray->items = array_merge($newArray->items, $const->value->items);
 
                     $hasChanged = true;
-                    $hasChangedOnCurrentIteration = true;
                 }
             }
-
-            if (! $hasChangedOnCurrentIteration) {
-                $newArray->items[] = $item;
-            }
-
         }
 
         if ($hasChanged) {
