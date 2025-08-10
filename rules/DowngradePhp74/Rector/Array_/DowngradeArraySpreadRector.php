@@ -174,10 +174,12 @@ CODE_SAMPLE
         $hasChanged = false;
 
         $newArray = new Array_();
+        $newArray->setAttributes($array->getAttributes());
+
         foreach ($array->items as $item) {
+            $newArray->items[] = $item;
             $type = $this->resolveItemType($item);
             if (! $type instanceof FullyQualifiedObjectType) {
-                $newArray->items[] = $item;
                 continue;
             }
 
@@ -188,7 +190,6 @@ CODE_SAMPLE
             /** @var Identifier $name */
             $classLike = $this->astResolver->resolveClassFromName($type->getClassName());
             if (! $classLike instanceof ClassLike) {
-                $newArray->items[] = $item;
                 continue;
             }
 
@@ -198,6 +199,7 @@ CODE_SAMPLE
                 $const = $constant->consts[0];
 
                 if ($const->name->toString() === $name->toString() && $const->value instanceof Array_) {
+                    array_pop($newArray->items);
                     $newArray->items = array_merge($newArray->items, $const->value->items);
 
                     $hasChanged = true;
