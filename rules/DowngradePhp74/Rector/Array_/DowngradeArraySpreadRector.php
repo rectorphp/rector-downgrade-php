@@ -12,7 +12,6 @@ use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassLike;
-use PHPStan\Analyser\MutatingScope;
 use PHPStan\Type\Type;
 use Rector\DowngradePhp81\NodeAnalyzer\ArraySpreadAnalyzer;
 use Rector\DowngradePhp81\NodeFactory\ArrayMergeFromArraySpreadFactory;
@@ -23,6 +22,7 @@ use Rector\Rector\AbstractRector;
 use Rector\StaticTypeMapper\ValueObject\Type\FullyQualifiedObjectType;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use PHPStan\Analyser\MutatingScope;
 
 /**
  * @changelog https://wiki.php.net/rfc/spread_operator_for_array
@@ -123,12 +123,19 @@ CODE_SAMPLE
 
         $hasChanged = false;
 
-        foreach ($arrays as $array) {
-            $refactorArrayConstValue = $this->refactorArrayConstValue($array);
+        $this->traverseNodesWithCallable($classConst->consts, function (Node $subNode) use (&$hasChanged): ?Node {
+            if (! $subNode instanceof Array_) {
+                return null;
+            }
+
+            $refactorArrayConstValue = $this->refactorArrayConstValue($subNode);
             if ($refactorArrayConstValue instanceof Array_) {
                 $hasChanged = true;
+                return $refactorArrayConstValue;
             }
-        }
+
+            return null;
+        });
 
         if ($hasChanged) {
             return $classConst;
@@ -166,9 +173,11 @@ CODE_SAMPLE
     {
         $hasChanged = false;
 
-        foreach ($array->items as $key => $item) {
+        $newArray = new Array_();
+        foreach ($array->items as $item) {
             $type = $this->resolveItemType($item);
             if (! $type instanceof FullyQualifiedObjectType) {
+                $newArray->items[] = $item;
                 continue;
             }
 
@@ -179,6 +188,7 @@ CODE_SAMPLE
             /** @var Identifier $name */
             $classLike = $this->astResolver->resolveClassFromName($type->getClassName());
             if (! $classLike instanceof ClassLike) {
+                $newArray->items[] = $item;
                 continue;
             }
 
@@ -188,8 +198,7 @@ CODE_SAMPLE
                 $const = $constant->consts[0];
 
                 if ($const->name->toString() === $name->toString() && $const->value instanceof Array_) {
-                    unset($array->items[$key]);
-                    array_splice($array->items, $key, 0, $const->value->items);
+                    $newArray->items = array_merge($newArray->items, $const->value->items);
 
                     $hasChanged = true;
                 }
@@ -197,7 +206,7 @@ CODE_SAMPLE
         }
 
         if ($hasChanged) {
-            return $array;
+            return $newArray;
         }
 
         return null;
