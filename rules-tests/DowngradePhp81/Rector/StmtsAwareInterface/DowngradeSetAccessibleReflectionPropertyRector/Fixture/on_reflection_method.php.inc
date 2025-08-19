@@ -22,7 +22,9 @@ class OnReflectionMethod
     public function run($object)
     {
         $reflectionMethod = new \ReflectionMethod($object, 'bar');
-        $reflectionMethod->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $reflectionMethod->setAccessible(true);
+        }
         return $reflectionMethod->__invoke($object, []);
     }
 }
