@@ -21,7 +21,9 @@ class OnReturn
     public function run($object)
     {
         $reflection = new \ReflectionMethod($object, 'bar');
-        $reflection->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $reflection->setAccessible(true);
+        }
         return $reflection;
     }
 }
