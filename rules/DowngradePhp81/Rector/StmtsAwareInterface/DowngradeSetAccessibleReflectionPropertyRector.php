@@ -196,11 +196,11 @@ CODE_SAMPLE
             return false;
         }
 
-        if (! $stmt->cond->left instanceof ConstFetch && ! $this->isName($stmt->cond->left->name, 'PHP_VERSION_ID')) {
+        if (! $stmt->cond->left instanceof ConstFetch || ! $this->isName($stmt->cond->left->name, 'PHP_VERSION_ID')) {
             return false;
         }
 
-        if (! $stmt->cond->right instanceof Int_ && $stmt->cond->right->value !== 80100) {
+        if (! $stmt->cond->right instanceof Int_ || $stmt->cond->right->value !== 80100) {
             return false;
         }
 
