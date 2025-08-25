@@ -193,7 +193,6 @@ CODE_SAMPLE
             ->getType();
 
         if (! $type instanceof IntegerRangeType) {
-            // next todo: check version_compare() and if() usage
             return false;
         }
 
