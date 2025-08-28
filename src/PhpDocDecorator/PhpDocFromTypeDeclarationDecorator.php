@@ -18,6 +18,7 @@ use PhpParser\Node\Stmt\Function_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Type\MixedType;
+use PHPStan\Type\NeverType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
@@ -65,8 +66,10 @@ final class PhpDocFromTypeDeclarationDecorator
         ];
     }
 
-    public function decorateReturn(ClassMethod|Function_|Closure|ArrowFunction $functionLike): void
-    {
+    public function decorateReturn(
+        ClassMethod|Function_|Closure|ArrowFunction $functionLike,
+        ?Type $requireType = null
+    ): void {
         if (! $functionLike->returnType instanceof Node) {
             return;
         }
@@ -121,6 +124,14 @@ final class PhpDocFromTypeDeclarationDecorator
             $returnType = $classMethod->returnType;
             if ($returnType instanceof Node && $returnType instanceof FullyQualified) {
                 $functionLike->returnType = new FullyQualified($returnType->toString());
+                break;
+            }
+
+            if ($requireType instanceof NeverType && $returnType instanceof Identifier && $this->nodeNameResolver->isName(
+                $returnType,
+                'void'
+            )) {
+                $functionLike->returnType = new Identifier('void');
                 break;
             }
         }
@@ -196,7 +207,7 @@ final class PhpDocFromTypeDeclarationDecorator
             return false;
         }
 
-        $this->decorateReturn($functionLike);
+        $this->decorateReturn($functionLike, $requireType);
         return true;
     }
 
