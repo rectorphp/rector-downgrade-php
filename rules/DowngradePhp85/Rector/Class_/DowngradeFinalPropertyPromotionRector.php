@@ -92,27 +92,13 @@ CODE_SAMPLE
                 continue;
             }
 
-            $this->makeNonFinal($param);
+            $this->visibilityManipulator->makeNonFinal($param);
 
             $this->addPhpDocTag($param);
 
         }
 
         return null;
-    }
-
-    public function makeNonFinal(Param $node): void
-    {
-        if (! $this->isFinal($node)) {
-            return;
-        }
-
-        $node->flags -= Modifiers::FINAL;
-    }
-
-    private function isFinal(Param $node): bool
-    {
-        return (bool) ($node->flags & Modifiers::FINAL);
     }
 
     private function addPhpDocTag(Property|Param $node): bool
