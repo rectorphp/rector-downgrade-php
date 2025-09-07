@@ -89,24 +89,22 @@ CODE_SAMPLE
             return null;
         }
 
-        if ($node instanceof Property) {
-            $this->addPhpDocTag($node);
-        }
+        $this->addPhpDocTag($node);
 
         $this->visibilityManipulator->removeReadonly($node);
 
         return $node;
     }
 
-    private function addPhpDocTag(Property $property): void
+    private function addPhpDocTag(Property|Param $node): void
     {
-        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($property);
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
 
         if ($phpDocInfo->hasByName(self::TAGNAME)) {
             return;
         }
 
         $phpDocInfo->addPhpDocTagNode(new PhpDocTagNode('@' . self::TAGNAME, new GenericTagValueNode('')));
-        $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($property);
+        $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($node);
     }
 }
