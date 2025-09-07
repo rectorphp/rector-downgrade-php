@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp85\Rector\Class_;
 
-use PhpParser\Comment\Doc;
+use PhpParser\Builder\Property;
 use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Param;
-use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\Node\Stmt\Trait_;
+use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
-use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
-use Rector\PhpParser\Node\BetterNodeFinder;
-use Rector\PhpParser\Printer\BetterStandardPrinter;
+use Rector\Comments\NodeDocBlock\DocBlockUpdater;
+use Rector\Privatization\NodeManipulator\VisibilityManipulator;
 use Rector\Rector\AbstractRector;
 use Rector\ValueObject\MethodName;
+use Rector\ValueObject\Visibility;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -27,6 +27,18 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeFinalPropertyPromotionRector extends AbstractRector
 {
+    /**
+     * @var string
+     */
+    private const TAGNAME = 'final';
+
+    public function __construct(
+        private readonly VisibilityManipulator $visibilityManipulator,
+        private readonly DocBlockUpdater $docBlockUpdater,
+        private readonly PhpDocInfoFactory $phpDocInfoFactory,
+    ) {
+    }
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Change constructor final property promotion to @final annotation assign', [
@@ -59,30 +71,59 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [Class_::class, Trait_::class];
+        return [ClassMethod::class];
     }
 
     /**
-     * @param Class_|Trait_ $node
+     * @param ClassMethod $node
      */
     public function refactor(Node $node): null
     {
-        $constructorClassMethod = $node->getMethod(MethodName::CONSTRUCT);
-        if (! $constructorClassMethod instanceof ClassMethod) {
+
+        if (! $this->isName($node, MethodName::CONSTRUCT)) {
             return null;
         }
 
-        foreach ($constructorClassMethod->params as $promotedParam) {
-            if (($promotedParam->flags & Modifiers::FINAL) !== 0) {
-                $promotedParam->flags &= ~Modifiers::FINAL;
-
-                $existingDoc = $promotedParam->getDocComment();
-                if (! $existingDoc) {
-                    $promotedParam->setDocComment(new Doc('/** @final */'));
-                }
+        foreach ($node->params as $param) {
+            if (! $param->isPromoted()) {
+                continue;
             }
+            if (! $this->visibilityManipulator->hasVisibility($param, Visibility::FINAL)) {
+                continue;
+            }
+
+            $this->makeNonFinal($param);
+
+            $this->addPhpDocTag($param);
+
         }
 
         return null;
+    }
+
+    public function makeNonFinal(Param $node): void
+    {
+        if (! $this->isFinal($node)) {
+            return;
+        }
+
+        $node->flags -= Modifiers::FINAL;
+    }
+
+    private function isFinal(Param $node): bool{
+        return (bool) ($node->flags & Modifiers::FINAL);
+    }
+
+    private function addPhpDocTag(Property|Param $node): bool
+    {
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
+
+        if ($phpDocInfo->hasByName(self::TAGNAME)) {
+            return false;
+        }
+
+        $phpDocInfo->addPhpDocTagNode(new PhpDocTagNode('@' . self::TAGNAME, new GenericTagValueNode('')));
+        $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($node);
+        return true;
     }
 }

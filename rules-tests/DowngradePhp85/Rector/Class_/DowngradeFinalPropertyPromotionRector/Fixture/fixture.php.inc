@@ -18,7 +18,9 @@ namespace Rector\Tests\DowngradeFinalPropertyPromotionRector\Rector\Class_\Downg
 class Fixture
 {
     public function __construct(
-        /** @final */
+        /**
+         * @final
+         */
         public string $id
     ) {}
 }
