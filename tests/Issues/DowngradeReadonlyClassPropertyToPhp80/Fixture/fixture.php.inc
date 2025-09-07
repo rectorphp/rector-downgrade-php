@@ -17,7 +17,12 @@ namespace Rector\Tests\Issues\DowngradeReadonlyClassPropertyToPhp80\Fixture;
 
 final class Fixture
 {
-    public function __construct(public array $property)
+    public function __construct(
+        /**
+         * @readonly
+         */
+        public array $property
+    )
     {
     }
 }

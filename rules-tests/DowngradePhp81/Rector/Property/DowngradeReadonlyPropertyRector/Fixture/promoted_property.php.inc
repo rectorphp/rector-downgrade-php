@@ -20,6 +20,9 @@ namespace Rector\Tests\DowngradePhp81\Rector\Property\DowngradeReadonlyPropertyR
 class SomeClass
 {
     public function __construct(
+        /**
+         * @readonly
+         */
         public string $foo = 'foo'
     )
     {
