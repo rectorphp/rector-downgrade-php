@@ -110,7 +110,8 @@ CODE_SAMPLE
         $node->flags -= Modifiers::FINAL;
     }
 
-    private function isFinal(Param $node): bool{
+    private function isFinal(Param $node): bool
+    {
         return (bool) ($node->flags & Modifiers::FINAL);
     }
 
