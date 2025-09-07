@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp85\Rector\Class_;
 
 use PhpParser\Builder\Property;
-use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -88,6 +87,7 @@ CODE_SAMPLE
             if (! $param->isPromoted()) {
                 continue;
             }
+
             if (! $this->visibilityManipulator->hasVisibility($param, Visibility::FINAL)) {
                 continue;
             }
