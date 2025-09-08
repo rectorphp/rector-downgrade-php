@@ -120,14 +120,12 @@ CODE_SAMPLE
                         (string) $oldTokens[$attrGroup->getEndTokenPos() + 1],
                         "\n"
                     )) {
-                        if ($node instanceof Param) {
-                            if (isset($oldTokens[$attrGroup->getStartTokenPos() - 1]) && ! str_contains(
-                                (string) $oldTokens[$attrGroup->getStartTokenPos() - 1],
-                                "\n"
-                            )) {
-                                // add new line before
-                                $oldTokens[$attrGroup->getStartTokenPos() - 1]->text .= "\n";
-                            }
+                        if ($node instanceof Param && (isset($oldTokens[$attrGroup->getStartTokenPos() - 1]) && ! str_contains(
+                            (string) $oldTokens[$attrGroup->getStartTokenPos() - 1],
+                            "\n"
+                        ))) {
+                            // add new line before
+                            $oldTokens[$attrGroup->getStartTokenPos() - 1]->text .= "\n";
                         }
 
                         // add new line after
