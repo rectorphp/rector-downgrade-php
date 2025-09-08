@@ -81,6 +81,7 @@ CODE_SAMPLE
         if (! $this->isName($node, MethodName::CONSTRUCT)) {
             return null;
         }
+
         $hasChanged = false;
         foreach ($node->params as $param) {
             if (! $param->isPromoted()) {
