@@ -1,5 +1,7 @@
 <?php
 
+namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector\Fixture;
+
 final class OverrideAndSensitiveParameter extends Foo
 {
     #[\Override]
@@ -19,6 +21,9 @@ final class OverrideAndSensitiveParameter extends Foo
 ?>
 -----
 <?php
+
+namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector\Fixture;
+=
 
 final class OverrideAndSensitiveParameter extends Foo
 {

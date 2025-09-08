@@ -1,5 +1,7 @@
 <?php
 
+namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector\Fixture;
+
 final class SkipAlreadyNewlinedOverrideAndSensitiveParameters extends Foo
 {
     #[\Override]
