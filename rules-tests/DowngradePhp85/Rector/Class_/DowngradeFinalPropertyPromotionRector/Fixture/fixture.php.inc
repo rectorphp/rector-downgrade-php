@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\DowngradeFinalPropertyPromotionRector\Rector\Class_\DowngradePropertyPromotionRector\Fixture;
+namespace Rector\Tests\DowngradePhp85\Rector\Class_\DowngradeFinalPropertyPromotionRector\Fixture;
 
 class Fixture
 {
@@ -13,7 +13,7 @@ class Fixture
 -----
 <?php
 
-namespace Rector\Tests\DowngradeFinalPropertyPromotionRector\Rector\Class_\DowngradePropertyPromotionRector\Fixture;
+namespace Rector\Tests\DowngradePhp85\Rector\Class_\DowngradeFinalPropertyPromotionRector\Fixture;
 
 class Fixture
 {
