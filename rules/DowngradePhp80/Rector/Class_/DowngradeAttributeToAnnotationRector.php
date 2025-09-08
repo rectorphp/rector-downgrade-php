@@ -120,7 +120,17 @@ CODE_SAMPLE
                         (string) $oldTokens[$attrGroup->getEndTokenPos() + 1],
                         "\n"
                     )) {
-                        // add new line
+                        if ($node instanceof Param) {
+                            if (isset($oldTokens[$attrGroup->getStartTokenPos() - 1]) && ! str_contains(
+                                (string) $oldTokens[$attrGroup->getStartTokenPos() - 1],
+                                "\n"
+                            )) {
+                                // add new line before
+                                $oldTokens[$attrGroup->getStartTokenPos() - 1]->text .= "\n ";
+                            }
+                        }
+
+                        // add new line after
                         $oldTokens[$attrGroup->getEndTokenPos() + 1]->text = "\n" . $oldTokens[$attrGroup->getEndTokenPos() + 1]->text;
                         $this->isDowngraded = true;
                     }

@@ -23,7 +23,8 @@ final class OverrideAndSensitiveParameter extends Foo
 final class OverrideAndSensitiveParameter extends Foo
 {
     #[\Override]
-    public function run(#[\SensitiveParameter]
+    public function run(
+ #[\SensitiveParameter]
  bool $param) {
         if ($this->isTrue($param)) {
             return 5;
