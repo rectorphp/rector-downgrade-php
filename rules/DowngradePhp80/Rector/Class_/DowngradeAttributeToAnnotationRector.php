@@ -34,7 +34,13 @@ final class DowngradeAttributeToAnnotationRector extends AbstractRector implemen
     /**
      * @var string[]
      */
-    private const SKIPPED_ATTRIBUTES = ['Attribute', 'ReturnTypeWillChange', 'AllowDynamicProperties'];
+    private const SKIPPED_ATTRIBUTES = [
+        'Attribute',
+        'ReturnTypeWillChange',
+        'AllowDynamicProperties',
+        'Override',
+        'SensitiveParameter',
+    ];
 
     /**
      * @var DowngradeAttributeToAnnotation[]
