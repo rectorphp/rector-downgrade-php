@@ -126,7 +126,7 @@ CODE_SAMPLE
                                 "\n"
                             )) {
                                 // add new line before
-                                $oldTokens[$attrGroup->getStartTokenPos() - 1]->text .= "\n ";
+                                $oldTokens[$attrGroup->getStartTokenPos() - 1]->text .= "\n";
                             }
                         }
 
