@@ -23,13 +23,12 @@ final class OverrideAndSensitiveParameter extends Foo
 <?php
 
 namespace Rector\Tests\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector\Fixture;
-=
 
 final class OverrideAndSensitiveParameter extends Foo
 {
     #[\Override]
     public function run(
- #[\SensitiveParameter]
+#[\SensitiveParameter]
  bool $param) {
         if ($this->isTrue($param)) {
             return 5;
