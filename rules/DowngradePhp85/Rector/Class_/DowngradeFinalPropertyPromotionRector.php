@@ -102,6 +102,7 @@ CODE_SAMPLE
         if ($hasChanged) {
             return $node;
         }
+
         return null;
     }
 
