@@ -78,7 +78,6 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?ClassMethod
     {
-
         if (! $this->isName($node, MethodName::CONSTRUCT)) {
             return null;
         }
