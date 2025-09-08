@@ -76,7 +76,7 @@ CODE_SAMPLE
     /**
      * @param ClassMethod $node
      */
-    public function refactor(Node $node): null
+    public function refactor(Node $node): ?ClassMethod
     {
 
         if (! $this->isName($node, MethodName::CONSTRUCT)) {
