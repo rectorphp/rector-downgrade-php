@@ -2,11 +2,11 @@
 
 namespace Rector\Tests\DowngradePhp85\Rector\Class_\DowngradeFinalPropertyPromotionRector\Fixture;
 
-class Fixture
+class ImplicitFinalPropertyPromotion
 {
-    public function __construct(
-        final public string $id
-    ) {}
+    public function __construct(final string $foo)
+    {
+    }
 }
 
 ?>
@@ -15,14 +15,14 @@ class Fixture
 
 namespace Rector\Tests\DowngradePhp85\Rector\Class_\DowngradeFinalPropertyPromotionRector\Fixture;
 
-class Fixture
+class ImplicitFinalPropertyPromotion
 {
-    public function __construct(
-        /**
-         * @final
-         */
-        public string $id
-    ) {}
+    public function __construct(/**
+     * @final
+     */
+    public string $foo)
+    {
+    }
 }
 
 ?>
