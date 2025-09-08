@@ -95,6 +95,10 @@ CODE_SAMPLE
             $hasChanged = true;
             $this->visibilityManipulator->makeNonFinal($param);
 
+            if (! $param->isPromoted()) {
+                $this->visibilityManipulator->makePublic($param);
+            }
+
             $this->addPhpDocTag($param);
 
         }

@@ -7,6 +7,7 @@ class ImplicitFinalPropertyPromotion
     {
     }
 }
+
 ?>
 -----
 <?php
@@ -14,12 +15,12 @@ namespace Rector\Tests\DowngradeFinalPropertyPromotionRector\Rector\Class_\Downg
 
 class ImplicitFinalPropertyPromotion
 {
-    public function __construct(
-         /**
-           * @final
-           */
-         public string $foo
-    )
+    public function __construct(/**
+     * @final
+     */
+    public string $foo)
     {
     }
 }
+
+?>
