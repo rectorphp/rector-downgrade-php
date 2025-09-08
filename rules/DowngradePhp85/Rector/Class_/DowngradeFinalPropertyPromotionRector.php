@@ -98,7 +98,9 @@ CODE_SAMPLE
             $this->addPhpDocTag($param);
 
         }
-
+    if ($hasChanged) {
+        return $node;
+    }
         return null;
     }
 
