@@ -102,17 +102,13 @@ CODE_SAMPLE
             return null;
         }
 
-        $hasChangedDoc = false;
         $hasChanged = false;
         foreach ($node->params as $param) {
             if (! $this->visibilityManipulator->isReadonly($param)) {
                 continue;
             }
 
-            if ($this->addPhpDocTag($param)) {
-                $hasChangedDoc = true;
-            }
-
+            $this->addPhpDocTag($param);
             $this->visibilityManipulator->removeReadonly($param);
             $hasChanged = true;
         }
@@ -121,23 +117,18 @@ CODE_SAMPLE
             return null;
         }
 
-        if ($hasChangedDoc) {
-            $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
-        }
-
         return $node;
     }
 
-    private function addPhpDocTag(Property|Param $node): bool
+    private function addPhpDocTag(Property|Param $node): void
     {
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
 
         if ($phpDocInfo->hasByName(self::TAGNAME)) {
-            return false;
+            return;
         }
 
         $phpDocInfo->addPhpDocTagNode(new PhpDocTagNode('@' . self::TAGNAME, new GenericTagValueNode('')));
         $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($node);
-        return true;
     }
 }

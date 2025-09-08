@@ -110,16 +110,16 @@ CODE_SAMPLE
         return null;
     }
 
-    private function addPhpDocTag(Property|Param $node): bool
+    private function addPhpDocTag(Property|Param $node): void
     {
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
 
         if ($phpDocInfo->hasByName(self::TAGNAME)) {
-            return false;
+            return;
         }
 
         $phpDocInfo->addPhpDocTagNode(new PhpDocTagNode('@' . self::TAGNAME, new GenericTagValueNode('')));
         $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($node);
-        return true;
+        return;
     }
 }
