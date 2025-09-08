@@ -91,7 +91,7 @@ CODE_SAMPLE
             if (! $this->visibilityManipulator->hasVisibility($param, Visibility::FINAL)) {
                 continue;
             }
-
+            $hasChanged = true;
             $this->visibilityManipulator->makeNonFinal($param);
 
             $this->addPhpDocTag($param);
