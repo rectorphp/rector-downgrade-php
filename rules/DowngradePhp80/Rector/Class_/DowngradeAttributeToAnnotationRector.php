@@ -39,7 +39,6 @@ final class DowngradeAttributeToAnnotationRector extends AbstractRector implemen
         'ReturnTypeWillChange',
         'AllowDynamicProperties',
         'Override',
-        'SensitiveParameter',
     ];
 
     /**
