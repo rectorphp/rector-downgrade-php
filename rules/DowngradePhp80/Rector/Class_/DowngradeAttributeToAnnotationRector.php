@@ -110,8 +110,6 @@ CODE_SAMPLE
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
         $oldTokens = $this->file->getOldTokens();
 
-        $node->getAttribute(AttributeKey::SCOPE);
-
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
                 if ($this->shouldSkipAttribute($attribute)) {
