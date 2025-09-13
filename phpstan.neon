@@ -38,21 +38,13 @@ parameters:
         # php enum value minus
         - '#Parameter \#1 \$phpVersion of method Rector\\Config\\RectorConfig\:\:phpVersion\(\) expects (.*?), (.*?) given#'
 
-        # part of implicit contract
-        - '#Call to an undefined method PHPStan\\Type\\ConstantType\:\:getValue\(\)#'
-
         - '#Calling PHPStan\\Reflection\\Native\\NativeFunctionReflection\:\:getName\(\) is not covered by backward compatibility promise\. The method might change in a minor PHPStan version#'
 
         - '#Parameter \#3 \$stmt of method Rector\\DowngradePhp72\\Rector\\FuncCall\\DowngradePregUnmatchedAsNullConstantRector\:\:processReplace\(\) expects PhpParser\\Node\\Stmt, PhpParser\\Node given#'
 
         - '#(.*?)\:\:refactor\(\) should return array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\\ClassConst\|null but returns array<PhpParser\\Node\\Stmt>\|PhpParser\\Node\\Stmt\|null#'
 
-        -
-            message: '#Use value object over return of values#'
-            path: rules/DowngradePhp80/Rector/Expression/DowngradeThrowExprRector.php
-
         # phpstan need to load rector nodes first to avoid this
-        - '#Rector\\Core\\Contract\\PhpParser\\Node\\StmtsAwareInterface#'
         - '#Access to an undefined property Rector\\Contract\\PhpParser\\Node\\StmtsAwareInterface\:\:\$stmts#'
 
         -
