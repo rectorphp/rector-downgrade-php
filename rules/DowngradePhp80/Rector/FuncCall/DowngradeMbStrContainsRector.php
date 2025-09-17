@@ -80,26 +80,26 @@ CODE_SAMPLE
         $needle = $args[1]->value;
         $offset = null;
 
-        if($haystack instanceof FuncCall){
-            if(!$this->isName($haystack->name, 'mb_substr')){
+        if ($haystack instanceof FuncCall) {
+            if (! $this->isName($haystack->name, 'mb_substr')) {
                 return null;
             }
             $substrArg = $haystack->getArgs();
-            if(isset($substrArg[0]) && !$substrArg[0] instanceof Arg){
+            if (isset($substrArg[0]) && ! $substrArg[0] instanceof Arg) {
                 return null;
             }
-            if(isset($substrArg[1]) && !$substrArg[1] instanceof Arg){
+            if (isset($substrArg[1]) && ! $substrArg[1] instanceof Arg) {
                 return null;
             }
             $haystack = $substrArg[0];
             $offset = $substrArg[1];
         }
 
-        if($offset instanceof Arg){
+        if ($offset instanceof Arg) {
             $funcCall = $this->nodeFactory->createFuncCall('mb_strpos', [$haystack, $needle, $offset]);
         }
-        
-        if(!$offset instanceof Arg){
+
+        if (! $offset instanceof Arg) {
             $funcCall = $this->nodeFactory->createFuncCall('mb_strpos', [$haystack, $needle]);
         }
 
