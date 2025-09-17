@@ -7,7 +7,7 @@ class OffsetExpressionStrpos
     public function run()
     {
         $offset = 1;
-        $isMatch = str_contains(mb_substr('abc', $offset + 1), 'a');
+        $isMatch = str_contains(mb_substr('😊abc', $offset + 1), '😊a');
     }
 }
 ?>
@@ -21,7 +21,7 @@ class OffsetExpressionStrpos
     public function run()
     {
         $offset = 1;
-        $isMatch = mb_strpos('abc', 'a', $offset + 1) !== false;
+        $isMatch = mb_strpos('😊abc', '😊a', $offset + 1) !== false;
     }
 }
 ?>

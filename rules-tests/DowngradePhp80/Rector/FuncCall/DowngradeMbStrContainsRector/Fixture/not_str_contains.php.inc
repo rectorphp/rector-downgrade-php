@@ -6,7 +6,7 @@ final class NoStrContains
 {
     public function run()
     {
-        return ! str_contains('abc', 'b');
+        return ! str_contains('😊abc', 'b😊');
     }
 }
 
@@ -20,7 +20,7 @@ final class NoStrContains
 {
     public function run()
     {
-        return mb_strpos('abc', 'b') === false;
+        return mb_strpos('😊abc', 'b😊') === false;
     }
 }
 

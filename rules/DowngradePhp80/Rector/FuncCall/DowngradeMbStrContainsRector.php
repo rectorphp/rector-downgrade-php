@@ -9,6 +9,7 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\BooleanNot;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\FuncCall;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -32,7 +33,7 @@ class SomeClass
 {
     public function run()
     {
-        return str_contains('abc', 'a');
+        return str_contains('😊abc', '😊a');
     }
 }
 CODE_SAMPLE
@@ -42,7 +43,7 @@ class SomeClass
 {
     public function run()
     {
-        return mb_strpos('abc', 'a') !== false;
+        return mb_strpos('😊abc', '😊a') !== false;
     }
 }
 CODE_SAMPLE
@@ -84,6 +85,7 @@ CODE_SAMPLE
             if (! $this->isName($haystack->name, 'mb_substr')) {
                 return null;
             }
+
             $substrArg = $haystack->getArgs();
             if (isset($substrArg[0]) && ! $substrArg[0] instanceof Arg) {
                 return null;
@@ -95,6 +97,14 @@ CODE_SAMPLE
             $offset = $substrArg[1];
         }
 
+        if (!$needle instanceof String_) {
+            return null;
+        }
+
+        if(strlen($needle->value) === mb_strlen($needle->value)){
+            return null;
+        }
+           
         if ($offset instanceof Arg) {
             $funcCall = $this->nodeFactory->createFuncCall('mb_strpos', [$haystack, $needle, $offset]);
         }

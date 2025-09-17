@@ -6,7 +6,7 @@ class TheOtherWay
 {
     public function run()
     {
-        $isMatch = str_contains('abc', 'a');
+        $isMatch = str_contains('😊abc', '😊a');
     }
 }
 
@@ -20,7 +20,7 @@ class TheOtherWay
 {
     public function run()
     {
-        $isMatch = mb_strpos('abc', 'a') !== false;
+        $isMatch = mb_strpos('😊abc', '😊a') !== false;
     }
 }
 
