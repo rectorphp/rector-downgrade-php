@@ -68,11 +68,11 @@ CODE_SAMPLE
     {
         $funcCall = $this->matchStrContainsOrNotStrContains($node);
 
-        if (!$funcCall->isFirstClassCallable()) {
+        if (! $funcCall instanceof FuncCall) {
             return null;
         }
 
-        if (! $funcCall instanceof FuncCall) {
+        if ($funcCall->isFirstClassCallable()) {
             return null;
         }
 
