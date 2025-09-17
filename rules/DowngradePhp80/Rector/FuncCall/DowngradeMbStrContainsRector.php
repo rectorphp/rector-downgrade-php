@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp80\Rector\FuncCall;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\BooleanNot;
@@ -77,8 +78,30 @@ CODE_SAMPLE
 
         $haystack = $args[0]->value;
         $needle = $args[1]->value;
+        $offset = null;
 
-        $funcCall = $this->nodeFactory->createFuncCall('mb_strpos', [$haystack, $needle]);
+        if($haystack instanceof FuncCall){
+            if(!$this->isName($haystack->name, 'mb_substr')){
+                return null;
+            }
+            $substrArg = $haystack->getArgs();
+            if(isset($substrArg[0]) && !$substrArg[0] instanceof Arg){
+                return null;
+            }
+            if(isset($substrArg[1]) && !$substrArg[1] instanceof Arg){
+                return null;
+            }
+            $haystack = $substrArg[0];
+            $offset = $substrArg[1];
+        }
+
+        if($offset instanceof Arg){
+            $funcCall = $this->nodeFactory->createFuncCall('mb_strpos', [$haystack, $needle, $offset]);
+        }
+        
+        if(!$offset instanceof Arg){
+            $funcCall = $this->nodeFactory->createFuncCall('mb_strpos', [$haystack, $needle]);
+        }
 
         if ($node instanceof BooleanNot) {
             return new Identical($funcCall, $this->nodeFactory->createFalse());
