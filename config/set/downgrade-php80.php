@@ -19,7 +19,6 @@ use Rector\DowngradePhp80\Rector\Enum_\DowngradeEnumToConstantListClassRector;
 use Rector\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector;
 use Rector\DowngradePhp80\Rector\Expression\DowngradeThrowExprRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeArrayFilterNullableCallbackRector;
-use Rector\DowngradePhp80\Rector\FuncCall\DowngradeMbStrContainsRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeNumberFormatNoFourthArgRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrEndsWithRector;
@@ -71,7 +70,6 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradePropertyPromotionRector::class,
         DowngradeNonCapturingCatchesRector::class,
         DowngradeStrContainsRector::class,
-        DowngradeMbStrContainsRector::class,
         DowngradeMatchToSwitchRector::class,
         DowngradeClassOnObjectToGetClassRector::class,
         DowngradeArbitraryExpressionsSupportRector::class,
