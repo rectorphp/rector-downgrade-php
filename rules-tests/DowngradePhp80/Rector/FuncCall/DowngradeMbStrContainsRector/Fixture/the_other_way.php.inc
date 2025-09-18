@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeMbStrContainsRector\Fixture;
+namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsWithMultibyteNeedleRector\Fixture;
 
 class TheOtherWay
 {
@@ -14,7 +14,7 @@ class TheOtherWay
 -----
 <?php
 
-namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeMbStrContainsRector\Fixture;
+namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsWithMultibyteNeedleRector\Fixture;
 
 class TheOtherWay
 {

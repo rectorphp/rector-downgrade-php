@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeMbStrContainsRector\Fixture;
+namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsWithMultibyteNeedleRector\Fixture;
 
 class IdenticalStrstr
 {
@@ -14,7 +14,7 @@ class IdenticalStrstr
 -----
 <?php
 
-namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeMbStrContainsRector\Fixture;
+namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsWithMultibyteNeedleRector\Fixture;
 
 class IdenticalStrstr
 {

@@ -18,9 +18,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 /**
  * @changelog https://wiki.php.net/rfc/str_contains
  *
- * @see \Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeMbStrContainsRector\DowngradeMbStrContainsRectorTest
+ * @see \Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsWithMultibyteNeedleRector\DowngradeStrContainsWithMultibyteNeedleRectorTest
  */
-final class DowngradeMbStrContainsRector extends AbstractRector
+final class DowngradeStrContainsWithMultibyteNeedleRector extends AbstractRector
 {
     public function getRuleDefinition(): RuleDefinition
     {
@@ -86,7 +86,12 @@ CODE_SAMPLE
         $offset = null;
 
         if ($haystack instanceof FuncCall) {
+            
             if (! $this->isName($haystack->name, 'mb_substr')) {
+                return null;
+            }
+
+            if ($haystack->isFirstClassCallable()) {
                 return null;
             }
 
