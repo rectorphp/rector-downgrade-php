@@ -17,9 +17,11 @@ use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
 use Rector\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Exception\ShouldNotHappenException;
+use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeAnalyzer\ExprInTopStmtMatcher;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PhpParser\Parser\InlineCodeParser;
+use Rector\PHPStan\ScopeFetcher;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -35,6 +37,7 @@ final class DowngradeJsonValidateRector extends AbstractRector
 
     public function __construct(
         private readonly InlineCodeParser $inlineCodeParser,
+        private readonly VariableNaming $variableNaming,
         private readonly ExprInTopStmtMatcher $exprInTopStmtMatcher
     ) {
     }
@@ -106,7 +109,8 @@ CODE_SAMPLE
             return null;
         }
 
-        $variable = new Variable('jsonValidate');
+        $scope = ScopeFetcher::fetch($node);
+        $variable = new Variable($this->variableNaming->createCountedValueName('jsonValidate', $scope));
 
         $function = $this->createClosure();
         $expression = new Expression(new Assign($variable, $function));
@@ -152,11 +156,7 @@ CODE_SAMPLE
             return true;
         }
 
-        if ($callLike->isFirstClassCallable()) {
-            return true;
-        }
-
-        $args = $callLike->getArgs();
+        $args = $callLike->args;
         return count($args) < 1;
     }
 }
