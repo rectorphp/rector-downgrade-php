@@ -10,7 +10,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name\FullyQualified;
-use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use Rector\NodeAnalyzer\ArgsAnalyzer;
@@ -78,7 +78,7 @@ CODE_SAMPLE
             );
 
             if ($hasIsArrayCheck) {
-                return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+                return NodeVisitor::DONT_TRAVERSE_CHILDREN;
             }
 
             return null;
