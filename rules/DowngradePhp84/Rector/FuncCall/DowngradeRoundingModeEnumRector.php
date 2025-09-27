@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp84\Rector\FuncCall;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
@@ -58,17 +59,12 @@ CODE_SAMPLE
             return null;
         }
 
-        $args = $node->getArgs();
-
-        if (count($args) !== 3) {
+        $arg = $node->getArg('mode', 2);
+        if (! $arg instanceof Arg) {
             return null;
         }
 
-        if (! isset($args[2])) {
-            return null;
-        }
-
-        $modeArg = $args[2]->value;
+        $modeArg = $arg->value;
         $hasChanged = false;
         if ($modeArg instanceof ClassConstFetch && $modeArg->class instanceof FullyQualified && $this->isName(
             $modeArg->class,
@@ -89,7 +85,7 @@ CODE_SAMPLE
                 return null;
             }
 
-            $args[2]->value = new ConstFetch(new FullyQualified($constantName));
+            $arg->value = new ConstFetch(new FullyQualified($constantName));
             $hasChanged = true;
         }
 
