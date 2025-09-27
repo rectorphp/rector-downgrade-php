@@ -92,24 +92,22 @@ CODE_SAMPLE
             return null;
         }
 
-        $args = $node->getArgs();
-        if ($this->argsAnalyzer->hasNamedArg($args)) {
+        $arg = $node->getArg('iterator', 0);
+        if (! $arg instanceof Arg) {
             return null;
         }
 
-        if (! isset($args[0])) {
-            return null;
-        }
-
-        $type = $this->nodeTypeResolver->getType($args[0]->value);
+        $type = $this->nodeTypeResolver->getType($arg->value);
         if ($this->shouldSkip($type)) {
             return null;
         }
 
-        Assert::isInstanceOf($node->args[0], Arg::class);
+        $position = $this->argsAnalyzer->resolveArgPosition($node->getArgs(), 'iterator', 0);
 
-        $firstValue = $node->args[0]->value;
-        $node->args[0]->value = new Ternary(
+        Assert::isInstanceOf($node->args[$position], Arg::class);
+
+        $firstValue = $node->args[$position]->value;
+        $node->args[$position]->value = new Ternary(
             $this->nodeFactory->createFuncCall('is_array', [new Arg($firstValue)]),
             new New_(new FullyQualified('ArrayIterator'), [new Arg($firstValue)]),
             $firstValue
