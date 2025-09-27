@@ -10,7 +10,6 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name\FullyQualified;
-use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
