@@ -10,7 +10,6 @@ $processed = $data
     |> strtoupper(...)
     |> (fn($str) => str_replace('WORLD', 'PHP', $str))
     |> addslashes(...);
-
 ?>
 -----
 <?php
@@ -24,5 +23,4 @@ $result1 = trim($data);
 $result2 = strtoupper($result1);
 $result3 = (fn($str) => str_replace('WORLD', 'PHP', $str))($result2);
 $processed = addslashes($result3);
-
 ?>
