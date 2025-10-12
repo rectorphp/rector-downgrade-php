@@ -63,7 +63,7 @@ CODE_SAMPLE
     {
         return [StmtsAwareInterface::class];
     }
-    
+
     /**
      * @param StmtsAwareInterface $node
      */
@@ -125,16 +125,13 @@ CODE_SAMPLE
         // For simple case: single pipe operation
         if (count($pipeChain) === 2) {
             $replacement = $this->createSimplePipeReplacement($pipeChain[0], $pipeChain[1]);
-            if ($replacement === null) {
+            if (! $replacement instanceof Node) {
                 return null;
             }
 
             // If the pipe was part of an assignment, maintain the assignment
             if ($originalExpression->expr instanceof Assign) {
-                $newAssign = new Assign(
-                    $originalExpression->expr->var,
-                    $replacement
-                );
+                $newAssign = new Assign($originalExpression->expr->var, $replacement);
                 return [new Expression($newAssign)];
             }
 
@@ -183,7 +180,7 @@ CODE_SAMPLE
         $tempVariableCounter = 0;
 
         // Create all intermediate assignments
-        for ($i = 1; $i < count($pipeChain) - 1; $i++) {
+        for ($i = 1; $i < count($pipeChain) - 1; ++$i) {
             $function = $pipeChain[$i];
 
             if (! $this->isCallableNode($function)) {
@@ -206,17 +203,14 @@ CODE_SAMPLE
             return null;
         }
 
-        $finalCall = $this->createFunctionCall($finalFunction, [$input]);
+        $node = $this->createFunctionCall($finalFunction, [$input]);
 
         // If the pipe was part of an assignment, maintain the assignment
         if ($originalExpression->expr instanceof Assign) {
-            $newAssign = new Assign(
-                $originalExpression->expr->var,
-                $finalCall
-            );
+            $newAssign = new Assign($originalExpression->expr->var, $node);
             $statements[] = new Expression($newAssign);
         } else {
-            $statements[] = new Expression($finalCall);
+            $statements[] = new Expression($node);
         }
 
         return $statements;
@@ -235,32 +229,32 @@ CODE_SAMPLE
     /**
      * @param Node[] $arguments
      */
-    private function createFunctionCall(Node $function, array $arguments): Node
+    private function createFunctionCall(Node $node, array $arguments): Node
     {
-        if ($function instanceof FuncCall) {
-            return new FuncCall($function->name, $this->nodeFactory->createArgs($arguments));
+        if ($node instanceof FuncCall) {
+            return new FuncCall($node->name, $this->nodeFactory->createArgs($arguments));
         }
 
-        if ($function instanceof Variable) {
-            return new FuncCall($function, $this->nodeFactory->createArgs($arguments));
+        if ($node instanceof Variable) {
+            return new FuncCall($node, $this->nodeFactory->createArgs($arguments));
         }
 
-        if ($function instanceof Closure || $function instanceof ArrowFunction) {
-            return new FuncCall($function, $this->nodeFactory->createArgs($arguments));
+        if ($node instanceof Closure || $node instanceof ArrowFunction) {
+            return new FuncCall($node, $this->nodeFactory->createArgs($arguments));
         }
 
-        if ($function instanceof MethodCall) {
-            $clonedMethodCall = clone $function;
+        if ($node instanceof MethodCall) {
+            $clonedMethodCall = clone $node;
             $clonedMethodCall->args = $this->nodeFactory->createArgs($arguments);
             return $clonedMethodCall;
         }
 
-        if ($function instanceof StaticCall) {
-            $clonedStaticCall = clone $function;
+        if ($node instanceof StaticCall) {
+            $clonedStaticCall = clone $node;
             $clonedStaticCall->args = $this->nodeFactory->createArgs($arguments);
             return $clonedStaticCall;
         }
 
-        return new FuncCall($function, $this->nodeFactory->createArgs($arguments));
+        return new FuncCall($node, $this->nodeFactory->createArgs($arguments));
     }
 }
