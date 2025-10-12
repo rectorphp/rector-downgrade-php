@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\DowngradePhp85\Rector\Class_\DowngradeFinalPropertyPromotionRector;
 use Rector\DowngradePhp85\Rector\FuncCall\DowngradeArrayFirstLastRector;
+use Rector\DowngradePhp85\Rector\StmtsAwareInterface\DowngradePipeOperatorRector;
 use Rector\Renaming\Rector\ClassConstFetch\RenameClassConstFetchRector;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\Renaming\ValueObject\MethodCallRename;
@@ -16,6 +17,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rules([
         DowngradeArrayFirstLastRector::class,
         DowngradeFinalPropertyPromotionRector::class,
+        DowngradePipeOperatorRector::class,
     ]);
 
     // https://wiki.php.net/rfc/deprecations_php_8_5#deprecate_driver_specific_pdo_constants_and_methods
