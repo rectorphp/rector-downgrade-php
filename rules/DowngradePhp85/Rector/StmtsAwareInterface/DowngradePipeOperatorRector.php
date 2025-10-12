@@ -5,17 +5,19 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp85\Rector\StmtsAwareInterface;
 
 use PhpParser\Node;
-use PhpParser\Node\Expr\BinaryOp\Pipe;
-use PhpParser\Node\Expr\FuncCall;
-use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ArrowFunction;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\BinaryOp\Pipe;
+use PhpParser\Node\Expr\Closure;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Expression;
-use PhpParser\Node\Stmt\Return_;
-use PhpParser\NodeTraverser;
+use Rector\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Rector\AbstractRector;
-use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @see https://wiki.php.net/rfc/pipe-operator-v3
@@ -23,15 +25,10 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
  */
 final class DowngradePipeOperatorRector extends AbstractRector
 {
-    /**
-     * @var int
-     */
-    private $tempVariableCounter = 0;
-
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Downgrade pipe operator |> to PHP < 8.1 compatible code',
+            'Downgrade pipe operator |> to PHP < 8.5 compatible code',
             [
                 new CodeSample(
                     <<<'CODE_SAMPLE'
@@ -64,22 +61,206 @@ CODE_SAMPLE
 
     public function getNodeTypes(): array
     {
-        return [Pipe::class];
+        return [StmtsAwareInterface::class];
     }
-
+    
+    /**
+     * @param StmtsAwareInterface $node
+     */
     public function refactor(Node $node): ?Node
     {
-        if (!$node instanceof Pipe) {
+        if ($node->stmts === null) {
             return null;
         }
 
-        return $this->processPipeOperation($node);
+        $hasChanged = false;
+
+        foreach ($node->stmts as $key => $stmt) {
+            if (! $stmt instanceof Expression) {
+                continue;
+            }
+
+            $pipeNode = $this->findPipeNode($stmt->expr);
+            if (! $pipeNode instanceof Pipe) {
+                continue;
+            }
+
+            $newStmts = $this->processPipeOperation($pipeNode, $stmt);
+            if ($newStmts === null) {
+                continue;
+            }
+
+            // Replace the current statement with new statements
+            array_splice($node->stmts, $key, 1, $newStmts);
+            $hasChanged = true;
+        }
+
+        return $hasChanged ? $node : null;
     }
 
-    private function processPipeOperation(Pipe $pipe): void
+    private function findPipeNode(Node $node): ?Pipe
     {
-       
+        if ($node instanceof Pipe) {
+            return $node;
+        }
+
+        if ($node instanceof Assign && $node->expr instanceof Pipe) {
+            return $node->expr;
+        }
+
+        return null;
     }
 
-   
+    /**
+     * @return Expression[]|null
+     */
+    private function processPipeOperation(Pipe $pipe, Expression $originalExpression): ?array
+    {
+        $pipeChain = $this->collectPipeChain($pipe);
+
+        if (count($pipeChain) < 2) {
+            return null;
+        }
+
+        // For simple case: single pipe operation
+        if (count($pipeChain) === 2) {
+            $replacement = $this->createSimplePipeReplacement($pipeChain[0], $pipeChain[1]);
+            if ($replacement === null) {
+                return null;
+            }
+
+            // If the pipe was part of an assignment, maintain the assignment
+            if ($originalExpression->expr instanceof Assign) {
+                $newAssign = new Assign(
+                    $originalExpression->expr->var,
+                    $replacement
+                );
+                return [new Expression($newAssign)];
+            }
+
+            return [new Expression($replacement)];
+        }
+
+        // For multiple pipe operations
+        return $this->createMultiplePipeReplacement($pipeChain, $originalExpression);
+    }
+
+    /**
+     * @return array<Node>
+     */
+    private function collectPipeChain(Pipe $pipe): array
+    {
+        $chain = [];
+        $current = $pipe;
+
+        while ($current instanceof Pipe) {
+            $chain[] = $current->right;
+            $current = $current->left;
+        }
+
+        $chain[] = $current;
+
+        return array_reverse($chain);
+    }
+
+    private function createSimplePipeReplacement(Node $input, Node $function): ?Node
+    {
+        if (! $this->isCallableNode($function)) {
+            return null;
+        }
+
+        return $this->createFunctionCall($function, [$input]);
+    }
+
+    /**
+     * @param array<Node> $pipeChain
+     * @return Expression[]|null
+     */
+    private function createMultiplePipeReplacement(array $pipeChain, Expression $originalExpression): ?array
+    {
+        $input = $pipeChain[0];
+        $statements = [];
+        $tempVariableCounter = 0;
+
+        // Create all intermediate assignments
+        for ($i = 1; $i < count($pipeChain) - 1; $i++) {
+            $function = $pipeChain[$i];
+
+            if (! $this->isCallableNode($function)) {
+                return null;
+            }
+
+            $tempVarName = 'result' . (++$tempVariableCounter);
+            $tempVar = new Variable($tempVarName);
+
+            $functionCall = $this->createFunctionCall($function, [$input]);
+            $assign = new Assign($tempVar, $functionCall);
+            $statements[] = new Expression($assign);
+
+            $input = $tempVar;
+        }
+
+        // Create the final function call
+        $finalFunction = $pipeChain[count($pipeChain) - 1];
+        if (! $this->isCallableNode($finalFunction)) {
+            return null;
+        }
+
+        $finalCall = $this->createFunctionCall($finalFunction, [$input]);
+
+        // If the pipe was part of an assignment, maintain the assignment
+        if ($originalExpression->expr instanceof Assign) {
+            $newAssign = new Assign(
+                $originalExpression->expr->var,
+                $finalCall
+            );
+            $statements[] = new Expression($newAssign);
+        } else {
+            $statements[] = new Expression($finalCall);
+        }
+
+        return $statements;
+    }
+
+    private function isCallableNode(Node $node): bool
+    {
+        return $node instanceof FuncCall ||
+               $node instanceof Closure ||
+               $node instanceof ArrowFunction ||
+               ($node instanceof Variable) ||
+               ($node instanceof MethodCall) ||
+               ($node instanceof StaticCall);
+    }
+
+    /**
+     * @param Node[] $arguments
+     */
+    private function createFunctionCall(Node $function, array $arguments): Node
+    {
+        if ($function instanceof FuncCall) {
+            return new FuncCall($function->name, $this->nodeFactory->createArgs($arguments));
+        }
+
+        if ($function instanceof Variable) {
+            return new FuncCall($function, $this->nodeFactory->createArgs($arguments));
+        }
+
+        if ($function instanceof Closure || $function instanceof ArrowFunction) {
+            return new FuncCall($function, $this->nodeFactory->createArgs($arguments));
+        }
+
+        if ($function instanceof MethodCall) {
+            $clonedMethodCall = clone $function;
+            $clonedMethodCall->args = $this->nodeFactory->createArgs($arguments);
+            return $clonedMethodCall;
+        }
+
+        if ($function instanceof StaticCall) {
+            $clonedStaticCall = clone $function;
+            $clonedStaticCall->args = $this->nodeFactory->createArgs($arguments);
+            return $clonedStaticCall;
+        }
+
+        return new FuncCall($function, $this->nodeFactory->createArgs($arguments));
+    }
 }
