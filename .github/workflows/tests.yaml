@@ -16,7 +16,7 @@ jobs:
             matrix:
                 php-version: ['8.2', '8.5']
                 os: [ubuntu-latest]
-        
+
         runs-on: ${{ matrix.os }}
         timeout-minutes: 3
 
