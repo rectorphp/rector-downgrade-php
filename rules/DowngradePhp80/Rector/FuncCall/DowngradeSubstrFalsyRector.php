@@ -49,7 +49,15 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
      */
     public function getNodeTypes(): array
     {
-        return [Cast::class, Empty_::class, BooleanNot::class, Ternary::class, Equal::class, Identical::class, FuncCall::class];
+        return [
+            Cast::class,
+            Empty_::class,
+            BooleanNot::class,
+            Ternary::class,
+            Equal::class,
+            Identical::class,
+            FuncCall::class,
+        ];
     }
 
     /**
