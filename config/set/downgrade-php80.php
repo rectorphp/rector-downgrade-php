@@ -23,6 +23,7 @@ use Rector\DowngradePhp80\Rector\FuncCall\DowngradeNumberFormatNoFourthArgRector
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrEndsWithRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrStartsWithRector;
+use Rector\DowngradePhp80\Rector\FuncCall\DowngradeSubstrFalsyRector;
 use Rector\DowngradePhp80\Rector\FunctionLike\DowngradeMixedTypeDeclarationRector;
 use Rector\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDeclarationRector;
 use Rector\DowngradePhp80\Rector\Instanceof_\DowngradeInstanceofStringableRector;
@@ -91,5 +92,6 @@ return static function (RectorConfig $rectorConfig): void {
         RemoveReturnTypeDeclarationFromCloneRector::class,
         DowngradeEnumToConstantListClassRector::class,
         DowngradeInstanceofStringableRector::class,
+        DowngradeSubstrFalsyRector::class,
     ]);
 };
