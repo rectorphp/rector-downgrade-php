@@ -6,12 +6,15 @@ namespace Rector\DowngradePhp80\Rector\FuncCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\BinaryOp\Equal;
+use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\Cast;
 use PhpParser\Node\Expr\Cast\String_;
 use PhpParser\Node\Expr\Empty_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Ternary;
+use Rector\PhpParser\Node\Value\ValueResolver;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -28,6 +31,12 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
      */
     private const IS_UNCASTABLE = 'is_uncastable';
 
+    public function __construct(
+        private readonly ValueResolver $valueResolver
+    ) {
+
+    }
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Downgrade substr() with cast string on possibly falsy result', [
@@ -40,11 +49,11 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
      */
     public function getNodeTypes(): array
     {
-        return [Cast::class, Empty_::class, BooleanNot::class, Ternary::class, FuncCall::class];
+        return [Cast::class, Empty_::class, BooleanNot::class, Ternary::class, Equal::class, Identical::class, FuncCall::class];
     }
 
     /**
-     * @param Cast|Empty_|BooleanNot|Ternary|FuncCall $node
+     * @param Cast|Empty_|BooleanNot|Ternary|Equal|Identical|FuncCall $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -56,6 +65,18 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
         if ($node instanceof Ternary) {
             if (! $node->if instanceof Expr) {
                 $node->cond->setAttribute(self::IS_UNCASTABLE, true);
+            }
+
+            return null;
+        }
+
+        if ($node instanceof Equal || $node instanceof Identical) {
+            if ($this->valueResolver->isFalse($node->left)) {
+                $node->right->setAttribute(self::IS_UNCASTABLE, true);
+            }
+
+            if ($this->valueResolver->isFalse($node->right)) {
+                $node->left->setAttribute(self::IS_UNCASTABLE, true);
             }
 
             return null;
