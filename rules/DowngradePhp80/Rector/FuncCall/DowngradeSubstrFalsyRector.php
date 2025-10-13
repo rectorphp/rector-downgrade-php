@@ -52,7 +52,7 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
         }
 
         if ($node instanceof Ternary) {
-            if ($node->if instanceof Expr) {
+            if (! $node->if instanceof Expr) {
                 $node->cond->setAttribute(self::IS_UNCASTABLE, true);
             }
 
