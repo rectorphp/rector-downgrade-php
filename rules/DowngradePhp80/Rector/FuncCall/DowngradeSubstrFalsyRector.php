@@ -10,14 +10,20 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
+use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Expr\Cast;
 use PhpParser\Node\Expr\Cast\String_;
 use PhpParser\Node\Expr\Empty_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Ternary;
+use PHPStan\Reflection\FunctionReflection;
+use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Constant\ConstantIntegerType;
+use Rector\NodeTypeResolver\PHPStan\ParametersAcceptorSelectorVariantsWrapper;
 use Rector\PhpParser\Node\Value\ValueResolver;
+use Rector\PHPStan\ScopeFetcher;
 use Rector\Rector\AbstractRector;
+use Rector\Reflection\ReflectionResolver;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -34,6 +40,7 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
     private const IS_UNCASTABLE = 'is_uncastable';
 
     public function __construct(
+        private readonly ReflectionResolver $reflectionResolver,
         private readonly ValueResolver $valueResolver
     ) {
 
@@ -58,12 +65,13 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             Ternary::class,
             Identical::class,
             Concat::class,
+            CallLike::class,
             FuncCall::class,
         ];
     }
 
     /**
-     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|FuncCall $node
+     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|CallLike|FuncCall $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -96,6 +104,35 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             }
 
             return null;
+        }
+
+        if ($node instanceof CallLike) {
+            if ($node->isFirstClassCallable()) {
+                return null;
+            }
+
+            $reflection = $this->reflectionResolver->resolveFunctionLikeReflectionFromCall($node);
+
+            if (! $reflection instanceof MethodReflection && ! $reflection instanceof FunctionReflection) {
+                return null;
+            }
+
+            $parameterAcceptor = ParametersAcceptorSelectorVariantsWrapper::select(
+                $reflection,
+                $node,
+                ScopeFetcher::fetch($node)
+            );
+
+            foreach ($parameterAcceptor->getParameters() as $position => $parameterReflection) {
+                if ($parameterReflection->getType()->isFalse()->no()) {
+                    continue;
+                }
+
+                $arg = $node->getArg($parameterReflection->getName(), $position);
+                if ($arg instanceof Arg) {
+                    $arg->value->setAttribute(self::IS_UNCASTABLE, true);
+                }
+            }
         }
 
         if (! $this->isName($node, 'substr')) {
