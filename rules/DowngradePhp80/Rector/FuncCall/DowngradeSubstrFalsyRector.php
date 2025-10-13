@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp80\Rector\FuncCall;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
@@ -13,6 +14,7 @@ use PhpParser\Node\Expr\Cast\String_;
 use PhpParser\Node\Expr\Empty_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Ternary;
+use PHPStan\Type\Constant\ConstantIntegerType;
 use Rector\PhpParser\Node\Value\ValueResolver;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -92,6 +94,23 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
         $type = $this->getType($node);
         if ($type->isNonEmptyString()->yes()) {
             return null;
+        }
+
+        $offset = $node->getArg('offset', 1);
+
+        if ($offset instanceof Arg) {
+            $offsetType = $this->getType($offset->value);
+            if ($offsetType instanceof ConstantIntegerType && $offsetType->getValue() === 0) {
+                return null;
+            }
+
+            $length = $node->getArg('length', 2);
+            if ($length instanceof Arg) {
+                $lengthType = $this->getType($length->value);
+                if ($lengthType instanceof ConstantIntegerType && $lengthType->getValue() >= 0) {
+                    return null;
+                }
+            }
         }
 
         return new String_($node);
