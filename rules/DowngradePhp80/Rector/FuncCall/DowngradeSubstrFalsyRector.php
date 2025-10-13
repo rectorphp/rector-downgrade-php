@@ -15,6 +15,8 @@ use PhpParser\Node\Expr\Cast;
 use PhpParser\Node\Expr\Cast\String_;
 use PhpParser\Node\Expr\Empty_;
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Ternary;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\MethodReflection;
@@ -65,13 +67,14 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             Ternary::class,
             Identical::class,
             Concat::class,
-            CallLike::class,
+            MethodCall::class,
+            StaticCall::class,
             FuncCall::class,
         ];
     }
 
     /**
-     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|CallLike|FuncCall $node
+     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|MethodCall|StaticCall|FuncCall $node
      */
     public function refactor(Node $node): ?Node
     {
