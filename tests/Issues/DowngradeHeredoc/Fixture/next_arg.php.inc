@@ -474,9 +474,9 @@ final class NextArg
         $lineString = trim($lineString);
 
         if (strncmp($lineString, '/**', strlen('/**')) === 0) {
-            $lineString = substr($lineString, 3);
+            $lineString = (string) substr($lineString, 3);
         } elseif (strncmp($lineString, '*', strlen('*')) === 0) {
-            $lineString = substr($lineString, 1);
+            $lineString = (string) substr($lineString, 1);
         }
 
         return trim($lineString);
