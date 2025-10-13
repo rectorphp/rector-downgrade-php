@@ -6,7 +6,6 @@ namespace Rector\DowngradePhp80\Rector\FuncCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
-use PhpParser\Node\Expr\BinaryOp\Equal;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\Cast;
@@ -49,19 +48,11 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
      */
     public function getNodeTypes(): array
     {
-        return [
-            Cast::class,
-            Empty_::class,
-            BooleanNot::class,
-            Ternary::class,
-            Equal::class,
-            Identical::class,
-            FuncCall::class,
-        ];
+        return [Cast::class, Empty_::class, BooleanNot::class, Ternary::class, Identical::class, FuncCall::class];
     }
 
     /**
-     * @param Cast|Empty_|BooleanNot|Ternary|Equal|Identical|FuncCall $node
+     * @param Cast|Empty_|BooleanNot|Ternary|Identical|FuncCall $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -78,7 +69,7 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             return null;
         }
 
-        if ($node instanceof Equal || $node instanceof Identical) {
+        if ($node instanceof Identical) {
             if ($this->valueResolver->isFalse($node->left)) {
                 $node->right->setAttribute(self::IS_UNCASTABLE, true);
             }
