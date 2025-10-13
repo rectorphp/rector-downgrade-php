@@ -7,6 +7,7 @@ namespace Rector\DowngradePhp80\Rector\FuncCall;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\AssignOp;
 use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
@@ -69,16 +70,17 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             Concat::class,
             MethodCall::class,
             StaticCall::class,
+            AssignOp::class,
             FuncCall::class,
         ];
     }
 
     /**
-     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|MethodCall|StaticCall|FuncCall $node
+     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|MethodCall|StaticCall|AssignOp|FuncCall $node
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node instanceof Cast || $node instanceof Empty_ || $node instanceof BooleanNot) {
+        if ($node instanceof Cast || $node instanceof Empty_ || $node instanceof BooleanNot || $node instanceof AssignOp) {
             $node->expr->setAttribute(self::IS_UNCASTABLE, true);
             return null;
         }
