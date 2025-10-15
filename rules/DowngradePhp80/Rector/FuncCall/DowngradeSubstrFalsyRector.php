@@ -19,7 +19,9 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Ternary;
+use PhpParser\Node\Stmt\Do_;
 use PhpParser\Node\Stmt\If_;
+use PhpParser\Node\Stmt\While_;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Constant\ConstantIntegerType;
@@ -73,12 +75,14 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             StaticCall::class,
             AssignOp::class,
             If_::class,
+            While_::class,
+            Do_::class,
             FuncCall::class,
         ];
     }
 
     /**
-     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|MethodCall|StaticCall|AssignOp|If_|FuncCall $node
+     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|MethodCall|StaticCall|AssignOp|If_|While_|Do_|FuncCall $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -113,7 +117,7 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             return null;
         }
 
-        if ($node instanceof If_) {
+        if ($node instanceof If_ || $node instanceof While_ || $node instanceof Do_) {
             $node->cond->setAttribute(self::IS_UNCASTABLE, true);
             return null;
         }
