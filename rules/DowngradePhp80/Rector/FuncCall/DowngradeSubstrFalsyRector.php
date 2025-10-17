@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\AssignOp;
 use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\BinaryOp\Identical;
@@ -79,12 +80,13 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             While_::class,
             Do_::class,
             ArrayItem::class,
+            ArrayDimFetch::class,
             FuncCall::class,
         ];
     }
 
     /**
-     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|MethodCall|StaticCall|AssignOp|If_|While_|Do_|ArrayItem|FuncCall $node
+     * @param Cast|Empty_|BooleanNot|Ternary|Identical|Concat|MethodCall|StaticCall|AssignOp|If_|While_|Do_|ArrayItem|ArrayDimFetch|FuncCall $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -127,6 +129,14 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
         if ($node instanceof ArrayItem) {
             if ($node->key instanceof Expr) {
                 $node->key->setAttribute(self::IS_UNCASTABLE, true);
+            }
+
+            return null;
+        }
+
+        if ($node instanceof ArrayDimFetch) {
+            if ($node->dim instanceof Expr) {
+                $node->dim->setAttribute(self::IS_UNCASTABLE, true);
             }
 
             return null;
