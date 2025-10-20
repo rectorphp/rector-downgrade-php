@@ -199,15 +199,17 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
         if ($offset instanceof Arg) {
             $offsetType = $this->getType($offset->value);
             if ($offsetType instanceof ConstantIntegerType && $offsetType->getValue() <= 0) {
-                return null;
-            }
+                $length = $node->getArg('length', 2);
+                if ($length instanceof Arg) {
+                    $lengthType = $this->getType($length->value);
+                    if ($lengthType instanceof ConstantIntegerType && $lengthType->getValue() >= 0) {
+                        return null;
+                    }
 
-            $length = $node->getArg('length', 2);
-            if ($length instanceof Arg) {
-                $lengthType = $this->getType($length->value);
-                if ($lengthType instanceof ConstantIntegerType && $lengthType->getValue() >= 0) {
-                    return null;
+                    return new String_($node);
                 }
+
+                return null;
             }
         }
 
