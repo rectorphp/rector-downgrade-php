@@ -9,7 +9,7 @@ class WithZeroOffsetLengthNegative
 {
     public function run(string $name)
     {
-        return substr($name, 0, -1);
+        return substr($name, 0, -5);
     }
 }
 
@@ -26,7 +26,7 @@ class WithZeroOffsetLengthNegative
 {
     public function run(string $name)
     {
-        return (string) substr($name, 0, -1);
+        return (string) substr($name, 0, -5);
     }
 }
 
