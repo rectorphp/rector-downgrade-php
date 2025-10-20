@@ -47,7 +47,7 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
     /**
      * @var string
      */
-    private const IS_UNCASTABLE = 'is_uncastable';
+    private const IS_FALSY_UNCASTABLE = 'is_falsy_uncastable';
 
     public function __construct(
         private readonly ReflectionResolver $reflectionResolver,
@@ -95,44 +95,44 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
     public function refactor(Node $node): ?Node
     {
         if ($node instanceof Cast || $node instanceof Empty_ || $node instanceof BooleanNot || $node instanceof AssignOp) {
-            $node->expr->setAttribute(self::IS_UNCASTABLE, true);
+            $node->expr->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             return null;
         }
 
         if ($node instanceof Ternary) {
             if (! $node->if instanceof Expr) {
-                $node->cond->setAttribute(self::IS_UNCASTABLE, true);
+                $node->cond->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             }
 
             return null;
         }
 
         if ($node instanceof Concat) {
-            $node->left->setAttribute(self::IS_UNCASTABLE, true);
-            $node->right->setAttribute(self::IS_UNCASTABLE, true);
+            $node->left->setAttribute(self::IS_FALSY_UNCASTABLE, true);
+            $node->right->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             return null;
         }
 
         if ($node instanceof Identical) {
             if ($this->valueResolver->isFalse($node->left)) {
-                $node->right->setAttribute(self::IS_UNCASTABLE, true);
+                $node->right->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             }
 
             if ($this->valueResolver->isFalse($node->right)) {
-                $node->left->setAttribute(self::IS_UNCASTABLE, true);
+                $node->left->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             }
 
             return null;
         }
 
         if ($node instanceof If_ || $node instanceof While_ || $node instanceof Do_) {
-            $node->cond->setAttribute(self::IS_UNCASTABLE, true);
+            $node->cond->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             return null;
         }
 
         if ($node instanceof ArrayItem) {
             if ($node->key instanceof Expr) {
-                $node->key->setAttribute(self::IS_UNCASTABLE, true);
+                $node->key->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             }
 
             return null;
@@ -140,15 +140,15 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
 
         if ($node instanceof ArrayDimFetch) {
             if ($node->dim instanceof Expr) {
-                $node->dim->setAttribute(self::IS_UNCASTABLE, true);
+                $node->dim->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             }
 
             return null;
         }
 
         if ($node instanceof BinaryOp) {
-            $node->left->setAttribute(self::IS_UNCASTABLE, true);
-            $node->right->setAttribute(self::IS_UNCASTABLE, true);
+            $node->left->setAttribute(self::IS_FALSY_UNCASTABLE, true);
+            $node->right->setAttribute(self::IS_FALSY_UNCASTABLE, true);
             return null;
         }
 
@@ -176,7 +176,7 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
 
                 $arg = $node->getArg($parameterReflection->getName(), $position);
                 if ($arg instanceof Arg) {
-                    $arg->value->setAttribute(self::IS_UNCASTABLE, true);
+                    $arg->value->setAttribute(self::IS_FALSY_UNCASTABLE, true);
                 }
             }
         }
@@ -185,7 +185,7 @@ final class DowngradeSubstrFalsyRector extends AbstractRector
             return null;
         }
 
-        if ($node->getAttribute(self::IS_UNCASTABLE) === true) {
+        if ($node->getAttribute(self::IS_FALSY_UNCASTABLE) === true) {
             return null;
         }
 
