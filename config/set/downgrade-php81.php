@@ -33,7 +33,6 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradePhp81ResourceReturnToObjectRector::class,
         DowngradeReadonlyPropertyRector::class,
         DowngradeArraySpreadRector::class,
-        // DowngradeArraySpreadStringKeyRector::class,
         DowngradeArrayIsListRector::class,
         DowngradeSetAccessibleReflectionPropertyRector::class,
         DowngradeIsEnumRector::class,
