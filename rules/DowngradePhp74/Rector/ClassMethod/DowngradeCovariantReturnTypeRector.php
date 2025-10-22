@@ -18,13 +18,13 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\StaticType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\DeadCode\PhpDoc\TagRemover\ReturnTagRemover;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PHPStanStaticTypeMapper\Enum\TypeKind;
-use Rector\PHPStanStaticTypeMapper\TypeAnalyzer\UnionTypeAnalyzer;
 use Rector\Rector\AbstractRector;
 use Rector\Reflection\ReflectionResolver;
 use Rector\StaticTypeMapper\StaticTypeMapper;
@@ -45,7 +45,6 @@ final class DowngradeCovariantReturnTypeRector extends AbstractRector
         private readonly ReturnTagRemover $returnTagRemover,
         private readonly ReflectionResolver $reflectionResolver,
         private readonly PrivatesAccessor $privatesAccessor,
-        private readonly UnionTypeAnalyzer $unionTypeAnalyzer,
         private readonly DocBlockUpdater $docBlockUpdater,
         private readonly PhpDocInfoFactory $phpDocInfoFactory,
         private readonly StaticTypeMapper $staticTypeMapper,
@@ -258,7 +257,7 @@ CODE_SAMPLE
             return false;
         }
 
-        if (! $this->unionTypeAnalyzer->isNullable($parentReturnType)) {
+        if (! TypeCombinator::containsNull($parentReturnType)) {
             return false;
         }
 
