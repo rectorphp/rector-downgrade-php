@@ -29,7 +29,8 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeNullCoalescingOperatorRector::class,
         DowngradeNumericLiteralSeparatorRector::class,
         DowngradeStripTagsCallWithArrayRector::class,
-        DowngradeArraySpreadRector::class,
+        // DowngradeArraySpreadRector::class,
+        // already handled in PHP 8.1 set
         DowngradeArrayMergeCallWithoutArgumentsRector::class,
         DowngradeFreadFwriteFalsyToNegationRector::class,
         DowngradePreviouslyImplementedInterfaceRector::class,
