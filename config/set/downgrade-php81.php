@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use Rector\DowngradePhp74\Rector\Array_\DowngradeArraySpreadRector;
 use Rector\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHashRector;
 use Rector\DowngradePhp81\Rector\LNumber\DowngradeOctalNumberRector;
 use Rector\DowngradePhp81\Rector\MethodCall\DowngradeIsEnumRector;
 use Rector\Config\RectorConfig;
 use Rector\ValueObject\PhpVersion;
-use Rector\DowngradePhp81\Rector\Array_\DowngradeArraySpreadStringKeyRector;
 use Rector\DowngradePhp81\Rector\ClassConst\DowngradeFinalizePublicClassConstantRector;
 use Rector\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector;
 use Rector\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector;
@@ -32,7 +32,8 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeNewInInitializerRector::class,
         DowngradePhp81ResourceReturnToObjectRector::class,
         DowngradeReadonlyPropertyRector::class,
-        DowngradeArraySpreadStringKeyRector::class,
+        DowngradeArraySpreadRector::class,
+        // DowngradeArraySpreadStringKeyRector::class,
         DowngradeArrayIsListRector::class,
         DowngradeSetAccessibleReflectionPropertyRector::class,
         DowngradeIsEnumRector::class,

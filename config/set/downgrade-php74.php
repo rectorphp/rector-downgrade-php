@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\ValueObject\PhpVersion;
-use Rector\DowngradePhp74\Rector\Array_\DowngradeArraySpreadRector;
 use Rector\DowngradePhp74\Rector\ArrowFunction\ArrowFunctionToAnonymousFunctionRector;
 use Rector\DowngradePhp74\Rector\ClassMethod\DowngradeContravariantArgumentTypeRector;
 use Rector\DowngradePhp74\Rector\ClassMethod\DowngradeCovariantReturnTypeRector;
@@ -29,7 +28,8 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeNullCoalescingOperatorRector::class,
         DowngradeNumericLiteralSeparatorRector::class,
         DowngradeStripTagsCallWithArrayRector::class,
-        DowngradeArraySpreadRector::class,
+        // DowngradeArraySpreadRector::class,
+        // already handled in PHP 8.1 set
         DowngradeArrayMergeCallWithoutArgumentsRector::class,
         DowngradeFreadFwriteFalsyToNegationRector::class,
         DowngradePreviouslyImplementedInterfaceRector::class,
