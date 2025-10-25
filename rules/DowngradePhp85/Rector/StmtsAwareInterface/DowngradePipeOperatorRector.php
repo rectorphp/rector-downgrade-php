@@ -28,8 +28,7 @@ final class DowngradePipeOperatorRector extends AbstractRector
 {
     public function __construct(
         private readonly NamedVariableFactory $namedVariableFactory
-    )
-    {
+    ) {
     }
 
     public function getRuleDefinition(): RuleDefinition
@@ -184,7 +183,6 @@ CODE_SAMPLE
     {
         $input = $pipeChain[0];
         $statements = [];
-        $tempVariableCounter = 0;
 
         // Create all intermediate assignments
         for ($i = 1; $i < count($pipeChain) - 1; ++$i) {
