@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace Rector\Tests\DowngradePhp85\Rector\StmtsAwareInterface\DowngradePipeOperatorRector\Fixture;
 
 $value = "hello world";
-$result1 = function3($value);
-$result2 = function2($result1);
-$result = function1($result2);
+$result = function3($value);
+$result = function2($result);
+$result = function1($result);
 
 ?>
