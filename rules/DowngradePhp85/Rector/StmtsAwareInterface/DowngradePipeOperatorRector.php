@@ -225,9 +225,9 @@ CODE_SAMPLE
         return $node instanceof FuncCall ||
                $node instanceof Closure ||
                $node instanceof ArrowFunction ||
-               ($node instanceof Variable) ||
-               ($node instanceof MethodCall) ||
-               ($node instanceof StaticCall);
+               $node instanceof Variable ||
+               $node instanceof MethodCall ||
+               $node instanceof StaticCall;
     }
 
     /**
