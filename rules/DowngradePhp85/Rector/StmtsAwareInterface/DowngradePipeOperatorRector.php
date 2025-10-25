@@ -15,6 +15,7 @@ use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Expression;
 use Rector\Contract\PhpParser\Node\StmtsAwareInterface;
+use Rector\NodeFactory\NamedVariableFactory;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -25,6 +26,12 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradePipeOperatorRector extends AbstractRector
 {
+    public function __construct(
+        private readonly NamedVariableFactory $namedVariableFactory
+    )
+    {
+    }
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
@@ -187,8 +194,7 @@ CODE_SAMPLE
                 return null;
             }
 
-            $tempVarName = 'result' . (++$tempVariableCounter);
-            $tempVar = new Variable($tempVarName);
+            $tempVar = $this->namedVariableFactory->createVariable('result', $originalExpression);
 
             $functionCall = $this->createFunctionCall($function, [$input]);
             $assign = new Assign($tempVar, $functionCall);
