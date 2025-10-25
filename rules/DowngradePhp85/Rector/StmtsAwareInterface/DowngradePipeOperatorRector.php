@@ -244,15 +244,13 @@ CODE_SAMPLE
         }
 
         if ($node instanceof MethodCall) {
-            $clonedMethodCall = clone $node;
-            $clonedMethodCall->args = $this->nodeFactory->createArgs($arguments);
-            return $clonedMethodCall;
+            $node->args = $this->nodeFactory->createArgs($arguments);
+            return $node;
         }
 
         if ($node instanceof StaticCall) {
-            $clonedStaticCall = clone $node;
-            $clonedStaticCall->args = $this->nodeFactory->createArgs($arguments);
-            return $clonedStaticCall;
+            $node->args = $this->nodeFactory->createArgs($arguments);
+            return $node;
         }
 
         return new FuncCall($node, $this->nodeFactory->createArgs($arguments));
