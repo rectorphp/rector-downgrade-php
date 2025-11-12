@@ -67,3 +67,12 @@ parameters:
 
         - '#Asking about instanceof PHPStan\\.* is not covered by backward compatibility promise#'
         - '#Method Rector\\(.*?)\\Rector\\FuncCall\\(.*?)::refactor\(\) never returns \d so it can be removed from the return type#'
+
+        # false positive intanceof in OR usage
+        -
+            identifier: instanceof.alwaysTrue
+            path: rules/DowngradePhp80/Rector/NullsafeMethodCall/DowngradeNullsafeToTernaryOperatorRector.php
+
+        -
+            identifier: deadCode.unreachable
+            path: rules/DowngradePhp80/Rector/NullsafeMethodCall/DowngradeNullsafeToTernaryOperatorRector.php
