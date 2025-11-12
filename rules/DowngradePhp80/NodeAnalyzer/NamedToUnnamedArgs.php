@@ -56,8 +56,7 @@ final readonly class NamedToUnnamedArgs
                     $currentArg->value,
                     $currentArg->byRef,
                     $currentArg->unpack,
-                    [],
-                    null
+                    []
                 );
             }
         }
@@ -108,8 +107,7 @@ final readonly class NamedToUnnamedArgs
                 $parameterReflection->passedByReference()
                     ->yes(),
                 $parameterReflection->isVariadic(),
-                [],
-                null
+                []
             );
         }
 
