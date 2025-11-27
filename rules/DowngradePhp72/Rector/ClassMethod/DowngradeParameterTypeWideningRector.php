@@ -101,7 +101,7 @@ CODE_SAMPLE
         $hasChanged = false;
 
         foreach ($node->getMethods() as $method) {
-            $ancestorOverridableAnonymousClass = $this->overrideFromAnonymousClassMethodAnalyzer->matchAncestorClassReflectionOverrideable(
+            $ancestorOverridableAnonymousClass = $this->overrideFromAnonymousClassMethodAnalyzer->matchAncestorClassReflectionOverridable(
                 $node,
                 $method
             );

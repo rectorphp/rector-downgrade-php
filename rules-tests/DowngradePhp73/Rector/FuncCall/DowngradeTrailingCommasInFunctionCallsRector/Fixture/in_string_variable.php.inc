@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp73\Rector\FuncCall\DowngradeTrailingCommasInFunctionCallsRector\Fixture;
 
-class InStirngVariable
+class InStringVariable
 {
     public function run()
     {
@@ -16,7 +16,7 @@ class InStirngVariable
 
 namespace Rector\Tests\DowngradePhp73\Rector\FuncCall\DowngradeTrailingCommasInFunctionCallsRector\Fixture;
 
-class InStirngVariable
+class InStringVariable
 {
     public function run()
     {

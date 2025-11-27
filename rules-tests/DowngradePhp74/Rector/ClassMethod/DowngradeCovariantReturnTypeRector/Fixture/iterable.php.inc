@@ -2,13 +2,13 @@
 
 namespace Rector\Tests\DowngradePhp74\Rector\ClassMethod\DowngradeCovariantReturnTypeRector\Fixture;
 
-class InterableA
+class IterableA
 {
     public function covariantReturnTypes(): iterable
     { /* … */ }
 }
 
-class InterableB extends InterableA
+class IterableB extends IterableA
 {
     public function covariantReturnTypes(): array
     { /* … */ }
@@ -20,13 +20,13 @@ class InterableB extends InterableA
 
 namespace Rector\Tests\DowngradePhp74\Rector\ClassMethod\DowngradeCovariantReturnTypeRector\Fixture;
 
-class InterableA
+class IterableA
 {
     public function covariantReturnTypes(): iterable
     { /* … */ }
 }
 
-class InterableB extends InterableA
+class IterableB extends IterableA
 {
     /**
      * @return mixed[]
