@@ -3,7 +3,7 @@
 namespace Rector\Tests\DowngradePhp80\Rector\FuncCall\DowngradeSubstrFalsyRector\Fixture;
 
 /**
- * zero offset with postive length can't be false
+ * zero offset with positive length can't be false
  */
 class SkipZeroOffsetWithPositiveLength
 {
