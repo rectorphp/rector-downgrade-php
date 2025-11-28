@@ -218,7 +218,7 @@ CODE_SAMPLE
 
         $resetExpression = new Expression($this->nodeFactory->createFuncCall('reset', [$array]));
 
-        if ($stmt instanceof StmtsAwareInterface) {
+        if (property_exists($stmt, 'stmts')) {
             $stmt->stmts = array_merge([$resetExpression], $stmt->stmts);
         } elseif (! $stmt instanceof Return_) {
             $newStmts[] = $resetExpression;
@@ -230,7 +230,7 @@ CODE_SAMPLE
     private function resolvePrependNewStmt(
         Expr|Variable $array,
         FuncCall $funcCall,
-        Stmt|StmtsAwareInterface $stmt
+        Stmt|Node $stmt
     ): Expression|If_ {
         if (! $stmt instanceof If_ || $stmt->cond instanceof FuncCall || ! $stmt->cond instanceof BooleanOr) {
             return new Expression($funcCall);
