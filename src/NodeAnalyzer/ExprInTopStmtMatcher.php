@@ -17,7 +17,6 @@ use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Switch_;
 use PhpParser\Node\Stmt\While_;
 use PHPStan\Analyser\Scope;
-use Rector\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PhpParser\Node\BetterNodeFinder;
 
@@ -35,7 +34,7 @@ final readonly class ExprInTopStmtMatcher
     /**
      * @param callable(Node $node): bool $filter
      */
-    public function match(StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt, callable $filter): null|Expr
+    public function match(Node|Switch_|Return_|Expression|Echo_ $stmt, callable $filter): null|Expr
     {
         if ($stmt instanceof Closure) {
             return null;
@@ -80,7 +79,7 @@ final readonly class ExprInTopStmtMatcher
      * @param callable(Node $node): bool $filter
      */
     private function resolveOnReturnOrExpression(
-        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
+        Node|Switch_|Return_|Expression|Echo_ $stmt,
         callable $filter
     ): ?Expr {
         if (! $stmt instanceof Return_ && ! $stmt instanceof Expression) {
@@ -99,7 +98,7 @@ final readonly class ExprInTopStmtMatcher
      * @param callable(Node $node): bool $filter
      */
     private function resolveExpr(
-        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
+        Node|Switch_|Return_|Expression|Echo_ $stmt,
         array|Expr $exprs,
         callable $filter
     ): ?Expr {
@@ -127,7 +126,7 @@ final readonly class ExprInTopStmtMatcher
      * @param callable(Node $node): bool $filter
      */
     private function resolveFromChildCond(
-        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt,
+        Node|Switch_|Return_|Expression|Echo_ $stmt,
         callable $filter
     ): null|Expr {
         if (! $stmt instanceof If_ && ! $stmt instanceof Switch_) {

@@ -25,10 +25,10 @@ use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
-use Rector\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeAnalyzer\ExprInTopStmtMatcher;
 use Rector\NodeTypeResolver\Node\AttributeKey;
+use Rector\PhpParser\Enum\NodeGroup;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -80,11 +80,12 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [StmtsAwareInterface::class, Switch_::class, Return_::class, Expression::class, Echo_::class];
+        $stmtsAware = NodeGroup::STMTS_AWARE;
+        return [...$stmtsAware, Switch_::class, Return_::class, Expression::class, Echo_::class];
     }
 
     /**
-     * @param StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $node
+     * @param StmtsAware|Switch_|Return_|Expression|Echo_ $node
      * @return Node[]|null
      */
     public function refactor(Node $node): ?array
@@ -143,7 +144,7 @@ CODE_SAMPLE
      */
     private function refactorArrayKeyFirst(
         FuncCall $funcCall,
-        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt
+        Node|Switch_|Return_|Expression|Echo_ $stmt
     ): null|array {
         $args = $funcCall->getArgs();
         if (! isset($args[0])) {
@@ -182,7 +183,7 @@ CODE_SAMPLE
      */
     private function refactorArrayKeyLast(
         FuncCall $funcCall,
-        StmtsAwareInterface|Switch_|Return_|Expression|Echo_ $stmt
+        Node|Switch_|Return_|Expression|Echo_ $stmt
     ): null|array {
         $args = $funcCall->getArgs();
         $firstArg = $args[0] ?? null;
@@ -216,7 +217,7 @@ CODE_SAMPLE
 
         $resetExpression = new Expression($this->nodeFactory->createFuncCall('reset', [$array]));
 
-        if ($stmt instanceof StmtsAwareInterface) {
+        if (property_exists($stmt, 'stmts')) {
             $stmt->stmts = array_merge([$resetExpression], $stmt->stmts);
         } elseif (! $stmt instanceof Return_) {
             $newStmts[] = $resetExpression;
@@ -228,7 +229,7 @@ CODE_SAMPLE
     private function resolvePrependNewStmt(
         Expr|Variable $array,
         FuncCall $funcCall,
-        Stmt|StmtsAwareInterface $stmt
+        Stmt|Node $stmt
     ): Expression|If_ {
         if (! $stmt instanceof If_ || $stmt->cond instanceof FuncCall || ! $stmt->cond instanceof BooleanOr) {
             return new Expression($funcCall);
