@@ -18,7 +18,6 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
-use Rector\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\PhpParser\Enum\NodeGroup;
 use Rector\PHPStan\ScopeFetcher;

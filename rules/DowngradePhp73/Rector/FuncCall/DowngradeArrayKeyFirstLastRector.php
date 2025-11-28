@@ -25,7 +25,6 @@ use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
-use Rector\Contract\PhpParser\Node\StmtsAwareInterface;
 use Rector\Naming\Naming\VariableNaming;
 use Rector\NodeAnalyzer\ExprInTopStmtMatcher;
 use Rector\NodeTypeResolver\Node\AttributeKey;
