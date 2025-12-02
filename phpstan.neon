@@ -1,7 +1,6 @@
-# to be enabled later once rector upgraded to use phpstan v2
-# includes:
-#    - vendor/symplify/phpstan-rules/config/symplify-rules.neon
-#    - vendor/symplify/phpstan-rules/config/rector-rules.neon
+includes:
+    - vendor/symplify/phpstan-rules/config/symplify-rules.neon
+    - vendor/symplify/phpstan-rules/config/rector-rules.neon
 
 parameters:
     level: 8
@@ -57,16 +56,16 @@ parameters:
         - '#Doing instanceof PHPStan\\Type\\.+ is error\-prone and deprecated#'
 
         # phpstan instanceof
-        -
-            identifier: phpstanApi.instanceofAssumption
-
-        -
-            identifier: phpstanApi.varTagAssumption
+        - identifier: phpstanApi.instanceofAssumption
+        - identifier: phpstanApi.varTagAssumption
+        - '#Asking about instanceof PHPStan\\.* is not covered by backward compatibility promise#'
 
         -
             identifier: argument.type
-
-        - '#Asking about instanceof PHPStan\\.* is not covered by backward compatibility promise#'
+            paths:
+                - rules/DowngradePhp85/Rector/StmtsAwareInterface/DowngradePipeOperatorRector.php
+                - rules/DowngradePhp85/Rector/Class_/DowngradeFinalPropertyPromotionRector.php
+                -  rules/DowngradePhp80/Rector/New_/DowngradeArbitraryExpressionsSupportRector.php
 
         # false positive intanceof in OR usage
         -

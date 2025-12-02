@@ -31,6 +31,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeHashAlgorithmXxHashRector extends AbstractRector
 {
+    /**
+     * @var array<string, string>
+     */
     private const HASH_ALGORITHMS_TO_DOWNGRADE = [
         'xxh32' => MHASH_XXH32,
         'xxh64' => MHASH_XXH64,

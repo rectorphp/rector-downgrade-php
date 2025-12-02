@@ -68,15 +68,16 @@ CODE_SAMPLE
 
     /**
      * @param Ternary|FuncCall $node
-     * @return null|FuncCall|NodeVisitor::DONT_TRAVERSE_CHILDREN
      */
-    public function refactor(Node $node): null|FuncCall|int
+    public function refactor(Node $node): null|FuncCall
     {
         if ($node instanceof Ternary) {
             $hasIsArrayCheck = (bool) $this->betterNodeFinder->findFirst(
                 $node,
                 fn (Node $subNode): bool => $subNode instanceof FuncCall && $this->isName($subNode, 'is_array')
             );
+
+            // get tgype...
 
             if ($hasIsArrayCheck) {
                 return NodeVisitor::DONT_TRAVERSE_CHILDREN;

@@ -6,8 +6,12 @@ final class SkipCheckVersionCompareTernary
 {
     public function run_v()
     {
-        return version_compare(PHP_VERSION, '8.1','>=')
+        $value = version_compare(PHP_VERSION, '8.1','>=')
             ? hash( 'xxh128', $value )
             : hash( 'md4', $value );
+
+        $value = version_compare(PHP_VERSION, '8.1','<')
+            ? hash( 'md4', $value )
+            : hash( 'xxh128', $value );
     }
 }

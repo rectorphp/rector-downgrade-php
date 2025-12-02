@@ -2,11 +2,15 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHash\Fixture;
 
-class Fixture
+final class FixtureXxh32
 {
     public function run()
     {
-        return hash('xxh32', 'some-data-to-hash');
+        $value = hash('xxh32', 'some-data-to-hash');
+
+        $value = hash('xxh64', 'some-data-to-hash');
+
+        $value = hash('xxh128', 'some-data-to-hash');
     }
 }
 
@@ -16,11 +20,15 @@ class Fixture
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHash\Fixture;
 
-class Fixture
+final class FixtureXxh32
 {
     public function run()
     {
-        return hash('md5', 'some-data-to-hash');
+        $value = hash('md5', 'some-data-to-hash');
+
+        $value = hash('md5', 'some-data-to-hash');
+
+        $value = hash('md5', 'some-data-to-hash');
     }
 }
 
