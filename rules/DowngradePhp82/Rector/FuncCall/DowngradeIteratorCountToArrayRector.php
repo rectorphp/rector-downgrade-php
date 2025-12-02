@@ -10,11 +10,9 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name\FullyQualified;
-use PhpParser\NodeVisitor;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use Rector\NodeAnalyzer\ArgsAnalyzer;
-use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -30,7 +28,6 @@ final class DowngradeIteratorCountToArrayRector extends AbstractRector
 {
     public function __construct(
         private readonly ArgsAnalyzer $argsAnalyzer,
-        private readonly BetterNodeFinder $betterNodeFinder
     ) {
     }
 
@@ -67,26 +64,10 @@ CODE_SAMPLE
     }
 
     /**
-     * @param Ternary|FuncCall $node
-     * @return null|FuncCall|NodeVisitor::DONT_TRAVERSE_CHILDREN
+     * @param FuncCall $node
      */
-    public function refactor(Node $node): null|FuncCall|int
+    public function refactor(Node $node): null|FuncCall
     {
-        if ($node instanceof Ternary) {
-            $hasIsArrayCheck = (bool) $this->betterNodeFinder->findFirst(
-                $node,
-                fn (Node $subNode): bool => $subNode instanceof FuncCall && $this->isName($subNode, 'is_array')
-            );
-
-            // get tgype...
-
-            if ($hasIsArrayCheck) {
-                return NodeVisitor::DONT_TRAVERSE_CHILDREN;
-            }
-
-            return null;
-        }
-
         if (! $this->isNames($node, ['iterator_count', 'iterator_to_array'])) {
             return null;
         }

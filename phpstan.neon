@@ -99,7 +99,3 @@ parameters:
         -
             identifier: symplify.seeAnnotationToTest
             path:  rules/DowngradePhp85/Rector/StmtsAwareInterface/DowngradePipeOperatorRector.php
-
-        -
-            identifier: rector.noIntegerRefactorReturn
-            path:  rules/DowngradePhp82/Rector/FuncCall/DowngradeIteratorCountToArrayRector.php
