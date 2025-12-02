@@ -80,8 +80,7 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        $stmtsAware = NodeGroup::STMTS_AWARE;
-        return [...$stmtsAware, Switch_::class, Return_::class, Expression::class, Echo_::class];
+        return [...NodeGroup::STMTS_AWARE, Switch_::class, Return_::class, Expression::class, Echo_::class];
     }
 
     /**

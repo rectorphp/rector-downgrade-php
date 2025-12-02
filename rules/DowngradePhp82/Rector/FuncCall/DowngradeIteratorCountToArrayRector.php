@@ -78,6 +78,8 @@ CODE_SAMPLE
                 fn (Node $subNode): bool => $subNode instanceof FuncCall && $this->isName($subNode, 'is_array')
             );
 
+            // get tgype...
+
             if ($hasIsArrayCheck) {
                 return NodeVisitor::DONT_TRAVERSE_CHILDREN;
             }

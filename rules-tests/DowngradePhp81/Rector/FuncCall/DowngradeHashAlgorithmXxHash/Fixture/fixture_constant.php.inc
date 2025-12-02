@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHash\Fixture;
 
-class Fixture
+final class FixtureConstant
 {
     public function run()
     {
@@ -16,7 +16,7 @@ class Fixture
 
 namespace Rector\Tests\DowngradePhp81\Rector\FuncCall\DowngradeHashAlgorithmXxHash\Fixture;
 
-class Fixture
+final class FixtureConstant
 {
     public function run()
     {
