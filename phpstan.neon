@@ -4,6 +4,7 @@ includes:
 
 parameters:
     level: 8
+    errorFormat: symplify
 
     reportUnmatchedIgnoredErrors: false
 
@@ -75,3 +76,26 @@ parameters:
         -
             identifier: deadCode.unreachable
             path: rules/DowngradePhp80/Rector/NullsafeMethodCall/DowngradeNullsafeToTernaryOperatorRector.php
+
+        # cached printed nodes
+        -
+            identifier: rector.noPropertyNodeAssign
+            paths:
+                - rules/DowngradePhp83/Rector/FuncCall/DowngradeJsonValidateRector.php
+                - rules/DowngradePhp81/Rector/FuncCall/DowngradeArrayIsListRector.php
+                - rules/DowngradePhp72/Rector/FuncCall/DowngradeStreamIsattyRector.php
+
+        # already registered in PHP 8.1 set
+        -
+            identifier: rector.upgradeDowngradeRegisteredInSet
+            path: rules/DowngradePhp74/Rector/Array_/DowngradeArraySpreadRector.php
+
+        # valid stmts property check
+        -
+            identifier: symplify.forbiddenFuncCall
+            path: rules/DowngradePhp73/Rector/FuncCall/DowngradeArrayKeyFirstLastRector.php
+
+        # false positive
+        -
+            identifier: symplify.seeAnnotationToTest
+            path:  rules/DowngradePhp85/Rector/StmtsAwareInterface/DowngradePipeOperatorRector.php
