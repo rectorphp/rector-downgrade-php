@@ -5,8 +5,7 @@ includes:
 parameters:
     level: 8
     errorFormat: symplify
-
-    # reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: false
 
     # see https://phpstan.org/writing-php-code/phpdoc-types#global-type-aliases
     typeAliases:
@@ -98,3 +97,8 @@ parameters:
         -
             identifier: symplify.seeAnnotationToTest
             path:  rules/DowngradePhp85/Rector/StmtsAwareInterface/DowngradePipeOperatorRector.php
+
+        # handle next
+        -
+            identifier: method.parentMethodFinalByPhpDoc
+            path:  rules/DowngradePhp80/Rector/NullsafeMethodCall/DowngradeNullsafeToTernaryOperatorRector.php
