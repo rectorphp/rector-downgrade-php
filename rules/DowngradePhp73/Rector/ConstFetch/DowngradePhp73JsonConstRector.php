@@ -44,11 +44,6 @@ final class DowngradePhp73JsonConstRector extends AbstractRector
      */
     private const REFACTOR_FUNCS = ['json_decode', 'json_encode'];
 
-    /**
-     * @var string
-     */
-    private const IS_EXPRESSION_INSIDE_TRY_CATCH = 'is_expression_inside_try_catch';
-
     public function __construct(
         private readonly JsonConstCleaner $jsonConstCleaner,
         private readonly DefineFuncCallAnalyzer $defineFuncCallAnalyzer,
