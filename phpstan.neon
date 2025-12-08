@@ -102,3 +102,7 @@ parameters:
         -
             identifier: method.parentMethodFinalByPhpDoc
             path:  rules/DowngradePhp80/Rector/NullsafeMethodCall/DowngradeNullsafeToTernaryOperatorRector.php
+
+        -
+            identifier: rector.avoidFeatureSetAttributeInRector
+            path:  rules/DowngradePhp80/Rector/FuncCall/DowngradeSubstrFalsyRector.php
