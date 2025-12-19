@@ -226,16 +226,12 @@ CODE_SAMPLE
     private function hasConstFetchInBitwiseOr(BitwiseOr $bitwiseOr, string $constantName): bool
     {
         foreach ([$bitwiseOr->left, $bitwiseOr->right] as $subNode) {
-            if ($subNode instanceof BitwiseOr) {
-                if ($this->hasConstFetchInBitwiseOr($subNode, $constantName)) {
-                    return true;
-                }
+            if ($subNode instanceof BitwiseOr && $this->hasConstFetchInBitwiseOr($subNode, $constantName)) {
+                return true;
             }
 
-            if ($subNode instanceof ConstFetch) {
-                if ($this->isName($subNode, $constantName)) {
-                    return true;
-                }
+            if ($subNode instanceof ConstFetch && $this->isName($subNode, $constantName)) {
+                return true;
             }
         }
 
