@@ -23,6 +23,7 @@ use Rector\DowngradePhp72\NodeManipulator\JsonConstCleaner;
 use Rector\Enum\JsonConstant;
 use Rector\NodeAnalyzer\DefineFuncCallAnalyzer;
 use Rector\NodeTypeResolver\Node\AttributeKey;
+use Rector\PhpParser\NodeTraverser\SimpleNodeTraverser;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -42,7 +43,7 @@ final class DowngradePhp73JsonConstRector extends AbstractRector
     /**
      * @var array<string>
      */
-    private const REFACTOR_FUNCS = ['json_decode', 'json_encode'];
+    private const JSON_FUNCTIONS = ['json_decode', 'json_encode'];
 
     public function __construct(
         private readonly JsonConstCleaner $jsonConstCleaner,
@@ -63,12 +64,12 @@ $content = json_decode($json, null, 512, JSON_THROW_ON_ERROR);
 CODE_SAMPLE
                     ,
                     <<<'CODE_SAMPLE'
-$json json_encode($content, 0);
+$json = json_encode($content);
 if (json_last_error() !== JSON_ERROR_NONE) {
     throw new \Exception(json_last_error_msg());
 }
 
-$content = json_decode($json, null, 512, 0);
+$content = json_decode($json, null, 512);
 if (json_last_error() !== JSON_ERROR_NONE) {
     throw new \Exception(json_last_error_msg());
 }
@@ -115,10 +116,7 @@ CODE_SAMPLE
             return;
         }
 
-        $this->traverseNodesWithCallable($if, static function (Node $node): null {
-            $node->setAttribute(self::PHP73_JSON_CONSTANT_IS_KNOWN, true);
-            return null;
-        });
+        SimpleNodeTraverser::decorateWithAttributeValue($if, self::PHP73_JSON_CONSTANT_IS_KNOWN, true);
     }
 
     private function resolveFuncCall(Expression $Expression): ?FuncCall
@@ -164,7 +162,7 @@ CODE_SAMPLE
         }
 
         // Nothing to do if not a refactored function
-        if (! in_array($this->getName($funcCall), self::REFACTOR_FUNCS, true)) {
+        if (! in_array($this->getName($funcCall), self::JSON_FUNCTIONS, true)) {
             return null;
         }
 

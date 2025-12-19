@@ -113,3 +113,6 @@ parameters:
                  - rules/DowngradePhp74/Rector/MethodCall/DowngradeReflectionGetTypeRector.php
                  - rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionGetAttributesRector.php
                  - rules/DowngradePhp73/Rector/String_/DowngradeFlexibleHeredocSyntaxRector.php
+
+        # local attribute key
+        - '#Parameter \#2 \$attributeKey of static method Rector\\PhpParser\\NodeTraverser\\SimpleNodeTraverser\:\:decorateWithAttributeValue\(\) expects#'
