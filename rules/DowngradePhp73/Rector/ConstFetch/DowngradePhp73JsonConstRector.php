@@ -118,9 +118,9 @@ CODE_SAMPLE
         SimpleNodeTraverser::decorateWithAttributeValue($if, self::PHP73_JSON_CONSTANT_IS_KNOWN, true);
     }
 
-    private function resolveFuncCall(Expression $Expression): ?FuncCall
+    private function resolveFuncCall(Expression $expression): ?FuncCall
     {
-        $expr = $Expression->expr;
+        $expr = $expression->expr;
         if ($expr instanceof Assign) {
             if ($expr->expr instanceof FuncCall) {
                 return $expr->expr;
@@ -154,8 +154,6 @@ CODE_SAMPLE
 
         // retrieve a `FuncCall`, if any, from the statement
         $funcCall = $this->resolveFuncCall($expression);
-
-        // Nothing to do if no `FuncCall` found
         if (! $funcCall instanceof FuncCall) {
             return null;
         }
@@ -203,8 +201,7 @@ CODE_SAMPLE
     {
         foreach ($args as $arg) {
             $value = $arg->value;
-
-            if ($value instanceof ConstFetch && $this->getName($value) === $constName) {
+            if ($value instanceof ConstFetch && $this->isName($value, $constName)) {
                 return true;
             }
 
