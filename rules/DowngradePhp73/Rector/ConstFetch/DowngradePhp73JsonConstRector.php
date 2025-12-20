@@ -201,8 +201,7 @@ CODE_SAMPLE
     {
         foreach ($args as $arg) {
             $value = $arg->value;
-
-            if ($value instanceof ConstFetch && $this->getName($value) === $constName) {
+            if ($value instanceof ConstFetch && $this->isName($value, $constName)) {
                 return true;
             }
 
