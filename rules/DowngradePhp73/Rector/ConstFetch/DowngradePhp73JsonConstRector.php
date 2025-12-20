@@ -118,9 +118,9 @@ CODE_SAMPLE
         SimpleNodeTraverser::decorateWithAttributeValue($if, self::PHP73_JSON_CONSTANT_IS_KNOWN, true);
     }
 
-    private function resolveFuncCall(Expression $Expression): ?FuncCall
+    private function resolveFuncCall(Expression $expression): ?FuncCall
     {
-        $expr = $Expression->expr;
+        $expr = $expression->expr;
         if ($expr instanceof Assign) {
             if ($expr->expr instanceof FuncCall) {
                 return $expr->expr;

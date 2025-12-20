@@ -7,12 +7,11 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\If_\RemoveDeadInstanceOfRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
-use Rector\PHPUnit\Set\PHPUnitSetList;
 
 return RectorConfig::configure()
     ->withImportNames(removeUnusedImports: true)
     ->withPhpSets(php82: true)
-    ->withSets([PHPUnitSetList::PHPUNIT_100, PHPUnitSetList::PHPUNIT_CODE_QUALITY])
+    ->withComposerBased(phpunit: true)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
@@ -21,7 +20,8 @@ return RectorConfig::configure()
         privatization: true,
         naming: true,
         earlyReturn: true,
-        rectorPreset: true
+        rectorPreset: true,
+        phpunitCodeQuality: true,
     )->withPaths([
         __DIR__ . '/src',
         __DIR__ . '/rules',
