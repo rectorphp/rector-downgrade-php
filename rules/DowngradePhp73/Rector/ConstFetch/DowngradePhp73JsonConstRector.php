@@ -154,8 +154,6 @@ CODE_SAMPLE
 
         // retrieve a `FuncCall`, if any, from the statement
         $funcCall = $this->resolveFuncCall($expression);
-
-        // Nothing to do if no `FuncCall` found
         if (! $funcCall instanceof FuncCall) {
             return null;
         }
