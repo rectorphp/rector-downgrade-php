@@ -21,8 +21,8 @@ class MultipleCall
 {
     public function run($object)
     {
-        $result = ($nullsafeVariable8 = ($nullsafeVariable10 = $object->multiple($args1)) ? $nullsafeVariable10->call($args2) : null) ? $nullsafeVariable8->otherCall($args3) : null;
-        $result = ($nullsafeVariable9 = ($nullsafeVariable11 = ($nullsafeVariable12 = $object->multiple($args1)) ? $nullsafeVariable12->call($args2) : null) ? $nullsafeVariable11->otherCall($args3) : null) ? $nullsafeVariable9->anotherCall($args4) : null;
+        $result = ($nullsafeVariable1 = ($nullsafeVariable3 = $object->multiple($args1)) ? $nullsafeVariable3->call($args2) : null) ? $nullsafeVariable1->otherCall($args3) : null;
+        $result = ($nullsafeVariable2 = ($nullsafeVariable4 = ($nullsafeVariable5 = $object->multiple($args1)) ? $nullsafeVariable5->call($args2) : null) ? $nullsafeVariable4->otherCall($args3) : null) ? $nullsafeVariable2->anotherCall($args4) : null;
     }
 }
 

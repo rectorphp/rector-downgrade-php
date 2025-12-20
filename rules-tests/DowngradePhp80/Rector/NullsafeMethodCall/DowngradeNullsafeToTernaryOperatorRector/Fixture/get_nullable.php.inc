@@ -27,7 +27,7 @@ final class GetNullable
 {
     public function run($value)
     {
-        return ($nullsafeVariable6 = $this->extractArrayItemByKey($value)) ? $nullsafeVariable6->value : null;
+        return ($nullsafeVariable1 = $this->extractArrayItemByKey($value)) ? $nullsafeVariable1->value : null;
     }
 
     protected function extractArrayItemByKey($value): ?ArrayItem
