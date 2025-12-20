@@ -51,11 +51,11 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Ternary
     {
-        static $currentFile = $this->file;
+        static $currentFile = null;
 
-        if ($currentFile !== $this->file) {
+        if ($currentFile !== $this->file->getFilePath()) {
             $this->counter = 0;
-            $currentFile = $this->file;
+            $currentFile = $this->file->getFilePath();
         }
 
         if ($node instanceof MethodCall || $node instanceof PropertyFetch) {
