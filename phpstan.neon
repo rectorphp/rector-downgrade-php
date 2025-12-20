@@ -4,6 +4,7 @@ includes:
 
 parameters:
     level: 8
+
     errorFormat: symplify
     reportUnmatchedIgnoredErrors: false
 
@@ -98,18 +99,11 @@ parameters:
             identifier: symplify.seeAnnotationToTest
             path:  rules/DowngradePhp85/Rector/StmtsAwareInterface/DowngradePipeOperatorRector.php
 
-        # handle next
-        -
-            identifier: method.parentMethodFinalByPhpDoc
-            path:  rules/DowngradePhp80/Rector/NullsafeMethodCall/DowngradeNullsafeToTernaryOperatorRector.php
-
         # keep for simplicity
         -
             identifier: rector.avoidFeatureSetAttributeInRector
             paths:
                  - rules/DowngradePhp80/Rector/FuncCall/DowngradeSubstrFalsyRector.php
-                 - rules/DowngradePhp72/Rector/ConstFetch/DowngradePhp72JsonConstRector.php
-                 - rules/DowngradePhp73/Rector/ConstFetch/DowngradePhp73JsonConstRector.php
                  - rules/DowngradePhp74/Rector/MethodCall/DowngradeReflectionGetTypeRector.php
                  - rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionGetAttributesRector.php
                  - rules/DowngradePhp73/Rector/String_/DowngradeFlexibleHeredocSyntaxRector.php

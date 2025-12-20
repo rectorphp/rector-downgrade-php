@@ -29,7 +29,7 @@ trait GetNullableInTrait
 {
     public function run($value)
     {
-        return ($nullsafeVariable1 = $this->extractArrayItemByKey($value)) ? $nullsafeVariable1->value : null;
+        return ($nullsafeVariable7 = $this->extractArrayItemByKey($value)) ? $nullsafeVariable7->value : null;
     }
 
     protected function extractArrayItemByKey($value): ?ArrayItem
