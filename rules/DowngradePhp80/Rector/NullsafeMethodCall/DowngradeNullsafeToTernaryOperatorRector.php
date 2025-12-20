@@ -51,6 +51,13 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Ternary
     {
+        static $currentFile = $this->file;
+
+        if ($currentFile !== $this->file) {
+            $this->counter = 0;
+            $currentFile = $this->file;
+        }
+
         if ($node instanceof MethodCall || $node instanceof PropertyFetch) {
             if ($node->var instanceof NullsafeMethodCall || $node->var instanceof NullsafePropertyFetch) {
                 $nullsafeVariable = $this->createNullsafeVariable();

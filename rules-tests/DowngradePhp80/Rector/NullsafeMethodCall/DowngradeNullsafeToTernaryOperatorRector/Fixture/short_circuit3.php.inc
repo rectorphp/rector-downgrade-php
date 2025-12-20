@@ -20,7 +20,7 @@ final class ShortCircuit3
 {
     public function run(bool $param)
     {
-        return ($nullsafeVariable14 = $this->clock) ? $nullsafeVariable14->now->format : null;
+        return ($nullsafeVariable1 = $this->clock) ? $nullsafeVariable1->now->format : null;
     }
 }
 
