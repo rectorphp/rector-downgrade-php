@@ -18,7 +18,6 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified as NameFullyQualified;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
-use PhpParser\Node\VariadicPlaceholder;
 use Rector\DowngradePhp72\NodeManipulator\JsonConstCleaner;
 use Rector\Enum\JsonConstant;
 use Rector\NodeAnalyzer\DefineFuncCallAnalyzer;
@@ -162,12 +161,16 @@ CODE_SAMPLE
         }
 
         // Nothing to do if not a refactored function
-        if (! in_array($this->getName($funcCall), self::JSON_FUNCTIONS, true)) {
+        if (! $this->isNames($funcCall, self::JSON_FUNCTIONS)) {
+            return null;
+        }
+
+        if ($funcCall->isFirstClassCallable()) {
             return null;
         }
 
         // Nothing to do if the flag `JSON_THROW_ON_ERROR` is not set in args
-        if (! $this->hasConstFetchInArgs($funcCall->args, 'JSON_THROW_ON_ERROR')) {
+        if (! $this->hasConstFetchInArgs($funcCall->getArgs(), 'JSON_THROW_ON_ERROR')) {
             return null;
         }
 
@@ -194,16 +197,11 @@ CODE_SAMPLE
 
     /**
      * Search if a given constant is set within a list of `Arg`
-     * @param array<Arg|VariadicPlaceholder> $args
+     * @param Arg[] $args
      */
     private function hasConstFetchInArgs(array $args, string $constName): bool
     {
         foreach ($args as $arg) {
-            // Only `Arg` instances are handled.
-            if (! $arg instanceof Arg) {
-                return false;
-            }
-
             $value = $arg->value;
 
             if ($value instanceof ConstFetch && $this->getName($value) === $constName) {
