@@ -55,7 +55,7 @@ CODE_SAMPLE
 
         if ($currentFile !== $this->file->getFilePath()) {
             // the counter need start from 0 when visit new file to avoid random increment
-            // accross files
+            // across files
             // due to run on parallel
             $this->counter = 0;
             $currentFile = $this->file->getFilePath();
