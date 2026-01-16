@@ -23,7 +23,7 @@ final class DowngradePhp81ResourceReturnToObjectRector extends AbstractRector
     /**
      * @var string[]|class-string<finfo>[]
      */
-    private const COLLECTION_OBJECT_TO_RESOURCE = [
+    private const array COLLECTION_OBJECT_TO_RESOURCE = [
         // finfo
         'finfo',
 

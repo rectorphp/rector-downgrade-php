@@ -15,7 +15,7 @@ final readonly class RegexFuncAnalyzer
     /**
      * @var string[]
      */
-    private const REGEX_FUNCTION_NAMES = ['preg_match', 'preg_match_all'];
+    private const array REGEX_FUNCTION_NAMES = ['preg_match', 'preg_match_all'];
 
     public function __construct(
         private NodeNameResolver $nodeNameResolver,

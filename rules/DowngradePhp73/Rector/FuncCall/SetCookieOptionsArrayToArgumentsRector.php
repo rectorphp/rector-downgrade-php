@@ -25,7 +25,7 @@ final class SetCookieOptionsArrayToArgumentsRector extends AbstractRector
      * Conversion table from argument index to options name
      * @var array<string, int>
      */
-    private const ARGUMENT_ORDER = [
+    private const array ARGUMENT_ORDER = [
         'expires' => 2,
         'path' => 3,
         'domain' => 4,
@@ -37,7 +37,7 @@ final class SetCookieOptionsArrayToArgumentsRector extends AbstractRector
      * Conversion table from argument index to options name
      * @var array<int, int|string|bool>
      */
-    private const ARGUMENT_DEFAULT_VALUES = [
+    private const array ARGUMENT_DEFAULT_VALUES = [
         2 => 0,
         3 => '',
         4 => '',

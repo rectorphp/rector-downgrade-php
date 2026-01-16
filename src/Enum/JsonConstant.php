@@ -6,18 +6,9 @@ namespace Rector\Enum;
 
 final class JsonConstant
 {
-    /**
-     * @var string
-     */
-    public const INVALID_UTF8_IGNORE = 'JSON_INVALID_UTF8_IGNORE';
+    public const string INVALID_UTF8_IGNORE = 'JSON_INVALID_UTF8_IGNORE';
 
-    /**
-     * @var string
-     */
-    public const INVALID_UTF8_SUBSTITUTE = 'JSON_INVALID_UTF8_SUBSTITUTE';
+    public const string INVALID_UTF8_SUBSTITUTE = 'JSON_INVALID_UTF8_SUBSTITUTE';
 
-    /**
-     * @var string
-     */
-    public const THROW_ON_ERROR = 'JSON_THROW_ON_ERROR';
+    public const string THROW_ON_ERROR = 'JSON_THROW_ON_ERROR';
 }

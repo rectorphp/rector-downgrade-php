@@ -44,10 +44,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeSubstrFalsyRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
-    private const IS_FALSY_UNCASTABLE = 'is_falsy_uncastable';
+    private const string IS_FALSY_UNCASTABLE = 'is_falsy_uncastable';
 
     public function __construct(
         private readonly ReflectionResolver $reflectionResolver,

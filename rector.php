@@ -10,13 +10,14 @@ use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 
 return RectorConfig::configure()
     ->withImportNames(removeUnusedImports: true)
-    ->withPhpSets(php82: true)
+    ->withPhpSets()
     ->withComposerBased(phpunit: true)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
         codingStyle: true,
         typeDeclarations: true,
+        typeDeclarationDocblocks: true,
         privatization: true,
         naming: true,
         earlyReturn: true,

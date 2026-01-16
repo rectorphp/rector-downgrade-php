@@ -26,10 +26,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeFinalPropertyPromotionRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
-    private const TAGNAME = 'final';
+    private const string TAGNAME = 'final';
 
     public function __construct(
         private readonly VisibilityManipulator $visibilityManipulator,

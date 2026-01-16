@@ -36,7 +36,7 @@ final class DowngradeReflectionClassGetConstantsFilterRector extends AbstractRec
     /**
      * @var array<string, string>
      */
-    private const MAP_CONSTANT_TO_METHOD = [
+    private const array MAP_CONSTANT_TO_METHOD = [
         'IS_PUBLIC' => 'isPublic',
         'IS_PROTECTED' => 'isProtected',
         'IS_PRIVATE' => 'isPrivate',

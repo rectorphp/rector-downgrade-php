@@ -26,15 +26,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeListReferenceAssignmentRector extends AbstractRector
 {
-    /**
-     * @var int
-     */
-    private const ALL = 0;
+    private const int ALL = 0;
 
-    /**
-     * @var int
-     */
-    private const ANY = 1;
+    private const int ANY = 1;
 
     public function getRuleDefinition(): RuleDefinition
     {

@@ -22,10 +22,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeReflectionGetTypeRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
-    private const SKIP_NODE = 'skip_node';
+    private const string SKIP_NODE = 'skip_node';
 
     public function getRuleDefinition(): RuleDefinition
     {

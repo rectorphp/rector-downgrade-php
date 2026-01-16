@@ -26,14 +26,14 @@ final class DowngradeHashAlgorithmXxHashRector extends AbstractRector
     /**
      * @var array<string, int>
      */
-    private const HASH_ALGORITHMS_TO_DOWNGRADE = [
+    private const array HASH_ALGORITHMS_TO_DOWNGRADE = [
         'xxh32' => MHASH_XXH32,
         'xxh64' => MHASH_XXH64,
         'xxh3' => MHASH_XXH3,
         'xxh128' => MHASH_XXH128,
     ];
 
-    private const REPLACEMENT_ALGORITHM = 'md5';
+    private const string REPLACEMENT_ALGORITHM = 'md5';
 
     private int $argNamedKey;
 

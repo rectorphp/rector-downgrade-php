@@ -22,10 +22,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeReflectionGetAttributesRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
-    private const IS_IF_TERNARY = 'is_if_ternary';
+    private const string IS_IF_TERNARY = 'is_if_ternary';
 
     public function getRuleDefinition(): RuleDefinition
     {

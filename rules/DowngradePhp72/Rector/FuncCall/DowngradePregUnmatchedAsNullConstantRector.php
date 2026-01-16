@@ -34,9 +34,8 @@ final class DowngradePregUnmatchedAsNullConstantRector extends AbstractRector
 {
     /**
      * @see https://www.php.net/manual/en/function.preg-match.php
-     * @var string
      */
-    private const UNMATCHED_NULL_FLAG = 'PREG_UNMATCHED_AS_NULL';
+    private const string UNMATCHED_NULL_FLAG = 'PREG_UNMATCHED_AS_NULL';
 
     public function __construct(
         private readonly BitwiseFlagCleaner $bitwiseFlagCleaner,

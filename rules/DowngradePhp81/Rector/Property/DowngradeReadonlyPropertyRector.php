@@ -25,10 +25,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeReadonlyPropertyRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
-    private const TAGNAME = 'readonly';
+    private const string TAGNAME = 'readonly';
 
     public function __construct(
         private readonly VisibilityManipulator $visibilityManipulator,
