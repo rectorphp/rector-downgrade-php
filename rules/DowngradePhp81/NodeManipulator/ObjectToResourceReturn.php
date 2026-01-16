@@ -20,10 +20,7 @@ use Rector\PhpParser\Node\NodeFactory;
 
 final readonly class ObjectToResourceReturn
 {
-    /**
-     * @var string
-     */
-    private const IS_INSTANCEOF_IN_BINARYOP = 'is_instanceof_in_binaryop';
+    private const string IS_INSTANCEOF_IN_BINARYOP = 'is_instanceof_in_binaryop';
 
     public function __construct(
         private NodeNameResolver $nodeNameResolver,

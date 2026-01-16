@@ -26,10 +26,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradePhpTokenRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
-    private const PHP_TOKEN = 'PhpToken';
+    private const string PHP_TOKEN = 'PhpToken';
 
     public function getRuleDefinition(): RuleDefinition
     {

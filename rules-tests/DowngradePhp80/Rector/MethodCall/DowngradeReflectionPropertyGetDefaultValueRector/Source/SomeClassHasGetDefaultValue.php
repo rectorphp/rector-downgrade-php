@@ -2,7 +2,7 @@
 
 namespace Rector\Tests\DowngradePhp80\Rector\MethodCall\DowngradeReflectionPropertyGetDefaultValueRector\Source;
 
-class SomeClassHasGetDefaultValue
+final class SomeClassHasGetDefaultValue
 {
     public function getDefaultValue()
     {

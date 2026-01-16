@@ -21,7 +21,7 @@ final class DowngradeFlexibleHeredocSyntaxRector extends AbstractRector
     /**
      * @var int[]
      */
-    private const HERENOW_DOC_KINDS = [String_::KIND_HEREDOC, String_::KIND_NOWDOC];
+    private const array HERENOW_DOC_KINDS = [String_::KIND_HEREDOC, String_::KIND_NOWDOC];
 
     public function __construct(
         private readonly FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer $followedByNewlineOnlyMaybeWithSemicolonAnalyzer

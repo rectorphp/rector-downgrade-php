@@ -34,15 +34,12 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradePhp73JsonConstRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
-    private const PHP73_JSON_CONSTANT_IS_KNOWN = 'php73_json_constant_is_known';
+    private const string PHP73_JSON_CONSTANT_IS_KNOWN = 'php73_json_constant_is_known';
 
     /**
      * @var array<string>
      */
-    private const JSON_FUNCTIONS = ['json_decode', 'json_encode'];
+    private const array JSON_FUNCTIONS = ['json_decode', 'json_encode'];
 
     public function __construct(
         private readonly JsonConstCleaner $jsonConstCleaner,

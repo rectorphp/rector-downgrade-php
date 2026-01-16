@@ -22,7 +22,7 @@ final class DowngradePhp80ResourceReturnToObjectRector extends AbstractRector
     /**
      * @var string[]
      */
-    private const COLLECTION_OBJECT_TO_RESOURCE = [
+    private const array COLLECTION_OBJECT_TO_RESOURCE = [
         // curl
         'CurlHandle',
         'CurlMultiHandle',

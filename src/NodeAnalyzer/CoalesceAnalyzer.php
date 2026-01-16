@@ -16,7 +16,7 @@ final class CoalesceAnalyzer
     /**
      * @var array<class-string<Expr>>
      */
-    private const ISSETABLE_EXPR = [
+    private const array ISSETABLE_EXPR = [
         Variable::class,
         ArrayDimFetch::class,
         PropertyFetch::class,
