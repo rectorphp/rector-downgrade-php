@@ -70,8 +70,11 @@ CODE_SAMPLE
 
         if ($node instanceof Expression) {
             if ($node->expr instanceof Assign && ($node->expr->expr instanceof NullsafeMethodCall || $node->expr->expr instanceof NullsafePropertyFetch)) {
-                $node->expr = new Assign($node->expr->var, $this->refactor($node->expr->expr));
-                return $node;
+                $refactorAssignExpr = $this->refactor($node->expr->expr);
+                if ($refactorAssignExpr instanceof Ternary) {
+                    $node->expr->expr = $refactorAssignExpr;
+                    return $node;
+                }
             }
 
             return null;
