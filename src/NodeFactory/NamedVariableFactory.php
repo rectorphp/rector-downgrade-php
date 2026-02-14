@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\NodeFactory;
 
+use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Expression;
 use Rector\Naming\Naming\VariableNaming;
@@ -16,7 +17,7 @@ final readonly class NamedVariableFactory
     ) {
     }
 
-    public function createVariable(string $variableName, Expression $expression): Variable
+    public function createVariable(string $variableName, Expression|Ternary $expression): Variable
     {
         $scope = $expression->getAttribute(AttributeKey::SCOPE);
 
