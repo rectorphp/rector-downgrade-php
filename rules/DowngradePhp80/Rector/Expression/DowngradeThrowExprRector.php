@@ -108,7 +108,9 @@ CODE_SAMPLE
             foreach ($args as $arg) {
                 if ($arg->value instanceof Ternary && $arg->value->else instanceof Throw_) {
                     $refactorTernary = $this->refactorTernary($arg->value, null, true);
-                    if (is_array($refactorTernary) && $refactorTernary[0] instanceof Expression && $refactorTernary[0]->expr instanceof Assign) {
+                    if (is_array(
+                        $refactorTernary
+                    ) && $refactorTernary[0] instanceof Expression && $refactorTernary[0]->expr instanceof Assign) {
                         $arg->value = $refactorTernary[0]->expr->var;
 
                         return [...$refactorTernary, $node];

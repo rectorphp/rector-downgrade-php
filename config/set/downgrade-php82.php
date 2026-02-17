@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\ValueObject\PhpVersion;
 use Rector\DowngradePhp82\Rector\Class_\DowngradeReadonlyClassRector;
+use Rector\DowngradePhp82\Rector\Class_\DowngradeUnionIntersectionRector;
 use Rector\DowngradePhp82\Rector\FuncCall\DowngradeIteratorCountToArrayRector;
 use Rector\DowngradePhp82\Rector\FunctionLike\DowngradeStandaloneNullTrueFalseReturnTypeRector;
 
@@ -14,5 +15,6 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeReadonlyClassRector::class,
         DowngradeStandaloneNullTrueFalseReturnTypeRector::class,
         DowngradeIteratorCountToArrayRector::class,
+        DowngradeUnionIntersectionRector::class,
     ]);
 };
