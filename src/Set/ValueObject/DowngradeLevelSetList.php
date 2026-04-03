@@ -10,6 +10,8 @@ namespace Rector\Set\ValueObject;
  */
 final class DowngradeLevelSetList
 {
+    public const string DOWN_TO_PHP_85 = __DIR__ . '/../../../config/set/level/down-to-php85.php';
+
     public const string DOWN_TO_PHP_84 = __DIR__ . '/../../../config/set/level/down-to-php84.php';
 
     public const string DOWN_TO_PHP_83 = __DIR__ . '/../../../config/set/level/down-to-php83.php';
