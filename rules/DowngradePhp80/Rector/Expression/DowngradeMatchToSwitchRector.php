@@ -105,7 +105,6 @@ CODE_SAMPLE
 
     /**
      * @param Echo_|Expression|Return_ $node
-     * @return null|Node|Node[]
      */
     public function refactor(Node $node): null|Node|array
     {
@@ -123,11 +122,19 @@ CODE_SAMPLE
             $matchVariable = new Variable($this->variableNaming->createCountedValueName('match', $scope));
             $expression = new Expression(new Assign($matchVariable, $node->expr->var->var->dim));
             $expression->setAttribute(AttributeKey::SCOPE, $scope);
-            $expression = $this->refactor($expression);
+            $refactored = $this->refactor($expression);
+
+            if ($refactored === null) {
+                return null;
+            }
 
             $node->expr->var->var->dim = $matchVariable;
 
-            return [$expression, $node];
+            $stmts = is_array($refactored)
+                ? $refactored :
+                [$refactored];
+
+            return [...$stmts, $node];
         }
 
         $this->traverseNodesWithCallable(
