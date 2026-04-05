@@ -236,7 +236,7 @@ CODE_SAMPLE
                 continue;
             }
 
-            if ($parentReturnType->equals($returnType)) {
+            if ($returnType->equals($parentReturnType)) {
                 continue;
             }
 
