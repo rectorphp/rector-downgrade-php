@@ -112,7 +112,7 @@ CODE_SAMPLE
     {
         $oldComments = [];
         foreach ($constructorClassMethod->params as $param) {
-            $oldComments[$this->getName($param->var)] = $param->getAttribute(AttributeKey::COMMENTS);
+            $oldComments[(string) $this->getName($param->var)] = $param->getAttribute(AttributeKey::COMMENTS);
         }
 
         return $oldComments;
