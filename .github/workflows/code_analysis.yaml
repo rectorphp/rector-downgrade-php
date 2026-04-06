@@ -15,10 +15,6 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php-version:
-                    - '8.3'
-                    # needed to test (void) cast downgrade syntax
-                    - '8.5'
                 actions:
                     -
                         name: "Validate docs"
@@ -44,7 +40,7 @@ jobs:
                         name: 'Tests'
                         run: vendor/bin/phpunit
 
-        name: ${{ matrix.actions.name }} - PHP ${{ matrix.php-version }}
+        name: ${{ matrix.actions.name }}
         runs-on: ubuntu-latest
         timeout-minutes: 3
 
@@ -54,7 +50,8 @@ jobs:
             -
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: ${{ matrix.php-version }}
+                    # use php 8.5 to allow test (void) cast syntax
+                    php-version: 8.5
                     coverage: none
 
             -   uses: "ramsey/composer-install@v2"
