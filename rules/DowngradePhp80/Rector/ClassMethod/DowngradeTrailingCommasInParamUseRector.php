@@ -118,6 +118,10 @@ CODE_SAMPLE
     {
         $lastPosition = array_key_last($array);
 
+        if ($lastPosition === null) {
+            return null;
+        }
+
         $last = $array[$lastPosition];
         if (! $this->followedByCommaAnalyzer->isFollowed($this->file, $last)) {
             return null;
