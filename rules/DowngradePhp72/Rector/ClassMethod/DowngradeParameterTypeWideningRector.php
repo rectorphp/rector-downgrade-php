@@ -141,6 +141,7 @@ CODE_SAMPLE
 
         foreach ($unsafeTypesToMethods as $key => $value) {
             Assert::string($key);
+            Assert::isArray($value);
             Assert::allString($value);
         }
 
