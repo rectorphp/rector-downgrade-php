@@ -75,10 +75,7 @@ CODE_SAMPLE
 
         // the assign is needed to avoid warning
         // see https://3v4l.org/ie68D#v8.5.3 vs https://3v4l.org/nLc5J#v8.5.3
-        $node->expr = new Assign(
-            $variable,
-            $node->expr->expr
-        );
+        $node->expr = new Assign($variable, $node->expr->expr);
         return $node;
     }
 }
