@@ -9,6 +9,7 @@ use Rector\DowngradePhp81\Rector\MethodCall\DowngradeIsEnumRector;
 use Rector\Config\RectorConfig;
 use Rector\ValueObject\PhpVersion;
 use Rector\DowngradePhp81\Rector\ClassConst\DowngradeFinalizePublicClassConstantRector;
+use Rector\DowngradePhp81\Rector\ClassMethod\AddReturnTypeWillChangeAttributeRector;
 use Rector\DowngradePhp81\Rector\FuncCall\DowngradeArrayIsListRector;
 use Rector\DowngradePhp81\Rector\FuncCall\DowngradeFirstClassCallableSyntaxRector;
 use Rector\DowngradePhp81\Rector\FunctionLike\DowngradeNeverTypeDeclarationRector;
@@ -25,6 +26,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->phpVersion(PhpVersion::PHP_80);
 
     $rectorConfig->rules([
+        AddReturnTypeWillChangeAttributeRector::class,
         DowngradeFinalizePublicClassConstantRector::class,
         DowngradeFirstClassCallableSyntaxRector::class,
         DowngradeNeverTypeDeclarationRector::class,
