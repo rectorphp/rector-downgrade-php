@@ -118,16 +118,17 @@ CODE_SAMPLE
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
                 if ($this->shouldSkipAttribute($attribute)) {
-                    if (isset($oldTokens[$attrGroup->getEndTokenPos() + 1]) && ! str_contains(
-                        (string) $oldTokens[$attrGroup->getEndTokenPos() + 1],
+                    $nextTokenPos = $attrGroup->getEndTokenPos() + 1;
+                    if ($attrGroup->getEndTokenPos() >= 0 && isset($oldTokens[$nextTokenPos]) && ! str_contains(
+                        (string) $oldTokens[$nextTokenPos],
                         "\n"
                     )) {
                         // add new line
-                        $oldTokens[$attrGroup->getEndTokenPos() + 1]->text = "\n" . $this->resolveIndentation(
+                        $oldTokens[$nextTokenPos]->text = "\n" . $this->resolveIndentation(
                             $node,
                             $attrGroup,
                             $attribute
-                        ) . $oldTokens[$attrGroup->getEndTokenPos() + 1]->text;
+                        ) . $oldTokens[$nextTokenPos]->text;
                         $this->isDowngraded = true;
                     }
 
