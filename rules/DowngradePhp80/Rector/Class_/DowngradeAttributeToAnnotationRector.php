@@ -118,11 +118,13 @@ CODE_SAMPLE
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {
                 if ($this->shouldSkipAttribute($attribute)) {
-                    $nextTokenPos = $attrGroup->getEndTokenPos() + 1;
-                    if ($attrGroup->getEndTokenPos() >= 0 && isset($oldTokens[$nextTokenPos]) && ! str_contains(
-                        (string) $oldTokens[$nextTokenPos],
-                        "\n"
-                    )) {
+                    $endTokenPos = $attrGroup->getEndTokenPos();
+                    $nextTokenPos = $endTokenPos + 1;
+                    if (
+                        $endTokenPos >= 0
+                        && isset($oldTokens[$nextTokenPos])
+                        && ! str_contains((string) $oldTokens[$nextTokenPos], "\n")
+                    ) {
                         // add new line
                         $oldTokens[$nextTokenPos]->text = "\n" . $this->resolveIndentation(
                             $node,
