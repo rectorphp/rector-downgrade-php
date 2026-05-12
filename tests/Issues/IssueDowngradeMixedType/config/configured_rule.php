@@ -9,6 +9,11 @@ use Rector\DowngradePhp80\Rector\Class_\DowngradeAttributeToAnnotationRector;
 use Rector\DowngradePhp80\ValueObject\DowngradeAttributeToAnnotation;
 
 return static function (RectorConfig $rectorConfig): void {
+    /** @var class-string $netteInjectAttribute */
+    $netteInjectAttribute = 'Nette\DI\Attributes\Inject';
+    /** @var class-string $jetbrainsLanguageAttribute */
+    $jetbrainsLanguageAttribute = 'Jetbrains\PhpStorm\Language';
+
     $rectorConfig->importNames();
     $rectorConfig->rule(DowngradeTypedPropertyRector::class);
     $rectorConfig->rule(DowngradeMixedTypeDeclarationRector::class);
@@ -18,8 +23,8 @@ return static function (RectorConfig $rectorConfig): void {
             // Symfony
             new DowngradeAttributeToAnnotation('Symfony\Contracts\Service\Attribute\Required', 'required'),
             // Nette
-            new DowngradeAttributeToAnnotation('Nette\DI\Attributes\Inject', 'inject'),
+            new DowngradeAttributeToAnnotation($netteInjectAttribute, 'inject'),
             // Jetbrains\PhpStorm\Language under nette/utils
-            new DowngradeAttributeToAnnotation('Jetbrains\PhpStorm\Language', 'language'),
+            new DowngradeAttributeToAnnotation($jetbrainsLanguageAttribute, 'language'),
         ]);
 };
