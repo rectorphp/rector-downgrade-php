@@ -17,11 +17,13 @@ use PhpParser\Node\UnionType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\Type;
+use PHPStan\Type\UnionType as PHPStanUnionType;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTypeChanger;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PhpParser\AstResolver;
 use Rector\Rector\AbstractRector;
+use Rector\StaticTypeMapper\StaticTypeMapper;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -35,7 +37,8 @@ final class DowngradeStandaloneNullTrueFalseReturnTypeRector extends AbstractRec
     public function __construct(
         private readonly PhpDocInfoFactory $phpDocInfoFactory,
         private readonly PhpDocTypeChanger $phpDocTypeChanger,
-        private readonly AstResolver $astResolver
+        private readonly AstResolver $astResolver,
+        private readonly StaticTypeMapper $staticTypeMapper
     ) {
     }
 
@@ -83,6 +86,25 @@ CODE_SAMPLE
     public function refactor(Node $node): ?Node
     {
         $returnType = $node->returnType;
+
+        if ($returnType instanceof NullableType && $returnType->type instanceof Identifier) {
+            $innerName = $this->getName($returnType->type);
+            if (in_array($innerName, ['false', 'true'], true)) {
+                $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
+                $unionType = new PHPStanUnionType([new ConstantBooleanType($innerName === 'true'), new NullType()]);
+                $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $unionType);
+                $node->returnType = new NullableType(new Identifier('bool'));
+
+                return $node;
+            }
+
+            return null;
+        }
+
+        if ($returnType instanceof UnionType) {
+            return $this->refactorUnionType($node, $returnType);
+        }
+
         if (! $returnType instanceof Identifier) {
             return null;
         }
@@ -98,6 +120,41 @@ CODE_SAMPLE
         $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $this->resolveType($returnType));
 
         $node->returnType = $this->resolveNativeType($node, $returnType);
+
+        return $node;
+    }
+
+    /**
+     * @param ClassMethod|Function_|Closure|ArrowFunction $node
+     */
+    private function refactorUnionType(Node $node, UnionType $unionType): ?Node
+    {
+        $hasChanged = false;
+
+        $originalUnionType = clone $unionType;
+        foreach ($unionType->types as $key => $type) {
+            if ($type instanceof Identifier) {
+                $name = $this->getName($type);
+                if (! in_array($name, ['true', 'false'], true)) {
+                    continue;
+                }
+
+                $unionType->types[$key] = new Identifier('bool');
+                $hasChanged = true;
+            }
+        }
+
+        if (! $hasChanged) {
+            return null;
+        }
+
+        $unionType->types = array_values(array_unique($unionType->types, SORT_REGULAR));
+        $phpStanType = $this->staticTypeMapper->mapPhpParserNodePHPStanType($originalUnionType);
+
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
+        $this->phpDocTypeChanger->changeReturnType($node, $phpDocInfo, $phpStanType);
+
+        $node->returnType = $unionType;
 
         return $node;
     }
