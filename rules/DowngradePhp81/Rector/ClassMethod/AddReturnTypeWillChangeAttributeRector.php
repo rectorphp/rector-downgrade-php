@@ -9,8 +9,8 @@ use PhpParser\Node\Attribute;
 use PhpParser\Node\AttributeGroup;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Reflection\ReflectionProvider;
+use Rector\Php80\NodeAnalyzer\PhpAttributeAnalyzer;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -42,6 +42,7 @@ final class AddReturnTypeWillChangeAttributeRector extends AbstractRector
 
     public function __construct(
         private readonly ReflectionProvider $reflectionProvider,
+        private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer
     ) {
     }
 
@@ -100,7 +101,7 @@ CODE_SAMPLE
         $hasChanged = false;
 
         foreach ($node->getMethods() as $classMethod) {
-            if ($this->hasReturnTypeWillChangeAttribute($classMethod)) {
+            if ($this->phpAttributeAnalyzer->hasPhpAttribute($classMethod, self::RETURN_TYPE_WILL_CHANGE)) {
                 continue;
             }
 
@@ -124,7 +125,7 @@ CODE_SAMPLE
                 ]);
 
                 $hasChanged = true;
-                break;
+                continue 2;
             }
         }
 
@@ -133,18 +134,5 @@ CODE_SAMPLE
         }
 
         return null;
-    }
-
-    private function hasReturnTypeWillChangeAttribute(ClassMethod $classMethod): bool
-    {
-        foreach ($classMethod->attrGroups as $attrGroup) {
-            foreach ($attrGroup->attrs as $attr) {
-                if ($attr->name->getLast() === self::RETURN_TYPE_WILL_CHANGE) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }
