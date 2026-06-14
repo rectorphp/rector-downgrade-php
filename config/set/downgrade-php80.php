@@ -18,6 +18,7 @@ use Rector\DowngradePhp80\Rector\ClassMethod\DowngradeTrailingCommasInParamUseRe
 use Rector\DowngradePhp80\Rector\Enum_\DowngradeEnumToConstantListClassRector;
 use Rector\DowngradePhp80\Rector\Expression\DowngradeMatchToSwitchRector;
 use Rector\DowngradePhp80\Rector\Expression\DowngradeThrowExprRector;
+use Rector\DowngradePhp80\Rector\Foreach_\DowngradeDomNodeChildNodesForeachRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeArrayFilterNullableCallbackRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeNumberFormatNoFourthArgRector;
 use Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector;
@@ -80,6 +81,7 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeStrEndsWithRector::class,
         DowngradePhpTokenRector::class,
         DowngradeThrowExprRector::class,
+        DowngradeDomNodeChildNodesForeachRector::class,
         DowngradePhp80ResourceReturnToObjectRector::class,
         DowngradeReflectionGetAttributesRector::class,
         DowngradeRecursiveDirectoryIteratorHasChildrenRector::class,
