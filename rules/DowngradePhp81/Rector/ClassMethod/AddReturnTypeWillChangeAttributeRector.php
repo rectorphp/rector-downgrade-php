@@ -35,6 +35,7 @@ final class AddReturnTypeWillChangeAttributeRector extends AbstractRector
         'Countable' => ['count'],
         'Iterator' => ['current', 'key', 'next', 'rewind', 'valid'],
         'IteratorAggregate' => ['getIterator'],
+        'JsonSerializable' => ['jsonSerialize'],
         'Stringable' => ['__toString'],
     ];
 
