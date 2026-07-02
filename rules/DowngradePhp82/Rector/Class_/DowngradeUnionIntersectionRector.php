@@ -136,6 +136,7 @@ CODE_SAMPLE
         if (! $node instanceof UnionType) {
             return false;
         }
+
         return array_any($node->types, fn(Identifier|Name|IntersectionType $type): bool => $type instanceof IntersectionType);
     }
 }
