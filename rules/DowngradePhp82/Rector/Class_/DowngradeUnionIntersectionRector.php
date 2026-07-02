@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\DowngradePhp82\Rector\Class_;
 
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;
@@ -135,12 +137,6 @@ CODE_SAMPLE
             return false;
         }
 
-        foreach ($node->types as $type) {
-            if ($type instanceof IntersectionType) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($node->types, fn(Identifier|Name|IntersectionType $type): bool => $type instanceof IntersectionType);
     }
 }
