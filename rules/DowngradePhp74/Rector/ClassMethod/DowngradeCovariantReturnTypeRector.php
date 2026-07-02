@@ -260,13 +260,6 @@ CODE_SAMPLE
         if (! TypeCombinator::containsNull($parentReturnType)) {
             return false;
         }
-
-        foreach ($parentReturnType->getTypes() as $type) {
-            if ($type->equals($returnType)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($parentReturnType->getTypes(), fn(Type $type): bool => $type->equals($returnType));
     }
 }
