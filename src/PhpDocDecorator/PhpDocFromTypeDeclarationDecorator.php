@@ -41,23 +41,23 @@ use Rector\ValueObject\PhpVersionFeature;
 /**
  * @see https://wiki.php.net/rfc/internal_method_return_types#proposal
  */
-final class PhpDocFromTypeDeclarationDecorator
+final readonly class PhpDocFromTypeDeclarationDecorator
 {
     /**
      * @var ClassMethodWillChangeReturnType[]
      */
-    private array $classMethodWillChangeReturnTypes = [];
+    private array $classMethodWillChangeReturnTypes;
 
     public function __construct(
-        private readonly StaticTypeMapper $staticTypeMapper,
-        private readonly PhpDocInfoFactory $phpDocInfoFactory,
-        private readonly NodeNameResolver $nodeNameResolver,
-        private readonly PhpDocTypeChanger $phpDocTypeChanger,
-        private readonly PhpAttributeGroupFactory $phpAttributeGroupFactory,
-        private readonly ReflectionResolver $reflectionResolver,
-        private readonly PhpAttributeAnalyzer $phpAttributeAnalyzer,
-        private readonly PhpVersionProvider $phpVersionProvider,
-        private readonly AstResolver $astResolver
+        private StaticTypeMapper $staticTypeMapper,
+        private PhpDocInfoFactory $phpDocInfoFactory,
+        private NodeNameResolver $nodeNameResolver,
+        private PhpDocTypeChanger $phpDocTypeChanger,
+        private PhpAttributeGroupFactory $phpAttributeGroupFactory,
+        private ReflectionResolver $reflectionResolver,
+        private PhpAttributeAnalyzer $phpAttributeAnalyzer,
+        private PhpVersionProvider $phpVersionProvider,
+        private AstResolver $astResolver
     ) {
         $this->classMethodWillChangeReturnTypes = [
             // @todo how to make list complete? is the method list needed or can we use just class names?
