@@ -20,7 +20,7 @@ use Rector\Exception\ShouldNotHappenException;
 
 final class DefaultParameterValueResolver
 {
-    public function resolveFromParameterReflection(ParameterReflection $parameterReflection): Expr | null
+    public function resolveFromParameterReflection(ParameterReflection $parameterReflection): Expr|null
     {
         $defaultValueType = $parameterReflection->getDefaultValue();
         if (! $defaultValueType instanceof Type) {
@@ -34,7 +34,7 @@ final class DefaultParameterValueResolver
         return $this->resolveValueFromType($defaultValueType);
     }
 
-    private function resolveValueFromType(Type $constantType): ConstFetch | Expr
+    private function resolveValueFromType(Type $constantType): ConstFetch|Expr
     {
         if ($constantType instanceof ConstantBooleanType) {
             return $this->resolveConstantBooleanType($constantType);

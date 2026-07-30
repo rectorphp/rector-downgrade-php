@@ -26,7 +26,7 @@ final readonly class UnnamedArgumentResolver
      * @return Arg[]
      */
     public function resolveFromReflection(
-        FunctionReflection | MethodReflection $functionLikeReflection,
+        FunctionReflection|MethodReflection $functionLikeReflection,
         array $currentArgs
     ): array {
         $extendedParametersAcceptor = ParametersAcceptorSelector::combineAcceptors(

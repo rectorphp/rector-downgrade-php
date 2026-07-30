@@ -81,7 +81,7 @@ CODE_SAMPLE
         return $node;
     }
 
-    private function shouldSkip(Int_ | Float_ $node, mixed $rawValue): bool
+    private function shouldSkip(Int_|Float_ $node, mixed $rawValue): bool
     {
         if (! is_string($rawValue)) {
             return true;

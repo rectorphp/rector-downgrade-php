@@ -130,7 +130,7 @@ CODE_SAMPLE
      * Remove the right-side-most params by reference or empty from `list()`,
      * since they are not needed anymore.
      */
-    private function removeStaleParams(List_ | Array_ $node, int $rightSideRemovableParamsCount): void
+    private function removeStaleParams(List_|Array_ $node, int $rightSideRemovableParamsCount): void
     {
         $nodeItemsCount = count($node->items);
         if ($rightSideRemovableParamsCount > 0) {
@@ -138,7 +138,7 @@ CODE_SAMPLE
         }
     }
 
-    private function shouldSkipAssign(Assign $assign, List_ | Array_ $arrayOrList): bool
+    private function shouldSkipAssign(Assign $assign, List_|Array_ $arrayOrList): bool
     {
         if (! $assign->expr instanceof Variable) {
             return true;
@@ -264,7 +264,7 @@ CODE_SAMPLE
     /**
      * Return the key inside the ArrayItem, if provided, or the position otherwise
      */
-    private function getArrayItemKey(ArrayItem $arrayItem, int | string $position): int | string
+    private function getArrayItemKey(ArrayItem $arrayItem, int|string $position): int|string
     {
         if ($arrayItem->key instanceof String_) {
             return $arrayItem->key->value;
@@ -285,7 +285,7 @@ CODE_SAMPLE
         Variable $assignVariable,
         Variable $exprVariable,
         array $nestedArrayIndexes,
-        string | int $arrayIndex
+        string|int $arrayIndex
     ): Expression {
         $nestedExprVariable = $exprVariable;
         foreach ($nestedArrayIndexes as $nestedArrayIndex) {
@@ -301,7 +301,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param array<(ArrayItem | null)> $arrayItems
+     * @param array<(ArrayItem|null)> $arrayItems
      * @return ArrayItem[]
      */
     private function getItemsByRef(array $arrayItems, int $condition): array

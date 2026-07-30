@@ -299,7 +299,7 @@ CODE_SAMPLE
     /**
      * @return string[]
      */
-    private function resolveClassConstFetchNames(ClassConstFetch | BitwiseOr $value): array
+    private function resolveClassConstFetchNames(ClassConstFetch|BitwiseOr $value): array
     {
         if ($value instanceof ClassConstFetch) {
             $classConstFetchNames = [];

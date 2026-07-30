@@ -70,7 +70,7 @@ final readonly class NamedToUnnamedArgs
      * @return array<int, Arg>
      */
     public function fillFromJumpedNamedArgs(
-        FunctionReflection | MethodReflection | ReflectionFunction $functionLikeReflection,
+        FunctionReflection|MethodReflection|ReflectionFunction $functionLikeReflection,
         array $unnamedArgs,
         array $parameters
     ): array {

@@ -12,7 +12,7 @@ use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 final class DowngradeVoidCastRectorTest extends AbstractRectorTestCase
 {
     #[DataProvider('provideData')]
-    #[RequiresPhp('8.5')]
+    #[RequiresPhp('>= 8.5.0')]
     public function test(string $filePath): void
     {
         $this->doTestFile($filePath);
