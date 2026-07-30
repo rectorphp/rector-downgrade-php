@@ -24,13 +24,15 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class DowngradeHashAlgorithmXxHashRector extends AbstractRector
 {
     /**
-     * @var array<string, int>
+     * Constants are referenced by name, as the MHASH_* constants are deprecated since PHP 8.5
+     *
+     * @var array<string, string>
      */
     private const array HASH_ALGORITHMS_TO_DOWNGRADE = [
-        'xxh32' => MHASH_XXH32,
-        'xxh64' => MHASH_XXH64,
-        'xxh3' => MHASH_XXH3,
-        'xxh128' => MHASH_XXH128,
+        'xxh32' => 'MHASH_XXH32',
+        'xxh64' => 'MHASH_XXH64',
+        'xxh3' => 'MHASH_XXH3',
+        'xxh128' => 'MHASH_XXH128',
     ];
 
     private const string REPLACEMENT_ALGORITHM = 'md5';
@@ -167,7 +169,7 @@ CODE_SAMPLE
 
     private function mapConstantToString(string $constant): string
     {
-        $mappedConstant = array_search(constant($constant), self::HASH_ALGORITHMS_TO_DOWNGRADE, true);
+        $mappedConstant = array_search(ltrim($constant, '\\'), self::HASH_ALGORITHMS_TO_DOWNGRADE, true);
 
         return $mappedConstant !== false ? $mappedConstant : $constant;
     }
