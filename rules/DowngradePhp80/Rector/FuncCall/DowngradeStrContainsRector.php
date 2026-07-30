@@ -62,7 +62,7 @@ CODE_SAMPLE
      * @param FuncCall|BooleanNot $node
      * @return Identical|NotIdentical|null The refactored node.
      */
-    public function refactor(Node $node): Identical | NotIdentical | null
+    public function refactor(Node $node): Identical|NotIdentical|null
     {
         $funcCall = $this->matchStrContainsOrNotStrContains($node);
 
@@ -87,7 +87,7 @@ CODE_SAMPLE
         return new NotIdentical($funcCall, $this->nodeFactory->createFalse());
     }
 
-    private function matchStrContainsOrNotStrContains(FuncCall | BooleanNot $expr): ?FuncCall
+    private function matchStrContainsOrNotStrContains(FuncCall|BooleanNot $expr): ?FuncCall
     {
         $expr = ($expr instanceof BooleanNot) ? $expr->expr : $expr;
         if (! $expr instanceof FuncCall) {

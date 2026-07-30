@@ -207,7 +207,7 @@ CODE_SAMPLE
     }
 
     private function cleanupEmptyAttrGroups(
-        ClassMethod | Property | Class_ | Interface_ | Param | Function_ $node
+        ClassMethod|Property|Class_|Interface_|Param|Function_ $node
     ): void {
         foreach ($node->attrGroups as $key => $attrGroup) {
             if ($attrGroup->attrs !== []) {

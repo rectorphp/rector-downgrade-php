@@ -282,7 +282,7 @@ CODE_SAMPLE
      * @return Case_[]
      */
     private function createSwitchCasesFromMatchArms(
-        Echo_ | Expression | Return_ $node,
+        Echo_|Expression|Return_ $node,
         Match_ $match,
         bool $isInsideArrayItem = false
     ): array {
@@ -312,7 +312,7 @@ CODE_SAMPLE
      * @return Stmt[]
      */
     private function createSwitchStmts(
-        Echo_ | Expression | Return_ $node,
+        Echo_|Expression|Return_ $node,
         MatchArm $matchArm,
         bool $isInsideArrayItem
     ): array {

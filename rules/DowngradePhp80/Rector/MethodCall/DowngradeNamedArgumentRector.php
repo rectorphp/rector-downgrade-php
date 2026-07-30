@@ -94,7 +94,7 @@ CODE_SAMPLE
     /**
      * @param Arg[] $args
      */
-    private function removeNamedArguments(MethodCall | StaticCall | New_ | FuncCall $node, array $args): ?Node
+    private function removeNamedArguments(MethodCall|StaticCall|New_|FuncCall $node, array $args): ?Node
     {
         if ($node instanceof New_) {
             $functionLikeReflection = $this->reflectionResolver->resolveMethodReflectionFromNew($node);

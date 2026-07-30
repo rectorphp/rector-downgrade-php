@@ -211,7 +211,7 @@ CODE_SAMPLE
 
     private function hasParamAlreadyNonTyped(ClassMethod $classMethod): bool
     {
-        return array_all($classMethod->params, fn(Param $param): bool => !$param->type instanceof Node);
+        return array_all($classMethod->params, static fn (Param $param): bool => ! $param->type instanceof Node);
     }
 
     private function isSafeType(ClassReflection $classReflection, ClassMethod $classMethod): bool

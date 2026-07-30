@@ -150,7 +150,7 @@ CODE_SAMPLE
     /**
      * @return If_|Expression|Stmt[]|null
      */
-    private function refactorAssign(Assign $assign): If_ | Expression | null | array
+    private function refactorAssign(Assign $assign): If_|Expression|null|array
     {
         if (! $this->hasThrowInAssignExpr($assign)) {
             return null;

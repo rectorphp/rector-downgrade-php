@@ -155,7 +155,7 @@ CODE_SAMPLE
 
     private function resolveDifferentAncestorReturnType(
         ClassMethod $classMethod,
-        UnionType | NullableType | Name | Identifier | ComplexType $returnTypeNode
+        UnionType|NullableType|Name|Identifier|ComplexType $returnTypeNode
     ): Type {
         $classReflection = $this->reflectionResolver->resolveClassReflection($classMethod);
         if (! $classReflection instanceof ClassReflection) {
@@ -261,6 +261,6 @@ CODE_SAMPLE
             return false;
         }
 
-        return array_any($parentReturnType->getTypes(), fn(Type $type): bool => $type->equals($returnType));
+        return array_any($parentReturnType->getTypes(), static fn (Type $type): bool => $type->equals($returnType));
     }
 }

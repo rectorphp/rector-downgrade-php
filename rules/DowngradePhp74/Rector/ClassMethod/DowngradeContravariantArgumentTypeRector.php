@@ -248,7 +248,7 @@ CODE_SAMPLE
         return null;
     }
 
-    private function refactorParam(Param $param, ClassMethod | Function_ $functionLike): void
+    private function refactorParam(Param $param, ClassMethod|Function_ $functionLike): void
     {
         if (! $this->isNullableParam($param, $functionLike)) {
             return;
@@ -260,7 +260,7 @@ CODE_SAMPLE
         $this->hasChanged = true;
     }
 
-    private function decorateWithDocBlock(ClassMethod | Function_ $functionLike, Param $param): void
+    private function decorateWithDocBlock(ClassMethod|Function_ $functionLike, Param $param): void
     {
         if (! $param->type instanceof Node) {
             return;
