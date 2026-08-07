@@ -72,7 +72,7 @@ CODE_SAMPLE
             return null;
         }
 
-        $args[0]->name = null;
+        $statusArg->name = null;
         return $node;
     }
 }
