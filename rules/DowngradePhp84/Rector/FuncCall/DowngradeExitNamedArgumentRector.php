@@ -73,8 +73,6 @@ CODE_SAMPLE
         }
 
         $args[0]->name = null;
-        $node->args = $args;
-
         return $node;
     }
 }
