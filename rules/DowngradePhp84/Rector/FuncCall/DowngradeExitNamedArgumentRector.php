@@ -58,7 +58,12 @@ CODE_SAMPLE
             return null;
         }
 
-        $statusArg = $node->getArg('status', 0);
+        $args = $node->getArgs();
+        if (count($args) !== 1) {
+            return null;
+        }
+
+        $statusArg = $args[0];
         if (! $statusArg instanceof Arg) {
             return null;
         }
@@ -67,7 +72,9 @@ CODE_SAMPLE
             return null;
         }
 
-        $node->args[0]->name = null;
+        $args[0]->name = null;
+        $node->args = $args;
+
         return $node;
     }
 }
