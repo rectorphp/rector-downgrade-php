@@ -6,14 +6,17 @@ namespace Rector\DowngradePhp81\Rector\FuncCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\BinaryOp;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Scalar\String_;
-use PHPStan\Type\IntegerRangeType;
+use PhpParser\Node\Stmt\If_;
 use Rector\NodeAnalyzer\ArgsAnalyzer;
 use Rector\NodeTypeResolver\Node\AttributeKey;
+use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\PhpParser\Node\Value\ValueResolver;
-use Rector\PHPStan\ScopeFetcher;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -42,6 +45,7 @@ final class DowngradeHashAlgorithmXxHashRector extends AbstractRector
     public function __construct(
         private readonly ArgsAnalyzer $argsAnalyzer,
         private readonly ValueResolver $valueResolver,
+        private readonly BetterNodeFinder $betterNodeFinder,
     ) {
     }
 
@@ -80,14 +84,19 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [FuncCall::class];
+        return [Ternary::class, If_::class, FuncCall::class];
     }
 
     /**
-     * @param FuncCall $node
+     * @param Ternary|If_|FuncCall $node
      */
     public function refactor(Node $node): ?FuncCall
     {
+        if ($node instanceof Ternary || $node instanceof If_) {
+            $this->markGuardedHashCalls($node);
+            return null;
+        }
+
         if ($this->shouldSkip($node)) {
             return null;
         }
@@ -120,19 +129,42 @@ CODE_SAMPLE
             return true;
         }
 
-        if (! $this->isName($funcCall, 'hash')) {
-            return true;
+        return ! $this->isName($funcCall, 'hash');
+    }
+
+    /**
+     * Mark hash() calls guarded by a PHP_VERSION_ID check as version conditioned,
+     * so they are skipped like version_compare() guarded calls.
+     */
+    private function markGuardedHashCalls(Ternary|If_ $node): void
+    {
+        if (! $this->hasPhpVersionIdCond($node->cond)) {
+            return;
         }
 
-        $scope = ScopeFetcher::fetch($funcCall);
-        $type = $scope->getPhpVersion()
-            ->getType();
+        /** @var FuncCall[] $funcCalls */
+        $funcCalls = $this->betterNodeFinder->findInstancesOf($node, [FuncCall::class]);
+        foreach ($funcCalls as $funcCall) {
+            if (! $this->isName($funcCall, 'hash')) {
+                continue;
+            }
 
-        if (! $type instanceof IntegerRangeType) {
+            $funcCall->setAttribute(AttributeKey::PHP_VERSION_CONDITIONED, true);
+        }
+    }
+
+    private function hasPhpVersionIdCond(Expr $cond): bool
+    {
+        if (! $cond instanceof BinaryOp) {
             return false;
         }
 
-        return $type->getMin() === 80100;
+        return $this->isPhpVersionIdConstFetch($cond->left) || $this->isPhpVersionIdConstFetch($cond->right);
+    }
+
+    private function isPhpVersionIdConstFetch(Expr $expr): bool
+    {
+        return $expr instanceof ConstFetch && $this->isName($expr, 'PHP_VERSION_ID');
     }
 
     /**
