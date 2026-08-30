@@ -103,6 +103,7 @@ parameters:
         -
             identifier: rector.avoidFeatureSetAttributeInRector
             paths:
+                 - rules/DowngradePhp81/Rector/FuncCall/DowngradeHashAlgorithmXxHashRector.php
                  - rules/DowngradePhp80/Rector/FuncCall/DowngradeSubstrFalsyRector.php
                  - rules/DowngradePhp74/Rector/MethodCall/DowngradeReflectionGetTypeRector.php
                  - rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionGetAttributesRector.php
