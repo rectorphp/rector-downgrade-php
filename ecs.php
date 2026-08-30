@@ -7,25 +7,21 @@ use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use Symplify\CodingStandard\Fixer\LineLength\DocBlockLineLengthFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
-use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
-return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->sets([SetList::PSR_12, SetList::SYMPLIFY, SetList::COMMON, SetList::CLEAN_CODE]);
-
-    $ecsConfig->paths([
+return ECSConfig::configure()
+    ->withPaths([
         __DIR__ . '/src',
         __DIR__ . '/rules',
         __DIR__ . '/tests',
         __DIR__ . '/rules-tests',
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
-    ]);
-
-    $ecsConfig->ruleWithConfiguration(NoSuperfluousPhpdocTagsFixer::class, [
+    ])
+    ->withPreparedSets(psr12: true, common: true, cleanCode: true)
+    ->withConfiguredRule(NoSuperfluousPhpdocTagsFixer::class, [
         'allow_mixed' => true,
-    ]);
-
-    $ecsConfig->ruleWithConfiguration(GeneralPhpdocAnnotationRemoveFixer::class, [
+    ])
+    ->withConfiguredRule(GeneralPhpdocAnnotationRemoveFixer::class, [
         'annotations' => [
             'throw',
             'throws',
@@ -37,11 +33,9 @@ return static function (ECSConfig $ecsConfig): void {
             'phpstan-ignore-line',
             'phpstan-ignore-next-line',
         ],
-    ]);
-
-    $ecsConfig->rule(StaticLambdaFixer::class);
-
-    $ecsConfig->skip([
+    ])
+    ->withRules([StaticLambdaFixer::class])
+    ->withSkip([
         '*/Source/*',
         '*/Fixture/*',
         '*/Expected/*',
@@ -49,4 +43,3 @@ return static function (ECSConfig $ecsConfig): void {
         // buggy - @todo fix on Symplify master
         DocBlockLineLengthFixer::class,
     ]);
-};
