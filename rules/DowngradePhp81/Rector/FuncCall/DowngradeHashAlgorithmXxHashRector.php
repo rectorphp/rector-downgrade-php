@@ -153,13 +153,13 @@ CODE_SAMPLE
         }
     }
 
-    private function hasPhpVersionIdCond(Expr $cond): bool
+    private function hasPhpVersionIdCond(Expr $expr): bool
     {
-        if (! $cond instanceof BinaryOp) {
+        if (! $expr instanceof BinaryOp) {
             return false;
         }
 
-        return $this->isPhpVersionIdConstFetch($cond->left) || $this->isPhpVersionIdConstFetch($cond->right);
+        return $this->isPhpVersionIdConstFetch($expr->left) || $this->isPhpVersionIdConstFetch($expr->right);
     }
 
     private function isPhpVersionIdConstFetch(Expr $expr): bool
