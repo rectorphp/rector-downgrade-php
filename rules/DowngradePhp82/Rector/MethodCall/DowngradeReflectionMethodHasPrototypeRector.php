@@ -20,6 +20,8 @@ use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\TryCatch;
 use PHPStan\Type\ObjectType;
+use Rector\Naming\Naming\VariableNaming;
+use Rector\PHPStan\ScopeFetcher;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -29,6 +31,11 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class DowngradeReflectionMethodHasPrototypeRector extends AbstractRector
 {
+    public function __construct(
+        private readonly VariableNaming $variableNaming
+    ) {
+    }
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Downgrade ReflectionMethod::hasPrototype() by emulating it with getPrototype()', [
@@ -48,9 +55,9 @@ class SomeClass
 {
     public function run(ReflectionMethod $reflectionMethod): bool
     {
-        return (function (\ReflectionMethod $reflectionMethod): bool {
+        return (function (\ReflectionMethod $reflectionMethod2): bool {
             try {
-                $reflectionMethod->getPrototype();
+                $reflectionMethod2->getPrototype();
                 return true;
             } catch (\ReflectionException) {
                 return false;
@@ -88,12 +95,15 @@ CODE_SAMPLE
             return null;
         }
 
-        return new FuncCall($this->createClosure(), [new Arg($node->var)]);
+        $scope = ScopeFetcher::fetch($node);
+        $parameterName = $this->variableNaming->createCountedValueName('reflectionMethod', $scope);
+
+        return new FuncCall($this->createClosure($parameterName), [new Arg($node->var)]);
     }
 
-    private function createClosure(): Closure
+    private function createClosure(string $parameterName): Closure
     {
-        $reflectionMethodVariable = new Variable('reflectionMethod');
+        $reflectionMethodVariable = new Variable($parameterName);
 
         $tryCatch = new TryCatch(
             [

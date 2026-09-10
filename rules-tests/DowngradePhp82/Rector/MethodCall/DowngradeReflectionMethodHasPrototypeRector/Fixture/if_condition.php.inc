@@ -23,9 +23,9 @@ use ReflectionMethod;
 
 function resolvePrototype(ReflectionMethod $reflectionMethod): ReflectionMethod
 {
-    if ((function (\ReflectionMethod $reflectionMethod): bool {
+    if ((function (\ReflectionMethod $reflectionMethod2): bool {
         try {
-            $reflectionMethod->getPrototype();
+            $reflectionMethod2->getPrototype();
             return true;
         } catch (\ReflectionException) {
             return false;

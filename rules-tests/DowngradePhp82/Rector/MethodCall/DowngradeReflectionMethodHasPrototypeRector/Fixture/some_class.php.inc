@@ -19,9 +19,9 @@ use ReflectionMethod;
 
 function checkPrototype(ReflectionMethod $reflectionMethod): bool
 {
-    return (function (\ReflectionMethod $reflectionMethod): bool {
+    return (function (\ReflectionMethod $reflectionMethod2): bool {
         try {
-            $reflectionMethod->getPrototype();
+            $reflectionMethod2->getPrototype();
             return true;
         } catch (\ReflectionException) {
             return false;
