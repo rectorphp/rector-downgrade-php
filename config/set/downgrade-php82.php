@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\DowngradePhp82\Rector\ArrowFunction\DowngradeArrowFunctionNeverReturnTypeRector;
 use Rector\DowngradePhp82\Rector\Class_\DowngradeReadonlyClassRector;
 use Rector\DowngradePhp82\Rector\Class_\DowngradeUnionIntersectionRector;
 use Rector\DowngradePhp82\Rector\FuncCall\DowngradeIteratorCountToArrayRector;
@@ -18,5 +19,6 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeIteratorCountToArrayRector::class,
         DowngradeUnionIntersectionRector::class,
         DowngradeReflectionMethodHasPrototypeRector::class,
+        DowngradeArrowFunctionNeverReturnTypeRector::class,
     ]);
 };
