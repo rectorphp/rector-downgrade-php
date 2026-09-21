@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\DowngradePhp84\Rector\Class_\DowngradeFinalPropertyRector;
+use Rector\DowngradePhp84\Rector\ClassMethod\DowngradeDeprecatedAttributeRector;
 use Rector\DowngradePhp84\Rector\Expression\DowngradeArrayAllRector;
 use Rector\DowngradePhp84\Rector\Expression\DowngradeArrayAnyRector;
 use Rector\DowngradePhp84\Rector\Expression\DowngradeArrayFindKeyRector;
-use Rector\DowngradePhp84\Rector\ClassMethod\DowngradeDeprecatedAttributeRector;
 use Rector\DowngradePhp84\Rector\Expression\DowngradeArrayFindRector;
 use Rector\DowngradePhp84\Rector\FuncCall\DowngradeExitNamedArgumentRector;
 use Rector\DowngradePhp84\Rector\FuncCall\DowngradeRoundingModeEnumRector;
@@ -24,5 +25,6 @@ return static function (RectorConfig $rectorConfig): void {
         DowngradeArrayFindRector::class,
         DowngradeArrayFindKeyRector::class,
         DowngradeDeprecatedAttributeRector::class,
+        DowngradeFinalPropertyRector::class,
     ]);
 };
