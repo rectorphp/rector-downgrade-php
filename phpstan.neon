@@ -1,4 +1,5 @@
 includes:
+    - phpstan-baseline.neon
     - vendor/symplify/phpstan-rules/config/rector-rules.neon
 
 parameters:
@@ -6,6 +7,11 @@ parameters:
 
     errorFormat: symplify
     reportUnmatchedIgnoredErrors: false
+
+    # avoids flaky DCD cache miss on fresh runs
+    shipmonkDeadCode:
+        cache:
+            offloadCollectorData: false
 
     # see https://phpstan.org/writing-php-code/phpdoc-types#global-type-aliases
     typeAliases:
