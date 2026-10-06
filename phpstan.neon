@@ -1,5 +1,4 @@
 includes:
-    - phpstan-baseline.neon
     - vendor/symplify/phpstan-rules/config/rector-rules.neon
 
 parameters:
@@ -43,6 +42,11 @@ parameters:
         narrow_return: true
 
     ignoreErrors:
+        # DI-container instantiated constructors
+        -
+            identifier: shipmonk.deadMethod
+            message: '#^Unused .*?::__construct$#'
+
         # php enum value minus
         - '#Parameter \#1 \$phpVersion of method Rector\\Config\\RectorConfig\:\:phpVersion\(\) expects (.*?), (.*?) given#'
 
