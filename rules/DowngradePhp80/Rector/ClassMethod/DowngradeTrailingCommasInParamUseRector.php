@@ -123,11 +123,11 @@ CODE_SAMPLE
         }
 
         $last = $array[$lastPosition];
-        if (! $this->followedByCommaAnalyzer->isFollowed($this->file, $last)) {
+        if (! $this->followedByCommaAnalyzer->isFollowed($this->getFile(), $last)) {
             return null;
         }
 
-        $this->trailingCommaRemover->remove($this->file, $last);
+        $this->trailingCommaRemover->remove($this->getFile(), $last);
 
         return $node;
     }
