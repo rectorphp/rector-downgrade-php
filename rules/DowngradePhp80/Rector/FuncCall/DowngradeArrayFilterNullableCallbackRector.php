@@ -26,11 +26,11 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\ClosureType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\StringType;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\NodeAnalyzer\ArgsAnalyzer;
 use Rector\PhpParser\Node\Value\ValueResolver;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://www.php.net/manual/en/function.array-filter.php#refsect1-function.array-filter-changelog

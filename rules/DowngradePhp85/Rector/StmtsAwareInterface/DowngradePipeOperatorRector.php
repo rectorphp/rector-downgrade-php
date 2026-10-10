@@ -15,11 +15,11 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Expression;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\NodeFactory\NamedVariableFactory;
 use Rector\PhpParser\Enum\NodeGroup;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @see \Rector\Tests\DowngradePhp85\Rector\StmtsAwareInterface\DowngradePipeOperatorRector\DowngradePipeOperatorRectorTest

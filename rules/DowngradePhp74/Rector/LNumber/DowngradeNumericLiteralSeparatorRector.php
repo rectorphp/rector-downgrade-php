@@ -7,10 +7,10 @@ namespace Rector\DowngradePhp74\Rector\LNumber;
 use PhpParser\Node;
 use PhpParser\Node\Scalar\Float_;
 use PhpParser\Node\Scalar\Int_;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://wiki.php.net/rfc/numeric_literal_separator

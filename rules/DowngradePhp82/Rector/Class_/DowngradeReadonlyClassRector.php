@@ -6,10 +6,10 @@ namespace Rector\DowngradePhp82\Rector\Class_;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\DowngradePhp82\NodeManipulator\DowngradeReadonlyClassManipulator;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://wiki.php.net/rfc/readonly_classes

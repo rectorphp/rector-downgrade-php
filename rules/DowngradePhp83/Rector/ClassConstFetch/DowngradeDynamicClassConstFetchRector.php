@@ -9,9 +9,9 @@ use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://wiki.php.net/rfc/dynamic_class_constant_fetch

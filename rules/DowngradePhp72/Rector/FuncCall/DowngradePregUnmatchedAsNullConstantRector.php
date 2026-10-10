@@ -20,12 +20,12 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\DowngradePhp72\NodeAnalyzer\RegexFuncAnalyzer;
 use Rector\DowngradePhp72\NodeManipulator\BitwiseFlagCleaner;
 use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @see \Rector\Tests\DowngradePhp72\Rector\FuncCall\DowngradePregUnmatchedAsNullConstantRector\DowngradePregUnmatchedAsNullConstantRectorTest

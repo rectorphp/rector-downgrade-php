@@ -7,11 +7,11 @@ namespace Rector\DowngradePhp73\Rector\String_;
 use PhpParser\Node;
 use PhpParser\Node\Scalar\InterpolatedString;
 use PhpParser\Node\Scalar\String_;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\DowngradePhp73\Tokenizer\FollowedByNewlineOnlyMaybeWithSemicolonAnalyzer;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @see \Rector\Tests\DowngradePhp73\Rector\String_\DowngradeFlexibleHeredocSyntaxRector\DowngradeFlexibleHeredocSyntaxRectorTest
@@ -83,7 +83,8 @@ CODE_SAMPLE
         $node->setAttribute(AttributeKey::DOC_INDENTATION, '__REMOVED__');
         $node->setAttribute(AttributeKey::ORIGINAL_NODE, null);
 
-        $tokens = $this->getFile()->getOldTokens();
+        $tokens = $this->getFile()
+            ->getOldTokens();
         if (isset($tokens[$node->getEndTokenPos()], $tokens[$node->getEndTokenPos() + 1])) {
             $tokens[$node->getEndTokenPos() + 1]->text = "\n" . $tokens[$node->getEndTokenPos() + 1]->text;
         }

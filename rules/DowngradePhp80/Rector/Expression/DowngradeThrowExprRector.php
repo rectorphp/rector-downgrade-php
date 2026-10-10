@@ -25,14 +25,14 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Return_;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\NodeAnalyzer\CoalesceAnalyzer;
 use Rector\NodeFactory\NamedVariableFactory;
 use Rector\NodeManipulator\BinaryOpManipulator;
 use Rector\Php72\NodeFactory\AnonymousFunctionFactory;
 use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://wiki.php.net/rfc/throw_expression

@@ -19,12 +19,12 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
+use Rector\Doc\CodeSample\ConfiguredCodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\DowngradePhp80\ValueObject\DowngradeAttributeToAnnotation;
 use Rector\NodeFactory\DoctrineAnnotationFactory;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\ConfiguredCodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
 
 /**
@@ -113,7 +113,8 @@ CODE_SAMPLE
         $this->isDowngraded = false;
 
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
-        $oldTokens = $this->getFile()->getOldTokens();
+        $oldTokens = $this->getFile()
+            ->getOldTokens();
 
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $key => $attribute) {

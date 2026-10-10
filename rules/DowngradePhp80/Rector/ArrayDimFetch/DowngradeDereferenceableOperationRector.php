@@ -9,10 +9,10 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Scalar\InterpolatedString;
 use PhpParser\Node\Scalar\MagicConst;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://wiki.php.net/rfc/variable_syntax_tweaks
@@ -89,7 +89,8 @@ CODE_SAMPLE
         }
 
         assert($arrayDimFetch->dim instanceof Expr); // already checked in shouldSkip()
-        $oldTokens = $this->getFile()->getOldTokens();
+        $oldTokens = $this->getFile()
+            ->getOldTokens();
         $varEndTokenPos = $arrayDimFetch->var->getEndTokenPos();
         $dimStartTokenPos = $arrayDimFetch->dim->getStartTokenPos();
 

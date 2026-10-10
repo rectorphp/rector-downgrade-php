@@ -9,13 +9,13 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Stmt\If_;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\DowngradePhp72\NodeManipulator\JsonConstCleaner;
 use Rector\Enum\JsonConstant;
 use Rector\NodeAnalyzer\DefineFuncCallAnalyzer;
 use Rector\PhpParser\NodeTraverser\SimpleNodeTraverser;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @changelog https://www.php.net/manual/en/function.json-encode.php#refsect1-function.json-encode-changelog

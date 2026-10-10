@@ -12,10 +12,10 @@ use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Name\FullyQualified;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\NodeAnalyzer\ArgsAnalyzer;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
 
 /**

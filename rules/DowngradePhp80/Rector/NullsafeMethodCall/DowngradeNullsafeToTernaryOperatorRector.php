@@ -13,9 +13,9 @@ use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Expression;
+use Rector\Doc\CodeSample\CodeSample;
+use Rector\Doc\RuleDefinition;
 use Rector\Rector\AbstractRector;
-use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
-use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * @see \Rector\Tests\DowngradePhp80\Rector\NullsafeMethodCall\DowngradeNullsafeToTernaryOperatorRector\DowngradeNullsafeToTernaryOperatorRectorTest
@@ -65,7 +65,8 @@ CODE_SAMPLE
             // across files
             // due to run on parallel
             $this->counter = 0;
-            $currentFile = $this->getFile()->getFilePath();
+            $currentFile = $this->getFile()
+                ->getFilePath();
         }
 
         if ($node instanceof Expression) {
