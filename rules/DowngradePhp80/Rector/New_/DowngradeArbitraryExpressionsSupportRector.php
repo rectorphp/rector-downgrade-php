@@ -20,8 +20,8 @@ use Rector\NodeFactory\NamedVariableFactory;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\PhpParser\Node\BetterNodeFinder;
 use Rector\Rector\AbstractRector;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
-use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Rector\RuleDoc\CodeSample\CodeSample;
+use Rector\RuleDoc\RuleDefinition;
 
 /**
  * @changelog https://wiki.php.net/rfc/variable_syntax_tweaks#arbitrary_expression_support_for_new_and_instanceof
@@ -102,7 +102,8 @@ CODE_SAMPLE
 
     private function isBetweenParentheses(Node $node): bool
     {
-        $oldTokens = $this->getFile()->getOldTokens();
+        $oldTokens = $this->getFile()
+            ->getOldTokens();
         $previousTokenPos = $node->getStartTokenPos() - 1;
 
         while ($previousTokenPos >= 0) {

@@ -11,8 +11,8 @@ use PhpParser\Node\Scalar\InterpolatedString;
 use PhpParser\Node\Scalar\MagicConst;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
-use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Rector\RuleDoc\CodeSample\CodeSample;
+use Rector\RuleDoc\RuleDefinition;
 
 /**
  * @changelog https://wiki.php.net/rfc/variable_syntax_tweaks
@@ -89,7 +89,8 @@ CODE_SAMPLE
         }
 
         assert($arrayDimFetch->dim instanceof Expr); // already checked in shouldSkip()
-        $oldTokens = $this->getFile()->getOldTokens();
+        $oldTokens = $this->getFile()
+            ->getOldTokens();
         $varEndTokenPos = $arrayDimFetch->var->getEndTokenPos();
         $dimStartTokenPos = $arrayDimFetch->dim->getStartTokenPos();
 
