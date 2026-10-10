@@ -9,8 +9,8 @@ use PhpParser\Node\Expr\ArrowFunction;
 use PHPStan\Type\NeverType;
 use Rector\PhpDocDecorator\PhpDocFromTypeDeclarationDecorator;
 use Rector\Rector\AbstractRector;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
-use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Rector\RuleDoc\ValueObject\CodeSample\CodeSample;
+use Rector\RuleDoc\ValueObject\RuleDefinition;
 
 /**
  * PHP 8.1 accepts the "never" return type everywhere except on arrow functions, where the implicit
