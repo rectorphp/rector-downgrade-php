@@ -6,10 +6,10 @@ namespace Rector\DowngradePhp81\Rector\LNumber;
 
 use PhpParser\Node;
 use PhpParser\Node\Scalar\Int_;
-use Rector\Doc\CodeSample\CodeSample;
-use Rector\Doc\RuleDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
+use Rector\RuleDoc\CodeSample\CodeSample;
+use Rector\RuleDoc\RuleDefinition;
 
 /**
  * @changelog https://php.watch/versions/8.1/explicit-octal-notation

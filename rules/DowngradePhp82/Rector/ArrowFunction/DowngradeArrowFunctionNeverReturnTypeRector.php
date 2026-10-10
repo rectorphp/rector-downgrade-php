@@ -7,10 +7,10 @@ namespace Rector\DowngradePhp82\Rector\ArrowFunction;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
 use PHPStan\Type\NeverType;
-use Rector\Doc\CodeSample\CodeSample;
-use Rector\Doc\RuleDefinition;
 use Rector\PhpDocDecorator\PhpDocFromTypeDeclarationDecorator;
 use Rector\Rector\AbstractRector;
+use Rector\RuleDoc\CodeSample\CodeSample;
+use Rector\RuleDoc\RuleDefinition;
 
 /**
  * PHP 8.1 accepts the "never" return type everywhere except on arrow functions, where the implicit

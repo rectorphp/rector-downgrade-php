@@ -7,10 +7,10 @@ namespace Rector\DowngradePhp80\Rector\Instanceof_;
 use PhpParser\Node;
 use PhpParser\Node\Expr\BinaryOp;
 use PhpParser\Node\Expr\Instanceof_;
-use Rector\Doc\CodeSample\CodeSample;
-use Rector\Doc\RuleDefinition;
 use Rector\DowngradePhp81\NodeManipulator\ObjectToResourceReturn;
 use Rector\Rector\AbstractRector;
+use Rector\RuleDoc\CodeSample\CodeSample;
+use Rector\RuleDoc\RuleDefinition;
 
 /**
  * @changelog https://www.php.net/manual/en/migration80.incompatible.php#migration80.incompatible.resource2object
