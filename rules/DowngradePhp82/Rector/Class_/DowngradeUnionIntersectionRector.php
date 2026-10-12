@@ -81,6 +81,11 @@ CODE_SAMPLE
         return $this->processClassLike($node);
     }
 
+    /**
+     * @template TFunctionLike of ClassMethod|Function_|Closure|ArrowFunction
+     * @param TFunctionLike $functionLike
+     * @return TFunctionLike|null
+     */
     private function processFunctionLike(
         ClassMethod|Function_|Closure|ArrowFunction $functionLike
     ): null|ClassMethod|Function_|Closure|ArrowFunction {
