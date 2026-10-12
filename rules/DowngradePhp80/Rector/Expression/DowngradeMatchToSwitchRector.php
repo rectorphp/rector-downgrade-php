@@ -237,6 +237,11 @@ CODE_SAMPLE
         return $matchScope->getParentScope() === $containerScope->getParentScope();
     }
 
+    /**
+     * @template TNode of Arg|FuncCall|Assign|Expression|Return_
+     * @param TNode $containerArrowFunction
+     * @return TNode|null
+     */
     private function refactorInArrowFunction(
         Arg|FuncCall|Assign|Expression|Return_ $containerArrowFunction,
         ArrowFunction $arrowFunction,
