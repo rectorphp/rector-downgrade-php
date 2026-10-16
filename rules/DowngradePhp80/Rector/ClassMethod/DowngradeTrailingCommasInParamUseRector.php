@@ -112,9 +112,12 @@ CODE_SAMPLE
     }
 
     /**
+     * @template TNode of Closure|ClassMethod|Function_
+     * @param TNode $node
      * @param ClosureUse[]|Param[] $array
+     * @return TNode|null
      */
-    private function cleanTrailingComma(Closure|ClassMethod|Function_ $node, array $array): ?Node
+    private function cleanTrailingComma(Closure|ClassMethod|Function_ $node, array $array): Closure|ClassMethod|Function_|null
     {
         $lastPosition = array_key_last($array);
 

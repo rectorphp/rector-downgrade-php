@@ -92,9 +92,12 @@ CODE_SAMPLE
     }
 
     /**
+     * @template TNode of MethodCall|StaticCall|New_|FuncCall
+     * @param TNode $node
      * @param Arg[] $args
+     * @return TNode|null
      */
-    private function removeNamedArguments(MethodCall|StaticCall|New_|FuncCall $node, array $args): ?Node
+    private function removeNamedArguments(MethodCall|StaticCall|New_|FuncCall $node, array $args): FuncCall|MethodCall|New_|StaticCall|null
     {
         if ($node instanceof New_) {
             $functionLikeReflection = $this->reflectionResolver->resolveMethodReflectionFromNew($node);
