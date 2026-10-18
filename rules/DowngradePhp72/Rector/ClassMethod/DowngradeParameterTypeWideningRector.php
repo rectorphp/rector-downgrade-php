@@ -5,45 +5,19 @@ declare(strict_types=1);
 namespace Rector\DowngradePhp72\Rector\ClassMethod;
 
 use PhpParser\Node;
-use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassLike;
-use PhpParser\Node\Stmt\ClassMethod;
-use PHPStan\Reflection\ClassReflection;
+use Rector\Configuration\Deprecation\Contract\DeprecatedInterface;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
-use Rector\DowngradePhp72\NodeAnalyzer\BuiltInMethodAnalyzer;
-use Rector\DowngradePhp72\NodeAnalyzer\OverrideFromAnonymousClassMethodAnalyzer;
-use Rector\DowngradePhp72\NodeAnalyzer\SealedClassAnalyzer;
-use Rector\DowngradePhp72\PhpDoc\NativeParamToPhpDocDecorator;
+use Rector\Exception\ShouldNotHappenException;
 use Rector\Rector\AbstractRector;
-use Rector\Reflection\ReflectionResolver;
 use Rector\RuleDoc\CodeSample\ConfiguredCodeSample;
 use Rector\RuleDoc\RuleDefinition;
-use Rector\TypeDeclaration\NodeAnalyzer\AutowiredClassMethodOrPropertyAnalyzer;
-use Webmozart\Assert\Assert;
 
 /**
- * @changelog https://www.php.net/manual/en/migration72.new-features.php#migration72.new-features.param-type-widening
- * @changelog https://3v4l.org/fOgSE
- *
- * @see \Rector\Tests\DowngradePhp72\Rector\ClassMethod\DowngradeParameterTypeWideningRector\DowngradeParameterTypeWideningRectorTest
+ * @deprecated Used for Symfony container internals, no longer needed nor safe as it depends on autoload order.
  */
-final class DowngradeParameterTypeWideningRector extends AbstractRector implements ConfigurableRectorInterface
+final class DowngradeParameterTypeWideningRector extends AbstractRector implements ConfigurableRectorInterface, DeprecatedInterface
 {
-    /**
-     * @var array<string, string[]>
-     */
-    private array $unsafeTypesToMethods = [];
-
-    public function __construct(
-        private readonly NativeParamToPhpDocDecorator $nativeParamToPhpDocDecorator,
-        private readonly ReflectionResolver $reflectionResolver,
-        private readonly AutowiredClassMethodOrPropertyAnalyzer $autowiredClassMethodOrPropertyAnalyzer,
-        private readonly BuiltInMethodAnalyzer $builtInMethodAnalyzer,
-        private readonly OverrideFromAnonymousClassMethodAnalyzer $overrideFromAnonymousClassMethodAnalyzer,
-        private readonly SealedClassAnalyzer $sealedClassAnalyzer
-    ) {
-    }
-
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Change param type to match the lowest type in whole family tree', [
@@ -79,7 +53,6 @@ CODE_SAMPLE
                 ,
                 [
                     'ContainerInterface' => ['set', 'get', 'has', 'initialized'],
-                    'SomeContainerInterface' => ['set', 'has'],
                 ]
             ),
         ]);
@@ -98,38 +71,10 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        $hasChanged = false;
-
-        foreach ($node->getMethods() as $method) {
-            $ancestorOverridableAnonymousClass = $this->overrideFromAnonymousClassMethodAnalyzer->matchAncestorClassReflectionOverridable(
-                $node,
-                $method
-            );
-
-            if ($ancestorOverridableAnonymousClass instanceof ClassReflection) {
-                $classMethod = $this->processRemoveParamTypeFromMethod($ancestorOverridableAnonymousClass, $method);
-
-                if ($classMethod instanceof ClassMethod) {
-                    $hasChanged = true;
-                    continue;
-                }
-
-                continue;
-            }
-
-            $classReflection = $this->reflectionResolver->resolveClassAndAnonymousClass($node);
-            $classMethod = $this->processRemoveParamTypeFromMethod($classReflection, $method);
-
-            if ($classMethod instanceof ClassMethod) {
-                $hasChanged = true;
-            }
-        }
-
-        if ($hasChanged) {
-            return $node;
-        }
-
-        return null;
+        throw new ShouldNotHappenException(sprintf(
+            '"%s" is deprecated, as used for Symfony container internals and no longer safe - it depends on autoload order',
+            self::class
+        ));
     }
 
     /**
@@ -137,105 +82,5 @@ CODE_SAMPLE
      */
     public function configure(array $configuration): void
     {
-        $unsafeTypesToMethods = $configuration;
-
-        foreach ($unsafeTypesToMethods as $key => $value) {
-            Assert::string($key);
-            Assert::isArray($value);
-            Assert::allString($value);
-        }
-
-        $this->unsafeTypesToMethods = $unsafeTypesToMethods;
-    }
-
-    private function shouldSkip(ClassReflection $classReflection, ClassMethod $classMethod): bool
-    {
-        if ($classMethod->params === []) {
-            return true;
-        }
-
-        if ($classMethod->isPrivate()) {
-            return true;
-        }
-
-        if ($classMethod->isMagic()) {
-            return true;
-        }
-
-        if ($this->sealedClassAnalyzer->isSealedClass($classReflection)) {
-            return true;
-        }
-
-        if ($this->autowiredClassMethodOrPropertyAnalyzer->detect($classMethod)) {
-            return true;
-        }
-
-        if ($this->hasParamAlreadyNonTyped($classMethod)) {
-            return true;
-        }
-
-        return $this->isSafeType($classReflection, $classMethod);
-    }
-
-    private function processRemoveParamTypeFromMethod(
-        ClassReflection $classReflection,
-        ClassMethod $classMethod
-    ): ?ClassMethod {
-        if ($this->shouldSkip($classReflection, $classMethod)) {
-            return null;
-        }
-
-        if ($this->builtInMethodAnalyzer->isImplementsBuiltInInterface($classReflection, $classMethod)) {
-            return null;
-        }
-
-        // Downgrade every scalar parameter, just to be sure
-        foreach (array_keys($classMethod->params) as $paramPosition) {
-            $this->removeParamTypeFromMethod($classMethod, $paramPosition);
-        }
-
-        return $classMethod;
-    }
-
-    private function removeParamTypeFromMethod(ClassMethod $classMethod, int $paramPosition): void
-    {
-        $param = $classMethod->params[$paramPosition] ?? null;
-        if (! $param instanceof Param) {
-            return;
-        }
-
-        // Add the current type in the PHPDoc
-        $this->nativeParamToPhpDocDecorator->decorate($classMethod, $param);
-        $param->type = null;
-    }
-
-    private function hasParamAlreadyNonTyped(ClassMethod $classMethod): bool
-    {
-        return array_all($classMethod->params, static fn (Param $param): bool => ! $param->type instanceof Node);
-    }
-
-    private function isSafeType(ClassReflection $classReflection, ClassMethod $classMethod): bool
-    {
-        if ($this->unsafeTypesToMethods === []) {
-            return false;
-        }
-
-        $classReflectionName = $classReflection->getName();
-        foreach ($this->unsafeTypesToMethods as $unsafeType => $unsafeMethods) {
-            if (! $this->isNames($classMethod, $unsafeMethods)) {
-                continue;
-            }
-
-            if ($classReflection->is($unsafeType)) {
-                return false;
-            }
-
-            // skip self too
-            if ($classReflectionName === $unsafeType) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
