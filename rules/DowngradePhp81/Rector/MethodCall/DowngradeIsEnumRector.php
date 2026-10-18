@@ -6,6 +6,8 @@ namespace Rector\DowngradePhp81\Rector\MethodCall;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Scalar\String_;
@@ -19,6 +21,8 @@ use Rector\RuleDoc\RuleDefinition;
  */
 final class DowngradeIsEnumRector extends AbstractRector
 {
+    private const string IS_IF_TERNARY = 'is_if_ternary';
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Downgrades isEnum() on class reflection', [
@@ -52,15 +56,30 @@ CODE_SAMPLE
      */
     public function getNodeTypes(): array
     {
-        return [MethodCall::class];
+        return [Ternary::class, MethodCall::class];
     }
 
     /**
-     * @param MethodCall $node
+     * @param Ternary|MethodCall $node
      */
     public function refactor(Node $node): ?Node
     {
+        if ($node instanceof Ternary) {
+            if ($node->if instanceof Expr
+                && $node->cond instanceof FuncCall
+                && $this->isName($node->cond, 'method_exists')) {
+                $node->if->setAttribute(self::IS_IF_TERNARY, true);
+            }
+
+            return null;
+        }
+
         if (! $this->isName($node->name, 'isEnum')) {
+            return null;
+        }
+
+        // already wrapped by this rule on a previous pass
+        if ($node->getAttribute(self::IS_IF_TERNARY) === true) {
             return null;
         }
 
