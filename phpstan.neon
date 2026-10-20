@@ -117,6 +117,7 @@ parameters:
                  - rules/DowngradePhp74/Rector/MethodCall/DowngradeReflectionGetTypeRector.php
                  - rules/DowngradePhp80/Rector/MethodCall/DowngradeReflectionGetAttributesRector.php
                  - rules/DowngradePhp81/Rector/MethodCall/DowngradeIsEnumRector.php
+                 - rules/DowngradePhp82/Rector/FuncCall/DowngradeIteratorCountToArrayRector.php
                  - rules/DowngradePhp73/Rector/String_/DowngradeFlexibleHeredocSyntaxRector.php
                  - rules/DowngradePhp80/Rector/Expression/DowngradeMatchToSwitchRector.php
 
