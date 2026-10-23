@@ -86,11 +86,17 @@ CODE_SAMPLE
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node instanceof Closure) {
-            $this->processUses($node);
+        $hasChanged = false;
+
+        if ($node instanceof Closure && $this->processUses($node) instanceof Node) {
+            $hasChanged = true;
         }
 
-        return $this->processParams($node);
+        if ($this->processParams($node) instanceof Node) {
+            $hasChanged = true;
+        }
+
+        return $hasChanged ? $node : null;
     }
 
     private function processUses(Closure $node): ?Node
