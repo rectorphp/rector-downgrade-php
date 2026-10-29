@@ -19,7 +19,7 @@ namespace Rector\Tests\DowngradePhp82\Rector\Class_\DowngradeStandaloneNullTrueF
 final class UnionTrue
 {
     /**
-     * @return null|true
+     * @return true|null
      */
     public function run(): null|bool
     {
