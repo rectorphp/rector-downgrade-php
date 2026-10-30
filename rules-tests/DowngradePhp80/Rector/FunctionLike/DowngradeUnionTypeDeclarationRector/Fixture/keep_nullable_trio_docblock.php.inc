@@ -16,7 +16,7 @@ namespace Rector\Tests\DowngradePhp80\Rector\FunctionLike\DowngradeUnionTypeDecl
 final class NullableTrioDocblock
 {
     /**
-     * @return int|null|string
+     * @return int|string|null
      */
     public function run($value)
     {
